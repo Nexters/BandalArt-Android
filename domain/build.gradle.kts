@@ -5,6 +5,6 @@ plugins {
 dependencies {
   implementations(
     libs.javax.inject,
-    libs.kotlinx.coroutines.android,
+    libs.kotlinx.coroutines.core,
   )
 }

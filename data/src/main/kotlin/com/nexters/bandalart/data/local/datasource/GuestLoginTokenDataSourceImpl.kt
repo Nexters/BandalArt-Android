@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class GuestLoginTokenLocalDataSource(private val dataStore: DataStore<Preferences>) : GuestLoginTokenDataSource {
+class GuestLoginTokenDataSourceImpl(private val dataStore: DataStore<Preferences>) : GuestLoginTokenDataSource {
 
   private val key = stringPreferencesKey(DataStoreKeys.GUEST_LOGIN_TOKEN)
 
