@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-  namespace = "com.nexters.bandalart.presentation"
+  namespace = "com.nexters.bandalart.android.presentation"
 
   buildFeatures {
     compose = true

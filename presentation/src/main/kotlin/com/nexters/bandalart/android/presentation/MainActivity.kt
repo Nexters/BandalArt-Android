@@ -1,4 +1,4 @@
-package com.nexters.bandalart.presentation
+package com.nexters.bandalart.android.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.nexters.bandalart.presentation.ui.theme.BandalartTheme
+import com.nexters.bandalart.android.presentation.ui.theme.BandalartTheme
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
