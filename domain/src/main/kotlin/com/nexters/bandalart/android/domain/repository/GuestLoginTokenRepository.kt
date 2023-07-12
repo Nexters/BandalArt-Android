@@ -1,4 +1,4 @@
-package com.nexters.bandalart.domain.repository
+package com.nexters.bandalart.android.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 
