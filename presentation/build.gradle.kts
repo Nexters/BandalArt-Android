@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
+
 plugins {
   bandalart("android-library")
   bandalart("android-hilt")
@@ -22,5 +24,6 @@ dependencies {
     libs.androidx.hilt.compose.navigation,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle,
+    projects.domain,
   )
 }
