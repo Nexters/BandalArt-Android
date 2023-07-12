@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.nexters.bandalart.presentation">
+  package="com.nexters.bandalart.android.presentation">
 
   <application android:theme="@style/Theme.Bandalart">
     <activity
-      android:name=".MainActivity"
+      android:name="com.nexters.bandalart.android.presentation.MainActivity"
       android:exported="true">
 
       <intent-filter>

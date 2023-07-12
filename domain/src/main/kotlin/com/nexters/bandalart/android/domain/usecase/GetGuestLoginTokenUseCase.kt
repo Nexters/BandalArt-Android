@@ -1,4 +1,4 @@
-package com.nexters.bandalart.domain.usecase
+package com.nexters.bandalart.android.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
 

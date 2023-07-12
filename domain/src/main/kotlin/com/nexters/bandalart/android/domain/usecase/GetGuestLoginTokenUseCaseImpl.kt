@@ -1,6 +1,6 @@
-package com.nexters.bandalart.domain.usecase
+package com.nexters.bandalart.android.domain.usecase
 
-import com.nexters.bandalart.domain.repository.GuestLoginTokenRepository
+import com.nexters.bandalart.android.domain.repository.GuestLoginTokenRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetGuestLoginTokenUseCaseImpl(private val repository: GuestLoginTokenRepository) : GetGuestLoginTokenUseCase {
