@@ -3,6 +3,8 @@
 android-gradle-plugin = "8.0.2"
 gradle-dependency-handler-extensions = "1.1.0"
 
+google-secrets = "2.0.1"
+
 kotlin-core = "1.9.0"
 kotlin-detekt = "1.23.0"
 kotlin-ktlint-gradle = "11.5.0"
@@ -91,6 +93,8 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 [plugins]
 
 gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
+
+google-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "google-secrets" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-core" }
 kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "kotlin-detekt" }

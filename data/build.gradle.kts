@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
   bandalart("android-library")
   bandalart("android-hilt")
+  alias(libs.plugins.google.secrets)
 }
 
 android {
@@ -28,4 +29,8 @@ tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs = freeCompilerArgs + listOf("-opt-in=kotlin.ExperimentalStdlibApi")
   }
+}
+
+secrets {
+  defaultPropertiesFileName = "secrets.properties"
 }
