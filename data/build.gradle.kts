@@ -17,9 +17,10 @@ android {
 
 dependencies {
   implementations(
-    libs.timber,
-    libs.bundles.ktor.client,
     projects.domain,
+    libs.androidx.datastore.preferences,
+    libs.bundles.ktor.client,
+    libs.timber,
   )
 }
 

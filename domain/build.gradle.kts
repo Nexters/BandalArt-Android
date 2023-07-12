@@ -3,5 +3,8 @@ plugins {
 }
 
 dependencies {
-  implementation(libs.javax.inject)
+  implementations(
+    libs.javax.inject,
+    libs.kotlinx.coroutines.core,
+  )
 }
