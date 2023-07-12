@@ -20,7 +20,6 @@ import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
