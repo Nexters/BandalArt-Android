@@ -13,7 +13,7 @@ import java.io.IOException
 
 class GuestLoginTokenDataSourceImpl(private val dataStore: DataStore<Preferences>) : GuestLoginTokenDataSource {
 
-  companion object KEY {
+  private companion object KEY {
     private const val GUEST_LOGIN_TOKEN = "guest_login_token"
   }
 
