@@ -1,6 +1,6 @@
 package com.nexters.bandalart.android.data.di
 
-import com.nexters.bandalart.data.BuildConfig
+import com.nexters.bandalart.android.data.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
