@@ -3,6 +3,8 @@
 android-gradle-plugin = "8.0.2"
 gradle-dependency-handler-extensions = "1.1.0"
 
+google-secrets = "2.0.1"
+
 kotlin-core = "1.8.22"
 kotlin-detekt = "1.23.0"
 kotlin-ktlint-gradle = "11.5.0"
@@ -43,7 +45,6 @@ timber = "5.0.1"
 gradle-android = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-core" }
 
-# This isn't strictly used but allows Renovate to see us using the ktlint artifact
 kotlin-ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "kotlin-ktlint-source" }
 
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -79,6 +80,9 @@ androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-client" }
 ktor-client-engine-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor-client" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor-client" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor-client" }
+ktor-client-json = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor-client" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor-client" }
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
 
@@ -91,6 +95,8 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 [plugins]
 
 gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
+
+google-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "google-secrets" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-core" }
 kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "kotlin-detekt" }
@@ -121,12 +127,15 @@ androidx-compose = [
 
 androidx-lifecycle = [
     "androidx-lifecycle-runtime-compose",
-    "androidx-lifecycle-viewmodel-compose"
+    "androidx-lifecycle-viewmodel-compose",
 ]
 
 ktor-client = [
     "ktor-client-core",
     "ktor-client-engine-cio",
+    "ktor-client-content-negotiation",
+    "ktor-client-okhttp",
+    "ktor-client-json",
     "ktor-client-logging",
-    "ktor-serialization"
+    "ktor-serialization",
 ]
