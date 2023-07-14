@@ -11,7 +11,7 @@ class GuestLoginTokenDataSourceImpl @Inject constructor(private val datastorePro
     datastoreProvider.setGuestLoginToken(guestLoginToken)
   }
 
-  override suspend fun getGuestLoginToken(): Flow<Result<String>> {
+  override fun getGuestLoginToken(): Flow<Result<String>> {
     return datastoreProvider.getGuestLoginToken()
   }
 }

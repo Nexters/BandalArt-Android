@@ -25,7 +25,7 @@ class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Pre
     }
   }
 
-  suspend fun getGuestLoginToken(): Flow<Result<String>> {
+  fun getGuestLoginToken(): Flow<Result<String>> {
     return dataStore.data.catch { exception ->
       if (exception is IOException) {
         emit(emptyPreferences())

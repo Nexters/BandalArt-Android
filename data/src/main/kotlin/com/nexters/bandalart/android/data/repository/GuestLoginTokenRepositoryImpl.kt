@@ -10,7 +10,7 @@ class GuestLoginTokenRepositoryImpl @Inject constructor(private val dataSource: 
     dataSource.setGuestLoginToken(guestLoginToken)
   }
 
-  override suspend fun getGuestLoginToken(): Flow<Result<String>> {
+  override fun getGuestLoginToken(): Flow<Result<String>> {
     return dataSource.getGuestLoginToken()
   }
 }
