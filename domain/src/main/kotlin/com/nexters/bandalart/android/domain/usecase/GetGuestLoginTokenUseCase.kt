@@ -1,7 +1,11 @@
 package com.nexters.bandalart.android.domain.usecase
 
+import com.nexters.bandalart.android.domain.repository.GuestLoginTokenRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-interface GetGuestLoginTokenUseCase {
-  suspend operator fun invoke(): Flow<Result<String>>
+class GetGuestLoginTokenUseCase @Inject constructor(private val repository: GuestLoginTokenRepository) {
+  operator fun invoke(): Flow<Result<String>> {
+    return repository.getGuestLoginToken()
+  }
 }
