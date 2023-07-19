@@ -19,9 +19,10 @@ android {
 
 dependencies {
   implementations(
-    libs.androidx.core,
     libs.androidx.appcompat,
+    libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
+    libs.androidx.splash,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle,
     projects.domain,
