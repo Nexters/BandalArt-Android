@@ -38,6 +38,7 @@ coil = "2.4.0"
 desugar-jdk = "2.0.3"
 javax-inject = "1"
 ktor-client = "2.3.2"
+lottie-compose = "5.2.0"
 timber = "5.0.1"
 
 [libraries]
@@ -87,9 +88,13 @@ ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
 
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+
 desugar-jdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk" }
 detekt-plugin-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "kotlin-detekt" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 [plugins]
@@ -138,4 +143,10 @@ ktor-client = [
     "ktor-client-json",
     "ktor-client-logging",
     "ktor-serialization",
+]
+
+coil = [
+    "coil",
+    "coil-compose",
+    "coil-svg",
 ]
