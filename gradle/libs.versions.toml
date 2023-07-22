@@ -40,6 +40,9 @@ javax-inject = "1"
 ktor-client = "2.3.2"
 lottie-compose = "5.2.0"
 timber = "5.0.1"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
 
 [libraries]
 
@@ -96,6 +99,9 @@ detekt-plugin-formatting = { group = "io.gitlab.arturbosch.detekt", name = "dete
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 [plugins]
 

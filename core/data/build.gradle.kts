@@ -18,7 +18,7 @@ android {
 
 dependencies {
   implementations(
-    projects.domain,
+    projects.core.domain,
     libs.androidx.datastore.preferences,
     libs.bundles.ktor.client,
     libs.timber,
