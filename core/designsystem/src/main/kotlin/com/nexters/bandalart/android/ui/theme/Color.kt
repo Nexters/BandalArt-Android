@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.presentation.ui.theme
+package com.nexters.bandalart.android.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

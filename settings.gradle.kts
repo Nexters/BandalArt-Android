@@ -22,7 +22,7 @@ buildCache {
 
 include(
   ":app",
-  ":data",
-  ":domain",
-  ":presentation",
+  ":core:data",
+  ":core:designsystem",
+  ":core:domain",
 )
