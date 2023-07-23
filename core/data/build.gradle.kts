@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-  namespace = "com.nexters.bandalart.android.data"
+  namespace = "com.nexters.bandalart.android.core.data"
 
   buildFeatures {
     buildConfig = true

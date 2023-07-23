@@ -1,12 +1,11 @@
 @file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
 
 plugins {
-  bandalart("android-application")
-  bandalart("android-hilt")
+  bandalart("android-library")
 }
 
 android {
-  namespace = "com.nexters.bandalart.android"
+  namespace = "com.nexters.bandalart.android.feature.onboarding"
 
   buildFeatures {
     compose = true
@@ -18,22 +17,11 @@ android {
 }
 
 dependencies {
-  coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
-    projects.core.data,
     projects.core.designsystem,
     projects.core.domain,
     projects.core.ui,
-    projects.feature.complete,
-    projects.feature.home,
-    projects.feature.onboarding,
-    libs.androidx.splash,
-    libs.androidx.startup,
-    libs.androidx.appcompat,
     libs.androidx.core,
-    libs.androidx.hilt.compose.navigation,
-    libs.androidx.splash,
-    libs.timber,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle,
   )

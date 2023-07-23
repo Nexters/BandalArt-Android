@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-  namespace = "com.nexters.bandalart.android.core.designsystem"
+  namespace = "com.nexters.bandalart.android.feature.complete"
 
   buildFeatures {
     compose = true
@@ -18,9 +18,10 @@ android {
 
 dependencies {
   implementations(
+    projects.core.designsystem,
+    projects.core.domain,
+    projects.core.ui,
     libs.androidx.core,
-    libs.androidx.appcompat,
-    libs.android.material,
-    libs.bundles.androidx.compose
+    libs.bundles.androidx.compose,
   )
 }
