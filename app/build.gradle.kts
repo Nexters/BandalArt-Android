@@ -21,8 +21,12 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
     projects.core.data,
-    projects.core.domain,
     projects.core.designsystem,
+    projects.core.domain,
+    projects.core.ui,
+    projects.feature.complete,
+    projects.feature.home,
+    projects.feature.onboarding,
     libs.androidx.splash,
     libs.androidx.startup,
     libs.androidx.appcompat,
