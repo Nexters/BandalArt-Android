@@ -25,4 +25,8 @@ include(
   ":core:data",
   ":core:designsystem",
   ":core:domain",
+  ":core:ui",
+  ":feature:complete",
+  ":feature:home",
+  ":feature:onboarding",
 )
