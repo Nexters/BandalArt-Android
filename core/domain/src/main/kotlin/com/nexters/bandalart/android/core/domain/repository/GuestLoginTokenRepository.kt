@@ -1,8 +1,10 @@
-package com.nexters.bandalart.android.data.datasource
+package com.nexters.bandalart.android.core.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 
-interface GuestLoginTokenDataSource {
+interface GuestLoginTokenRepository {
+
   suspend fun setGuestLoginToken(guestLoginToken: String)
+
   fun getGuestLoginToken(): Flow<Result<String>>
 }

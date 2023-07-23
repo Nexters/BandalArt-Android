@@ -1,7 +1,7 @@
-package com.nexters.bandalart.android.data.di
+package com.nexters.bandalart.android.core.data.di
 
-import com.nexters.bandalart.android.data.datasource.GuestLoginTokenDataSource
-import com.nexters.bandalart.android.data.local.datasource.GuestLoginTokenDataSourceImpl
+import com.nexters.bandalart.android.core.data.datasource.GuestLoginTokenDataSource
+import com.nexters.bandalart.android.core.data.local.datasource.GuestLoginTokenDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

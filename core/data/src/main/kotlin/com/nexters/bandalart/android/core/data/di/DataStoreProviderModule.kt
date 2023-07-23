@@ -1,11 +1,11 @@
-package com.nexters.bandalart.android.data.di
+package com.nexters.bandalart.android.core.data.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.nexters.bandalart.android.data.local.DataStoreProvider
+import com.nexters.bandalart.android.core.data.local.DataStoreProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

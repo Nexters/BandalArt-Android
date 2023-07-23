@@ -1,6 +1,6 @@
-package com.nexters.bandalart.android.domain.usecase
+package com.nexters.bandalart.android.core.domain.usecase
 
-import com.nexters.bandalart.android.domain.repository.GuestLoginTokenRepository
+import com.nexters.bandalart.android.core.domain.repository.GuestLoginTokenRepository
 import javax.inject.Inject
 
 class SetGuestLoginTokenUseCase @Inject constructor(private val repository: GuestLoginTokenRepository) {
