@@ -6,14 +6,14 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.nexters.bandalart.android.feature.onboarding.OnBoardingRoute
 
-const val onBoardingNavigationRoute = "onboarding_route"
+const val ONBOARDING_NAVIGATION_ROUTE = "onboarding_route"
 
 fun NavController.navigateToOnBoarding(navOptions: NavOptions? = null) {
-  this.navigate(onBoardingNavigationRoute, navOptions)
+  this.navigate(ONBOARDING_NAVIGATION_ROUTE, navOptions)
 }
 
 fun NavGraphBuilder.onBoardingScreen(onNavigateBack: () -> Unit) {
-  composable(route = onBoardingNavigationRoute) {
+  composable(route = ONBOARDING_NAVIGATION_ROUTE) {
     OnBoardingRoute(onNavigateBack)
   }
 }

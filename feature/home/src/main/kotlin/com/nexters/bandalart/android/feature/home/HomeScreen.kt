@@ -30,7 +30,7 @@ internal fun HomeRoute(
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
-    modifier = modifier
+    modifier = modifier,
   )
 }
 
@@ -46,13 +46,15 @@ internal fun HomeScreen(
   Surface(
     modifier = modifier
       .fillMaxSize()
-      .padding(16.dp)
+      .padding(16.dp),
   ) {
     Column(
-      modifier = Modifier.fillMaxSize()
+      modifier = Modifier.fillMaxSize(),
     ) {
       Text(
-        text = "Home Screen", textAlign = TextAlign.Center, fontSize = 16.sp
+        text = "Home Screen",
+        textAlign = TextAlign.Center,
+        fontSize = 16.sp,
       )
       Spacer(modifier = Modifier.height(16.dp))
       Column(
@@ -66,16 +68,17 @@ internal fun HomeScreen(
         NavButton(
           onClick = navigateToComplete,
           route = "Complete",
-
-          )
+        )
         Button(
           onClick = {
             scope.launch {
               onShowSnackbar("메세지 출력")
             }
-          }
+          },
         ) {
-          Text("스낵바 띄우기")
+          Text(
+            text = "스낵바 띄우기",
+          )
         }
       }
     }

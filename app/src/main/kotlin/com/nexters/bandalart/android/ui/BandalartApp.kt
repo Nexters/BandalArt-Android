@@ -44,14 +44,14 @@ fun BandalartApp(
               .padding(horizontal = 32.dp),
             shape = RoundedCornerShape(28.dp),
             colors = CardDefaults.cardColors(
-              containerColor = Color.White
+              containerColor = Color.White,
             ),
-            elevation = CardDefaults.cardElevation(8.dp)
+            elevation = CardDefaults.cardElevation(8.dp),
           ) {
             Box(
               Modifier
                 .fillMaxSize()
-                .padding(vertical = 16.dp, horizontal = 16.dp)
+                .padding(vertical = 16.dp, horizontal = 16.dp),
             ) {
               Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -60,9 +60,9 @@ fun BandalartApp(
               )
             }
           }
-        }
+        },
       )
-    }
+    },
   ) { innerPadding ->
     BandalartNavHost(
       appState = appState,
@@ -72,7 +72,7 @@ fun BandalartApp(
           message = message,
           duration = SnackbarDuration.Short,
         ) == SnackbarResult.ActionPerformed
-      }
+      },
     )
   }
 }

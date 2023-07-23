@@ -5,4 +5,3 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class BandalartApplication : Application()
-

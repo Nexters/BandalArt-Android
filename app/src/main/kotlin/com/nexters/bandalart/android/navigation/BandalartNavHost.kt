@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.nexters.bandalart.android.feature.complete.navigation.completeScreen
 import com.nexters.bandalart.android.feature.complete.navigation.navigateToComplete
-import com.nexters.bandalart.android.feature.home.navigation.homeNavigationRoute
+import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.feature.home.navigation.homeScreen
 import com.nexters.bandalart.android.feature.onboarding.navigation.navigateToOnBoarding
 import com.nexters.bandalart.android.feature.onboarding.navigation.onBoardingScreen
@@ -16,7 +16,7 @@ fun BandalartNavHost(
   appState: BandalartAppState,
   onShowSnackbar: suspend (String) -> Boolean,
   modifier: Modifier = Modifier,
-  startDestination: String = homeNavigationRoute,
+  startDestination: String = HOME_NAVIGATION_ROUTE,
 ) {
   val navController = appState.navController
   NavHost(
@@ -27,13 +27,13 @@ fun BandalartNavHost(
     homeScreen(
       navigateToOnBoarding = navController::navigateToOnBoarding,
       navigateToComplete = navController::navigateToComplete,
-      onShowSnackbar = onShowSnackbar
+      onShowSnackbar = onShowSnackbar,
     )
     onBoardingScreen(
-      onNavigateBack = navController::popBackStack
+      onNavigateBack = navController::popBackStack,
     )
     completeScreen(
-      onNavigateBack = navController::popBackStack
+      onNavigateBack = navController::popBackStack,
     )
   }
 }

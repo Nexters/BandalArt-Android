@@ -19,7 +19,7 @@ fun NavButton(
     modifier = modifier.wrapContentSize(),
   ) {
     Text(
-      text = "Go to $route"
+      text = "Go to $route",
     )
   }
 }

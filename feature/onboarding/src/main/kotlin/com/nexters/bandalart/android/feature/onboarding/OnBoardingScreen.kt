@@ -13,41 +13,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.NavButton
-import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
 
 @Composable
 internal fun OnBoardingRoute(
   onNavigateBack: () -> Unit,
 ) {
   OnBoardingScreen(
-    onNavigateBack = onNavigateBack
+    onNavigateBack = onNavigateBack,
   )
 }
+
 @Composable
 internal fun OnBoardingScreen(
   onNavigateBack: () -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
 ) {
   Surface(
     modifier = modifier
       .fillMaxSize()
-      .padding(16.dp)
+      .padding(16.dp),
   ) {
     Column(
-      modifier = Modifier.fillMaxSize()
+      modifier = Modifier.fillMaxSize(),
     ) {
       Text(
-        text = "OnBoarding Screen", textAlign = TextAlign.Center, fontSize = 16.sp
+        text = "OnBoarding Screen",
+        textAlign = TextAlign.Center,
+        fontSize = 16.sp,
       )
       Spacer(modifier = Modifier.height(16.dp))
       Column(
         modifier = Modifier.wrapContentWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         NavButton(
           onClick = onNavigateBack,
@@ -55,15 +56,5 @@ internal fun OnBoardingScreen(
         )
       }
     }
-  }
-}
-
-@Preview
-@Composable
-fun OnBoardingScreenPreview() {
-  BandalartTheme {
-    OnBoardingScreen(
-      onNavigateBack = {}
-    )
   }
 }

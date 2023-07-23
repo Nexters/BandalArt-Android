@@ -6,10 +6,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.nexters.bandalart.android.feature.home.HomeRoute
 
-const val homeNavigationRoute = "home_route"
+const val HOME_NAVIGATION_ROUTE = "home_route"
 
 fun NavController.navigateToHome(navOptions: NavOptions? = null) {
-  this.navigate(homeNavigationRoute, navOptions)
+  this.navigate(HOME_NAVIGATION_ROUTE, navOptions)
 }
 
 fun NavGraphBuilder.homeScreen(
@@ -17,7 +17,7 @@ fun NavGraphBuilder.homeScreen(
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
 ) {
-  composable(route = homeNavigationRoute) {
+  composable(route = HOME_NAVIGATION_ROUTE) {
     HomeRoute(
       navigateToOnBoarding = navigateToOnBoarding,
       navigateToComplete = navigateToComplete,
