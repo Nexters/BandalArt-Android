@@ -12,7 +12,7 @@ class RecentBandalartKeyDataSourceImpl @Inject constructor(private val datastore
     datastoreProvider.setRecentBandalartKey(recentBandalartKey)
   }
 
-  override fun getRecentBandalartKey(): Flow<Result<String>> {
+  override fun getRecentBandalartKey(): Flow<String> {
     return datastoreProvider.getRecentBandalartKey()
   }
 }

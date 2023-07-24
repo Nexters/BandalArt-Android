@@ -11,7 +11,7 @@ class RecentBandalartKeyRepositoryImpl @Inject constructor(private val dataSourc
     dataSource.setRecentBandalartKey(recentBandalartKey)
   }
 
-  override fun getRecentBandalartKey(): Flow<Result<String>> {
+  override fun getRecentBandalartKey(): Flow<String> {
     return dataSource.getRecentBandalartKey()
   }
 }

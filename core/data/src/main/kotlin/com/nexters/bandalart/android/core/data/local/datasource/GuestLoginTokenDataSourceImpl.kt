@@ -12,7 +12,7 @@ class GuestLoginTokenDataSourceImpl @Inject constructor(private val datastorePro
     datastoreProvider.setGuestLoginToken(guestLoginToken)
   }
 
-  override fun getGuestLoginToken(): Flow<Result<String>> {
+  override fun getGuestLoginToken(): Flow<String> {
     return datastoreProvider.getGuestLoginToken()
   }
 }

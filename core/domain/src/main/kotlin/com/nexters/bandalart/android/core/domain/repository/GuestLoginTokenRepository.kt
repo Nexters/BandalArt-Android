@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GuestLoginTokenRepository {
   suspend fun setGuestLoginToken(guestLoginToken: String)
-  fun getGuestLoginToken(): Flow<Result<String>>
+  fun getGuestLoginToken(): Flow<String>
 }
