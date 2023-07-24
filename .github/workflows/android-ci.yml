@@ -34,11 +34,9 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
 
-      - name: Access to secrets
+      - name: Generate secrets.properties
         run: |
-          echo "SERVER_BASE_URL=$SERVER_BASE_URL" >> .env
-        env:
-          SERVER_BASE_URL: ${{secrets.SERVER_BASE_URL}}
+          echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
       - name: Code style checks
         run: ./gradlew ktlintCheck detekt
