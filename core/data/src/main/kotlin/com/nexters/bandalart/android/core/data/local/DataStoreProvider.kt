@@ -15,9 +15,11 @@ class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Pre
 
   companion object {
     private const val GUEST_LOGIN_TOKEN = "guest_login_token"
+    private const val RECENT_BANDALART_KEY = "recent_bandalart_key"
   }
 
   private val prefKeyGuestLoginToken = stringPreferencesKey(GUEST_LOGIN_TOKEN)
+  private val prefKeyRecentBandalartKey = stringPreferencesKey(RECENT_BANDALART_KEY)
 
   suspend fun setGuestLoginToken(guestLoginToken: String) {
     dataStore.edit { preferences ->
@@ -25,7 +27,7 @@ class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Pre
     }
   }
 
-  fun getGuestLoginToken(): Flow<Result<String>> {
+  fun getGuestLoginToken(): Flow<String> {
     return dataStore.data.catch { exception ->
       if (exception is IOException) {
         emit(emptyPreferences())
@@ -33,8 +35,23 @@ class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Pre
         throw exception
       }
     }.map { preference ->
-      preference[prefKeyGuestLoginToken]?.let { Result.success(it) }
-        ?: Result.failure(NoSuchFieldError("Getting guest login token is failed"))
+      preference[prefKeyGuestLoginToken] ?: "" }
+  }
+
+  suspend fun setRecentBandalartKey(recentBandalartKey: String) {
+    dataStore.edit { preferences ->
+      preferences[prefKeyRecentBandalartKey] = recentBandalartKey
     }
+  }
+
+  fun getRecentBandalartKey(): Flow<String> {
+    return dataStore.data.catch { exception ->
+      if (exception is IOException) {
+        emit(emptyPreferences())
+      } else {
+        throw exception
+      }
+    }.map { preference ->
+      preference[prefKeyRecentBandalartKey] ?: "" }
   }
 }
