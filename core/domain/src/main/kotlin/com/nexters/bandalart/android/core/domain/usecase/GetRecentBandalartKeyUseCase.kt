@@ -5,7 +5,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 class GetRecentBandalartKeyUseCase @Inject constructor(private val repository: RecentBandalartKeyRepository) {
-  operator fun invoke(): Flow<Result<String>> {
+  operator fun invoke(): Flow<String> {
     return repository.getRecentBandalartKey()
   }
 }
