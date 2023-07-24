@@ -1,7 +1,9 @@
 package com.nexters.bandalart.android.core.data.di
 
 import com.nexters.bandalart.android.core.data.datasource.GuestLoginTokenDataSource
+import com.nexters.bandalart.android.core.data.datasource.RecentBandalartKeyDataSource
 import com.nexters.bandalart.android.core.data.local.datasource.GuestLoginTokenDataSourceImpl
+import com.nexters.bandalart.android.core.data.local.datasource.RecentBandalartKeyDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,8 @@ abstract class DataSourceModule {
   @Binds
   @Singleton
   abstract fun bindGuestLoginTokenDataSource(guestLoginTokenDataSourceImpl: GuestLoginTokenDataSourceImpl): GuestLoginTokenDataSource
+
+  @Binds
+  @Singleton
+  abstract fun bindRecentBandalartKeyDataSource(recentBandalartKeyDataSourceImpl: RecentBandalartKeyDataSourceImpl): RecentBandalartKeyDataSource
 }
