@@ -34,14 +34,14 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
 
-      - name: Code style checks
-        run: ./gradlew ktlintCheck detekt
-
       - name: Access to secrets
         run: |
           echo "SERVER_BASE_URL=$SERVER_BASE_URL" >> .env
         env:
           SERVER_BASE_URL: ${{secrets.SERVER_BASE_URL}}
+
+      - name: Code style checks
+        run: ./gradlew ktlintCheck detekt
 
       - name: Run build
         run: ./gradlew buildDebug --stacktrace
