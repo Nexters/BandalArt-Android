@@ -20,40 +20,41 @@ import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
+private val KtorHttpClient =
+  HttpClient(CIO) {
+    defaultRequest {
+      // TODO default Header 지정
+      url(BuildConfig.SERVER_BASE_URL)
+      contentType(ContentType.Application.Json)
+    }
+    install(ContentNegotiation) {
+      json(Json {
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+        prettyPrint = true
+        isLenient = true
+      })
+    }
+    install(Logging) {
+      logger = object : Logger {
+        override fun log(message: String) {
+          Timber.tag("HttpClient").d(message)
+        }
+      }
+      level = LogLevel.ALL
+    }
+    install(HttpTimeout) {
+      socketTimeoutMillis = 15_000
+      requestTimeoutMillis = 15_000
+      connectTimeoutMillis = 15_000
+    }
+  }
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
   @Singleton
   @Provides
-  fun provideHttpClient(): HttpClient {
-    return HttpClient(CIO) {
-      defaultRequest {
-        // TODO default Header 지정
-        url(BuildConfig.SERVER_BASE_URL)
-        contentType(ContentType.Application.Json)
-      }
-      install(ContentNegotiation) {
-        json(Json {
-          encodeDefaults = true
-          ignoreUnknownKeys = true
-          prettyPrint = true
-          isLenient = true
-        })
-      }
-      install(Logging) {
-        logger = object : Logger {
-          override fun log(message: String) {
-            Timber.tag("HttpClient").d(message)
-          }
-        }
-        level = LogLevel.ALL
-      }
-      install(HttpTimeout) {
-        socketTimeoutMillis = 15_000
-        requestTimeoutMillis = 15_000
-        connectTimeoutMillis = 15_000
-      }
-    }
-  }
+  fun provideKtorHttpClient(): HttpClient = KtorHttpClient
 }
