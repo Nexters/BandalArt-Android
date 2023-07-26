@@ -24,6 +24,6 @@ val Gray900 = Color(0xFF111827)
 val Black = Color(0xFF060A27)
 val Gray = Color(0xFFDDE0FF)
 
-// Todo : 색 선택 기능을 추가하면 네이밍이 달라질듯!
+// Todo 색 선택 기능을 추가하면 네이밍이 달라져야 함
 val Primary = Color(0xFF863DFF)
 val Secondary = Color(0xFFCBFF2E)
