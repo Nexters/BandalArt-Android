@@ -23,6 +23,7 @@ dependencies {
     projects.core.domain,
     projects.core.ui,
     libs.androidx.core,
+    libs.androidx.hilt.compose.navigation,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle
   )

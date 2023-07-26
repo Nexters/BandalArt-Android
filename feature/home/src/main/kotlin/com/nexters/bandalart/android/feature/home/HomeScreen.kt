@@ -11,11 +11,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexters.bandalart.android.core.ui.NavButton
 import kotlinx.coroutines.launch
 
@@ -25,11 +27,13 @@ internal fun HomeRoute(
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   modifier: Modifier = Modifier,
+  viewModel: HomeViewModel = hiltViewModel(),
 ) {
   HomeScreen(
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
+    checkServerHealth = viewModel::checkServerHealth,
     modifier = modifier,
   )
 }
@@ -39,9 +43,14 @@ internal fun HomeScreen(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
+  checkServerHealth: suspend () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val scope = rememberCoroutineScope()
+
+  LaunchedEffect(key1 = Unit) {
+    checkServerHealth()
+  }
 
   Surface(
     modifier = modifier
