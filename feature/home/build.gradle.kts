@@ -24,6 +24,7 @@ dependencies {
     projects.core.ui,
     libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
+    libs.timber,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle
   )
