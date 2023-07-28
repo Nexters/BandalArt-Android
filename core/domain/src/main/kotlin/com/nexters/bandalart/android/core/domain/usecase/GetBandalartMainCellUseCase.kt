@@ -1,6 +1,6 @@
 package com.nexters.bandalart.android.core.domain.usecase
 
-import com.nexters.bandalart.android.core.domain.entity.BandalartMainCellEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.android.core.domain.util.runSuspendCatching
 import java.io.IOException
@@ -13,7 +13,7 @@ private val GetBandalartMainCellResponseIsNull = IOException("Get BandalartMainC
 class GetBandalartMainCellUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
-  suspend operator fun invoke(bandalartKey: String): Result<BandalartMainCellEntity> =
+  suspend operator fun invoke(bandalartKey: String): Result<BandalartCellEntity> =
     runSuspendCatching {
       repository.getBandalartMainCell(bandalartKey) ?: throw GetBandalartMainCellResponseIsNull
     }

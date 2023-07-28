@@ -3,7 +3,7 @@ package com.nexters.bandalart.android.core.data.remote.datasource
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartListResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartMainCellResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -24,7 +24,7 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       .body()
   }
 
-  override suspend fun getBandalartMainCell(bandalartKey: String): BandalartMainCellResponse? {
+  override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse? {
     return client
       .get("v1/bandalarts/$bandalartKey/cells")
       .body()

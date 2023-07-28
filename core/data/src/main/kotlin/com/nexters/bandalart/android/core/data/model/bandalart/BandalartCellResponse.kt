@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BandalartMainCellResponse(
+data class BandalartCellResponse(
   @SerialName("key")
   val key: String,
   @SerialName("title")
@@ -18,5 +18,5 @@ data class BandalartMainCellResponse(
   @SerialName("parentKey")
   val parentKey: String?,
   @SerialName("children")
-  val children: List<BandalartMainCellResponse>,
+  val children: List<BandalartCellResponse>,
 )
