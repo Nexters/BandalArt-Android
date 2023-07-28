@@ -29,4 +29,10 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       .get("v1/bandalarts/$bandalartKey/cells")
       .body()
   }
+
+  override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse? {
+    return client
+      .get("v1/bandalarts/$bandalartKey/cells/$cellKey")
+      .body()
+  }
 }

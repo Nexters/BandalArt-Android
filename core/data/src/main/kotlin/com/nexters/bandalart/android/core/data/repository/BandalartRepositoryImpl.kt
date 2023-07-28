@@ -25,6 +25,10 @@ class BandalartRepositoryImpl @Inject constructor(
     return bandalartRemoteDataSource.getBandalartMainCell(bandalartKey)?.toEntity()
   }
 
+  override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellEntity? {
+    return bandalartRemoteDataSource.getBandalartCell(bandalartKey, cellKey)?.toEntity()
+  }
+
   override suspend fun setRecentBandalartKey(recentBandalartKey: String) {
     recentBandalartKeyDataSource.setRecentBandalartKey(recentBandalartKey)
   }

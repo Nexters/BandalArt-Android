@@ -48,6 +48,7 @@ interface BandalartRepository {
    * @param bandalartKey 메인 셀 고유 키
    * @param cellKey 셀 고유 키
    */
+  suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellEntity?
 
   /**
    * 셀 수정
