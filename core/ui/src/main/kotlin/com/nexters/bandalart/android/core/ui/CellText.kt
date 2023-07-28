@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Composable
@@ -22,11 +23,11 @@ fun CellText(
     modifier = modifier.padding(horizontal = 4.dp, vertical = 6.dp),
     text = cellText,
     color = cellColor,
-    lineHeight = 16.8.sp,
     fontFamily = pretendard,
     fontWeight = fontWeight,
-    fontSize = 12.sp,
-    letterSpacing = (-0.24).sp,
+    fontSize = 12.sp.nonScaleSp,
+    lineHeight = 16.8.sp.nonScaleSp,
+    letterSpacing = (-0.24).sp.nonScaleSp,
     textAlign = TextAlign.Center,
   )
 }
