@@ -7,7 +7,7 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val GetBandalartDetailResponseIsNull = IOException("Get BandalartList API response is null.")
+private val GetBandalartDetailResponseIsNull = IOException("Get BandalartDetail API response is null.")
 
 @Singleton
 class GetBandalartDetailUseCase @Inject constructor(
