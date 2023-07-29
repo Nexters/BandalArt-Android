@@ -6,6 +6,7 @@ plugins {
   bandalart("android-library")
   bandalart("android-hilt")
   alias(libs.plugins.google.secrets)
+  alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -19,6 +20,7 @@ android {
 dependencies {
   implementations(
     projects.core.domain,
+    libs.kotlinx.serialization.json,
     libs.androidx.datastore.preferences,
     libs.bundles.ktor.client,
     libs.timber,

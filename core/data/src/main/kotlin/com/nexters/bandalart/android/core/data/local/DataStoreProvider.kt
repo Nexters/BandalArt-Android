@@ -9,6 +9,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Preferences>) {
@@ -35,7 +36,8 @@ class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Pre
         throw exception
       }
     }.map { preference ->
-      preference[prefKeyGuestLoginToken] ?: "" }
+      preference[prefKeyGuestLoginToken] ?: ""
+    }
   }
 
   suspend fun setRecentBandalartKey(recentBandalartKey: String) {
@@ -44,14 +46,9 @@ class DataStoreProvider @Inject constructor(private val dataStore: DataStore<Pre
     }
   }
 
-  fun getRecentBandalartKey(): Flow<String> {
-    return dataStore.data.catch { exception ->
-      if (exception is IOException) {
-        emit(emptyPreferences())
-      } else {
-        throw exception
-      }
-    }.map { preference ->
-      preference[prefKeyRecentBandalartKey] ?: "" }
-  }
+  suspend fun getRecentBandalartKey() = dataStore.data
+    .catch { exception ->
+      if (exception is IOException) emit(emptyPreferences())
+      else throw exception
+    }.first()[prefKeyRecentBandalartKey] ?: ""
 }
