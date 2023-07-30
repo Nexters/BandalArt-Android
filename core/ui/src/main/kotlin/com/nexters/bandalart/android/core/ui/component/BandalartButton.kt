@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
@@ -36,8 +37,9 @@ fun BandalartButton(
       text = text,
       fontFamily = pretendard,
       fontWeight = FontWeight.W700,
-      fontSize = 16.sp,
+      fontSize = 16.sp.nonScaleSp,
       color = Color.White,
+      letterSpacing = (-0.32).sp.nonScaleSp,
     )
   }
 }
