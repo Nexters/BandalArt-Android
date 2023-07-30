@@ -144,7 +144,7 @@ internal fun HomeScreen(
               contentDescription = "Edit Icon",
               modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset((4).dp, (4).dp)
+                .offset((4).dp, (4).dp),
             )
           }
           Spacer(modifier = Modifier.height(12.dp))
