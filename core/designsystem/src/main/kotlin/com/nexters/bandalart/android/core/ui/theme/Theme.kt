@@ -67,7 +67,6 @@ fun BandalartTheme(
     window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
     window.navigationBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
 
-
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       // remove unnecessary black screen from bars
       window.isNavigationBarContrastEnforced = false
