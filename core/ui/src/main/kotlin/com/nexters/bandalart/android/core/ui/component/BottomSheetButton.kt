@@ -17,9 +17,9 @@ import com.nexters.bandalart.android.core.ui.theme.White
 fun BottomSheetDeleteButton(
   modifier: Modifier = Modifier,
 ) {
-  val contextForToast = LocalContext.current.applicationContext
+  val context = LocalContext.current.applicationContext
   FilledIconButton(
-    onClick = { Toast.makeText(contextForToast, "삭제 버튼", Toast.LENGTH_SHORT).show() },
+    onClick = { Toast.makeText(context, "삭제 버튼", Toast.LENGTH_SHORT).show() },
     colors = IconButtonColors(Gray200, Gray900, Gray200, Gray900),
     modifier = modifier
       .height(55.dp),
@@ -32,9 +32,9 @@ fun BottomSheetDeleteButton(
 fun BottomSheetCompleteButton(
   modifier: Modifier = Modifier,
 ) {
-  val contextForToast = LocalContext.current.applicationContext
+  val context = LocalContext.current.applicationContext
   FilledIconButton(
-    onClick = { Toast.makeText(contextForToast, "완료 버튼", Toast.LENGTH_SHORT).show() },
+    onClick = { Toast.makeText(context, "완료 버튼", Toast.LENGTH_SHORT).show() },
     colors = IconButtonColors(Gray900, White, Gray200, Gray400),
     modifier = modifier
       .height(55.dp),

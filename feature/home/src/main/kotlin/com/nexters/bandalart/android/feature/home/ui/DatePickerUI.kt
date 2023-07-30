@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.nexters.bandalart.android.feature.home.ui
 
 import android.widget.Toast
@@ -33,7 +35,6 @@ import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerUI(
   label: String,
