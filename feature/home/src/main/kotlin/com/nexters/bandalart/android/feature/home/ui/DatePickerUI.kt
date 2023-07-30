@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,52 +42,59 @@ fun DatePickerUI(
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
 ) {
-  Card(shape = RoundedCornerShape(10.dp)) {
-    Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 10.dp, horizontal = 5.dp),
-    ) {
-      Text(
-        text = label,
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center,
-      )
-      Spacer(modifier = Modifier.height(30.dp))
-
-      val chosenYear = remember { mutableStateOf(currentYear.toString() + "년") }
-      val chosenMonth = remember { mutableStateOf(currentMonth.toString() + "월") }
-      val chosenDay = remember { mutableStateOf(currentDay.toString() + "일") }
-
-      DateSelectionSection(
-        onYearChosen = { chosenYear.value = it },
-        onMonthChosen = { chosenMonth.value = it },
-        onDayChosen = { chosenDay.value = it },
-      )
-      Spacer(modifier = Modifier.height(30.dp))
-
-      val context = LocalContext.current
-      Button(
-        shape = RoundedCornerShape(5.dp),
+  ModalBottomSheet(
+    modifier = Modifier.wrapContentSize(),
+    onDismissRequest = { onResult(false) },
+    sheetState = datePickerState,
+    dragHandle = null,
+  ) {
+    Card(shape = RoundedCornerShape(10.dp)) {
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
           .fillMaxWidth()
-          .padding(horizontal = 10.dp),
-        onClick = {
-          Toast.makeText(context, "${chosenDay.value}-${chosenMonth.value}-${chosenYear.value}", Toast.LENGTH_SHORT).show()
-          datePickerScope.launch { datePickerState.hide() }.invokeOnCompletion {
-            if (!datePickerState.isVisible) {
-              onResult(false)
-            }
-          }
-          onDismissRequest()
-        },
+          .padding(vertical = 10.dp, horizontal = 5.dp),
       ) {
         Text(
-          text = "Done",
+          text = label,
           modifier = Modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
         )
+        Spacer(modifier = Modifier.height(30.dp))
+
+        val chosenYear = remember { mutableStateOf(currentYear.toString() + "년") }
+        val chosenMonth = remember { mutableStateOf(currentMonth.toString() + "월") }
+        val chosenDay = remember { mutableStateOf(currentDay.toString() + "일") }
+
+        DateSelectionSection(
+          onYearChosen = { chosenYear.value = it },
+          onMonthChosen = { chosenMonth.value = it },
+          onDayChosen = { chosenDay.value = it },
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+
+        val context = LocalContext.current
+        Button(
+          shape = RoundedCornerShape(5.dp),
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
+          onClick = {
+            Toast.makeText(context, "${chosenDay.value}-${chosenMonth.value}-${chosenYear.value}", Toast.LENGTH_SHORT).show()
+            datePickerScope.launch { datePickerState.hide() }.invokeOnCompletion {
+              if (!datePickerState.isVisible) {
+                onResult(false)
+              }
+            }
+            onDismissRequest()
+          },
+        ) {
+          Text(
+            text = "Done",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+          )
+        }
       }
     }
   }
