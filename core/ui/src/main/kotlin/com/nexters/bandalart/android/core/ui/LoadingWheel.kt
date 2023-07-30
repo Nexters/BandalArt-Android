@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+// TODO 다른 로띠로 변경
 @Composable
 fun LoadingWheel() {
   Box(

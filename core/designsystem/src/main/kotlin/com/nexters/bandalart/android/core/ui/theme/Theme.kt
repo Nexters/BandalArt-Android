@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -48,7 +49,6 @@ fun BandalartTheme(
       val context = LocalContext.current
       if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     }
-
     darkTheme -> DarkColorScheme
     else -> LightColorScheme
   }
@@ -59,6 +59,24 @@ fun BandalartTheme(
       window.statusBarColor = colorScheme.primary.toArgb()
       WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
     }
+  }
+
+  SideEffect {
+    val window = (view.context as Activity).window
+
+    window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+    window.navigationBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      // remove unnecessary black screen from bars
+      window.isNavigationBarContrastEnforced = false
+    }
+
+    val windowsInsetsController = WindowCompat.getInsetsController(window, view)
+
+    // status bar's icon always visible
+    windowsInsetsController.isAppearanceLightStatusBars = !darkTheme
+    windowsInsetsController.isAppearanceLightNavigationBars = !darkTheme
   }
 
   MaterialTheme(

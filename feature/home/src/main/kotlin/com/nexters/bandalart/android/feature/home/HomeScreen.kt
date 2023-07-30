@@ -1,6 +1,8 @@
 package com.nexters.bandalart.android.feature.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +13,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
@@ -38,17 +47,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.CellText
 import com.nexters.bandalart.android.core.ui.LoadingWheel
-import com.nexters.bandalart.android.core.ui.NavButton
+import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray200
+import com.nexters.bandalart.android.core.ui.theme.Gray50
+import com.nexters.bandalart.android.core.ui.theme.Gray600
+import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.Primary
 import com.nexters.bandalart.android.core.ui.theme.Secondary
+import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomeRoute(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
+  onAddBandalart: () -> Unit,
+  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
@@ -58,17 +72,22 @@ internal fun HomeRoute(
     homeState = homeState,
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
+    onAddBandalart = onAddBandalart,
+    onShowBandalartList = onShowBandalartList,
     onShowSnackbar = onShowSnackbar,
     getBandalartMainCell = viewModel::getBandalartMainCell,
     modifier = modifier,
   )
 }
 
+@Suppress("unused")
 @Composable
 internal fun HomeScreen(
   homeState: HomeUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
+  onAddBandalart: () -> Unit,
+  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   getBandalartMainCell: suspend (String) -> Unit,
   modifier: Modifier = Modifier,
@@ -79,53 +98,118 @@ internal fun HomeScreen(
     getBandalartMainCell("3sF4I")
   }
   Surface(
-    modifier = modifier
-      .fillMaxSize()
-      .padding(16.dp),
+    modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
-    Column(
-      modifier = Modifier.fillMaxSize(),
-    ) {
-      Text(
-        text = "Home Screen",
-        textAlign = TextAlign.Center,
-        fontSize = 16.sp,
-      )
-      Spacer(modifier = Modifier.height(16.dp))
-      Column(
-        modifier = Modifier.wrapContentWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-      ) {
-        NavButton(
-          onClick = navigateToOnBoarding,
-          route = "OnBoarding",
+    Box {
+      Column {
+        HomeTopBar(
+          onAddBandalart = onAddBandalart,
+          onShowBandalartList = onShowBandalartList,
         )
-        NavButton(
-          onClick = navigateToComplete,
-          route = "Complete",
+        Divider(
+          color = Gray100,
+          thickness = 1.dp,
         )
-        Button(
-          onClick = {
-            scope.launch {
-              onShowSnackbar("메세지 출력")
-            }
-          },
+        Column(
+          modifier.padding(horizontal = 16.dp),
         ) {
+          Spacer(modifier = Modifier.height(24.dp))
+          Card(
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(
+              defaultElevation = 4.dp,
+            ),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+          ) {
+            Box(
+              modifier = Modifier
+                .width(52.dp)
+                .height(52.dp)
+                .background(Gray100),
+              contentAlignment = Alignment.Center,
+            ) {
+              Text(
+                // emoji
+                text = String(Character.toChars(0x1F60E)),
+                fontSize = 22.sp,
+              )
+            }
+          }
+          Spacer(modifier = Modifier.height(12.dp))
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .wrapContentHeight(),
+          ) {
+            Text(
+              textAlign = TextAlign.Center,
+              text = "완벽한 2024년",
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W700,
+              color = Gray900,
+              fontSize = 20.sp,
+              letterSpacing = (-0.4).sp,
+              modifier = Modifier.align(Alignment.Center),
+            )
+            val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option)
+            Image(
+              painter = image,
+              contentDescription = "Option Icon",
+              modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .clickable(onClick = {}),
+            )
+          }
+          Spacer(modifier = Modifier.height(24.dp))
           Text(
-            text = "스낵바 띄우기",
+            text = "달성률 (0%)",
+            fontFamily = pretendard,
+            fontWeight = FontWeight.W500,
+            fontSize = 12.sp,
+            color = Gray600,
           )
+          Spacer(modifier = Modifier.height(8.dp))
+          LinearProgressBar()
+          Spacer(modifier = Modifier.height(18.dp))
+          when (homeState) {
+            is HomeUiState.Loading -> {
+              LoadingWheel()
+            }
+            is HomeUiState.Success -> {
+              BandalartChart(bandalart = homeState.bandalartData)
+            }
+            is HomeUiState.Error -> {
+              // TODO ErrorScreen()
+            }
+          }
         }
       }
-      Spacer(modifier = Modifier.height(16.dp))
-      when (homeState) {
-        is HomeUiState.Loading -> {
-          LoadingWheel()
-        }
-        is HomeUiState.Success -> {
-          BandalartChart(bandalart = homeState.bandalartData)
-        }
-        is HomeUiState.Error -> {
-          // TODO ErrorScreen()
+      Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(
+          containerColor = Gray100,
+          contentColor = Gray100,
+        ),
+        modifier = Modifier
+          .wrapContentSize()
+          .padding(bottom = 32.dp)
+          .align(Alignment.BottomCenter),
+      ) {
+        Row {
+          val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_share)
+          Image(
+            painter = image,
+            contentDescription = "Share Icon",
+          )
+          Text(
+            modifier = Modifier.padding(start = 4.dp),
+            text = "공유하기",
+            fontFamily = pretendard,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W700,
+            color = Gray900,
+          )
         }
       }
     }
@@ -167,7 +251,7 @@ private fun BandalartChart(
           modifier
             .layoutId("Sub ${index + 1}")
             .clip(RoundedCornerShape(12.dp))
-            .background(color = Gray200),
+            .background(color = Gray100),
           content = {
             CellGrid(
               rows = subCellList[index].rowCnt,
