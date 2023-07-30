@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -115,26 +116,37 @@ internal fun HomeScreen(
           modifier.padding(horizontal = 16.dp),
         ) {
           Spacer(modifier = Modifier.height(24.dp))
-          Card(
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(
-              defaultElevation = 4.dp,
-            ),
+          Box(
             modifier = Modifier.align(Alignment.CenterHorizontally),
           ) {
-            Box(
-              modifier = Modifier
-                .width(52.dp)
-                .height(52.dp)
-                .background(Gray100),
-              contentAlignment = Alignment.Center,
+            Card(
+              shape = RoundedCornerShape(16.dp),
+              elevation = CardDefaults
+                .cardElevation(defaultElevation = 4.dp),
             ) {
-              Text(
-                // emoji
-                text = String(Character.toChars(0x1F60E)),
-                fontSize = 22.sp,
-              )
+              Box(
+                modifier = Modifier
+                  .width(52.dp)
+                  .height(52.dp)
+                  .background(Gray100),
+                contentAlignment = Alignment.Center,
+              ) {
+                Text(
+                  // emoji
+                  text = String(Character.toChars(0x1F60E)),
+                  fontSize = 22.sp,
+                )
+              }
             }
+            // TODO 메인 목표의 타이틀이 존재하면 hide 처리 해야 함
+            val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit)
+            Image(
+              painter = image,
+              contentDescription = "Edit Icon",
+              modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .offset((4).dp, (4).dp)
+            )
           }
           Spacer(modifier = Modifier.height(12.dp))
           Box(
