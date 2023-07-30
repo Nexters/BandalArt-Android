@@ -40,9 +40,7 @@ fun DatePickerUI(
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
 ) {
-  Card(
-    shape = RoundedCornerShape(10.dp)
-  ) {
+  Card(shape = RoundedCornerShape(10.dp)) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       modifier = Modifier
@@ -153,7 +151,7 @@ fun InfiniteItemsPicker(
           Text(
             text = items[index],
             modifier = Modifier.alpha(if (it == listState.firstVisibleItemIndex + 1) 1f else 0.3f),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
           )
           Spacer(modifier = Modifier.height(6.dp))
         })

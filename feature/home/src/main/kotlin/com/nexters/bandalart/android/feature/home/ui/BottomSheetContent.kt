@@ -73,13 +73,14 @@ fun BottomSheetContent(
 //    키보드 점프 없이 닫아주기 라는데 안되서 우선 주석 처리함
 //    val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
-    Column(modifier = Modifier
-      .padding(
-        start = 20.dp,
-        end = 20.dp,
-      )
-      // 현재 하단의 버튼이 찌부되는 현상이 있어 임시로 스크롤 달아줌
-      .verticalScroll(scrollState)
+    Column(
+      modifier = Modifier
+        .padding(
+          start = 20.dp,
+          end = 20.dp,
+        )
+        // 현재 하단의 버튼이 찌부되는 현상이 있어 임시로 스크롤 달아줌
+        .verticalScroll(scrollState),
     ) {
       Box(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -98,7 +99,7 @@ fun BottomSheetContent(
             .align(Alignment.CenterEnd)
             .padding(
               top = 19.dp,
-              end = 2.dp
+              end = 2.dp,
             )
             .height(21.dp)
             .aspectRatio(1f),
@@ -114,9 +115,10 @@ fun BottomSheetContent(
           )
         }
       }
-      Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 40.dp)
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 40.dp),
       ) {
         var goalName by remember { mutableStateOf("") }
         Text(
@@ -157,15 +159,17 @@ fun BottomSheetContent(
           },
         )
       }
-      Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)
-        .height(1.dp)
-        .background(color = Gray300)
+      Spacer(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 10.dp)
+          .height(1.dp)
+          .background(color = Gray300),
       )
-      Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 25.dp)
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 25.dp),
       ) {
         var openDatePickerBottomSheet by rememberSaveable { mutableStateOf(false) }
         val datePickerSkipPartiallyExpanded by remember { mutableStateOf(true) }
@@ -184,7 +188,7 @@ fun BottomSheetContent(
         Box(
           modifier = Modifier
             .fillMaxWidth()
-            .clickable { openDatePickerBottomSheet = !openDatePickerBottomSheet }
+            .clickable { openDatePickerBottomSheet = !openDatePickerBottomSheet },
         ) {
           Text(
             modifier = Modifier.padding(top = 12.dp),
@@ -223,11 +227,12 @@ fun BottomSheetContent(
           }
         }
       }
-      Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)
-        .height(1.dp)
-        .background(color = Gray300)
+      Spacer(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 10.dp)
+          .height(1.dp)
+          .background(color = Gray300),
       )
       Column(modifier = Modifier.padding(top = 28.dp)) {
         var goalName by remember { mutableStateOf("") }
@@ -263,11 +268,12 @@ fun BottomSheetContent(
           },
         )
       }
-      Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)
-        .height(1.dp)
-        .background(color = Gray300)
+      Spacer(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 10.dp)
+          .height(1.dp)
+          .background(color = Gray300),
       )
       if (!isSubCell) {
         Column(modifier = Modifier.padding(top = 28.dp)) {
@@ -280,9 +286,10 @@ fun BottomSheetContent(
             fontFamily = pretendard,
             fontWeight = FontWeight.W700,
           )
-          Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 9.dp)
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(top = 9.dp),
           ) {
             Text(
               modifier = Modifier.align(Alignment.CenterStart),
@@ -313,7 +320,7 @@ fun BottomSheetContent(
         modifier = Modifier
           .fillMaxWidth()
           .align(Alignment.CenterHorizontally)
-          .padding(top = 32.dp)
+          .padding(top = 32.dp),
       ) {
         val contextForToast = LocalContext.current.applicationContext
         FilledIconButton(
@@ -323,7 +330,8 @@ fun BottomSheetContent(
             .weight(1f)
             .height(55.dp),
         ) {
-          Text(text = "삭제",
+          Text(
+            text = "삭제",
             fontSize = 16.sp,
             fontFamily = pretendard,
             fontWeight = FontWeight.W700,
@@ -345,10 +353,11 @@ fun BottomSheetContent(
           )
         }
       }
-      Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .height(20.dp)
-        .background(color = Color.Blue)
+      Spacer(
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(20.dp)
+          .background(color = Color.Blue),
       )
     }
   }
