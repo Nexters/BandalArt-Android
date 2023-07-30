@@ -104,7 +104,9 @@ internal fun HomeScreen(
     Box {
       Column {
         HomeTopBar(
-          onAddBandalart = onAddBandalart,
+          // 임시로 네비게이션 버튼의 역할을 대신 수행함
+          // onAddBandalart = onAddBandalart,
+          onAddBandalart = navigateToComplete,
           onShowBandalartList = onShowBandalartList,
         )
         Divider(
