@@ -173,13 +173,63 @@ internal fun HomeScreen(
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
-          Text(
-            text = "달성률 (0%)",
-            fontFamily = pretendard,
-            fontWeight = FontWeight.W500,
-            fontSize = 12.sp,
-            color = Gray600,
-          )
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+          ) {
+            Text(
+              text = "달성률 (0%)",
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W500,
+              fontSize = 12.sp,
+              color = Gray600,
+              letterSpacing = (-0.24).sp
+            )
+            val image =
+              painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_vertical_line)
+            Image(
+              painter = image,
+              contentDescription = "Vertical Line Icon",
+              modifier = Modifier
+                .padding(start = 6.dp)
+            )
+            Text(
+              text = "~24년 12월 31일",
+              modifier = Modifier.padding(start = 6.dp),
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W500,
+              fontSize = 12.sp,
+              color = Gray600,
+              letterSpacing = (-0.24).sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+              modifier
+                .clip(RoundedCornerShape(24.dp))
+                .background(color = Primary)
+            ) {
+              Row(
+                modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+                verticalAlignment = Alignment.CenterVertically,
+              ) {
+                val image =
+                  painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_check)
+                Image(
+                  painter = image,
+                  contentDescription = "Check Icon",
+                )
+                Text(
+                  modifier = Modifier.padding(start = 6.dp),
+                  text = "달성 완료!",
+                  fontSize = 10.sp,
+                  fontFamily = pretendard,
+                  fontWeight = FontWeight.W600,
+                  letterSpacing = (-0.2).sp,
+                  color = Gray900
+                )
+              }
+            }
+          }
           Spacer(modifier = Modifier.height(8.dp))
           LinearProgressBar()
           Spacer(modifier = Modifier.height(18.dp))
