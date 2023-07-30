@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
