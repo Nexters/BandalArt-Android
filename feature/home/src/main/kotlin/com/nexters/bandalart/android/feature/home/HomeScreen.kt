@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.nexters.bandalart.android.feature.home
 
 import androidx.compose.foundation.Image
@@ -427,7 +429,6 @@ fun CellGrid(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Cell(
   modifier: Modifier = Modifier,
