@@ -65,6 +65,7 @@ internal fun CompleteScreen(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
+        // TODO status bar 와의 간격 설정
         Box(
           modifier = Modifier
             .fillMaxWidth()
@@ -149,9 +150,7 @@ internal fun CompleteScreen(
           .offset(y = (-110).dp),
       ) {
         Column {
-          Row(
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
+          Row(verticalAlignment = Alignment.CenterVertically) {
             val image = painterResource(id = R.drawable.ic_gallery)
             Image(
               painter = image,

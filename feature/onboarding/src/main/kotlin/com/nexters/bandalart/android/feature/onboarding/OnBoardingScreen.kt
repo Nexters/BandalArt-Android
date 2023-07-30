@@ -53,6 +53,7 @@ internal fun OnBoardingScreen(
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
     Box {
+      // TODO status Bar 와의 간격 설정
       PagerIndicator(
         pageCount = pageCount,
         pagerState = pagerState,
