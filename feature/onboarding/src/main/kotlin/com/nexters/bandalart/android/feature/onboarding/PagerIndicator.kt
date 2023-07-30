@@ -31,7 +31,7 @@ fun PagerIndicator(
         .height(32.dp)
         .fillMaxWidth()
         .align(Alignment.TopCenter),
-      horizontalArrangement = Arrangement.Center
+      horizontalArrangement = Arrangement.Center,
     ) {
       repeat(pageCount) { iteration ->
         val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
@@ -40,7 +40,7 @@ fun PagerIndicator(
             .padding(horizontal = 5.dp)
             .clip(CircleShape)
             .background(color)
-            .size(8.dp)
+            .size(8.dp),
         )
       }
     }

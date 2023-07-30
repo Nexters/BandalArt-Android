@@ -2,13 +2,11 @@ package com.nexters.bandalart.android.core.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -21,7 +19,7 @@ import com.nexters.bandalart.android.core.ui.theme.pretendard
 fun BandalartButton(
   onClick: () -> Unit,
   text: String,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
 ) {
   Button(
     onClick = onClick,
@@ -32,7 +30,7 @@ fun BandalartButton(
     colors = ButtonDefaults.buttonColors(
       containerColor = Gray900,
       contentColor = Gray900,
-    )
+    ),
   ) {
     Text(
       text = text,

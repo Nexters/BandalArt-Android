@@ -47,7 +47,7 @@ internal fun OnBoardingScreen(
   modifier: Modifier = Modifier,
 ) {
   Surface(
-    modifier = modifier.fillMaxSize()
+    modifier = modifier.fillMaxSize(),
   ) {
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -83,7 +83,7 @@ internal fun OnBoardingScreen(
                   contentAlignment = Alignment.Center,
                 ) {
                   val composition by rememberLottieComposition(
-                    spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_empty_box)
+                    spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_empty_box),
                   )
                   val progress by animateLottieCompositionAsState(composition)
                   LottieAnimation(
@@ -116,7 +116,7 @@ internal fun OnBoardingScreen(
                     contentAlignment = Alignment.Center,
                   ) {
                     val composition by rememberLottieComposition(
-                      spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_empty_box)
+                      spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_empty_box),
                     )
                     val progress by animateLottieCompositionAsState(composition)
                     LottieAnimation(
@@ -131,7 +131,7 @@ internal fun OnBoardingScreen(
                 text = "시작하기",
                 modifier = Modifier
                   .align(Alignment.BottomCenter)
-                  //.padding(bottom = 32.dp)
+                  // .padding(bottom = 32.dp)
                   .offset(y = (-32).dp),
               )
             }
