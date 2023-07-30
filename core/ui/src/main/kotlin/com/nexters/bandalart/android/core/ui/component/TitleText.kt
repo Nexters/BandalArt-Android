@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

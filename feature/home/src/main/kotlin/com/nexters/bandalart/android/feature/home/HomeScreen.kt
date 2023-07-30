@@ -46,8 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexters.bandalart.android.core.ui.CellText
-import com.nexters.bandalart.android.core.ui.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.CellText
+import com.nexters.bandalart.android.core.ui.component.LoadingWheel
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600

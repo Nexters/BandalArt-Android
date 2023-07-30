@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.NavButton
+import com.nexters.bandalart.android.core.ui.component.NavButton
 
 @Composable
 internal fun CompleteRoute(

@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio

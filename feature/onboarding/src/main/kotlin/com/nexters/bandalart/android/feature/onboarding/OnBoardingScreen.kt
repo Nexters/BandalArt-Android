@@ -28,8 +28,8 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.android.core.ui.BandalartButton
-import com.nexters.bandalart.android.core.ui.TitleText
+import com.nexters.bandalart.android.core.ui.component.BandalartButton
+import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 
 @Composable
