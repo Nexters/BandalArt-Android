@@ -59,10 +59,7 @@ fun BottomSheetContent(
     val scrollState = rememberScrollState()
     Column(
       modifier = Modifier
-        .padding(
-          start = 20.dp,
-          end = 20.dp,
-        )
+        .padding(horizontal = 20.dp,)
         // 현재 하단의 버튼이 찌부되는 현상이 있어 임시로 스크롤 달아줌
         .verticalScroll(scrollState),
     ) {
