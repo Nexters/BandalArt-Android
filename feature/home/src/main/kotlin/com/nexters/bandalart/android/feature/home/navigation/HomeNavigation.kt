@@ -15,12 +15,16 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.homeScreen(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
+  onAddBandalart: () -> Unit,
+  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
 ) {
   composable(route = HOME_NAVIGATION_ROUTE) {
     HomeRoute(
       navigateToOnBoarding = navigateToOnBoarding,
       navigateToComplete = navigateToComplete,
+      onAddBandalart = onAddBandalart,
+      onShowBandalartList = onShowBandalartList,
       onShowSnackbar = onShowSnackbar,
     )
   }
