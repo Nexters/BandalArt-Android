@@ -17,8 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.ui.theme.Gray300
+import com.nexters.bandalart.android.core.ui.theme.Gray700
 
 @Composable
 fun PagerIndicator(
@@ -34,7 +35,7 @@ fun PagerIndicator(
       horizontalArrangement = Arrangement.Center,
     ) {
       repeat(pageCount) { iteration ->
-        val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+        val color = if (pagerState.currentPage == iteration) Gray700 else Gray300
         Box(
           modifier = Modifier
             .padding(horizontal = 5.dp)
