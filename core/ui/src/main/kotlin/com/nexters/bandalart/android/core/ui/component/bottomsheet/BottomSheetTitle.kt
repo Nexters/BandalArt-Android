@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.nexters.bandalart.android.core.ui.component
+package com.nexters.bandalart.android.core.ui.component.bottomsheet
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -47,7 +47,7 @@ fun BottomSheetTitle(
     ) {
       Icon(
         imageVector = Icons.Default.Clear,
-        contentDescription = "Clear",
+        contentDescription = "Clear Icon",
       )
     }
   }

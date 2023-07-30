@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.component
+package com.nexters.bandalart.android.core.ui.component.bottomsheet
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -27,7 +28,7 @@ fun BottomSheetTitleText(
       .padding(top = 20.dp),
     textAlign = TextAlign.Center,
     color = Gray900,
-    fontSize = 16.sp,
+    fontSize = 16.sp.nonScaleSp,
     fontFamily = pretendard,
     fontWeight = FontWeight.W700,
   )
@@ -43,7 +44,7 @@ fun BottomSheetSubTitleText(
     text = text,
     textAlign = TextAlign.Start,
     color = Gray600,
-    fontSize = 12.sp,
+    fontSize = 12.sp.nonScaleSp,
     fontFamily = pretendard,
     fontWeight = FontWeight.W700,
   )
@@ -58,7 +59,7 @@ fun BottomSheetContentText(
     modifier = modifier,
     text = text,
     color = Gray400,
-    fontSize = 16.sp,
+    fontSize = 16.sp.nonScaleSp,
     fontFamily = pretendard,
     fontWeight = FontWeight.W600,
   )
@@ -72,7 +73,7 @@ fun BottomSheetButtonText(
   Text(
     modifier = modifier,
     text = text,
-    fontSize = 16.sp,
+    fontSize = 16.sp.nonScaleSp,
     fontFamily = pretendard,
     fontWeight = FontWeight.W700,
   )

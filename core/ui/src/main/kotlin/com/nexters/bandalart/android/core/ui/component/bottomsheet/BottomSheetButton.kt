@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.component
+package com.nexters.bandalart.android.core.ui.component.bottomsheet
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.height

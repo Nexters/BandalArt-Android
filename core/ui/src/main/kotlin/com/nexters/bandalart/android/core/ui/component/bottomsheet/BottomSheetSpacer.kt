@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.component
+package com.nexters.bandalart.android.core.ui.component.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
