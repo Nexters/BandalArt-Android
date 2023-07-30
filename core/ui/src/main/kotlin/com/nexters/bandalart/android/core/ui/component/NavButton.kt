@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
 
+// TODO 사용하지 않으면 지우기
 @Composable
 fun NavButton(
   onClick: () -> Unit,
