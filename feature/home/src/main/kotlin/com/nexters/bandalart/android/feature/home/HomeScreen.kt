@@ -16,19 +16,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,14 +60,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
-import com.nexters.bandalart.android.core.ui.component.StyledText
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.Primary
 import com.nexters.bandalart.android.core.ui.theme.Secondary
+import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
 
@@ -163,7 +170,7 @@ internal fun HomeScreen(
               .fillMaxWidth()
               .wrapContentHeight(),
           ) {
-            StyledText(
+            FixedSizeText(
               text = "완벽한 2024년",
               color = Gray900,
               fontWeight = FontWeight.W700,
@@ -185,7 +192,7 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            StyledText(
+            FixedSizeText(
               text = "달성률 (0%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
@@ -199,7 +206,7 @@ internal fun HomeScreen(
               contentDescription = "Vertical Line Icon",
               modifier = Modifier.padding(start = 6.dp),
             )
-            StyledText(
+            FixedSizeText(
               text = "~24년 12월 31일",
               color = Gray600,
               fontWeight = FontWeight.W500,
@@ -217,19 +224,19 @@ internal fun HomeScreen(
                 modifier = Modifier.padding(start = 9.dp, end = 9.dp),
                 verticalAlignment = Alignment.CenterVertically,
               ) {
-                val image =
-                  painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_check)
-                Image(
-                  painter = image,
+                Icon(
+                  imageVector = Icons.Default.Check,
                   contentDescription = "Check Icon",
+                  tint = Gray900,
+                  modifier = Modifier.size(13.dp),
                 )
-                StyledText(
+                FixedSizeText(
                   text = "달성 완료!",
                   color = Gray900,
                   fontWeight = FontWeight.W600,
                   fontSize = 10.sp,
                   letterSpacing = (-0.2).sp,
-                  modifier = Modifier.padding(start = 6.dp),
+                  modifier = Modifier.padding(start = 2.dp),
                 )
               }
             }
@@ -268,11 +275,20 @@ internal fun HomeScreen(
             painter = image,
             contentDescription = "Share Icon",
           )
-          StyledText(
+          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
+          FixedSizeText(
             text = "공유하기",
             color = Gray900,
             fontWeight = FontWeight.W700,
             fontSize = 12.sp,
+            modifier = Modifier.padding(start = 4.dp),
+          )
+          Text(
+            text = "공유하기",
+            color = Gray900,
+            fontFamily = pretendard,
+            fontWeight = FontWeight.W700,
+            fontSize = 12.sp.nonScaleSp,
             modifier = Modifier.padding(start = 4.dp),
           )
         }

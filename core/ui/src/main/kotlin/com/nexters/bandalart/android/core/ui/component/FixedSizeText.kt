@@ -11,7 +11,7 @@ import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Composable
-fun StyledText(
+fun FixedSizeText(
   modifier: Modifier = Modifier,
   text: String,
   color: Color,

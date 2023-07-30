@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.StyledText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
@@ -71,10 +71,10 @@ internal fun CompleteScreen(
             .padding(horizontal = 16.dp),
         ) {
           Row {
-            val image = painterResource(id = R.drawable.ic_right_arrow)
+            val image = painterResource(id = R.drawable.ic_left_arrow)
             Image(
               painter = image,
-              contentDescription = "Right Arrow Icon",
+              contentDescription = "Left Arrow Icon",
               modifier.clickable(onClick = onNavigateBack),
             )
           }
@@ -87,7 +87,7 @@ internal fun CompleteScreen(
           fontSize = 100.sp,
         )
         Spacer(modifier = Modifier.height(40.dp))
-        StyledText(
+        FixedSizeText(
           text = "달성 완료 반다라트",
           color = Gray400,
           fontWeight = FontWeight.W600,
@@ -131,7 +131,7 @@ internal fun CompleteScreen(
               }
             }
             Spacer(modifier = Modifier.height(6.dp))
-            StyledText(
+            FixedSizeText(
               text = "완벽한 2024년",
               color = Color.Black,
               fontWeight = FontWeight.W700,

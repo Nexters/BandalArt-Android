@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,8 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.component.StyledText
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray600
+import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Suppress("unused")
 @Composable
@@ -51,30 +53,31 @@ internal fun HomeTopBar(
       Spacer(modifier = Modifier.weight(1f))
       Box(
         modifier = Modifier
-          .align(Alignment.CenterVertically)
           .padding(end = 20.dp)
           // TODO ripple
           .clickable(onClick = onAddBandalart),
       ) {
         // TODO 반다라트 표가 여러개 일때는 아이콘, 텍스트 변경
         Row(verticalAlignment = Alignment.CenterVertically) {
-          // TODO 해당 icon 빌드시 에러남 교체 필요
-//          val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_add)
-//          Image(
-//            painter = image,
-//            contentDescription = "Add Icon",
-//          )
           Icon(
             imageVector = Icons.Default.Add,
             contentDescription = "Add Icon",
             tint = Gray600,
             modifier = Modifier.size(20.dp),
           )
-          StyledText(
+//          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
+//          FixedSizeText(
+//            text = "추가",
+//            color = Gray600,
+//            fontWeight = FontWeight.W700,
+//            fontSize = 16.sp,
+//          )
+          Text(
             text = "추가",
-            color = Gray600,
+            fontFamily = pretendard,
             fontWeight = FontWeight.W700,
-            fontSize = 16.sp,
+            color = Gray600,
+            fontSize = 16.sp.nonScaleSp,
           )
         }
       }

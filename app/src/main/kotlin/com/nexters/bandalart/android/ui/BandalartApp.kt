@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.component.StyledText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.navigation.BandalartNavHost
 
@@ -56,7 +56,7 @@ fun BandalartApp(
                 .fillMaxSize()
                 .padding(vertical = 16.dp, horizontal = 16.dp),
             ) {
-              StyledText(
+              FixedSizeText(
                 text = it.visuals.message,
                 fontWeight = FontWeight.W600,
                 color = Gray700,
