@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -48,7 +49,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.CellText
 import com.nexters.bandalart.android.core.ui.LoadingWheel
 import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -115,26 +115,37 @@ internal fun HomeScreen(
           modifier.padding(horizontal = 16.dp),
         ) {
           Spacer(modifier = Modifier.height(24.dp))
-          Card(
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(
-              defaultElevation = 4.dp,
-            ),
+          Box(
             modifier = Modifier.align(Alignment.CenterHorizontally),
           ) {
-            Box(
-              modifier = Modifier
-                .width(52.dp)
-                .height(52.dp)
-                .background(Gray100),
-              contentAlignment = Alignment.Center,
+            Card(
+              shape = RoundedCornerShape(16.dp),
+              elevation = CardDefaults
+                .cardElevation(defaultElevation = 4.dp),
             ) {
-              Text(
-                // emoji
-                text = String(Character.toChars(0x1F60E)),
-                fontSize = 22.sp,
-              )
+              Box(
+                modifier = Modifier
+                  .width(52.dp)
+                  .height(52.dp)
+                  .background(Gray100),
+                contentAlignment = Alignment.Center,
+              ) {
+                Text(
+                  // emoji
+                  text = String(Character.toChars(0x1F60E)),
+                  fontSize = 22.sp,
+                )
+              }
             }
+            // TODO 메인 목표의 타이틀이 존재하면 hide 처리 해야 함
+            val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit)
+            Image(
+              painter = image,
+              contentDescription = "Edit Icon",
+              modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .offset((4).dp, (4).dp),
+            )
           }
           Spacer(modifier = Modifier.height(12.dp))
           Box(
@@ -162,26 +173,75 @@ internal fun HomeScreen(
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
-          Text(
-            text = "달성률 (0%)",
-            fontFamily = pretendard,
-            fontWeight = FontWeight.W500,
-            fontSize = 12.sp,
-            color = Gray600,
-          )
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Text(
+              text = "달성률 (0%)",
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W500,
+              fontSize = 12.sp,
+              color = Gray600,
+              letterSpacing = (-0.24).sp,
+            )
+            val image =
+              painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_vertical_line)
+            Image(
+              painter = image,
+              contentDescription = "Vertical Line Icon",
+              modifier = Modifier.padding(start = 6.dp),
+            )
+            Text(
+              text = "~24년 12월 31일",
+              modifier = Modifier.padding(start = 6.dp),
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W500,
+              fontSize = 12.sp,
+              color = Gray600,
+              letterSpacing = (-0.24).sp,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+              modifier
+                .clip(RoundedCornerShape(24.dp))
+                .background(color = Primary),
+            ) {
+              Row(
+                modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+                verticalAlignment = Alignment.CenterVertically,
+              ) {
+                val image =
+                  painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_check)
+                Image(
+                  painter = image,
+                  contentDescription = "Check Icon",
+                )
+                Text(
+                  modifier = Modifier.padding(start = 6.dp),
+                  text = "달성 완료!",
+                  fontSize = 10.sp,
+                  fontFamily = pretendard,
+                  fontWeight = FontWeight.W600,
+                  letterSpacing = (-0.2).sp,
+                  color = Gray900,
+                )
+              }
+            }
+          }
           Spacer(modifier = Modifier.height(8.dp))
           LinearProgressBar()
           Spacer(modifier = Modifier.height(18.dp))
-          when (homeState) {
-            is HomeUiState.Loading -> {
-              LoadingWheel()
-            }
-            is HomeUiState.Success -> {
-              BandalartChart(bandalart = homeState.bandalartData)
-            }
-            is HomeUiState.Error -> {
-              // TODO ErrorScreen()
-            }
+        }
+        when (homeState) {
+          is HomeUiState.Loading -> {
+            LoadingWheel()
+          }
+          is HomeUiState.Success -> {
+            BandalartChart(bandalart = homeState.bandalartData)
+          }
+          is HomeUiState.Error -> {
+            // TODO ErrorScreen()
           }
         }
       }
@@ -379,7 +439,7 @@ fun Cell(
         bottom = if (rowIndex == rowCnt - 1) outerPadding else innerPadding,
       )
       .aspectRatio(1f)
-      .background(Gray200)
+      .background(Gray100)
       .clip(RoundedCornerShape(10.dp))
       .background(if (isSubCell) Secondary else Color.White),
     contentAlignment = Alignment.Center,
