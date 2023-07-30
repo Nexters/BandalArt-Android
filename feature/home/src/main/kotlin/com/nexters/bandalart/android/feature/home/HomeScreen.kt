@@ -72,6 +72,7 @@ import com.nexters.bandalart.android.core.ui.theme.Secondary
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomeRoute(
@@ -138,8 +139,9 @@ internal fun HomeScreen(
           ) {
             Card(
               shape = RoundedCornerShape(16.dp),
-              elevation = CardDefaults
-                .cardElevation(defaultElevation = 4.dp),
+              elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+              // 임시로 스낵바 호출 버튼의 역할을 대신 수행함
+              modifier = Modifier.clickable(onClick = { scope.launch { onShowSnackbar("반다라트가 삭제되었어요.") } }),
             ) {
               Box(
                 modifier = Modifier

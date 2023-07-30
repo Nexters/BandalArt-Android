@@ -37,25 +37,20 @@ fun BandalartApp(
     snackbarHost = {
       SnackbarHost(
         modifier = Modifier
+          // TODO 위치가 확정 되면 조정 필요
           .padding(bottom = (height - 96).dp)
-          .height(56.dp),
+          .height(36.dp),
         hostState = snackbarHostState,
         snackbar = {
           Card(
             modifier = Modifier
               .fillMaxWidth()
-              .padding(horizontal = 32.dp),
-            shape = RoundedCornerShape(28.dp),
-            colors = CardDefaults.cardColors(
-              containerColor = Color.White,
-            ),
+              .padding(horizontal = 40.dp),
+            shape = RoundedCornerShape(50.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(8.dp),
           ) {
-            Box(
-              Modifier
-                .fillMaxSize()
-                .padding(vertical = 16.dp, horizontal = 16.dp),
-            ) {
+            Box(Modifier.fillMaxSize()) {
               FixedSizeText(
                 text = it.visuals.message,
                 fontWeight = FontWeight.W600,
