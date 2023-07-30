@@ -21,8 +21,7 @@ fun BottomSheetDeleteButton(
   FilledIconButton(
     onClick = { Toast.makeText(context, "삭제 버튼", Toast.LENGTH_SHORT).show() },
     colors = IconButtonColors(Gray200, Gray900, Gray200, Gray900),
-    modifier = modifier
-      .height(55.dp),
+    modifier = modifier.height(55.dp),
   ) {
     BottomSheetButtonText(text = "삭제")
   }
@@ -36,8 +35,7 @@ fun BottomSheetCompleteButton(
   FilledIconButton(
     onClick = { Toast.makeText(context, "완료 버튼", Toast.LENGTH_SHORT).show() },
     colors = IconButtonColors(Gray900, White, Gray200, Gray400),
-    modifier = modifier
-      .height(55.dp),
+    modifier = modifier.height(55.dp),
   ) {
     BottomSheetButtonText(text = "완료")
   }
