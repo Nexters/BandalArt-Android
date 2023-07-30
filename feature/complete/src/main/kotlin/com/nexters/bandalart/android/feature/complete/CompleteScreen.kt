@@ -15,8 +15,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,6 +44,7 @@ import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
+import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Composable
@@ -72,11 +76,11 @@ internal fun CompleteScreen(
             .padding(horizontal = 16.dp),
         ) {
           Row {
-            val image = painterResource(id = R.drawable.ic_left_arrow)
-            Image(
-              painter = image,
-              contentDescription = "Left Arrow Icon",
-              modifier.clickable(onClick = onNavigateBack),
+            Icon(
+              imageVector = Icons.Default.ArrowBackIos,
+              contentDescription = "Arrow Back Icon",
+              tint = Gray900,
+              modifier = Modifier.clickable(onClick = onNavigateBack),
             )
           }
         }
