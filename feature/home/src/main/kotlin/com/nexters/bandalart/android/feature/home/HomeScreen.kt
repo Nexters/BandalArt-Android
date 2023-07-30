@@ -246,7 +246,8 @@ internal fun HomeScreen(
         }
       }
       Button(
-        onClick = {},
+        // 임시로 네비게이션 버튼의 역할을 대신 수행함
+        onClick = { navigateToOnBoarding() },
         colors = ButtonDefaults.buttonColors(
           containerColor = Gray100,
           contentColor = Gray100,
