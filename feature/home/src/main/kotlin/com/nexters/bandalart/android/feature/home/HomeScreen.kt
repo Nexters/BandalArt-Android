@@ -176,7 +176,7 @@ internal fun HomeScreen(
               fontWeight = FontWeight.W700,
               fontSize = 20.sp,
               letterSpacing = (-0.4).sp,
-              modifier = Modifier.align(Alignment.Center)
+              modifier = Modifier.align(Alignment.Center),
             )
             val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option)
             Image(
