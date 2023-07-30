@@ -49,7 +49,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.CellText
 import com.nexters.bandalart.android.core.ui.LoadingWheel
 import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -184,16 +183,16 @@ internal fun HomeScreen(
           Spacer(modifier = Modifier.height(8.dp))
           LinearProgressBar()
           Spacer(modifier = Modifier.height(18.dp))
-          when (homeState) {
-            is HomeUiState.Loading -> {
-              LoadingWheel()
-            }
-            is HomeUiState.Success -> {
-              BandalartChart(bandalart = homeState.bandalartData)
-            }
-            is HomeUiState.Error -> {
-              // TODO ErrorScreen()
-            }
+        }
+        when (homeState) {
+          is HomeUiState.Loading -> {
+            LoadingWheel()
+          }
+          is HomeUiState.Success -> {
+            BandalartChart(bandalart = homeState.bandalartData)
+          }
+          is HomeUiState.Error -> {
+            // TODO ErrorScreen()
           }
         }
       }
@@ -391,7 +390,7 @@ fun Cell(
         bottom = if (rowIndex == rowCnt - 1) outerPadding else innerPadding,
       )
       .aspectRatio(1f)
-      .background(Gray200)
+      .background(Gray100)
       .clip(RoundedCornerShape(10.dp))
       .background(if (isSubCell) Secondary else Color.White),
     contentAlignment = Alignment.Center,
