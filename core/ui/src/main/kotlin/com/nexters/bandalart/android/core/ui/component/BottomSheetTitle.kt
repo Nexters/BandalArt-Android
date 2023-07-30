@@ -47,7 +47,7 @@ fun BottomSheetTitle(
     ) {
       Icon(
         imageVector = Icons.Default.Clear,
-        contentDescription = null,
+        contentDescription = "Clear",
       )
     }
   }
