@@ -13,14 +13,17 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.component.StyledText
+import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.navigation.BandalartNavHost
 
 @Composable
@@ -53,10 +56,13 @@ fun BandalartApp(
                 .fillMaxSize()
                 .padding(vertical = 16.dp, horizontal = 16.dp),
             ) {
-              Text(
-                modifier = Modifier.align(Alignment.Center),
+              StyledText(
                 text = it.visuals.message,
-                color = Color.Black,
+                fontWeight = FontWeight.W600,
+                color = Gray700,
+                fontSize = 12.sp,
+                letterSpacing = -(0.24).sp,
+                modifier = Modifier.align(Alignment.Center),
               )
             }
           }

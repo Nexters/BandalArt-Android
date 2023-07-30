@@ -29,7 +29,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,7 +47,6 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -56,14 +54,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.component.CellText
+import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.StyledText
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.Primary
 import com.nexters.bandalart.android.core.ui.theme.Secondary
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
 
@@ -138,13 +137,12 @@ internal fun HomeScreen(
               Box(
                 modifier = Modifier
                   .width(52.dp)
-                  .height(52.dp)
+                  .aspectRatio(1f)
                   .background(Gray100),
                 contentAlignment = Alignment.Center,
               ) {
-                Text(
-                  // emoji
-                  text = String(Character.toChars(0x1F60E)),
+                EmojiText(
+                  emojiText = "😎",
                   fontSize = 22.sp,
                 )
               }
@@ -165,15 +163,13 @@ internal fun HomeScreen(
               .fillMaxWidth()
               .wrapContentHeight(),
           ) {
-            Text(
-              textAlign = TextAlign.Center,
+            StyledText(
               text = "완벽한 2024년",
-              fontFamily = pretendard,
-              fontWeight = FontWeight.W700,
               color = Gray900,
+              fontWeight = FontWeight.W700,
               fontSize = 20.sp,
               letterSpacing = (-0.4).sp,
-              modifier = Modifier.align(Alignment.Center),
+              modifier = Modifier.align(Alignment.Center)
             )
             val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option)
             Image(
@@ -189,12 +185,11 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            Text(
+            StyledText(
               text = "달성률 (0%)",
-              fontFamily = pretendard,
+              color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
-              color = Gray600,
               letterSpacing = (-0.24).sp,
             )
             val image =
@@ -204,14 +199,13 @@ internal fun HomeScreen(
               contentDescription = "Vertical Line Icon",
               modifier = Modifier.padding(start = 6.dp),
             )
-            Text(
+            StyledText(
               text = "~24년 12월 31일",
-              modifier = Modifier.padding(start = 6.dp),
-              fontFamily = pretendard,
+              color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
-              color = Gray600,
               letterSpacing = (-0.24).sp,
+              modifier = Modifier.padding(start = 6.dp),
             )
             Spacer(modifier = Modifier.weight(1f))
             Box(
@@ -229,14 +223,13 @@ internal fun HomeScreen(
                   painter = image,
                   contentDescription = "Check Icon",
                 )
-                Text(
-                  modifier = Modifier.padding(start = 6.dp),
+                StyledText(
                   text = "달성 완료!",
-                  fontSize = 10.sp,
-                  fontFamily = pretendard,
-                  fontWeight = FontWeight.W600,
-                  letterSpacing = (-0.2).sp,
                   color = Gray900,
+                  fontWeight = FontWeight.W600,
+                  fontSize = 10.sp,
+                  letterSpacing = (-0.2).sp,
+                  modifier = Modifier.padding(start = 6.dp),
                 )
               }
             }
@@ -275,13 +268,12 @@ internal fun HomeScreen(
             painter = image,
             contentDescription = "Share Icon",
           )
-          Text(
-            modifier = Modifier.padding(start = 4.dp),
+          StyledText(
             text = "공유하기",
-            fontFamily = pretendard,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.W700,
             color = Gray900,
+            fontWeight = FontWeight.W700,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 4.dp),
           )
         }
       }
