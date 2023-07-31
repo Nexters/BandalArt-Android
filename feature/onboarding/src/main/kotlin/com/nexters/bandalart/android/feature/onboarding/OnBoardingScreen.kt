@@ -52,8 +52,12 @@ internal fun OnBoardingScreen(
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
-    Box {
+    Column(
+      modifier = Modifier.fillMaxSize(),
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
       // TODO status Bar 와의 간격 설정
+      Spacer(modifier = Modifier.height(16.dp))
       PagerIndicator(
         pageCount = pageCount,
         pagerState = pagerState,

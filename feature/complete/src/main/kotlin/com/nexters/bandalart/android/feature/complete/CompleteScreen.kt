@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,29 +71,33 @@ internal fun CompleteScreen(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
-        // TODO status bar 와의 간격 설정
-        Box(
-          modifier = Modifier
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+          Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
         ) {
-          Row {
+          IconButton(
+            onClick = onNavigateBack,
+            modifier = Modifier
+              .width(32.dp)
+              .aspectRatio(1f),
+          ) {
             Icon(
               imageVector = Icons.Default.ArrowBackIos,
               contentDescription = "Arrow Back Icon",
               tint = Gray900,
-              modifier = Modifier.clickable(onClick = onNavigateBack),
             )
           }
         }
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(40.dp))
         TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         EmojiText(
           emojiText = "🥳",
           fontSize = 100.sp,
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         FixedSizeText(
           text = "달성 완료 반다라트",
           color = Gray400,
