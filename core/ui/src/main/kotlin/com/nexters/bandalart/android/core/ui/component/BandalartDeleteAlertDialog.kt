@@ -1,5 +1,6 @@
 package com.nexters.bandalart.android.core.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,21 +10,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -49,17 +50,18 @@ fun BandalartDeleteAlertDialog(
           .fillMaxWidth()
           .padding(top = 24.dp),
         ) {
-          Icon(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            imageVector = Icons.Default.Delete,
+          val image = painterResource(id = R.drawable.ic_delete)
+          Image(
+            painter = image,
             contentDescription = "Delete Icon",
+            modifier = Modifier.height(28.dp).align(Alignment.CenterHorizontally),
           )
-          Spacer(modifier = Modifier.height(8.dp))
+          Spacer(modifier = Modifier.height(18.dp))
           Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = title,
             color = Gray900,
-            fontSize = 20.sp,
+            fontSize = 20.sp.nonScaleSp,
             fontFamily = pretendard,
             fontWeight = FontWeight.W700,
             textAlign = TextAlign.Center,
@@ -69,7 +71,7 @@ fun BandalartDeleteAlertDialog(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = message,
             color = Gray400,
-            fontSize = 14.sp,
+            fontSize = 14.sp.nonScaleSp,
             fontFamily = pretendard,
             fontWeight = FontWeight.W500,
             textAlign = TextAlign.Center,
@@ -95,7 +97,12 @@ fun BandalartDeleteAlertDialog(
                 disabledContentColor = Gray900,
               ),
             ) {
-              Text(text = "취소")
+              Text(
+                text = "취소",
+                fontSize = 16.sp.nonScaleSp,
+                fontFamily = pretendard,
+                fontWeight = FontWeight.W600,
+              )
             }
             Spacer(modifier = Modifier.width(9.dp))
             Button(
@@ -113,7 +120,12 @@ fun BandalartDeleteAlertDialog(
                 disabledContentColor = White,
               ),
             ) {
-              Text(text = "삭제하기")
+              Text(
+                text = "삭제하기",
+                fontSize = 16.sp.nonScaleSp,
+                fontFamily = pretendard,
+                fontWeight = FontWeight.W600,
+              )
             }
           }
           Spacer(modifier = Modifier.height(20.dp))
