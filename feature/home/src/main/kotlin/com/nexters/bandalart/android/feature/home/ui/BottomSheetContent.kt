@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +47,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDi
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
+import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
@@ -70,8 +73,9 @@ fun BottomSheetContent(
     )
     var goal by rememberSaveable { mutableStateOf("") }
     var memo by rememberSaveable { mutableStateOf("") }
+    var scrollable = rememberScrollState()
 
-    Column(modifier = Modifier.background(White)) {
+    Column(modifier = Modifier.background(White).verticalScroll(scrollable)) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
         isMainCell = false,
@@ -218,7 +222,8 @@ fun BottomSheetContent(
           Spacer(modifier = Modifier.width(9.dp))
           BottomSheetCompleteButton(modifier = Modifier.weight(1f))
         }
-        Spacer(modifier = Modifier.height(NavigationBarHeightDp))
+        Spacer(modifier = Modifier.height(NavigationBarHeightDp)) // 하단 바 스타일에 따른 높이
+        Spacer(modifier = Modifier.height(StatusBarHeightDp)) // 상태바 제한으로 인해 밀린 만큼의 높
       }
     }
   }
