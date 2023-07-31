@@ -29,8 +29,7 @@
     <activity
       android:name="com.nexters.bandalart.android.MainActivity"
       android:exported="true"
-      android:theme="@style/Theme.Bandalart.Splash"
-      android:windowSoftInputMode="adjustPan">
+      android:theme="@style/Theme.Bandalart.Splash">
 
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

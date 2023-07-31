@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
 import com.nexters.bandalart.android.ui.BandalartApp
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    WindowCompat.setDecorFitsSystemWindows(window, false)
     installSplashScreen()
     setContent {
       BandalartTheme {
