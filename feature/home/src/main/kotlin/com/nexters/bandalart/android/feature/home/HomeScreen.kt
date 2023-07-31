@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -55,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
 import com.nexters.bandalart.android.core.ui.theme.Gray100
@@ -63,6 +65,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.Primary
 import com.nexters.bandalart.android.core.ui.theme.Secondary
+import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
@@ -175,13 +178,19 @@ internal fun HomeScreen(
               letterSpacing = (-0.4).sp,
               modifier = Modifier.align(Alignment.Center),
             )
+            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
             val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option)
             Image(
               painter = image,
               contentDescription = "Option Icon",
               modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clickable(onClick = {}),
+                .clickable(onClick = { isDropDownMenuExpanded = true }),
+            )
+            BandalartDropDownMenu(
+              onResult = { isDropDownMenuExpanded = it },
+              isDropDownMenuExpanded = isDropDownMenuExpanded,
+              onDeleteClicked = { },
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
