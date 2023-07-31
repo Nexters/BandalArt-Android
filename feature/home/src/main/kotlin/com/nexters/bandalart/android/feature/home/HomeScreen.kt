@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -489,14 +488,14 @@ fun Cell(
     }
     if (openBottomSheet) {
       ModalBottomSheet(
-        modifier = Modifier.systemBarsPadding(),
+        modifier = Modifier.wrapContentSize(),
         onDismissRequest = { openBottomSheet = false },
         sheetState = bottomSheetState,
         content = BottomSheetContent(
           onResult = { openBottomSheet = it },
-          scope,
-          bottomSheetState,
-          isSubCell,
+          scope = scope,
+          bottomSheetState = bottomSheetState,
+          isSubCell = isSubCell,
         ),
         dragHandle = null,
       )
