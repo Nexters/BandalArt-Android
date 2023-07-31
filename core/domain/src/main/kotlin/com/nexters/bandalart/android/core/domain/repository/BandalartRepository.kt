@@ -3,6 +3,7 @@ package com.nexters.bandalart.android.core.domain.repository
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartListEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
 
 /** 반다라트 API */
 interface BandalartRepository {
@@ -10,6 +11,7 @@ interface BandalartRepository {
   /**
    * 반다라트 생성
    */
+  suspend fun createBandalart()
 
   /**
    * 반다라트 목록 조회
@@ -36,14 +38,14 @@ interface BandalartRepository {
    */
 
   /**
-   * 메인 셀 조회
+   * 반다라트 메인 셀 조회
    *
    * @param bandalartKey 메인 셀 고유 키
    */
   suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellEntity?
 
   /**
-   * 셀 조회
+   * 반다라트 셀 조회
    *
    * @param bandalartKey 메인 셀 고유 키
    * @param cellKey 셀 고유 키
@@ -51,17 +53,19 @@ interface BandalartRepository {
   suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellEntity?
 
   /**
-   * 셀 수정
+   * 반다라트 셀 수정
    *
    * @param bandalartKey 메인 셀 고유 키
    * @param cellKey 셀 고유 키
    */
+  suspend fun updateBandalartCell(bandalartKey: String, cellKey: String, updateBandalartCellEntity: UpdateBandalartCellEntity)
 
   /**
-   * 셀 삭제
+   * 반다라트 셀 삭제
    * @param bandalartKey 메인 셀 고유 키
    * @param cellKey 셀 고유 키
    */
+  suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String)
 
   /**
    * 최근에 수정한 반다라트 표 고유 키 수정

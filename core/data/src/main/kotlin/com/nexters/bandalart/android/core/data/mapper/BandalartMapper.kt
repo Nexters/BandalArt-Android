@@ -3,9 +3,11 @@ package com.nexters.bandalart.android.core.data.mapper
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartListResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartCellRequest
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartListEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
 
 internal fun BandalartListResponse.toEntity() =
   BandalartListEntity(
@@ -38,3 +40,11 @@ internal fun BandalartCellResponse.toEntity(): BandalartCellEntity {
     children = children.map { it.toEntity() },
   )
 }
+
+internal fun UpdateBandalartCellEntity.toModel(): UpdateBandalartCellRequest =
+  UpdateBandalartCellRequest(
+    title = title,
+    description = description,
+    dueDate = dueDate,
+    isCompleted = isCompleted,
+  )
