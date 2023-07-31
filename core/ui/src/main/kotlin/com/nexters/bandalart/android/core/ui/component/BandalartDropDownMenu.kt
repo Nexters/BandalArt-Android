@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.theme.Error
 import com.nexters.bandalart.android.core.ui.theme.Gray800
-import com.nexters.bandalart.android.core.ui.theme.Red
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
@@ -91,12 +91,12 @@ fun BandalartDropDownMenu(
               painter = image,
               contentDescription = "Delete Icon",
               modifier = Modifier.height(14.dp).align(CenterVertically),
-              colorFilter = ColorFilter.tint(Red),
+              colorFilter = ColorFilter.tint(Error),
             )
             Text(
               modifier = Modifier.fillMaxHeight().padding(start = 13.dp).align(CenterVertically),
               text = "삭제하기",
-              color = Red,
+              color = Error,
               fontSize = 14.sp.nonScaleSp,
               fontFamily = pretendard,
               fontWeight = FontWeight.W500,
