@@ -10,6 +10,7 @@ internal fun BandalartCellEntity.toUiModel(): BandalartMainCellUiModel {
     description = description,
     dueDate = dueDate,
     isCompleted = isCompleted,
+    completionRatio = completionRatio,
     parentKey = parentKey,
     children = children.map { it.toUiModel() },
   )
