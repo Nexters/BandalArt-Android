@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -57,10 +58,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray50
@@ -68,6 +71,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.Primary
 import com.nexters.bandalart.android.core.ui.theme.Secondary
+import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
@@ -179,13 +183,19 @@ internal fun HomeScreen(
               letterSpacing = (-0.4).sp,
               modifier = Modifier.align(Alignment.Center),
             )
+            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
             val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option)
             Image(
               painter = image,
               contentDescription = "Option Icon",
               modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clickable(onClick = {}),
+                .clickable(onClick = { isDropDownMenuExpanded = true }),
+            )
+            BandalartDropDownMenu(
+              onResult = { isDropDownMenuExpanded = it },
+              isDropDownMenuExpanded = isDropDownMenuExpanded,
+              onDeleteClicked = { },
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
@@ -276,14 +286,14 @@ internal fun HomeScreen(
             painter = image,
             contentDescription = "Share Icon",
           )
-          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
-          FixedSizeText(
-            text = "공유하기",
-            color = Gray900,
-            fontWeight = FontWeight.W700,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(start = 4.dp),
-          )
+//          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
+//          FixedSizeText(
+//            text = "공유하기",
+//            color = Gray900,
+//            fontWeight = FontWeight.W700,
+//            fontSize = 12.sp,
+//            modifier = Modifier.padding(start = 4.dp),
+//          )
           Text(
             text = "공유하기",
             color = Gray900,
