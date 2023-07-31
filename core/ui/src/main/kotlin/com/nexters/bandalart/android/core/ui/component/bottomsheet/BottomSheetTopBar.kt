@@ -17,26 +17,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.ui.theme.Gray900
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun BottomSheetTitle(
+fun BottomSheetTopBar(
   isMainCell: Boolean,
   isSubCell: Boolean,
   scope: CoroutineScope,
   bottomSheetState: SheetState,
   onResult: (Boolean) -> Unit,
 ) {
-  Box(modifier = Modifier.fillMaxWidth()) {
+  Box(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = 16.dp),
+  ) {
     BottomSheetTitleText(isMainCell = isMainCell, isSubCell = isSubCell)
     IconButton(
       modifier = Modifier
         .align(Alignment.CenterEnd)
-        .padding(
-          top = 19.dp,
-          end = 2.dp,
-        )
         .height(21.dp)
         .aspectRatio(1f),
       onClick = {
@@ -48,6 +49,7 @@ fun BottomSheetTitle(
       Icon(
         imageVector = Icons.Default.Clear,
         contentDescription = "Clear Icon",
+        tint = Gray900,
       )
     }
   }
