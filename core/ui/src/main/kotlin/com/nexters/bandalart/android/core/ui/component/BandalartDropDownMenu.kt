@@ -15,6 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -32,6 +36,7 @@ fun BandalartDropDownMenu(
   isDropDownMenuExpanded: Boolean,
   onDeleteClicked: () -> Unit,
 ) {
+  var dialogOpened by remember { mutableStateOf(false) }
   MaterialTheme(
     shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp))
   ) {
@@ -81,7 +86,7 @@ fun BandalartDropDownMenu(
             fontWeight = FontWeight.W500,
           )
         },
-        onClick = { },
+        onClick = { dialogOpened = true },
         leadingIcon = {
           Icon(
             imageVector = Icons.Default.Delete,
@@ -89,6 +94,13 @@ fun BandalartDropDownMenu(
             tint = Red,
           )
         },
+      )
+      BandalartDeleteAlertDialog(
+        title = "'8구단 드래프트 1순위'\n만다라트를 삭제하시겠어요?",
+        message = "삭제된 만다라트는 다시 복구할 수 없어요.",
+        dialogOpened = dialogOpened,
+        onDeleteClicked = onDeleteClicked,
+        onCancleClicked = { dialogOpened = !dialogOpened },
       )
     }
   }
