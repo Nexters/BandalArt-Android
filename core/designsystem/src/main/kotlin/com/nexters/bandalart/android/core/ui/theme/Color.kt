@@ -24,7 +24,7 @@ val Gray900 = Color(0xFF111827)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF060A27)
 val Gray = Color(0xFFDDE0FF)
-val Red = Color(0xFFFF2727)
+val Error = Color(0xFFFF2727)
 
 // Todo 색 선택 기능을 추가하면 네이밍이 달라져야 함
 val Primary = Color(0xFF3FFFBA)
