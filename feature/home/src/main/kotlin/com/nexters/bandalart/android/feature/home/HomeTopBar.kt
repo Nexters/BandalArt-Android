@@ -17,13 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray600
+import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Suppress("unused")
@@ -36,7 +36,7 @@ internal fun HomeTopBar(
     modifier = Modifier
       .fillMaxWidth()
       .height(62.dp)
-      .background(Color.White),
+      .background(White),
     contentAlignment = Alignment.CenterStart,
   ) {
     Row(

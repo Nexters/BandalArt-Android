@@ -33,7 +33,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -72,7 +71,7 @@ fun BottomSheetContent(
     var goal by rememberSaveable { mutableStateOf("") }
     var memo by rememberSaveable { mutableStateOf("") }
 
-    Column(modifier = Modifier.background(Color.White)) {
+    Column(modifier = Modifier.background(White)) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
         isMainCell = false,

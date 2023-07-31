@@ -17,13 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.theme.Gray700
+import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.navigation.BandalartNavHost
 
 @Composable
@@ -47,7 +47,7 @@ fun BandalartApp(
               .fillMaxWidth()
               .padding(horizontal = 40.dp),
             shape = RoundedCornerShape(50.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = White),
             elevation = CardDefaults.cardElevation(8.dp),
           ) {
             Box(Modifier.fillMaxSize()) {
