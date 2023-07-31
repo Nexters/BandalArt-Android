@@ -52,7 +52,7 @@ fun BottomSheetSubTitleText(
 fun BottomSheetContentText(
   modifier: Modifier = Modifier,
   text: String,
-  color: Color = Gray400
+  color: Color = Gray400,
 ) {
   Text(
     modifier = modifier,

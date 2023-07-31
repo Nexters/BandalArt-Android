@@ -75,7 +75,7 @@ internal fun CompleteScreen(
         Row(
           Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
         ) {
           IconButton(
             onClick = onNavigateBack,
