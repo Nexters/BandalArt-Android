@@ -16,18 +16,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,13 +45,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -58,7 +58,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CellText
+import com.nexters.bandalart.android.core.ui.component.EmojiText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
@@ -69,6 +72,7 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomeRoute(
@@ -135,19 +139,19 @@ internal fun HomeScreen(
           ) {
             Card(
               shape = RoundedCornerShape(16.dp),
-              elevation = CardDefaults
-                .cardElevation(defaultElevation = 4.dp),
+              elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+              // 임시로 스낵바 호출 버튼의 역할을 대신 수행함
+              modifier = Modifier.clickable(onClick = { scope.launch { onShowSnackbar("반다라트가 삭제되었어요.") } }),
             ) {
               Box(
                 modifier = Modifier
                   .width(52.dp)
-                  .height(52.dp)
+                  .aspectRatio(1f)
                   .background(Gray100),
                 contentAlignment = Alignment.Center,
               ) {
-                Text(
-                  // emoji
-                  text = String(Character.toChars(0x1F60E)),
+                EmojiText(
+                  emojiText = "😎",
                   fontSize = 22.sp,
                 )
               }
@@ -168,12 +172,10 @@ internal fun HomeScreen(
               .fillMaxWidth()
               .wrapContentHeight(),
           ) {
-            Text(
-              textAlign = TextAlign.Center,
+            FixedSizeText(
               text = "완벽한 2024년",
-              fontFamily = pretendard,
-              fontWeight = FontWeight.W700,
               color = Gray900,
+              fontWeight = FontWeight.W700,
               fontSize = 20.sp,
               letterSpacing = (-0.4).sp,
               modifier = Modifier.align(Alignment.Center),
@@ -198,12 +200,11 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            Text(
+            FixedSizeText(
               text = "달성률 (0%)",
-              fontFamily = pretendard,
+              color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
-              color = Gray600,
               letterSpacing = (-0.24).sp,
             )
             val image =
@@ -213,14 +214,13 @@ internal fun HomeScreen(
               contentDescription = "Vertical Line Icon",
               modifier = Modifier.padding(start = 6.dp),
             )
-            Text(
+            FixedSizeText(
               text = "~24년 12월 31일",
-              modifier = Modifier.padding(start = 6.dp),
-              fontFamily = pretendard,
+              color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
-              color = Gray600,
               letterSpacing = (-0.24).sp,
+              modifier = Modifier.padding(start = 6.dp),
             )
             Spacer(modifier = Modifier.weight(1f))
             Box(
@@ -232,20 +232,19 @@ internal fun HomeScreen(
                 modifier = Modifier.padding(start = 9.dp, end = 9.dp),
                 verticalAlignment = Alignment.CenterVertically,
               ) {
-                val image =
-                  painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_check)
-                Image(
-                  painter = image,
+                Icon(
+                  imageVector = Icons.Default.Check,
                   contentDescription = "Check Icon",
+                  tint = Gray900,
+                  modifier = Modifier.size(13.dp),
                 )
-                Text(
-                  modifier = Modifier.padding(start = 6.dp),
+                FixedSizeText(
                   text = "달성 완료!",
-                  fontSize = 10.sp,
-                  fontFamily = pretendard,
-                  fontWeight = FontWeight.W600,
-                  letterSpacing = (-0.2).sp,
                   color = Gray900,
+                  fontWeight = FontWeight.W600,
+                  fontSize = 10.sp,
+                  letterSpacing = (-0.2).sp,
+                  modifier = Modifier.padding(start = 2.dp),
                 )
               }
             }
@@ -284,13 +283,21 @@ internal fun HomeScreen(
             painter = image,
             contentDescription = "Share Icon",
           )
+//          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
+//          FixedSizeText(
+//            text = "공유하기",
+//            color = Gray900,
+//            fontWeight = FontWeight.W700,
+//            fontSize = 12.sp,
+//            modifier = Modifier.padding(start = 4.dp),
+//          )
           Text(
-            modifier = Modifier.padding(start = 4.dp),
             text = "공유하기",
-            fontFamily = pretendard,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.W700,
             color = Gray900,
+            fontFamily = pretendard,
+            fontWeight = FontWeight.W700,
+            fontSize = 12.sp.nonScaleSp,
+            modifier = Modifier.padding(start = 4.dp),
           )
         }
       }
@@ -469,7 +476,7 @@ fun Cell(
       .aspectRatio(1f)
       .background(Gray100)
       .clip(RoundedCornerShape(10.dp))
-      .background(if (isSubCell) Secondary else Color.White)
+      .background(if (isSubCell) Secondary else White)
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
@@ -488,14 +495,14 @@ fun Cell(
     }
     if (openBottomSheet) {
       ModalBottomSheet(
-        modifier = Modifier.systemBarsPadding(),
+        modifier = Modifier.wrapContentSize(),
         onDismissRequest = { openBottomSheet = false },
         sheetState = bottomSheetState,
         content = BottomSheetContent(
           onResult = { openBottomSheet = it },
-          scope,
-          bottomSheetState,
-          isSubCell,
+          scope = scope,
+          bottomSheetState = bottomSheetState,
+          isSubCell = isSubCell,
         ),
         dragHandle = null,
       )

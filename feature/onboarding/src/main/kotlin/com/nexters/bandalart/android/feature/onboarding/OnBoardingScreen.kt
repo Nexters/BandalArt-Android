@@ -52,7 +52,11 @@ internal fun OnBoardingScreen(
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
-    Box {
+    Column(
+      modifier = Modifier.fillMaxSize(),
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      Spacer(modifier = Modifier.height(16.dp))
       PagerIndicator(
         pageCount = pageCount,
         pagerState = pagerState,

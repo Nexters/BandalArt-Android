@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,8 +16,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,12 +40,13 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.StyledText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
+import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Composable
@@ -65,29 +71,34 @@ internal fun CompleteScreen(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
-        Box(
-          modifier = Modifier
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+          Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         ) {
-          Row {
-            val image = painterResource(id = R.drawable.ic_right_arrow)
-            Image(
-              painter = image,
-              contentDescription = "Right Arrow Icon",
-              modifier.clickable(onClick = onNavigateBack),
+          IconButton(
+            onClick = onNavigateBack,
+            modifier = Modifier
+              .width(32.dp)
+              .aspectRatio(1f),
+          ) {
+            Icon(
+              imageVector = Icons.Default.ArrowBackIos,
+              contentDescription = "Arrow Back Icon",
+              tint = Gray900,
             )
           }
         }
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(40.dp))
         TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         EmojiText(
           emojiText = "🥳",
           fontSize = 100.sp,
         )
-        Spacer(modifier = Modifier.height(40.dp))
-        StyledText(
+        Spacer(modifier = Modifier.height(60.dp))
+        FixedSizeText(
           text = "달성 완료 반다라트",
           color = Gray400,
           fontWeight = FontWeight.W600,
@@ -131,7 +142,7 @@ internal fun CompleteScreen(
               }
             }
             Spacer(modifier = Modifier.height(6.dp))
-            StyledText(
+            FixedSizeText(
               text = "완벽한 2024년",
               color = Color.Black,
               fontWeight = FontWeight.W700,
@@ -149,9 +160,7 @@ internal fun CompleteScreen(
           .offset(y = (-110).dp),
       ) {
         Column {
-          Row(
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
+          Row(verticalAlignment = Alignment.CenterVertically) {
             val image = painterResource(id = R.drawable.ic_gallery)
             Image(
               painter = image,
