@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -43,10 +42,10 @@ fun BandalartDropDownMenu(
 ) {
   var dialogOpened by remember { mutableStateOf(false) }
   MaterialTheme(
-    shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp))
+    shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
   ) {
     DropdownMenu(
-      modifier = Modifier
+      modifier = modifier
         .wrapContentSize()
         .background(White),
       expanded = isDropDownMenuExpanded,

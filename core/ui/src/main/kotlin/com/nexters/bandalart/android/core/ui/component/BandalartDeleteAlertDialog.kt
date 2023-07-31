@@ -46,9 +46,10 @@ fun BandalartDeleteAlertDialog(
         shape = RoundedCornerShape(16.dp),
         color = White,
       ) {
-        Column(modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = 24.dp),
+        Column(
+          modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
         ) {
           val image = painterResource(id = R.drawable.ic_delete)
           Image(
