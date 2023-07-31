@@ -4,6 +4,8 @@ package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,6 +14,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -35,26 +39,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDeleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDivider
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
+import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
-import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -65,6 +64,7 @@ fun BottomSheetContent(
   isSubCell: Boolean,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
+    val scrollState = rememberScrollState()
     var openDatePickerBottomSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerSkipPartiallyExpanded by remember { mutableStateOf(true) }
     val datePickerScope = rememberCoroutineScope()
@@ -75,7 +75,11 @@ fun BottomSheetContent(
     var memo by rememberSaveable { mutableStateOf("") }
     var scrollable = rememberScrollState()
 
-    Column(modifier = Modifier.background(White).verticalScroll(scrollable)) {
+    Column(modifier = Modifier
+        .background(White)
+        .navigationBarsPadding()
+        .verticalScroll(scrollable)
+    ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
         isMainCell = false,
@@ -101,14 +105,7 @@ fun BottomSheetContent(
               onValueChange = { goal = if (it.length > 15) goal else it },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
               maxLines = 1,
-              textStyle = TextStyle(
-                color = Gray900,
-                fontFamily = pretendard,
-                fontWeight = FontWeight.W600,
-                fontSize = 16.sp.nonScaleSp,
-                letterSpacing = -(0.32).sp.nonScaleSp,
-                lineHeight = 22.4.sp.nonScaleSp,
-              ),
+              textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
                 if (goal.isEmpty()) BottomSheetContentText(text = "15자 이내로 입력해주세요.")
                 innerTextField()
@@ -164,13 +161,7 @@ fun BottomSheetContent(
               onValueChange = { memo = if (it.length > 15) memo else it },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
               maxLines = 1,
-              textStyle = TextStyle(
-                color = Gray900,
-                fontFamily = pretendard,
-                fontWeight = FontWeight.W600,
-                fontSize = 16.sp.nonScaleSp,
-                lineHeight = 22.4.sp.nonScaleSp,
-              ),
+              textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
                 if (memo.isEmpty()) {
                   BottomSheetContentText(text = "메모를 입력해주세요.")
@@ -216,7 +207,8 @@ fun BottomSheetContent(
           modifier = Modifier
             .fillMaxWidth()
             .align(Alignment.CenterHorizontally)
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 8.dp)
+            .imePadding(),
         ) {
           BottomSheetDeleteButton(modifier = Modifier.weight(1f))
           Spacer(modifier = Modifier.width(9.dp))
