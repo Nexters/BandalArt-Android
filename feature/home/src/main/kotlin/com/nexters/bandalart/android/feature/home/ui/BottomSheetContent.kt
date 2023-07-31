@@ -4,6 +4,8 @@ package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,8 +14,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -58,6 +63,7 @@ fun BottomSheetContent(
   isSubCell: Boolean,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
+    val scrollState = rememberScrollState()
     var openDatePickerBottomSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerSkipPartiallyExpanded by remember { mutableStateOf(true) }
     val datePickerScope = rememberCoroutineScope()
@@ -67,7 +73,15 @@ fun BottomSheetContent(
     var goal by rememberSaveable { mutableStateOf("") }
     var memo by rememberSaveable { mutableStateOf("") }
 
-    Column(modifier = Modifier.background(White)) {
+    Column(
+      modifier = Modifier
+        .background(White)
+        .navigationBarsPadding()
+        .scrollable(
+          state = scrollState,
+          orientation = Orientation.Vertical,
+        ),
+    ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
         isMainCell = false,
@@ -195,7 +209,8 @@ fun BottomSheetContent(
           modifier = Modifier
             .fillMaxWidth()
             .align(Alignment.CenterHorizontally)
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 8.dp)
+            .imePadding(),
         ) {
           BottomSheetDeleteButton(modifier = Modifier.weight(1f))
           Spacer(modifier = Modifier.width(9.dp))
