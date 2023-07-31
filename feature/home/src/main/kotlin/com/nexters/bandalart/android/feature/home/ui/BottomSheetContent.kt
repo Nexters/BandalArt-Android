@@ -4,8 +4,6 @@ package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -21,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +47,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSu
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
+import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
@@ -63,7 +63,6 @@ fun BottomSheetContent(
   isSubCell: Boolean,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
-    val scrollState = rememberScrollState()
     var openDatePickerBottomSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerSkipPartiallyExpanded by remember { mutableStateOf(true) }
     val datePickerScope = rememberCoroutineScope()
@@ -72,15 +71,13 @@ fun BottomSheetContent(
     )
     var goal by rememberSaveable { mutableStateOf("") }
     var memo by rememberSaveable { mutableStateOf("") }
+    var scrollable = rememberScrollState()
 
     Column(
       modifier = Modifier
         .background(White)
         .navigationBarsPadding()
-        .scrollable(
-          state = scrollState,
-          orientation = Orientation.Vertical,
-        ),
+        .verticalScroll(scrollable),
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
@@ -216,7 +213,7 @@ fun BottomSheetContent(
           Spacer(modifier = Modifier.width(9.dp))
           BottomSheetCompleteButton(modifier = Modifier.weight(1f))
         }
-        Spacer(modifier = Modifier.height(NavigationBarHeightDp))
+        Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp)) // 상태바 제한으로 인해 밀린 만큼의 높
       }
     }
   }
