@@ -5,6 +5,8 @@ package com.nexters.bandalart.android.feature.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +23,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -57,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
@@ -64,14 +69,17 @@ import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
+import com.nexters.bandalart.android.core.ui.theme.Gray200
+import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray50
+import com.nexters.bandalart.android.core.ui.theme.Gray500
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.Primary
 import com.nexters.bandalart.android.core.ui.theme.Secondary
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
-import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
+import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
 import kotlinx.coroutines.launch
 
@@ -110,17 +118,27 @@ internal fun HomeScreen(
   getBandalartMainCell: suspend (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val scrollState = rememberScrollState()
   val scope = rememberCoroutineScope()
 
   LaunchedEffect(key1 = Unit) {
-    getBandalartMainCell("3sF4I")
+    getBandalartMainCell("K3mLJ")
+    // getBandalartMainCell("3sF4I")
   }
   Surface(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
   ) {
-    Box {
-      Column {
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .scrollable(scrollState, Orientation.Vertical),
+    ) {
+      Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(bottom = 32.dp),
+      ) {
         HomeTopBar(
           // 임시로 네비게이션 버튼의 역할을 대신 수행함
           // onAddBandalart = onAddBandalart,
@@ -151,14 +169,16 @@ internal fun HomeScreen(
                   .background(Gray100),
                 contentAlignment = Alignment.Center,
               ) {
+                // TODO 데이터 연동
                 EmojiText(
                   emojiText = "😎",
-                  fontSize = 22.sp,
+                  fontSize = 22.sp.nonScaleSp,
                 )
               }
             }
-            // TODO 메인 목표의 타이틀이 존재하면 hide 처리 해야 함
-            val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit)
+            // TODO 데이터 연동
+            // 메인 목표의 이모지가 존재하면 hide 처리 해야 함
+            val image = painterResource(id = R.drawable.ic_edit)
             Image(
               painter = image,
               contentDescription = "Edit Icon",
@@ -182,7 +202,7 @@ internal fun HomeScreen(
               modifier = Modifier.align(Alignment.Center),
             )
             var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-            val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option)
+            val image = painterResource(id = R.drawable.ic_option)
             Image(
               painter = image,
               contentDescription = "Option Icon",
@@ -201,6 +221,7 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
+            // TODO 데이터 연동
             FixedSizeText(
               text = "달성률 (0%)",
               color = Gray600,
@@ -209,12 +230,13 @@ internal fun HomeScreen(
               letterSpacing = (-0.24).sp,
             )
             val image =
-              painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_vertical_line)
+              painterResource(id = R.drawable.ic_vertical_line)
             Image(
               painter = image,
               contentDescription = "Vertical Line Icon",
               modifier = Modifier.padding(start = 6.dp),
             )
+            // TODO 데이터 연동
             FixedSizeText(
               text = "~24년 12월 31일",
               color = Gray600,
@@ -265,41 +287,47 @@ internal fun HomeScreen(
             // TODO ErrorScreen()
           }
         }
-      }
-      Button(
-        // 임시로 네비게이션 버튼의 역할을 대신 수행함
-        onClick = { navigateToOnBoarding() },
-        colors = ButtonDefaults.buttonColors(
-          containerColor = Gray100,
-          contentColor = Gray100,
-        ),
-        modifier = Modifier
-          .wrapContentSize()
-          .padding(bottom = 32.dp)
-          .align(Alignment.BottomCenter),
-      ) {
-        Row {
-          val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_share)
-          Image(
-            painter = image,
-            contentDescription = "Share Icon",
-          )
-//          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
-//          FixedSizeText(
-//            text = "공유하기",
-//            color = Gray900,
-//            fontWeight = FontWeight.W700,
-//            fontSize = 12.sp,
-//            modifier = Modifier.padding(start = 4.dp),
-//          )
-          Text(
-            text = "공유하기",
-            color = Gray900,
-            fontFamily = pretendard,
-            fontWeight = FontWeight.W700,
-            fontSize = 12.sp.nonScaleSp,
-            modifier = Modifier.padding(start = 4.dp),
-          )
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+          modifier = Modifier
+            .fillMaxWidth(),
+          contentAlignment = Alignment.Center,
+        ) {
+          Button(
+            // 임시로 네비게이션 버튼의 역할을 대신 수행함
+            onClick = { navigateToOnBoarding() },
+            colors = ButtonDefaults.buttonColors(
+              containerColor = Gray100,
+              contentColor = Gray100,
+            ),
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(RoundedCornerShape(18.dp)),
+          ) {
+            Row {
+              val image = painterResource(id = R.drawable.ic_share)
+              Image(
+                painter = image,
+                contentDescription = "Share Icon",
+              )
+//              // FixedSizeText 로 적용하면 텍스트가 보이지 않음
+//              FixedSizeText(
+//                text = "공유하기",
+//                color = Gray900,
+//                fontWeight = FontWeight.W700,
+//                fontSize = 12.sp,
+//                modifier = Modifier.padding(start = 4.dp),
+//              )
+              Text(
+                text = "공유하기",
+                color = Gray900,
+                fontFamily = pretendard,
+                fontWeight = FontWeight.W700,
+                fontSize = 12.sp.nonScaleSp,
+                modifier = Modifier.padding(start = 4.dp),
+              )
+            }
+          }
         }
       }
     }
@@ -311,13 +339,14 @@ data class SubCell(
   val colCnt: Int,
   val subCellRowIndex: Int,
   val subCellColIndex: Int,
-  val bandalartData: BandalartMainCellUiModel,
+  val bandalartData: BandalartCellUiModel,
 )
 
+// TODO 서브 목표에 속한 모든 테스크의 목표를 달성할 경우 서브 목표 칸의 색상도 변경해야 함
 @Composable
 private fun BandalartChart(
   modifier: Modifier = Modifier,
-  bandalart: BandalartMainCellUiModel,
+  bandalart: BandalartCellUiModel,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -357,17 +386,27 @@ private fun BandalartChart(
           .clip(RoundedCornerShape(10.dp))
           .background(color = Primary),
         content = {
+          // 메인 목표
           Box(
             modifier = Modifier
               .matchParentSize()
-              .padding(1.dp),
+              .padding(1.dp)
+              .clickable(onClick = {}),
             contentAlignment = Alignment.Center,
           ) {
             CellText(
-              cellText = bandalart.title,
-              cellColor = Secondary,
+              cellText = if (bandalart.title.isNullOrEmpty()) "메인목표" else bandalart.title,
+              cellTextColor = Secondary,
               fontWeight = FontWeight.W700,
             )
+            if (bandalart.title.isNullOrEmpty()) {
+              Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add Icon",
+                tint = Secondary,
+                modifier = Modifier.size(20.dp),
+              )
+            }
           }
         },
       )
@@ -430,17 +469,14 @@ fun CellGrid(
       ) {
         repeat(cols) { colIndex ->
           val isSubCell = rowIndex == subCell.subCellRowIndex && colIndex == subCell.subCellColIndex
-          val cellText =
-            if (isSubCell) subCell.bandalartData.title
-            else subCell.bandalartData.children[taskIndex++].title
           Cell(
-            cellText = cellText,
+            modifier = Modifier.weight(1f),
+            cell = if (isSubCell) subCell.bandalartData else subCell.bandalartData.children[taskIndex++],
             isSubCell = isSubCell,
             colIndex = colIndex,
             rowIndex = rowIndex,
             colCnt = cols,
             rowCnt = rows,
-            modifier = Modifier.weight(1f),
           )
         }
       }
@@ -451,7 +487,7 @@ fun CellGrid(
 @Composable
 fun Cell(
   modifier: Modifier = Modifier,
-  cellText: String,
+  cell: BandalartCellUiModel,
   isSubCell: Boolean,
   colIndex: Int,
   rowIndex: Int,
@@ -466,6 +502,11 @@ fun Cell(
   val bottomSheetState = rememberModalBottomSheetState(
     skipPartiallyExpanded = skipPartiallyExpanded,
   )
+  val backgroundColor = when {
+    isSubCell -> Secondary
+    cell.isCompleted -> Gray200
+    else -> White
+  }
   Box(
     modifier = modifier
       .padding(
@@ -477,26 +518,87 @@ fun Cell(
       .aspectRatio(1f)
       .background(Gray100)
       .clip(RoundedCornerShape(10.dp))
-      .background(if (isSubCell) Secondary else White)
+      .background(backgroundColor)
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
+    // 서브 목표
     if (isSubCell) {
-      CellText(
-        cellText = cellText,
-        cellColor = Primary,
-        fontWeight = FontWeight.W700,
-      )
+      val cellTextColor = Primary
+      val fontWeight = FontWeight.W700
+
+      if (cell.title.isNullOrEmpty()) {
+        Column(
+          horizontalAlignment = Alignment.CenterHorizontally,
+          verticalArrangement = Arrangement.Center,
+        ) {
+          CellText(
+            cellText = "서브목표",
+            cellTextColor = cellTextColor,
+            fontWeight = fontWeight,
+          )
+          Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Add Icon",
+            tint = cellTextColor,
+            modifier = Modifier.size(20.dp),
+          )
+        }
+      } else {
+        CellText(
+          cellText = cell.title,
+          cellTextColor = cellTextColor,
+          fontWeight = fontWeight,
+        )
+      }
     } else {
-      CellText(
-        cellText = cellText,
-        cellColor = Secondary,
-        fontWeight = FontWeight.W500,
-      )
+      // 테스크
+      val cellTextColor = if (cell.isCompleted) Gray400 else Gray900
+      val fontWeight = FontWeight.W500
+
+      // 테스크가 비어있는 경우
+      if (cell.title.isNullOrEmpty()) {
+        Icon(
+          imageVector = Icons.Default.Add,
+          contentDescription = "Add Icon",
+          tint = Gray500,
+          modifier = Modifier.size(20.dp),
+        )
+      } else {
+        // 테스크 목푤르 달성한 경우
+        if (cell.isCompleted) {
+          Box(
+            modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+          ) {
+            CellText(
+              cellText = cell.title,
+              cellTextColor = cellTextColor,
+              fontWeight = fontWeight,
+            )
+            val image = painterResource(id = R.drawable.ic_cell_check)
+            Image(
+              painter = image,
+              contentDescription = "Complete Icon",
+              modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .offset(x = (-4).dp, y = (-4).dp),
+            )
+          }
+        } else {
+          CellText(
+            cellText = cell.title,
+            cellTextColor = cellTextColor,
+            fontWeight = fontWeight,
+          )
+        }
+      }
     }
     if (openBottomSheet) {
       ModalBottomSheet(
-        modifier = Modifier.wrapContentSize().statusBarsPadding(),
+        modifier = Modifier
+          .wrapContentSize()
+          .statusBarsPadding(),
         onDismissRequest = { openBottomSheet = false },
         sheetState = bottomSheetState,
         content = BottomSheetContent(
