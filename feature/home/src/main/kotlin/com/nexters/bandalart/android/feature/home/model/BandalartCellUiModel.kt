@@ -1,6 +1,6 @@
 package com.nexters.bandalart.android.feature.home.model
 
-data class BandalartMainCellUiModel(
+data class BandalartCellUiModel(
   val key: String = "",
   val title: String? = "",
   val description: String? = "",
@@ -8,5 +8,5 @@ data class BandalartMainCellUiModel(
   val isCompleted: Boolean = false,
   val completionRatio: Int = 0,
   val parentKey: String? = "",
-  val children: List<BandalartMainCellUiModel> = emptyList(),
+  val children: List<BandalartCellUiModel> = emptyList(),
 )

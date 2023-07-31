@@ -1,10 +1,10 @@
 package com.nexters.bandalart.android.feature.home.mapper
 
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.android.feature.home.model.BandalartMainCellUiModel
+import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 
-internal fun BandalartCellEntity.toUiModel(): BandalartMainCellUiModel {
-  return BandalartMainCellUiModel(
+internal fun BandalartCellEntity.toUiModel(): BandalartCellUiModel {
+  return BandalartCellUiModel(
     key = key,
     title = title,
     description = description,
