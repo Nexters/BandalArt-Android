@@ -61,6 +61,7 @@ fun BottomSheetContent(
   scope: CoroutineScope,
   bottomSheetState: SheetState,
   isSubCell: Boolean,
+  isMainCell: Boolean,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     var openDatePickerBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -81,7 +82,7 @@ fun BottomSheetContent(
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
-        isMainCell = false,
+        isMainCell = isMainCell,
         isSubCell = isSubCell,
         scope = scope,
         bottomSheetState = bottomSheetState,
@@ -173,7 +174,7 @@ fun BottomSheetContent(
           }
         }
         Spacer(modifier = Modifier.height(28.dp))
-        if (!isSubCell) {
+        if (!isSubCell && !isMainCell) {
           var switchOn by remember { mutableStateOf(false) }
           BottomSheetSubTitleText(text = "달성 여부")
           Spacer(modifier = Modifier.height(12.dp))
@@ -213,7 +214,7 @@ fun BottomSheetContent(
           Spacer(modifier = Modifier.width(9.dp))
           BottomSheetCompleteButton(modifier = Modifier.weight(1f))
         }
-        Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp)) // 상태바 제한으로 인해 밀린 만큼의 높
+        Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp + 20.dp))
       }
     }
   }

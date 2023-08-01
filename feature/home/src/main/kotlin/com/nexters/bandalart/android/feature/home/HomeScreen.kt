@@ -386,28 +386,10 @@ private fun BandalartChart(
           .clip(RoundedCornerShape(10.dp))
           .background(color = Primary),
         content = {
-          // 메인 목표
-          Box(
-            modifier = Modifier
-              .matchParentSize()
-              .padding(1.dp)
-              .clickable(onClick = {}),
-            contentAlignment = Alignment.Center,
-          ) {
-            CellText(
-              cellText = if (bandalart.title.isNullOrEmpty()) "메인목표" else bandalart.title,
-              cellTextColor = Secondary,
-              fontWeight = FontWeight.W700,
-            )
-            if (bandalart.title.isNullOrEmpty()) {
-              Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Add Icon",
-                tint = Secondary,
-                modifier = Modifier.size(20.dp),
-              )
-            }
-          }
+          Cell(
+            isMainCell = true,
+            cell = bandalart,
+          )
         },
       )
     },
@@ -470,13 +452,16 @@ fun CellGrid(
         repeat(cols) { colIndex ->
           val isSubCell = rowIndex == subCell.subCellRowIndex && colIndex == subCell.subCellColIndex
           Cell(
+            isMainCell = false,
+            cellInfo = CellInfo(
+              isSubCell = isSubCell,
+              colIndex = colIndex,
+              rowIndex = rowIndex,
+              colCnt = cols,
+              rowCnt = rows,
+            ),
             modifier = Modifier.weight(1f),
             cell = if (isSubCell) subCell.bandalartData else subCell.bandalartData.children[taskIndex++],
-            isSubCell = isSubCell,
-            colIndex = colIndex,
-            rowIndex = rowIndex,
-            colCnt = cols,
-            rowCnt = rows,
           )
         }
       }
@@ -484,17 +469,23 @@ fun CellGrid(
   }
 }
 
+data class CellInfo(
+  val isSubCell: Boolean = false,
+  val colIndex: Int = 2,
+  val rowIndex: Int = 2,
+  val colCnt: Int = 1,
+  val rowCnt: Int = 1,
+)
+
 @Composable
 fun Cell(
   modifier: Modifier = Modifier,
+  isMainCell: Boolean,
+  cellInfo: CellInfo = CellInfo(),
   cell: BandalartCellUiModel,
-  isSubCell: Boolean,
-  colIndex: Int,
-  rowIndex: Int,
-  colCnt: Int,
-  rowCnt: Int,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
+  mainCellPadding: Dp = 1.dp,
 ) {
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val skipPartiallyExpanded by remember { mutableStateOf(true) }
@@ -503,30 +494,42 @@ fun Cell(
     skipPartiallyExpanded = skipPartiallyExpanded,
   )
   val backgroundColor = when {
-    isSubCell -> Secondary
+    isMainCell -> Primary
+    cellInfo.isSubCell -> Secondary
     cell.isCompleted -> Gray200
     else -> White
   }
   Box(
     modifier = modifier
       .padding(
-        start = if (colIndex == 0) outerPadding else innerPadding,
-        end = if (colIndex == colCnt - 1) outerPadding else innerPadding,
-        top = if (rowIndex == 0) outerPadding else innerPadding,
-        bottom = if (rowIndex == rowCnt - 1) outerPadding else innerPadding,
+        start = if (isMainCell) mainCellPadding else if (cellInfo.colIndex == 0) outerPadding else innerPadding,
+        end = if (isMainCell) mainCellPadding else if (cellInfo.colIndex == cellInfo.colCnt - 1) outerPadding else innerPadding,
+        top = if (isMainCell) mainCellPadding else if (cellInfo.rowIndex == 0) outerPadding else innerPadding,
+        bottom = if (isMainCell) mainCellPadding else if (cellInfo.rowIndex == cellInfo.rowCnt - 1) outerPadding else innerPadding,
       )
       .aspectRatio(1f)
-      .background(Gray100)
       .clip(RoundedCornerShape(10.dp))
       .background(backgroundColor)
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
-    // 서브 목표
-    if (isSubCell) {
+    if (isMainCell) {
+      if (cell.title.isNullOrEmpty()) {
+        Icon(
+          imageVector = Icons.Default.Add,
+          contentDescription = "Add Icon",
+          tint = Secondary,
+          modifier = Modifier.size(20.dp),
+        )
+      }
+      CellText(
+        cellText = cell.title ?: "",
+        cellTextColor = Secondary,
+        fontWeight = FontWeight.W700,
+      )
+    } else if (cellInfo.isSubCell) {
       val cellTextColor = Primary
       val fontWeight = FontWeight.W700
-
       if (cell.title.isNullOrEmpty()) {
         Column(
           horizontalAlignment = Alignment.CenterHorizontally,
@@ -605,7 +608,8 @@ fun Cell(
           onResult = { openBottomSheet = it },
           scope = scope,
           bottomSheetState = bottomSheetState,
-          isSubCell = isSubCell,
+          isSubCell = cellInfo.isSubCell,
+          isMainCell = isMainCell,
         ),
         dragHandle = null,
       )
