@@ -37,6 +37,11 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       .body()
   }
 
+  override suspend fun deleteBandalart(bandalartKey: String) {
+    client
+      .delete("v1/bandalarts/$bandalartKey")
+  }
+
   override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse? {
     return client
       .get("v1/bandalarts/$bandalartKey/cells")

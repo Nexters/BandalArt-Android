@@ -27,6 +27,10 @@ class BandalartRepositoryImpl @Inject constructor(
     return bandalartRemoteDataSource.getBandalartDetail(bandalartKey)?.toEntity()
   }
 
+  override suspend fun deleteBandalart(bandalartKey: String) {
+    bandalartRemoteDataSource.deleteBandalart(bandalartKey)
+  }
+
   override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellEntity? {
     return bandalartRemoteDataSource.getBandalartMainCell(bandalartKey)?.toEntity()
   }

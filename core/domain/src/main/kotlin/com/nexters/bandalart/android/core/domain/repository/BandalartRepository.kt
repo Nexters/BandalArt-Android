@@ -36,6 +36,7 @@ interface BandalartRepository {
    *
    * @param bandalartKey 메인 셀 고유 키
    */
+  suspend fun deleteBandalart(bandalartKey: String)
 
   /**
    * 반다라트 메인 셀 조회

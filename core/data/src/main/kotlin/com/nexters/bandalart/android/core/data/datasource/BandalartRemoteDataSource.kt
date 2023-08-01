@@ -11,6 +11,8 @@ interface BandalartRemoteDataSource {
 
   suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse?
 
+  suspend fun deleteBandalart(bandalartKey: String)
+
   suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse?
 
   suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse?
