@@ -494,7 +494,8 @@ fun Cell(
     skipPartiallyExpanded = skipPartiallyExpanded,
   )
   val backgroundColor = when {
-    isSubCell -> Secondary
+    isMainCell -> Primary
+    cellInfo.isSubCell -> Secondary
     cell.isCompleted -> Gray200
     else -> White
   }
@@ -508,7 +509,7 @@ fun Cell(
       )
       .aspectRatio(1f)
       .clip(RoundedCornerShape(10.dp))
-      .background(if (isMainCell) Primary else if (cellInfo.isSubCell) Secondary else White)
+      .background(backgroundColor)
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
@@ -522,8 +523,8 @@ fun Cell(
         )
       }
       CellText(
-        cellText = cell.title,
-        cellColor = Secondary,
+        cellText = cell.title ?: "",
+        cellTextColor = Secondary,
         fontWeight = FontWeight.W700,
       )
     } else if (cellInfo.isSubCell) {
