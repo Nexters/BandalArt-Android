@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home
+package com.nexters.bandalart.android.feature.home.model
 
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 
