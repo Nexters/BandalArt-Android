@@ -2,7 +2,7 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.android.core.domain.usecase.GetBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
