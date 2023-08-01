@@ -4,21 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BandalartCellResponse(
-  @SerialName("key")
-  val key: String,
+data class UpdateBandalartCellRequest(
   @SerialName("title")
-  val title: String?,
+  val title: String,
   @SerialName("description")
   val description: String?,
   @SerialName("dueDate")
   val dueDate: String?,
   @SerialName("isCompleted")
   val isCompleted: Boolean,
-  @SerialName("completionRatio")
-  val completionRatio: Int,
-  @SerialName("parentKey")
-  val parentKey: String?,
-  @SerialName("children")
-  val children: List<BandalartCellResponse>,
 )

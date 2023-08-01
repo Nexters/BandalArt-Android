@@ -16,13 +16,13 @@ import com.nexters.bandalart.android.core.ui.theme.pretendard
 fun CellText(
   modifier: Modifier = Modifier,
   cellText: String,
-  cellColor: Color,
+  cellTextColor: Color,
   fontWeight: FontWeight,
 ) {
   Text(
     modifier = modifier.padding(horizontal = 4.dp, vertical = 6.dp),
     text = cellText,
-    color = cellColor,
+    color = cellTextColor,
     fontFamily = pretendard,
     fontWeight = fontWeight,
     fontSize = 12.sp.nonScaleSp,
