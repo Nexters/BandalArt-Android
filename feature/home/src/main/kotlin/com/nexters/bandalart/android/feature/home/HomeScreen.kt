@@ -404,16 +404,11 @@ private fun BandalartChart(
     val mainWidth = chartWidth / 5
     val padding = 1.dp.roundToPx()
 
-    val mainConstraints =
-      Constraints.fixed(width = mainWidth, height = mainWidth)
-    val sub1Constraints =
-      Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
-    val sub2Constraints =
-      Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
-    val sub3Constraints =
-      Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
-    val sub4Constraints =
-      Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
+    val mainConstraints = Constraints.fixed(width = mainWidth, height = mainWidth)
+    val sub1Constraints = Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
+    val sub2Constraints = Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
+    val sub3Constraints = Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
+    val sub4Constraints = Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
 
     val mainPlaceable = main.measure(mainConstraints)
     val sub1Placeable = sub1.measure(sub1Constraints)
@@ -495,7 +490,8 @@ fun Cell(
   )
   val backgroundColor = when {
     isMainCell -> Primary
-    cellInfo.isSubCell -> Secondary
+    cellInfo.isSubCell and cell.isCompleted -> Secondary.copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cell.isCompleted -> Secondary
     cell.isCompleted -> Gray200
     else -> White
   }
@@ -513,23 +509,37 @@ fun Cell(
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
+    // 메인 목표
     if (isMainCell) {
+      // 메인 목표가 빈 경우
       if (cell.title.isNullOrEmpty()) {
-        Icon(
-          imageVector = Icons.Default.Add,
-          contentDescription = "Add Icon",
-          tint = Secondary,
-          modifier = Modifier.size(20.dp),
+        Box(contentAlignment = Alignment.Center) {
+          Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CellText(
+              cellText = "메인목표",
+              cellTextColor = Secondary,
+              fontWeight = FontWeight.W700,
+            )
+            Icon(
+              imageVector = Icons.Default.Add,
+              contentDescription = "Add Icon",
+              tint = Secondary,
+              modifier = Modifier.size(20.dp),
+            )
+          }
+        }
+      } else {
+        CellText(
+          cellText = cell.title,
+          cellTextColor = Secondary,
+          fontWeight = FontWeight.W700,
         )
       }
-      CellText(
-        cellText = cell.title ?: "",
-        cellTextColor = Secondary,
-        fontWeight = FontWeight.W700,
-      )
+      // 서브 목표
     } else if (cellInfo.isSubCell) {
       val cellTextColor = Primary
       val fontWeight = FontWeight.W700
+      // 서브 목표가 빈 경우
       if (cell.title.isNullOrEmpty()) {
         Column(
           horizontalAlignment = Alignment.CenterHorizontally,
@@ -548,10 +558,12 @@ fun Cell(
           )
         }
       } else {
+        // 서브 목표를 달성할 경우
         CellText(
           cellText = cell.title,
           cellTextColor = cellTextColor,
           fontWeight = fontWeight,
+          textAlpha = if (cell.isCompleted) 1f else 0.6f,
         )
       }
     } else {
@@ -568,7 +580,7 @@ fun Cell(
           modifier = Modifier.size(20.dp),
         )
       } else {
-        // 테스크 목푤르 달성한 경우
+        // 테스크의 목표를 달성한 경우
         if (cell.isCompleted) {
           Box(
             modifier.fillMaxSize(),
