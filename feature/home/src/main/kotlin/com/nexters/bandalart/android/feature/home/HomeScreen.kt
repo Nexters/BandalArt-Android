@@ -357,18 +357,20 @@ private fun BandalartChart(
           .clip(RoundedCornerShape(10.dp))
           .background(color = Primary),
         content = {
-          Box(
-            modifier = Modifier
-              .matchParentSize()
-              .padding(1.dp),
-            contentAlignment = Alignment.Center,
-          ) {
-            CellText(
-              cellText = bandalart.title,
-              cellColor = Secondary,
-              fontWeight = FontWeight.W700,
-            )
-          }
+          Cell(
+            cellText = bandalart.title,
+            isSubCell = false,
+            isMainCell = true,
+            colIndex = 2,
+            rowIndex = 2,
+            colCnt = 1,
+            rowCnt = 1,
+          )
+//            CellText(
+//              cellText = bandalart.title,
+//              cellColor = Secondary,
+//              fontWeight = FontWeight.W700,
+//            )
         },
       )
     },
@@ -436,6 +438,7 @@ fun CellGrid(
           Cell(
             cellText = cellText,
             isSubCell = isSubCell,
+            isMainCell = false,
             colIndex = colIndex,
             rowIndex = rowIndex,
             colCnt = cols,
@@ -453,12 +456,14 @@ fun Cell(
   modifier: Modifier = Modifier,
   cellText: String,
   isSubCell: Boolean,
+  isMainCell: Boolean,
   colIndex: Int,
   rowIndex: Int,
   colCnt: Int,
   rowCnt: Int,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
+  mainCellPadding: Dp = 1.dp,
 ) {
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val skipPartiallyExpanded by remember { mutableStateOf(true) }
@@ -469,19 +474,24 @@ fun Cell(
   Box(
     modifier = modifier
       .padding(
-        start = if (colIndex == 0) outerPadding else innerPadding,
-        end = if (colIndex == colCnt - 1) outerPadding else innerPadding,
-        top = if (rowIndex == 0) outerPadding else innerPadding,
-        bottom = if (rowIndex == rowCnt - 1) outerPadding else innerPadding,
+        start = if (isMainCell) mainCellPadding else if (colIndex == 0) outerPadding else innerPadding,
+        end = if (isMainCell) mainCellPadding else if (colIndex == colCnt - 1) outerPadding else innerPadding,
+        top = if (isMainCell) mainCellPadding else if (rowIndex == 0) outerPadding else innerPadding,
+        bottom = if (isMainCell) mainCellPadding else if (rowIndex == rowCnt - 1) outerPadding else innerPadding,
       )
       .aspectRatio(1f)
-      .background(Gray100)
       .clip(RoundedCornerShape(10.dp))
-      .background(if (isSubCell) Secondary else White)
+      .background(if (isMainCell) Primary else if (isSubCell) Secondary else White)
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
-    if (isSubCell) {
+    if (isMainCell) {
+      CellText(
+        cellText = cellText,
+        cellColor = Secondary,
+        fontWeight = FontWeight.W700,
+      )
+    } else if (isSubCell) {
       CellText(
         cellText = cellText,
         cellColor = Primary,
@@ -504,6 +514,7 @@ fun Cell(
           scope = scope,
           bottomSheetState = bottomSheetState,
           isSubCell = isSubCell,
+          isMainCell = isMainCell,
         ),
         dragHandle = null,
       )
