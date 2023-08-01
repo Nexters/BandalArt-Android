@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home
+package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -26,7 +26,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Primary
 
 @Composable
-fun LinearProgressBar() {
+fun CompletionRatioProgressBar() {
   var progressCount: Int by remember { mutableStateOf(0) }
   var progress by remember { mutableStateOf(0f) }
 
