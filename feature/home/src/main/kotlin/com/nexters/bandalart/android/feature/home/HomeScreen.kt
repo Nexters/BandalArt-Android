@@ -342,7 +342,6 @@ data class SubCell(
   val bandalartData: BandalartCellUiModel,
 )
 
-// TODO 서브 목표에 속한 모든 테스크의 목표를 달성할 경우 서브 목표 칸의 색상도 변경해야 함
 @Composable
 private fun BandalartChart(
   modifier: Modifier = Modifier,
