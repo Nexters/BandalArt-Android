@@ -359,18 +359,8 @@ private fun BandalartChart(
         content = {
           Cell(
             cellText = bandalart.title,
-            isSubCell = false,
             isMainCell = true,
-            colIndex = 2,
-            rowIndex = 2,
-            colCnt = 1,
-            rowCnt = 1,
           )
-//            CellText(
-//              cellText = bandalart.title,
-//              cellColor = Secondary,
-//              fontWeight = FontWeight.W700,
-//            )
         },
       )
     },
@@ -437,12 +427,14 @@ fun CellGrid(
             else subCell.bandalartData.children[taskIndex++].title
           Cell(
             cellText = cellText,
-            isSubCell = isSubCell,
             isMainCell = false,
-            colIndex = colIndex,
-            rowIndex = rowIndex,
-            colCnt = cols,
-            rowCnt = rows,
+            cellInfo = CellInfo(
+              isSubCell = isSubCell,
+              colIndex = colIndex,
+              rowIndex = rowIndex,
+              colCnt = cols,
+              rowCnt = rows,
+            ),
             modifier = Modifier.weight(1f),
           )
         }
@@ -451,16 +443,20 @@ fun CellGrid(
   }
 }
 
+data class CellInfo(
+  val isSubCell: Boolean = false,
+  val colIndex: Int = 2,
+  val rowIndex: Int = 2,
+  val colCnt: Int = 1,
+  val rowCnt: Int = 1,
+)
+
 @Composable
 fun Cell(
   modifier: Modifier = Modifier,
   cellText: String,
-  isSubCell: Boolean,
   isMainCell: Boolean,
-  colIndex: Int,
-  rowIndex: Int,
-  colCnt: Int,
-  rowCnt: Int,
+  cellInfo: CellInfo = CellInfo(),
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
@@ -474,14 +470,14 @@ fun Cell(
   Box(
     modifier = modifier
       .padding(
-        start = if (isMainCell) mainCellPadding else if (colIndex == 0) outerPadding else innerPadding,
-        end = if (isMainCell) mainCellPadding else if (colIndex == colCnt - 1) outerPadding else innerPadding,
-        top = if (isMainCell) mainCellPadding else if (rowIndex == 0) outerPadding else innerPadding,
-        bottom = if (isMainCell) mainCellPadding else if (rowIndex == rowCnt - 1) outerPadding else innerPadding,
+        start = if (isMainCell) mainCellPadding else if (cellInfo.colIndex == 0) outerPadding else innerPadding,
+        end = if (isMainCell) mainCellPadding else if (cellInfo.colIndex == cellInfo.colCnt - 1) outerPadding else innerPadding,
+        top = if (isMainCell) mainCellPadding else if (cellInfo.rowIndex == 0) outerPadding else innerPadding,
+        bottom = if (isMainCell) mainCellPadding else if (cellInfo.rowIndex == cellInfo.rowCnt - 1) outerPadding else innerPadding,
       )
       .aspectRatio(1f)
       .clip(RoundedCornerShape(10.dp))
-      .background(if (isMainCell) Primary else if (isSubCell) Secondary else White)
+      .background(if (isMainCell) Primary else if (cellInfo.isSubCell) Secondary else White)
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
@@ -491,7 +487,7 @@ fun Cell(
         cellColor = Secondary,
         fontWeight = FontWeight.W700,
       )
-    } else if (isSubCell) {
+    } else if (cellInfo.isSubCell) {
       CellText(
         cellText = cellText,
         cellColor = Primary,
@@ -513,7 +509,7 @@ fun Cell(
           onResult = { openBottomSheet = it },
           scope = scope,
           bottomSheetState = bottomSheetState,
-          isSubCell = isSubCell,
+          isSubCell = cellInfo.isSubCell,
           isMainCell = isMainCell,
         ),
         dragHandle = null,
