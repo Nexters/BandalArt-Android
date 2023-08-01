@@ -81,6 +81,8 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
+import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
+import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,9 +95,20 @@ internal fun HomeRoute(
   modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
-  val homeState by viewModel.homeUiState.collectAsStateWithLifecycle()
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(viewModel) {
+    viewModel.eventFlow.collect { event ->
+      when (event) {
+        is HomeUiEvent.ShowSnackbar -> {
+          onShowSnackbar(event.message)
+        }
+      }
+    }
+  }
+
   HomeScreen(
-    homeState = homeState,
+    uiState = uiState,
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onAddBandalart = onAddBandalart,
@@ -109,7 +122,7 @@ internal fun HomeRoute(
 @Suppress("unused")
 @Composable
 internal fun HomeScreen(
-  homeState: HomeUiState,
+  uiState: HomeUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onAddBandalart: () -> Unit,
@@ -122,8 +135,8 @@ internal fun HomeScreen(
   val scope = rememberCoroutineScope()
 
   LaunchedEffect(key1 = Unit) {
-    getBandalartMainCell("K3mLJ")
-    // getBandalartMainCell("3sF4I")
+    // getBandalartMainCell("K3mLJ")
+    getBandalartMainCell("3sF4I")
   }
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -273,18 +286,31 @@ internal fun HomeScreen(
             }
           }
           Spacer(modifier = Modifier.height(8.dp))
-          LinearProgressBar()
+          CompletionRatioProgressBar()
           Spacer(modifier = Modifier.height(18.dp))
         }
-        when (homeState) {
-          is HomeUiState.Loading -> {
+//        when (uiState) {
+//          is HomeUiState.Loading -> {
+//            LoadingWheel()
+//          }
+//          is HomeUiState.Success -> {
+//            BandalartChart(bandalartData = uiState.bandalartData)
+//          }
+//          // TODO Network Eroor 상황 처리
+//          is HomeUiState.Error -> {
+//            // TODO ErrorScreen() 구현
+//          }
+//        }
+        when {
+          uiState.isLoading -> {
             LoadingWheel()
           }
-          is HomeUiState.Success -> {
-            BandalartChart(bandalart = homeState.bandalartData)
+          uiState.bandalartData != null -> {
+            BandalartChart(bandalartData = uiState.bandalartData)
           }
-          is HomeUiState.Error -> {
-            // TODO ErrorScreen()
+          // TODO Network Eroor 상황 처리
+          uiState.error != null -> {
+            // TODO ErrorScreen() 구현
           }
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -345,7 +371,7 @@ data class SubCell(
 @Composable
 private fun BandalartChart(
   modifier: Modifier = Modifier,
-  bandalart: BandalartCellUiModel,
+  bandalartData: BandalartCellUiModel,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -353,10 +379,10 @@ private fun BandalartChart(
   }
 
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1, bandalart.children[0]),
-    SubCell(3, 2, 1, 0, bandalart.children[1]),
-    SubCell(3, 2, 1, 1, bandalart.children[2]),
-    SubCell(2, 3, 0, 1, bandalart.children[3]),
+    SubCell(2, 3, 1, 1, bandalartData.children[0]),
+    SubCell(3, 2, 1, 0, bandalartData.children[1]),
+    SubCell(3, 2, 1, 1, bandalartData.children[2]),
+    SubCell(2, 3, 0, 1, bandalartData.children[3]),
   )
 
   Layout(
@@ -387,7 +413,7 @@ private fun BandalartChart(
         content = {
           Cell(
             isMainCell = true,
-            cell = bandalart,
+            cell = bandalartData,
           )
         },
       )
