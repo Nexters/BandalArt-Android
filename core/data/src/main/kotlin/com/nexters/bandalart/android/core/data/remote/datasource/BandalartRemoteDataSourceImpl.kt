@@ -7,7 +7,7 @@ import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResp
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartListResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartCellRequest
-import com.nexters.bandalart.android.core.data.util.ApiException
+import com.nexters.bandalart.android.core.data.util.ExceptionWrapper
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
@@ -17,8 +17,11 @@ import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.util.InternalAPI
+import java.nio.channels.UnresolvedAddressException
 import javax.inject.Inject
 
+// TODO 반복 되는 코드 모듈화 필요성
+@Suppress("TooGenericExceptionCaught")
 class BandalartRemoteDataSourceImpl @Inject constructor(
   private val client: HttpClient,
 ) : BandalartRemoteDataSource {
@@ -26,8 +29,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
     try {
       client
         .post("v1/bandalarts")
-    } catch (e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -36,8 +47,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       client
         .get("v1/bandalarts")
         .body()
-    } catch  (e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -46,8 +65,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       client
         .get("v1/bandalarts/$bandalartKey")
         .body()
-    } catch (e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -55,8 +82,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
     try {
       client
         .delete("v1/bandalarts/$bandalartKey")
-    } catch(e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -65,8 +100,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       client
         .get("v1/bandalarts/$bandalartKey/cells")
         .body()
-    } catch(e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -75,8 +118,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
       client
         .get("v1/bandalarts/$bandalartKey/cells/$cellKey")
         .body()
-    } catch(e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -90,8 +141,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
         .patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
           setBody(updateBandalartRequest)
         }
-    } catch(e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 
@@ -99,8 +158,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
     try {
       client
         .delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
-    } catch (e: ResponseException) {
-      throw ApiException(e.response.status.value, e.response.status.description)
+    } catch (exception: UnresolvedAddressException) {
+      throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    } catch (exception: ResponseException) {
+      throw ExceptionWrapper(
+        statusCode = exception.response.status.value,
+        message = exception.response.status.description,
+        cause = exception,
+      )
+    } catch (exception: Exception) {
+      throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
     }
   }
 }
