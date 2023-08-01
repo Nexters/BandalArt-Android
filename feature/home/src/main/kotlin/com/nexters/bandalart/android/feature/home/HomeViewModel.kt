@@ -2,7 +2,8 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.android.core.domain.usecase.GetBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,9 +13,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("unused")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
+  private val deleteBandalartUseCase: DeleteBandalartUseCase,
 ) : ViewModel() {
 
   private val _homeUiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
