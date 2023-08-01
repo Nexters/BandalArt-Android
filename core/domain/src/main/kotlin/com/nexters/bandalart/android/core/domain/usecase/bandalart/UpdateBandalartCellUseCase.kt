@@ -14,8 +14,8 @@ class UpdateBandalartCellUseCase @Inject constructor(
     bandalartKey: String,
     cellKey: String,
     updateBandalartCellEntity: UpdateBandalartCellEntity,
-  ) {
-    runSuspendCatching {
+  ): Result<Unit> {
+    return runSuspendCatching {
       repository.updateBandalartCell(bandalartKey, cellKey, updateBandalartCellEntity)
     }
   }
