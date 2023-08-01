@@ -17,14 +17,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-//sealed class HomeUiState {
-//  object Loading : HomeUiState()
-//  data class Success(
-//    val bandalartData: BandalartCellUiModel,
-//  ) : HomeUiState()
+// sealed class HomeUiState {
+//   object Loading : HomeUiState()
+//   data class Success(
+//     val bandalartData: BandalartCellUiModel,
+//   ) :  HomeUiState()
 //
-//  data class Error(val exception: Throwable) : HomeUiState()
-//}
+//   data class Error(val exception: Throwable) : HomeUiState()
+// }
 
 // TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
@@ -57,7 +57,6 @@ class HomeViewModel @Inject constructor(
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
-  // TODO Network Error 상황일 때 에러 핸들링 추가, 현재 exception message 가 null 로 출력됨
   fun getBandalartMainCell(bandalartKey: String) {
     viewModelScope.launch {
       // _uiState.value = HomeUiState.Loading
@@ -69,7 +68,7 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             bandalartData = result.getOrNull()!!.toUiModel(),
-            error = null
+            error = null,
           )
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -77,11 +76,11 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          //_uiState.value = HomeUiState.Error(exception)
+          // _uiState.value = HomeUiState.Error(exception)
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             bandalartData = null,
-            error = exception
+            error = exception,
           )
           // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))

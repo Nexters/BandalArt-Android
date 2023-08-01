@@ -1,7 +1,5 @@
 package com.nexters.bandalart.android.feature.home.model
 
-import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-
 // 임시 데이터
 // 데이터의 구조를 파악 하기 위함
 val bandalartData = BandalartCellUiModel(
