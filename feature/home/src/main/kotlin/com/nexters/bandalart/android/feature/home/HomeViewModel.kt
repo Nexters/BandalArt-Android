@@ -17,6 +17,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+/**
+ * HomeUiState
+ *
+ * @param bandalartData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
+ * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
+ * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
+ * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
+ * @param isBandalartDeleted 반다라트 표가 삭제됨
+ * @param isLoading 서버와의 통신 중 로딩 상태
+ * @param error 서버와의 통신을 실패
+ */
+
 // TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
   val bandalartData: BandalartCellUiModel? = null,
