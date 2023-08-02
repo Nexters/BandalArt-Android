@@ -142,6 +142,7 @@ internal fun HomeScreen(
   val emojiPickerState = rememberModalBottomSheetState(
     skipPartiallyExpanded = emojiSkipPartiallyExpanded,
   )
+  // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf("😎") }
   LaunchedEffect(key1 = Unit) {
     getBandalartDetail("3sF4I")

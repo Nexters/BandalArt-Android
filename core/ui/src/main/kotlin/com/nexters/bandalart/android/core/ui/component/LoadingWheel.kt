@@ -25,7 +25,7 @@ fun LoadingWheel(
       modifier = Modifier
         .align(Alignment.Center)
         .size(30.dp),
-      color = progressColor
+      color = progressColor,
     )
   }
 }
