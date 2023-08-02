@@ -5,6 +5,10 @@ package com.nexters.bandalart.android.feature.home.model
 val bandalartData = BandalartCellUiModel(
   key = "6km1Z",
   title = "넥스터즈 1등하기",
+  description = null,
+  isCompleted = false,
+  completionRatio = 65,
+  parentKey = null,
   children = listOf(
     BandalartCellUiModel(
       key = "9nyXk",
