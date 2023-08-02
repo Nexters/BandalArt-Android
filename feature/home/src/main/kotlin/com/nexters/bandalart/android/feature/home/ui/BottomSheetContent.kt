@@ -81,7 +81,7 @@ fun bottomSheetContent(
   isMainCell: Boolean,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
-    var openDatePickerBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var openDatePickerPush by rememberSaveable { mutableStateOf(false) }
     val datePickerSkipPartiallyExpanded by remember { mutableStateOf(true) }
     val datePickerScope = rememberCoroutineScope()
     val datePickerState = rememberModalBottomSheetState(
@@ -94,9 +94,11 @@ fun bottomSheetContent(
       skipPartiallyExpanded = emojiSkipPartiallyExpanded,
     )
     var currentEmoji by remember { mutableStateOf("") }
-    var goal by rememberSaveable { mutableStateOf("") }
+    var title by rememberSaveable { mutableStateOf("") }
+    var dueDate by rememberSaveable { mutableStateOf("") }
     var memo by rememberSaveable { mutableStateOf("") }
     val scrollable = rememberScrollState()
+    var switchOn by remember { mutableStateOf(false) }
 
     Column(
       modifier = Modifier
@@ -114,7 +116,8 @@ fun bottomSheetContent(
       )
       Column(
         modifier = Modifier
-          .fillMaxWidth().wrapContentHeight()
+          .fillMaxWidth()
+          .wrapContentHeight()
           .padding(
             start = 20.dp,
             top = 40.dp,
@@ -125,7 +128,11 @@ fun bottomSheetContent(
         Spacer(modifier = Modifier.height(11.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
           if (isMainCell) {
-            Box(modifier = Modifier.align(Alignment.CenterVertically).padding(end = 16.dp)) {
+            Box(
+              modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(end = 16.dp),
+            ) {
               Card(
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -172,13 +179,13 @@ fun bottomSheetContent(
               modifier = Modifier
                 .fillMaxWidth()
                 .height(18.dp),
-              value = goal,
-              onValueChange = { goal = if (it.length > 15) goal else it },
+              value = title,
+              onValueChange = { title = if (it.length > 15) title else it },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (goal.isEmpty()) BottomSheetContentText(text = "15자 이내로 입력해주세요.")
+                if (title.isEmpty()) BottomSheetContentText(text = "15자 이내로 입력해주세요.")
                 innerTextField()
               },
             )
@@ -210,16 +217,22 @@ fun bottomSheetContent(
           )
         }
         Spacer(modifier = Modifier.height(25.dp))
-        BottomSheetSubTitleText(text = "마감일 선택")
+        BottomSheetSubTitleText(text = "마감일 (선택)")
         Spacer(modifier = Modifier.height(12.dp))
         Column {
           Box(
             modifier = Modifier
               .fillMaxWidth()
               .height(18.dp)
-              .clickable { openDatePickerBottomSheet = !openDatePickerBottomSheet },
+              .clickable { openDatePickerPush = !openDatePickerPush },
           ) {
-            BottomSheetContentText(text = "마감일을 선택해주세요.")
+            val dueDateText = dueDate.split("-")
+            BottomSheetContentText(
+              color = if (dueDate == "") Gray400 else Gray900,
+              text =
+              if (dueDate == "") "마감일을 선택해주세요."
+              else dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2] + "일",
+            )
             Icon(
               modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -229,18 +242,19 @@ fun bottomSheetContent(
               contentDescription = "Arrow Forward Icon",
               tint = Gray400,
             )
-            if (openDatePickerBottomSheet) {
-              DatePickerUI(
-                label = "Date Picker",
-                onDismissRequest = { openDatePickerBottomSheet = !openDatePickerBottomSheet },
-                onResult = { openDatePickerBottomSheet = it },
-                datePickerScope = datePickerScope,
-                datePickerState = datePickerState,
-              )
-            }
           }
           Spacer(modifier = Modifier.height(10.dp))
           BottomSheetDivider()
+        }
+        AnimatedVisibility(visible = openDatePickerPush) {
+          DatePickerUI(
+            onResult = { dueDateResult, openDatePickerPushResult ->
+              dueDate = dueDateResult
+              openDatePickerPush = openDatePickerPushResult
+            },
+            datePickerScope = datePickerScope,
+            datePickerState = datePickerState,
+          )
         }
         Spacer(modifier = Modifier.height(28.dp))
         BottomSheetSubTitleText(text = "메모 (선택)")
@@ -257,9 +271,7 @@ fun bottomSheetContent(
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (memo.isEmpty()) {
-                  BottomSheetContentText(text = "메모를 입력해주세요.")
-                }
+                if (memo.isEmpty()) BottomSheetContentText(text = "메모를 입력해주세요.")
                 innerTextField()
               },
             )
@@ -269,7 +281,6 @@ fun bottomSheetContent(
         }
         Spacer(modifier = Modifier.height(28.dp))
         if (!isSubCell && !isMainCell) {
-          var switchOn by remember { mutableStateOf(false) }
           BottomSheetSubTitleText(text = "달성 여부")
           Spacer(modifier = Modifier.height(12.dp))
           Box(modifier = Modifier.fillMaxWidth()) {
