@@ -81,6 +81,8 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
+import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
+import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,9 +95,20 @@ internal fun HomeRoute(
   modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
-  val homeState by viewModel.homeUiState.collectAsStateWithLifecycle()
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(viewModel) {
+    viewModel.eventFlow.collect { event ->
+      when (event) {
+        is HomeUiEvent.ShowSnackbar -> {
+          onShowSnackbar(event.message)
+        }
+      }
+    }
+  }
+
   HomeScreen(
-    homeState = homeState,
+    uiState = uiState,
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onAddBandalart = onAddBandalart,
@@ -109,7 +122,7 @@ internal fun HomeRoute(
 @Suppress("unused")
 @Composable
 internal fun HomeScreen(
-  homeState: HomeUiState,
+  uiState: HomeUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onAddBandalart: () -> Unit,
@@ -122,8 +135,8 @@ internal fun HomeScreen(
   val scope = rememberCoroutineScope()
 
   LaunchedEffect(key1 = Unit) {
-    getBandalartMainCell("K3mLJ")
-    // getBandalartMainCell("3sF4I")
+    // getBandalartMainCell("K3mLJ")
+    getBandalartMainCell("3sF4I")
   }
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -273,18 +286,19 @@ internal fun HomeScreen(
             }
           }
           Spacer(modifier = Modifier.height(8.dp))
-          LinearProgressBar()
+          CompletionRatioProgressBar()
           Spacer(modifier = Modifier.height(18.dp))
         }
-        when (homeState) {
-          is HomeUiState.Loading -> {
+        when {
+          uiState.isLoading -> {
             LoadingWheel()
           }
-          is HomeUiState.Success -> {
-            BandalartChart(bandalart = homeState.bandalartData)
+          uiState.bandalartData != null -> {
+            BandalartChart(bandalartData = uiState.bandalartData)
           }
-          is HomeUiState.Error -> {
-            // TODO ErrorScreen()
+          // TODO Network Eroor 상황 처리
+          uiState.error != null -> {
+            // TODO ErrorScreen() 구현
           }
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -342,11 +356,10 @@ data class SubCell(
   val bandalartData: BandalartCellUiModel,
 )
 
-// TODO 서브 목표에 속한 모든 테스크의 목표를 달성할 경우 서브 목표 칸의 색상도 변경해야 함
 @Composable
 private fun BandalartChart(
   modifier: Modifier = Modifier,
-  bandalart: BandalartCellUiModel,
+  bandalartData: BandalartCellUiModel,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -354,10 +367,10 @@ private fun BandalartChart(
   }
 
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1, bandalart.children[0]),
-    SubCell(3, 2, 1, 0, bandalart.children[1]),
-    SubCell(3, 2, 1, 1, bandalart.children[2]),
-    SubCell(2, 3, 0, 1, bandalart.children[3]),
+    SubCell(2, 3, 1, 1, bandalartData.children[0]),
+    SubCell(3, 2, 1, 0, bandalartData.children[1]),
+    SubCell(3, 2, 1, 1, bandalartData.children[2]),
+    SubCell(2, 3, 0, 1, bandalartData.children[3]),
   )
 
   Layout(
@@ -388,7 +401,7 @@ private fun BandalartChart(
         content = {
           Cell(
             isMainCell = true,
-            cell = bandalart,
+            cell = bandalartData,
           )
         },
       )
@@ -404,16 +417,11 @@ private fun BandalartChart(
     val mainWidth = chartWidth / 5
     val padding = 1.dp.roundToPx()
 
-    val mainConstraints =
-      Constraints.fixed(width = mainWidth, height = mainWidth)
-    val sub1Constraints =
-      Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
-    val sub2Constraints =
-      Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
-    val sub3Constraints =
-      Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
-    val sub4Constraints =
-      Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
+    val mainConstraints = Constraints.fixed(width = mainWidth, height = mainWidth)
+    val sub1Constraints = Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
+    val sub2Constraints = Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
+    val sub3Constraints = Constraints.fixed(width = mainWidth * 2 - padding, height = mainWidth * 3 - padding)
+    val sub4Constraints = Constraints.fixed(width = mainWidth * 3 - padding, height = mainWidth * 2 - padding)
 
     val mainPlaceable = main.measure(mainConstraints)
     val sub1Placeable = sub1.measure(sub1Constraints)
@@ -495,7 +503,8 @@ fun Cell(
   )
   val backgroundColor = when {
     isMainCell -> Primary
-    cellInfo.isSubCell -> Secondary
+    cellInfo.isSubCell and cell.isCompleted -> Secondary.copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cell.isCompleted -> Secondary
     cell.isCompleted -> Gray200
     else -> White
   }
@@ -513,23 +522,37 @@ fun Cell(
       .clickable { openBottomSheet = !openBottomSheet },
     contentAlignment = Alignment.Center,
   ) {
+    // 메인 목표
     if (isMainCell) {
+      // 메인 목표가 빈 경우
       if (cell.title.isNullOrEmpty()) {
-        Icon(
-          imageVector = Icons.Default.Add,
-          contentDescription = "Add Icon",
-          tint = Secondary,
-          modifier = Modifier.size(20.dp),
+        Box(contentAlignment = Alignment.Center) {
+          Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CellText(
+              cellText = "메인목표",
+              cellTextColor = Secondary,
+              fontWeight = FontWeight.W700,
+            )
+            Icon(
+              imageVector = Icons.Default.Add,
+              contentDescription = "Add Icon",
+              tint = Secondary,
+              modifier = Modifier.size(20.dp),
+            )
+          }
+        }
+      } else {
+        CellText(
+          cellText = cell.title,
+          cellTextColor = Secondary,
+          fontWeight = FontWeight.W700,
         )
       }
-      CellText(
-        cellText = cell.title ?: "",
-        cellTextColor = Secondary,
-        fontWeight = FontWeight.W700,
-      )
+      // 서브 목표
     } else if (cellInfo.isSubCell) {
       val cellTextColor = Primary
       val fontWeight = FontWeight.W700
+      // 서브 목표가 빈 경우
       if (cell.title.isNullOrEmpty()) {
         Column(
           horizontalAlignment = Alignment.CenterHorizontally,
@@ -548,10 +571,12 @@ fun Cell(
           )
         }
       } else {
+        // 서브 목표를 달성할 경우
         CellText(
           cellText = cell.title,
           cellTextColor = cellTextColor,
           fontWeight = fontWeight,
+          textAlpha = if (cell.isCompleted) 0.6f else 1f,
         )
       }
     } else {
@@ -568,7 +593,7 @@ fun Cell(
           modifier = Modifier.size(20.dp),
         )
       } else {
-        // 테스크 목푤르 달성한 경우
+        // 테스크의 목표를 달성한 경우
         if (cell.isCompleted) {
           Box(
             modifier.fillMaxSize(),

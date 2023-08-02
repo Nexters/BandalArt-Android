@@ -3,10 +3,11 @@
 package com.nexters.bandalart.android.core.data.remote.datasource
 
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
+import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartListResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartCellRequest
+import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -21,37 +22,39 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
   private val client: HttpClient,
 ) : BandalartRemoteDataSource {
   override suspend fun createBandalart() {
-    client
-      .post("v1/bandalarts")
+    client.safeRequest {
+      post("v1/bandalarts")
+    }
   }
 
   override suspend fun getBandalartList(): BandalartListResponse? {
-    return client
-      .get("v1/bandalarts")
-      .body()
+    return client.safeRequest {
+      get("v1/bandalarts").body()
+    }
   }
 
   override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse? {
-    return client
-      .get("v1/bandalarts/$bandalartKey")
-      .body()
+    return client.safeRequest {
+      get("v1/bandalarts/$bandalartKey").body()
+    }
   }
 
   override suspend fun deleteBandalart(bandalartKey: String) {
-    client
-      .delete("v1/bandalarts/$bandalartKey")
+    client.safeRequest {
+      delete("v1/bandalarts/$bandalartKey")
+    }
   }
 
   override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse? {
-    return client
-      .get("v1/bandalarts/$bandalartKey/cells")
-      .body()
+    return client.safeRequest {
+      get("v1/bandalarts/$bandalartKey/cells").body()
+    }
   }
 
   override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse? {
-    return client
-      .get("v1/bandalarts/$bandalartKey/cells/$cellKey")
-      .body()
+    return client.safeRequest {
+      get("v1/bandalarts/$bandalartKey/cells/$cellKey").body()
+    }
   }
 
   override suspend fun updateBandalartCell(
@@ -59,14 +62,16 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
     cellKey: String,
     updateBandalartRequest: UpdateBandalartCellRequest,
   ) {
-    client
-      .patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+    client.safeRequest {
+      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
         setBody(updateBandalartRequest)
       }
+    }
   }
 
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    client
-      .delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
+    client.safeRequest {
+      delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
+    }
   }
 }

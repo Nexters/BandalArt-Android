@@ -12,8 +12,8 @@ class DeleteBandalartCellUseCase @Inject constructor(
   suspend operator fun invoke(
     bandalartKey: String,
     cellKey: String,
-  ) {
-    runSuspendCatching {
+  ): Result<Unit> {
+    return runSuspendCatching {
       repository.deleteBandalartCell(bandalartKey, cellKey)
     }
   }

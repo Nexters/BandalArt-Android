@@ -9,8 +9,8 @@ import javax.inject.Singleton
 class CreateBandalartUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
-  suspend operator fun invoke() {
-    runSuspendCatching {
+  suspend operator fun invoke(): Result<Unit> {
+    return runSuspendCatching {
       repository.createBandalart()
     }
   }

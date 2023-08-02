@@ -9,8 +9,8 @@ import javax.inject.Singleton
 class DeleteBandalartUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
-  suspend operator fun invoke(bandalartKey: String) {
-    runSuspendCatching {
+  suspend operator fun invoke(bandalartKey: String): Result<Unit> {
+    return runSuspendCatching {
       repository.deleteBandalart(bandalartKey)
     }
   }
