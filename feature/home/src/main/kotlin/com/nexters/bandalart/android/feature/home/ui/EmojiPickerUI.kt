@@ -41,9 +41,9 @@ import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@Composable
 fun emojiPickerUI(
   modifier: Modifier = Modifier,
-  label: String,
   currentEmoji: String,
   isBottomSheet: Boolean,
   onResult: (String, Boolean) -> Unit,
@@ -70,7 +70,7 @@ fun emojiPickerUI(
           .align(Alignment.End)
           .padding(
             end = 20.dp,
-            top = if(isBottomSheet) 16.dp else 0.dp,
+            top = if (isBottomSheet) 16.dp else 0.dp,
           )
           .clickable {
             emojiPickerScope
@@ -90,10 +90,10 @@ fun emojiPickerUI(
         modifier = Modifier
           .fillMaxWidth()
           .padding(
-            top = if(isBottomSheet) 15.dp else 0.dp,
-            start = if(isBottomSheet) 15.dp else 0.dp,
-            end = if(isBottomSheet) 23.dp else 8.dp,
-            bottom = if(isBottomSheet) 26.dp else 0.dp,
+            top = if (isBottomSheet) 15.dp else 0.dp,
+            start = if (isBottomSheet) 15.dp else 0.dp,
+            end = if (isBottomSheet) 23.dp else 8.dp,
+            bottom = if (isBottomSheet) 26.dp else 0.dp,
           ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
