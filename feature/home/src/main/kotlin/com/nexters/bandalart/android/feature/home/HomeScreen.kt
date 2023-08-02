@@ -80,8 +80,8 @@ import com.nexters.bandalart.android.core.ui.theme.Secondary
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
-import kotlinx.coroutines.launch
+import com.nexters.bandalart.android.feature.home.ui.bottomSheetContent
+import com.nexters.bandalart.android.feature.home.ui.emojiPickerUI
 
 @Composable
 internal fun HomeRoute(
@@ -119,8 +119,13 @@ internal fun HomeScreen(
   modifier: Modifier = Modifier,
 ) {
   val scrollState = rememberScrollState()
-  val scope = rememberCoroutineScope()
-
+  var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
+  val emojiSkipPartiallyExpanded by remember { mutableStateOf(true) }
+  val emojiPickerScope = rememberCoroutineScope()
+  val emojiPickerState = rememberModalBottomSheetState(
+    skipPartiallyExpanded = emojiSkipPartiallyExpanded,
+  )
+  var currentEmoji by remember { mutableStateOf("😎") }
   LaunchedEffect(key1 = Unit) {
     getBandalartMainCell("K3mLJ")
     // getBandalartMainCell("3sF4I")
@@ -153,39 +158,64 @@ internal fun HomeScreen(
           modifier.padding(horizontal = 16.dp),
         ) {
           Spacer(modifier = Modifier.height(24.dp))
-          Box(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-          ) {
+          Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Card(
               shape = RoundedCornerShape(16.dp),
               elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-              // 임시로 스낵바 호출 버튼의 역할을 대신 수행함
-              modifier = Modifier.clickable(onClick = { scope.launch { onShowSnackbar("반다라트가 삭제되었어요.") } }),
             ) {
               Box(
                 modifier = Modifier
                   .width(52.dp)
                   .aspectRatio(1f)
-                  .background(Gray100),
+                  .background(Gray100)
+                  .clickable { openEmojiBottomSheet = !openEmojiBottomSheet },
                 contentAlignment = Alignment.Center,
               ) {
-                // TODO 데이터 연동
-                EmojiText(
-                  emojiText = "😎",
-                  fontSize = 22.sp.nonScaleSp,
+                if (currentEmoji == "") {
+                  val image = painterResource(id = R.drawable.ic_empty_emoji)
+                  Image(
+                    painter = image,
+                    contentDescription = "Empty Emoji Icon",
+                  )
+                } else {
+                  EmojiText(
+                    emojiText = currentEmoji,
+                    fontSize = 22.sp.nonScaleSp,
+                  )
+                }
+              }
+              if (openEmojiBottomSheet) {
+                ModalBottomSheet(
+                  modifier = Modifier.wrapContentSize(),
+                  onDismissRequest = { openEmojiBottomSheet = !openEmojiBottomSheet },
+                  sheetState = emojiPickerState,
+                  content = emojiPickerUI(
+                    currentEmoji = currentEmoji,
+                    isBottomSheet = true,
+                    onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
+                      currentEmoji = currentEmojiResult
+                      openEmojiBottomSheet = openEmojiBottomSheetResult
+                    },
+                    emojiPickerScope = emojiPickerScope,
+                    emojiPickerState = emojiPickerState,
+                  ),
+                  dragHandle = null,
                 )
               }
             }
-            // TODO 데이터 연동
-            // 메인 목표의 이모지가 존재하면 hide 처리 해야 함
-            val image = painterResource(id = R.drawable.ic_edit)
-            Image(
-              painter = image,
-              contentDescription = "Edit Icon",
-              modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset((4).dp, (4).dp),
-            )
+            if (currentEmoji == "") {
+              val image = painterResource(id = R.drawable.ic_edit)
+              Image(
+                painter = image,
+                contentDescription = "Edit Icon",
+                modifier = Modifier
+                  .align(Alignment.BottomEnd)
+                  .offset(
+                    x = 4.dp,
+                    y = 4.dp,
+                  ),
+              )
+            }
           }
           Spacer(modifier = Modifier.height(12.dp))
           Box(
@@ -604,7 +634,7 @@ fun Cell(
           .statusBarsPadding(),
         onDismissRequest = { openBottomSheet = false },
         sheetState = bottomSheetState,
-        content = BottomSheetContent(
+        content = bottomSheetContent(
           onResult = { openBottomSheet = it },
           scope = scope,
           bottomSheetState = bottomSheetState,
