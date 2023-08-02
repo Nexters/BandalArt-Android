@@ -34,12 +34,15 @@ import com.nexters.bandalart.android.core.ui.theme.Gray800
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
+// TODO Alert Dialog 가 닫히면 DropDorwnMenu 도 닫히도록 구현
 @Composable
 fun BandalartDropDownMenu(
   modifier: Modifier = Modifier,
   onResult: (Boolean) -> Unit,
   isDropDownMenuExpanded: Boolean,
-  onDeleteClicked: () -> Unit,
+  onDeleteClicked: (String) -> Unit,
+  bandalartKey: String,
+  title: String,
 ) {
   var dialogOpened by remember { mutableStateOf(false) }
 
@@ -119,12 +122,14 @@ fun BandalartDropDownMenu(
         },
         onClick = { dialogOpened = true },
       )
+      // TODO 데이터 연동
       BandalartDeleteAlertDialog(
-        title = "'8구단 드래프트 1순위'\n만다라트를 삭제하시겠어요?",
-        message = "삭제된 만다라트는 다시 복구할 수 없어요.",
+        title = "'$title'\n반다라트를 삭제하시겠어요?",
+        message = "삭제된 반다라트는 다시 복구할 수 없어요.",
         dialogOpened = dialogOpened,
-        onDeleteClicked = onDeleteClicked,
+        onDeleteClicked = { onDeleteClicked(bandalartKey) },
         onCancleClicked = { dialogOpened = !dialogOpened },
+        bandalartKey = bandalartKey,
       )
     }
   }

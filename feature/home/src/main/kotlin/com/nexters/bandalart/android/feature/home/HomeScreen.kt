@@ -89,8 +89,6 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 internal fun HomeRoute(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
-  onAddBandalart: () -> Unit,
-  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
@@ -111,10 +109,10 @@ internal fun HomeRoute(
     uiState = uiState,
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
-    onAddBandalart = onAddBandalart,
-    onShowBandalartList = onShowBandalartList,
     onShowSnackbar = onShowSnackbar,
-    getBandalartMainCell = viewModel::getBandalartMainCell,
+    getBandalartDetail = viewModel::getBandalartDetail,
+    createBandalart = viewModel::createBandalart,
+    deleteBandalart = viewModel::deleteBandalart,
     modifier = modifier,
   )
 }
@@ -125,10 +123,10 @@ internal fun HomeScreen(
   uiState: HomeUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
-  onAddBandalart: () -> Unit,
-  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
-  getBandalartMainCell: suspend (String) -> Unit,
+  getBandalartDetail: (String) -> Unit,
+  createBandalart: () -> Unit,
+  deleteBandalart: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val scrollState = rememberScrollState()
@@ -140,8 +138,7 @@ internal fun HomeScreen(
   )
   var currentEmoji by remember { mutableStateOf("😎") }
   LaunchedEffect(key1 = Unit) {
-    // getBandalartMainCell("K3mLJ")
-    getBandalartMainCell("3sF4I")
+    getBandalartDetail("K3mLJ")
   }
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -158,10 +155,9 @@ internal fun HomeScreen(
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
-          // 임시로 네비게이션 버튼의 역할을 대신 수행함
-          // onAddBandalart = onAddBandalart,
-          onAddBandalart = navigateToComplete,
-          onShowBandalartList = onShowBandalartList,
+          // 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
+          onAddBandalart = createBandalart,
+          onShowBandalartList = {},
         )
         Divider(
           color = Gray100,
@@ -236,6 +232,7 @@ internal fun HomeScreen(
               .fillMaxWidth()
               .wrapContentHeight(),
           ) {
+            // TODO 데이터 연동
             FixedSizeText(
               text = "완벽한 2024년",
               color = Gray900,
@@ -253,10 +250,13 @@ internal fun HomeScreen(
                 .align(Alignment.CenterEnd)
                 .clickable(onClick = { isDropDownMenuExpanded = true }),
             )
+            // TODO 데이터 연동
             BandalartDropDownMenu(
               onResult = { isDropDownMenuExpanded = it },
               isDropDownMenuExpanded = isDropDownMenuExpanded,
-              onDeleteClicked = { },
+              onDeleteClicked = { bandalartKey -> deleteBandalart(bandalartKey) },
+              bandalartKey = "NNeDe",
+              title = "넥스터즈 1등하기",
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
@@ -316,15 +316,17 @@ internal fun HomeScreen(
             }
           }
           Spacer(modifier = Modifier.height(8.dp))
-          CompletionRatioProgressBar()
+          // TODO 데이터 연동
+          // CompletionRatioProgressBar(100)
+          CompletionRatioProgressBar(100)
           Spacer(modifier = Modifier.height(18.dp))
         }
         when {
           uiState.isLoading -> {
             LoadingWheel()
           }
-          uiState.bandalartData != null -> {
-            BandalartChart(bandalartData = uiState.bandalartData)
+          uiState.bandalartChartData != null -> {
+            BandalartChart(bandalartData = uiState.bandalartChartData)
           }
           // TODO Network Eroor 상황 처리
           uiState.error != null -> {

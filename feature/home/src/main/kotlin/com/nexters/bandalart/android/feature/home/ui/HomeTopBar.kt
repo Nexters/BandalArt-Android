@@ -54,7 +54,7 @@ internal fun HomeTopBar(
       Box(
         modifier = Modifier
           .padding(end = 20.dp)
-          // TODO ripple
+          // 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
           .clickable(onClick = onAddBandalart),
       ) {
         // TODO 반다라트 표가 여러개 일때는 아이콘, 텍스트 변경
