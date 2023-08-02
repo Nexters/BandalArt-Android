@@ -80,8 +80,10 @@ import com.nexters.bandalart.android.core.ui.theme.Secondary
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.ui.BottomSheetContent
-import kotlinx.coroutines.launch
+import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
+import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
+import com.nexters.bandalart.android.feature.home.ui.bottomSheetContent
+import com.nexters.bandalart.android.feature.home.ui.emojiPickerUI
 
 @Composable
 internal fun HomeRoute(
