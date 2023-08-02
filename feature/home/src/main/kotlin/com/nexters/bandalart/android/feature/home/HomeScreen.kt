@@ -588,7 +588,7 @@ fun Cell(
           cellText = cell.title,
           cellTextColor = cellTextColor,
           fontWeight = fontWeight,
-          textAlpha = if (cell.isCompleted) 1f else 0.6f,
+          textAlpha = if (cell.isCompleted) 0.6f else 1f,
         )
       }
     } else {
