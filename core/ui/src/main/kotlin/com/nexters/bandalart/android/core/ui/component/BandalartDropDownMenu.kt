@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -41,6 +42,7 @@ fun BandalartDropDownMenu(
   onDeleteClicked: () -> Unit,
 ) {
   var dialogOpened by remember { mutableStateOf(false) }
+
   MaterialTheme(
     shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
   ) {
@@ -58,17 +60,23 @@ fun BandalartDropDownMenu(
       DropdownMenuItem(
         modifier = Modifier
           .wrapContentSize()
-          .padding(horizontal = 7.dp),
+          .padding(horizontal = 7.dp)
+          .clickable {},
         text = {
           Row {
             val image = painterResource(id = R.drawable.ic_image)
             Image(
               painter = image,
               contentDescription = "Image Icon",
-              modifier = Modifier.height(14.dp).align(CenterVertically),
+              modifier = Modifier
+                .height(14.dp)
+                .align(CenterVertically),
             )
             Text(
-              modifier = Modifier.fillMaxHeight().padding(start = 13.dp).align(CenterVertically),
+              modifier = Modifier
+                .fillMaxHeight()
+                .padding(start = 13.dp)
+                .align(CenterVertically),
               text = "이미지 내보내기",
               color = Gray800,
               fontSize = 14.sp.nonScaleSp,
@@ -83,18 +91,24 @@ fun BandalartDropDownMenu(
       DropdownMenuItem(
         modifier = Modifier
           .wrapContentSize()
-          .padding(horizontal = 7.dp),
+          .padding(horizontal = 7.dp)
+          .clickable {},
         text = {
           Row {
             val image = painterResource(id = R.drawable.ic_delete)
             Image(
               painter = image,
               contentDescription = "Delete Icon",
-              modifier = Modifier.height(14.dp).align(CenterVertically),
+              modifier = Modifier
+                .height(14.dp)
+                .align(CenterVertically),
               colorFilter = ColorFilter.tint(Error),
             )
             Text(
-              modifier = Modifier.fillMaxHeight().padding(start = 13.dp).align(CenterVertically),
+              modifier = Modifier
+                .fillMaxHeight()
+                .padding(start = 13.dp)
+                .align(CenterVertically),
               text = "삭제하기",
               color = Error,
               fontSize = 14.sp.nonScaleSp,
