@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,7 +61,7 @@ fun emojiPickerUI(
 
     Column(
       modifier = modifier
-        .fillMaxWidth().wrapContentHeight()
+        .fillMaxWidth()
         .background(White),
     ) {
       Text(
@@ -135,7 +134,7 @@ fun emojiPickerUI(
                     .aspectRatio(1f)
                     .background(Gray100)
                     .clickable {
-                      if (prevSelectedEmoji == emojiItem) selectedEmoji = ""
+                      if (selectedEmoji == emojiItem) selectedEmoji = ""
                       else {
                         prevSelectedEmoji = selectedEmoji
                         selectedEmoji = emojiItem
