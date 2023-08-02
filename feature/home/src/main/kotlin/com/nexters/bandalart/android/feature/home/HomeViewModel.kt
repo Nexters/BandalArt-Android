@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
@@ -36,6 +37,7 @@ import timber.log.Timber
 
 // TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
+  val bandalartListData: List<BandalartDetailUiModel>? = null,
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartChartData: BandalartCellUiModel? = null,
   val isCellUpdated: Boolean = false,
@@ -54,6 +56,7 @@ sealed class HomeUiEvent {
 @Suppress("unused")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+  private val getBandalartListUseCase: GetBandalartListUseCase,
   private val getBandalartDetailUseCase: GetBandalartDetailUseCase,
   private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
@@ -66,19 +69,17 @@ class HomeViewModel @Inject constructor(
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
-  fun getBandalartDetail(bandalartKey: String) {
+  fun getBandalartList() {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
-      val result = getBandalartDetailUseCase(bandalartKey)
+      val result = getBandalartListUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          val bandalartData = result.getOrNull()!!.toUiModel()
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartDetailData = bandalartData,
+            bandalartListData = result.getOrNull()!!.map { it.toUiModel() },
             error = null,
           )
-          getBandalartMainCell(bandalartData.key)
         }
         // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
@@ -88,7 +89,7 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartChartData = null,
+            bandalartListData = null,
             error = exception,
           )
           // TODO 에러 메세지 커스텀
@@ -99,8 +100,39 @@ class HomeViewModel @Inject constructor(
     }
   }
 
+  fun getBandalartDetail(bandalartKey: String) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(isLoading = true)
+      val result = getBandalartDetailUseCase(bandalartKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          val bandalartDetailData = result.getOrNull()!!.toUiModel()
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            bandalartDetailData = bandalartDetailData,
+            error = null,
+          )
+          getBandalartMainCell(bandalartDetailData.key)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            bandalartChartData = null,
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
   // TODO 404 인데 Unexpected Error 로 출력 되고 있음
-  fun getBandalartMainCell(bandalartKey: String) {
+  private fun getBandalartMainCell(bandalartKey: String) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartMainCellUseCase(bandalartKey)
@@ -122,7 +154,6 @@ class HomeViewModel @Inject constructor(
             bandalartChartData = null,
             error = exception,
           )
-          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
@@ -153,7 +184,6 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = exception,
           )
-          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
@@ -183,7 +213,6 @@ class HomeViewModel @Inject constructor(
             bandalartChartData = null,
             error = exception,
           )
-          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }

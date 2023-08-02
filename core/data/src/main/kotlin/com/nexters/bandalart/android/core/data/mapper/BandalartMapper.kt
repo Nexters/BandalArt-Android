@@ -1,22 +1,11 @@
 package com.nexters.bandalart.android.core.data.mapper
 
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartListResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartCellRequest
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.domain.entity.BandalartListEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
-
-internal fun BandalartListResponse.toEntity() =
-  BandalartListEntity(
-    key = key,
-    cellKey = cellKey,
-    dueDate = dueDate,
-    isCompleted = isCompleted,
-    shareKey = shareKey,
-  )
 
 internal fun BandalartDetailResponse.toEntity() =
   BandalartDetailEntity(

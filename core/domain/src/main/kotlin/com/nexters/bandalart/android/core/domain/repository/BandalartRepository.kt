@@ -1,7 +1,6 @@
 package com.nexters.bandalart.android.core.domain.repository
 
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.domain.entity.BandalartListEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
 
@@ -16,7 +15,7 @@ interface BandalartRepository {
   /**
    * 반다라트 목록 조회
    */
-  suspend fun getBandalartList(): BandalartListEntity?
+  suspend fun getBandalartList(): List<BandalartDetailEntity>?
 
   /**
    * 반다라트 상세 조회
