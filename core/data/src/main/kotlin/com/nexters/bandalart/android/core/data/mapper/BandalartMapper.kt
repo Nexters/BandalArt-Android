@@ -21,6 +21,10 @@ internal fun BandalartListResponse.toEntity() =
 internal fun BandalartDetailResponse.toEntity() =
   BandalartDetailEntity(
     key = key,
+    mainColor = mainColor,
+    subColor = subColor,
+    profileEmoji = profileEmoji,
+    title = title,
     cellKey = cellKey,
     dueDate = dueDate,
     isCompleted = isCompleted,
