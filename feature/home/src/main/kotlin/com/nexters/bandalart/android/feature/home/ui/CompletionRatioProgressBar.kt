@@ -21,13 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Primary
 
 @Composable
 fun CompletionRatioProgressBar(
   completionRatio: Int,
+  progressColor: Color,
 ) {
   var progress by remember { mutableStateOf(0f) }
 
@@ -68,7 +69,7 @@ fun CompletionRatioProgressBar(
           .fillMaxWidth(size)
           .fillMaxHeight()
           .clip(RoundedCornerShape(5.dp))
-          .background(Primary)
+          .background(progressColor)
           .animateContentSize(),
       )
     }

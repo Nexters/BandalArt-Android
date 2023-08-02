@@ -8,11 +8,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 // TODO 다른 로띠로 변경
 @Composable
-fun LoadingWheel() {
+fun LoadingWheel(
+  progressColor: Color,
+) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -22,6 +25,7 @@ fun LoadingWheel() {
       modifier = Modifier
         .align(Alignment.Center)
         .size(30.dp),
+      color = progressColor
     )
   }
 }
