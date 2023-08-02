@@ -17,15 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-// sealed class HomeUiState {
-//   object Loading : HomeUiState()
-//   data class Success(
-//     val bandalartData: BandalartCellUiModel,
-//   ) :  HomeUiState()
-//
-//   data class Error(val exception: Throwable) : HomeUiState()
-// }
-
 // TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
   val bandalartData: BandalartCellUiModel? = null,
@@ -48,9 +39,6 @@ class HomeViewModel @Inject constructor(
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
 ) : ViewModel() {
 
-//  private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
-//  val uiState: StateFlow<HomeUiState> = this._uiState.asStateFlow()
-
   private val _uiState = MutableStateFlow(HomeUiState())
   val uiState: StateFlow<HomeUiState> = this._uiState.asStateFlow()
 
@@ -59,12 +47,10 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartMainCell(bandalartKey: String) {
     viewModelScope.launch {
-      // _uiState.value = HomeUiState.Loading
       _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartMainCellUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          // _uiState.value = HomeUiState.Success(result.getOrNull()!!.toUiModel())
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             bandalartData = result.getOrNull()!!.toUiModel(),
@@ -76,7 +62,6 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          // _uiState.value = HomeUiState.Error(exception)
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             bandalartData = null,

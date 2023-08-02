@@ -289,18 +289,6 @@ internal fun HomeScreen(
           CompletionRatioProgressBar()
           Spacer(modifier = Modifier.height(18.dp))
         }
-//        when (uiState) {
-//          is HomeUiState.Loading -> {
-//            LoadingWheel()
-//          }
-//          is HomeUiState.Success -> {
-//            BandalartChart(bandalartData = uiState.bandalartData)
-//          }
-//          // TODO Network Eroor 상황 처리
-//          is HomeUiState.Error -> {
-//            // TODO ErrorScreen() 구현
-//          }
-//        }
         when {
           uiState.isLoading -> {
             LoadingWheel()
