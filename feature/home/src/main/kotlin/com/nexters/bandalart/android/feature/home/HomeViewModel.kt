@@ -23,7 +23,7 @@ import timber.log.Timber
 /**
  * HomeUiState
  *
- * @param bandalartData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
+ * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
  * @param bandalartChartData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
  * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
  * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
@@ -36,7 +36,7 @@ import timber.log.Timber
 
 // TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
-  val bandalartData: BandalartDetailUiModel? = null,
+  val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartChartData: BandalartCellUiModel? = null,
   val isCellUpdated: Boolean = false,
   val isCellDeleted: Boolean = false,
@@ -75,11 +75,12 @@ class HomeViewModel @Inject constructor(
           val bandalartData = result.getOrNull()!!.toUiModel()
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartData = bandalartData,
+            bandalartDetailData = bandalartData,
             error = null,
           )
           getBandalartMainCell(bandalartData.key)
         }
+        // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
