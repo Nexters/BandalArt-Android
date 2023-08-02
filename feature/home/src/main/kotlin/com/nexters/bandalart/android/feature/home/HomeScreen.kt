@@ -116,6 +116,7 @@ internal fun HomeRoute(
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
+    getBandalartList = viewModel::getBandalartList,
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
@@ -131,6 +132,7 @@ internal fun HomeScreen(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
+  getBandalartList: () -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
@@ -145,6 +147,7 @@ internal fun HomeScreen(
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf("😎") }
   LaunchedEffect(key1 = Unit) {
+    // getBandalartList()
     getBandalartDetail("3sF4I")
     // getBandalartDetail("K3mLJ")
   }
