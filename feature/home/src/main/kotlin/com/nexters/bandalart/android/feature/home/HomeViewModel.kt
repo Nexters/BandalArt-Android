@@ -92,7 +92,6 @@ class HomeViewModel @Inject constructor(
             bandalartListData = null,
             error = exception,
           )
-          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
@@ -131,7 +130,6 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  // TODO 404 인데 Unexpected Error 로 출력 되고 있음
   private fun getBandalartMainCell(bandalartKey: String) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
