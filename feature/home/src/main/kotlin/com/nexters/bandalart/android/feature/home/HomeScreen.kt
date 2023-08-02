@@ -83,7 +83,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.bottomSheetContent
-import com.nexters.bandalart.android.feature.home.ui.emojiPickerUI
+import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 
 @Composable
 internal fun HomeRoute(
@@ -184,7 +184,7 @@ internal fun HomeScreen(
                   .clickable { openEmojiBottomSheet = !openEmojiBottomSheet },
                 contentAlignment = Alignment.Center,
               ) {
-                if (currentEmoji == "") {
+                if (currentEmoji.isEmpty()) {
                   val image = painterResource(id = R.drawable.ic_empty_emoji)
                   Image(
                     painter = image,
@@ -193,7 +193,7 @@ internal fun HomeScreen(
                 } else {
                   EmojiText(
                     emojiText = currentEmoji,
-                    fontSize = 22.sp.nonScaleSp,
+                    fontSize = 22.sp,
                   )
                 }
               }
@@ -202,7 +202,7 @@ internal fun HomeScreen(
                   modifier = Modifier.wrapContentSize(),
                   onDismissRequest = { openEmojiBottomSheet = !openEmojiBottomSheet },
                   sheetState = emojiPickerState,
-                  content = emojiPickerUI(
+                  content = BandalartEmojiPicker(
                     currentEmoji = currentEmoji,
                     isBottomSheet = true,
                     onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
@@ -216,7 +216,7 @@ internal fun HomeScreen(
                 )
               }
             }
-            if (currentEmoji == "") {
+            if (currentEmoji.isEmpty()) {
               val image = painterResource(id = R.drawable.ic_edit)
               Image(
                 painter = image,

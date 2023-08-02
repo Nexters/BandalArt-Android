@@ -87,7 +87,7 @@ fun bottomSheetContent(
     val datePickerState = rememberModalBottomSheetState(
       skipPartiallyExpanded = datePickerSkipPartiallyExpanded,
     )
-    var openEmojiPush by rememberSaveable { mutableStateOf(false) }
+    var openEmojiPickerPush by rememberSaveable { mutableStateOf(false) }
     val emojiSkipPartiallyExpanded by remember { mutableStateOf(true) }
     val emojiPickerScope = rememberCoroutineScope()
     val emojiPickerState = rememberModalBottomSheetState(
@@ -142,7 +142,7 @@ fun bottomSheetContent(
                     .width(52.dp)
                     .aspectRatio(1f)
                     .background(Gray100)
-                    .clickable { openEmojiPush = !openEmojiPush },
+                    .clickable { openEmojiPickerPush = !openEmojiPickerPush },
                   contentAlignment = Alignment.Center,
                 ) {
                   if (currentEmoji == "") {
@@ -193,9 +193,9 @@ fun bottomSheetContent(
             BottomSheetDivider()
           }
         }
-        AnimatedVisibility(visible = openEmojiPush) {
+        AnimatedVisibility(visible = openEmojiPickerPush) {
           Column(
-            content = emojiPickerUI(
+            content = BandalartEmojiPicker(
               modifier = Modifier
                 .wrapContentSize()
                 .padding(top = 4.dp)
@@ -209,7 +209,7 @@ fun bottomSheetContent(
               isBottomSheet = false,
               onResult = { currentEmojiResult, openEmojiPushResult ->
                 currentEmoji = currentEmojiResult
-                openEmojiPush = openEmojiPushResult
+                openEmojiPickerPush = openEmojiPushResult
               },
               emojiPickerScope = emojiPickerScope,
               emojiPickerState = emojiPickerState,
@@ -247,7 +247,7 @@ fun bottomSheetContent(
           BottomSheetDivider()
         }
         AnimatedVisibility(visible = openDatePickerPush) {
-          DatePickerUI(
+          BandalartDatePicker(
             onResult = { dueDateResult, openDatePickerPushResult ->
               dueDate = dueDateResult
               openDatePickerPush = openDatePickerPushResult

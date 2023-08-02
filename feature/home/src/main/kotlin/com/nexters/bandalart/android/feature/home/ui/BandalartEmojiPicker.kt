@@ -41,7 +41,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun emojiPickerUI(
+fun BandalartEmojiPicker(
   modifier: Modifier = Modifier,
   currentEmoji: String,
   isBottomSheet: Boolean,
@@ -144,7 +144,7 @@ fun emojiPickerUI(
                 ) {
                   EmojiText(
                     emojiText = emojiItem,
-                    fontSize = 24.sp.nonScaleSp,
+                    fontSize = 24.sp,
                   )
                 }
               }

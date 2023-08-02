@@ -42,7 +42,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun DatePickerUI(
+fun BandalartDatePicker(
   onResult: (String, Boolean) -> Unit,
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
