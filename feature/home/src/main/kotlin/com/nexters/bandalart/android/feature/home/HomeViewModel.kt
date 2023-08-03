@@ -209,7 +209,6 @@ class HomeViewModel @Inject constructor(
             error = null,
           )
           openBandalartDeleteAlertDialog(false)
-          openDropDownMenu(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트가 삭제되었어요."))
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -222,6 +221,7 @@ class HomeViewModel @Inject constructor(
             isBandalartDeleted = false,
             error = exception,
           )
+          openBandalartDeleteAlertDialog(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
