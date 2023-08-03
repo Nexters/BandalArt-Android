@@ -2,8 +2,10 @@ package com.nexters.bandalart.android.feature.home.mapper
 
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
 
 internal fun BandalartDetailEntity.toUiModel() =
   BandalartDetailUiModel(
@@ -31,3 +33,11 @@ internal fun BandalartCellEntity.toUiModel(): BandalartCellUiModel {
     children = children.map { it.toUiModel() },
   )
 }
+
+internal fun UpdateBandalartCellModel.toEntity() =
+  UpdateBandalartCellEntity(
+    title = title,
+    description = description,
+    dueDate = dueDate,
+    isCompleted = isCompleted,
+  )

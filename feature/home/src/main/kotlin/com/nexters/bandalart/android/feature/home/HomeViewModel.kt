@@ -7,8 +7,11 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartCellUseCase
+import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -44,8 +47,8 @@ data class HomeUiState(
   val isCellDeleted: Boolean = false,
   val isBandalartCompleted: Boolean = false,
   val isBandalartDeleted: Boolean = false,
+  val isLoading: Boolean = true,
   val isBandalartCreated: Boolean = false,
-  val isLoading: Boolean = false,
   val error: Throwable? = null,
 )
 
@@ -61,6 +64,7 @@ class HomeViewModel @Inject constructor(
   private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
+  private val updateBandalartCellUseCase: UpdateBandalartCellUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -132,7 +136,6 @@ class HomeViewModel @Inject constructor(
 
   private fun getBandalartMainCell(bandalartKey: String) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartMainCellUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -211,6 +214,34 @@ class HomeViewModel @Inject constructor(
             bandalartChartData = null,
             error = exception,
           )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
+  fun updateBandalartCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartCellModel: UpdateBandalartCellModel,
+  ) {
+    viewModelScope.launch {
+      val result = updateBandalartCellUseCase(bandalartKey, cellKey, updateBandalartCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          getBandalartMainCell(bandalartKey)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            error = exception,
+          )
+          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }

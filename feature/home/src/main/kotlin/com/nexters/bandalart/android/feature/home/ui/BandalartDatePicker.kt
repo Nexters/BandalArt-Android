@@ -46,14 +46,18 @@ fun BandalartDatePicker(
   onResult: (String, Boolean) -> Unit,
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
+  currentDueDate: String? = "",
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.fillMaxWidth(),
   ) {
-    val chosenYear = remember { mutableStateOf(currentYear.toString() + "년") }
-    val chosenMonth = remember { mutableStateOf(currentMonth.toString() + "월") }
-    val chosenDay = remember { mutableStateOf(currentDay.toString() + "일") }
+    val chosenYear =
+      remember { mutableStateOf(if (currentDueDate!!.isNotEmpty()) currentDueDate.split("-")[0] else currentYear.toString()) }
+    val chosenMonth =
+      remember { mutableStateOf(if (currentDueDate!!.isNotEmpty()) currentDueDate.split("-")[1] else currentMonth.toString()) }
+    val chosenDay =
+      remember { mutableStateOf(if (currentDueDate!!.isNotEmpty()) currentDueDate.split("-")[2].split("T")[0] else currentDay.toString()) }
 
     Row(
       modifier = Modifier
@@ -109,6 +113,9 @@ fun BandalartDatePicker(
       onYearChosen = { chosenYear.value = it },
       onMonthChosen = { chosenMonth.value = it },
       onDayChosen = { chosenDay.value = it },
+      currentYear = chosenYear.value.toInt(),
+      currentMonth = chosenMonth.value.toInt(),
+      currentDay = chosenDay.value.toInt(),
     )
   }
 }
@@ -118,6 +125,9 @@ fun DateSelectionSection(
   onYearChosen: (String) -> Unit,
   onMonthChosen: (String) -> Unit,
   onDayChosen: (String) -> Unit,
+  currentYear: Int,
+  currentMonth: Int,
+  currentDay: Int,
 ) {
   Box(
     modifier = Modifier
@@ -149,7 +159,7 @@ fun DateSelectionSection(
         items = years,
         isYear = true,
         isMonth = true,
-        firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1967),
+        firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1968),
         onItemSelected = onYearChosen,
       )
       InfiniteItemsPicker(
@@ -157,7 +167,7 @@ fun DateSelectionSection(
         items = monthsNumber,
         isYear = false,
         isMonth = true,
-        firstIndex = Int.MAX_VALUE / 2 - 4 + currentMonth,
+        firstIndex = Int.MAX_VALUE / 2 - 6 + currentMonth,
         onItemSelected = onMonthChosen,
       )
       InfiniteItemsPicker(
@@ -165,7 +175,7 @@ fun DateSelectionSection(
         items = days,
         isYear = false,
         isMonth = false,
-        firstIndex = Int.MAX_VALUE / 2 + (currentDay - 2),
+        firstIndex = Int.MAX_VALUE / 2 + (currentDay - 3),
         onItemSelected = onDayChosen,
       )
     }
@@ -230,7 +240,7 @@ fun InfiniteItemsPicker(
 
 val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
 
 val years = (1950..2050).map { it }
 val monthsNumber = (1..12).map { it }

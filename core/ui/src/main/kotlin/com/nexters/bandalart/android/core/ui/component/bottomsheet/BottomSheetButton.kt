@@ -30,10 +30,10 @@ fun BottomSheetDeleteButton(
 @Composable
 fun BottomSheetCompleteButton(
   modifier: Modifier = Modifier,
+  onClick: () -> Unit,
 ) {
-  val context = LocalContext.current.applicationContext
   FilledIconButton(
-    onClick = { Toast.makeText(context, "완료 버튼", Toast.LENGTH_SHORT).show() },
+    onClick = onClick,
     colors = IconButtonColors(Gray900, White, Gray200, Gray400),
     modifier = modifier.height(56.dp),
   ) {

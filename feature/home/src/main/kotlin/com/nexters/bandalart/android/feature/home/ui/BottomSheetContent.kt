@@ -52,6 +52,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDeleteButton
@@ -61,16 +63,17 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTe
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
 import kotlinx.coroutines.CoroutineScope
-import com.nexters.bandalart.android.core.designsystem.R
-import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import kotlinx.coroutines.launch
 
 @Composable
 fun bottomSheetContent(
@@ -79,6 +82,9 @@ fun bottomSheetContent(
   bottomSheetState: SheetState,
   isSubCell: Boolean,
   isMainCell: Boolean,
+  cellData: BandalartCellUiModel,
+  bandalartKey: String,
+  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     var openDatePickerPush by rememberSaveable { mutableStateOf(false) }
@@ -94,12 +100,11 @@ fun bottomSheetContent(
       skipPartiallyExpanded = emojiSkipPartiallyExpanded,
     )
     var currentEmoji by remember { mutableStateOf("") }
-    var title by rememberSaveable { mutableStateOf("") }
-    var dueDate by rememberSaveable { mutableStateOf("") }
-    var memo by rememberSaveable { mutableStateOf("") }
+    var title by rememberSaveable { mutableStateOf(cellData.title ?: "") }
+    var dueDate by rememberSaveable { mutableStateOf(cellData.dueDate ?: "") }
+    var description by rememberSaveable { mutableStateOf(cellData.description ?: "") }
+    var isCompleted by remember { mutableStateOf(cellData.isCompleted) }
     val scrollable = rememberScrollState()
-    var switchOn by remember { mutableStateOf(false) }
-
     Column(
       modifier = Modifier
         .background(White)
@@ -142,10 +147,13 @@ fun bottomSheetContent(
                     .width(52.dp)
                     .aspectRatio(1f)
                     .background(Gray100)
-                    .clickable { openEmojiPickerPush = !openEmojiPickerPush },
+                    .clickable {
+                      openEmojiPickerPush = !openEmojiPickerPush
+                      if (openDatePickerPush) openDatePickerPush = false
+                    },
                   contentAlignment = Alignment.Center,
                 ) {
-                  if (currentEmoji == "") {
+                  if (currentEmoji.isEmpty()) {
                     val image = painterResource(id = R.drawable.ic_empty_emoji)
                     Image(
                       painter = image,
@@ -159,7 +167,7 @@ fun bottomSheetContent(
                   }
                 }
               }
-              if (currentEmoji == "") {
+              if (currentEmoji.isEmpty()) {
                 val image = painterResource(id = R.drawable.ic_edit)
                 Image(
                   painter = image,
@@ -224,14 +232,19 @@ fun bottomSheetContent(
             modifier = Modifier
               .fillMaxWidth()
               .height(18.dp)
-              .clickable { openDatePickerPush = !openDatePickerPush },
+              .clickable {
+                openDatePickerPush = !openDatePickerPush
+                if (openEmojiPickerPush) openEmojiPickerPush = false
+              },
           ) {
             val dueDateText = dueDate.split("-")
             BottomSheetContentText(
-              color = if (dueDate == "") Gray400 else Gray900,
+              color = if (dueDate.isEmpty()) Gray400 else Gray900,
               text =
-              if (dueDate == "") "마감일을 선택해주세요."
-              else dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2] + "일",
+              if (dueDate.isEmpty()) "마감일을 선택해주세요."
+              else {
+                dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
+              },
             )
             Icon(
               modifier = Modifier
@@ -249,11 +262,12 @@ fun bottomSheetContent(
         AnimatedVisibility(visible = openDatePickerPush) {
           BandalartDatePicker(
             onResult = { dueDateResult, openDatePickerPushResult ->
-              dueDate = dueDateResult
+              dueDate = dueDateResult.ifEmpty { "" }
               openDatePickerPush = openDatePickerPushResult
             },
             datePickerScope = datePickerScope,
             datePickerState = datePickerState,
+            currentDueDate = dueDate,
           )
         }
         Spacer(modifier = Modifier.height(28.dp))
@@ -265,13 +279,13 @@ fun bottomSheetContent(
               modifier = Modifier
                 .fillMaxWidth()
                 .height(18.dp),
-              value = memo,
-              onValueChange = { memo = if (it.length > 15) memo else it },
+              value = description,
+              onValueChange = { description = if (it.length > 15) description else it },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (memo.isEmpty()) BottomSheetContentText(text = "메모를 입력해주세요.")
+                if (description.isEmpty()) BottomSheetContentText(text = "메모를 입력해주세요.")
                 innerTextField()
               },
             )
@@ -286,12 +300,12 @@ fun bottomSheetContent(
           Box(modifier = Modifier.fillMaxWidth()) {
             BottomSheetContentText(
               modifier = Modifier.align(Alignment.CenterStart),
-              text = if (switchOn) "달성" else "미달성",
+              text = if (isCompleted) "달성" else "미달성",
               color = Gray900,
             )
             Switch(
-              checked = switchOn,
-              onCheckedChange = { _switchOn -> switchOn = _switchOn },
+              checked = isCompleted,
+              onCheckedChange = { _switchOn -> isCompleted = _switchOn },
               colors = SwitchDefaults.colors(
                 uncheckedThumbColor = White,
                 uncheckedTrackColor = Gray300,
@@ -317,7 +331,27 @@ fun bottomSheetContent(
         ) {
           BottomSheetDeleteButton(modifier = Modifier.weight(1f))
           Spacer(modifier = Modifier.width(9.dp))
-          BottomSheetCompleteButton(modifier = Modifier.weight(1f))
+          BottomSheetCompleteButton(
+            modifier = Modifier.weight(1f),
+            onClick = {
+              scope.launch {
+                updateBandalartCell(
+                  bandalartKey,
+                  cellData.key,
+                  UpdateBandalartCellModel(
+                    title = title,
+                    description = description,
+                    dueDate = dueDate.ifEmpty { null },
+                    isCompleted = if (!isSubCell && !isMainCell) isCompleted else null,
+                  ),
+                )
+                // Todo 실패 처리해줘야함
+                bottomSheetState.hide()
+              }.invokeOnCompletion {
+                if (!bottomSheetState.isVisible) { onResult(false) }
+              }
+            },
+          )
         }
         Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp + 20.dp))
       }
