@@ -118,7 +118,6 @@ internal fun HomeRoute(
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
-    getBandalartMainCell = viewModel::getBandalartMainCell,
     updateBandalartCell = viewModel::updateBandalartCell,
     getBandalartList = viewModel::getBandalartList,
     getBandalartDetail = viewModel::getBandalartDetail,
@@ -136,7 +135,6 @@ internal fun HomeScreen(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
-  getBandalartMainCell: suspend (String) -> Unit,
   updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
   getBandalartList: () -> Unit,
   getBandalartDetail: (String) -> Unit,
@@ -154,8 +152,7 @@ internal fun HomeScreen(
   var currentEmoji by remember { mutableStateOf("😎") }
   val testBandalartKey = "3sF4I"
   LaunchedEffect(key1 = Unit) {
-    // getBandalartMainCell("K3mLJ")
-    getBandalartMainCell(testBandalartKey)
+    getBandalartDetail(testBandalartKey)
     // getBandalartDetail("WUFva")
     // getBandalartDetail("K3mLJ")
   }
@@ -469,10 +466,9 @@ private fun BandalartChart(
         content = {
           Cell(
             isMainCell = true,
-            cell = bandalartChartData,
             mainColor = mainColor,
             subColor = subColor,
-            cellData = bandalartData,
+            cellData = bandalartChartData,
             bandalartKey = bandalartKey,
             updateBandalartCell = updateBandalartCell,
           )
@@ -546,7 +542,7 @@ fun CellGrid(
               rowCnt = rows,
             ),
             modifier = Modifier.weight(1f),
-            cell = if (isSubCell) subCell.bandalartChartData else subCell.bandalartChartData.children[taskIndex++],
+            cellData = if (isSubCell) subCell.bandalartChartData else subCell.bandalartChartData.children[taskIndex++],
             mainColor = mainColor,
             subColor = subColor,
             bandalartKey = bandalartKey,
@@ -590,7 +586,7 @@ fun Cell(
     isMainCell -> mainColor
     cellInfo.isSubCell and cellData.isCompleted -> subColor.copy(alpha = 0.6f)
     cellInfo.isSubCell and !cellData.isCompleted -> subColor
-    cell.isCompleted -> Gray200
+    cellData.isCompleted -> Gray200
     else -> White
   }
   Box(
