@@ -125,7 +125,7 @@ internal fun HomeRoute(
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
-    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) }
+    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
   )
 }
 
@@ -378,13 +378,12 @@ internal fun HomeScreen(
               mainColor = bandalartDetailData.mainColor.toColor(),
               subColor = bandalartDetailData.subColor.toColor(),
               updateBandalartCell = updateBandalartCell,
-              // bandalartKey = testBandalartKey,
-              bandalartKey = bandalartDetailData.key
+              bandalartKey = bandalartDetailData.key,
             )
           }
-          // TODO Network Eroor 상황 처리
+          // TODO Network Eroor 상황 처리(다시 시도)
           uiState.error != null -> {
-            // TODO ErrorScreen() 구현
+            // TODO ErrorAlertDialog 구현
           }
         }
         Spacer(modifier = Modifier.weight(1f))

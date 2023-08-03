@@ -107,7 +107,7 @@ fun BandalartDropDownMenu(
             )
           }
         },
-        onClick = onDeleteClicked
+        onClick = onDeleteClicked,
       )
     }
   }

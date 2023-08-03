@@ -256,7 +256,7 @@ class HomeViewModel @Inject constructor(
   fun openDropDownMenu(state: Boolean) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
-        isDropDownMenuOpened = state
+        isDropDownMenuOpened = state,
       )
     }
   }
@@ -264,7 +264,7 @@ class HomeViewModel @Inject constructor(
   fun openBandalartDeleteAlertDialog(state: Boolean) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
-        isBandalartDeleteAlertDialogOpened = state
+        isBandalartDeleteAlertDialogOpened = state,
       )
     }
   }
