@@ -29,16 +29,17 @@ import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 
+// TODO 삭제하기를 눌렀을 때, 성공하든 실패하든 AlertDialog 가 닫히도록 구현
 @Composable
 fun BandalartDeleteAlertDialog(
   modifier: Modifier = Modifier,
   title: String,
   message: String,
   dialogOpened: Boolean,
-  onDeleteClicked: () -> Unit,
+  onDeleteClicked: (String) -> Unit,
   onCancleClicked: () -> Unit,
+  bandalartKey: String,
 ) {
   if (dialogOpened) {
     Dialog(onDismissRequest = { onCancleClicked() }) {
@@ -55,27 +56,30 @@ fun BandalartDeleteAlertDialog(
           Image(
             painter = image,
             contentDescription = "Delete Icon",
-            modifier = Modifier.height(28.dp).align(Alignment.CenterHorizontally),
+            modifier = Modifier
+              .height(28.dp)
+              .align(Alignment.CenterHorizontally),
           )
           Spacer(modifier = Modifier.height(18.dp))
-          Text(
+          FixedSizeText(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = title,
             color = Gray900,
-            fontSize = 20.sp.nonScaleSp,
-            fontFamily = pretendard,
+            fontSize = 20.sp,
             fontWeight = FontWeight.W700,
             textAlign = TextAlign.Center,
+            lineHeight = 30.sp,
+            letterSpacing = (-0.4).sp,
           )
           Spacer(modifier = Modifier.height(8.dp))
-          Text(
+          FixedSizeText(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = message,
             color = Gray400,
-            fontSize = 14.sp.nonScaleSp,
-            fontFamily = pretendard,
+            fontSize = 14.sp,
             fontWeight = FontWeight.W500,
             textAlign = TextAlign.Center,
+            letterSpacing = (-0.28).sp,
           )
           Spacer(modifier = Modifier.height(30.dp))
           Row(
@@ -101,8 +105,8 @@ fun BandalartDeleteAlertDialog(
               Text(
                 text = "취소",
                 fontSize = 16.sp.nonScaleSp,
-                fontFamily = pretendard,
                 fontWeight = FontWeight.W600,
+                color = Gray900,
               )
             }
             Spacer(modifier = Modifier.width(9.dp))
@@ -110,10 +114,7 @@ fun BandalartDeleteAlertDialog(
               modifier = Modifier
                 .weight(1f)
                 .height(56.dp),
-              onClick = {
-                onDeleteClicked()
-                onCancleClicked()
-              },
+              onClick = { onDeleteClicked(bandalartKey) },
               colors = ButtonColors(
                 containerColor = Gray900,
                 contentColor = White,
@@ -124,8 +125,8 @@ fun BandalartDeleteAlertDialog(
               Text(
                 text = "삭제하기",
                 fontSize = 16.sp.nonScaleSp,
-                fontFamily = pretendard,
                 fontWeight = FontWeight.W600,
+                color = White,
               )
             }
           }

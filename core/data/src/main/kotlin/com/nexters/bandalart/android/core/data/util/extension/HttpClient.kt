@@ -12,14 +12,14 @@ internal suspend fun <T> HttpClient.safeRequest(
   return try {
     this.request()
   } catch (exception: UnresolvedAddressException) {
-    throw ExceptionWrapper(message = "No Internet connection", cause = exception)
+    throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)
   } catch (exception: ResponseException) {
     throw ExceptionWrapper(
       statusCode = exception.response.status.value,
-      message = exception.response.status.description,
+      message = exception.toAlertMessage(),
       cause = exception,
     )
   } catch (exception: Exception) {
-    throw ExceptionWrapper(message = "Unexpected Error", cause = exception)
+    throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)
   }
 }

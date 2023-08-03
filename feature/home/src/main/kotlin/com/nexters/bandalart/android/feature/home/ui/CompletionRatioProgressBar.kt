@@ -21,32 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Primary
 
 @Composable
-fun CompletionRatioProgressBar() {
-  var progressCount: Int by remember { mutableStateOf(0) }
+fun CompletionRatioProgressBar(
+  completionRatio: Int,
+  progressColor: Color,
+) {
   var progress by remember { mutableStateOf(0f) }
-
-  /* to avoid the direct calculation of progress variable which is a Float
-   and it can sometimes cause problems like it shows 0.4 to 0.400004 so, here I have use
-   progressCount and we will increase and decrease it and then convert it to progress(Float)
-   and then use that progress with our ProgressBar Width*/
-  when (progressCount) {
-    0 -> progress = 0.0f
-    1 -> progress = 0.1f
-    2 -> progress = 0.2f
-    3 -> progress = 0.3f
-    4 -> progress = 0.4f
-    5 -> progress = 0.5f
-    6 -> progress = 0.6f
-    7 -> progress = 0.7f
-    8 -> progress = 0.8f
-    9 -> progress = 0.9f
-    10 -> progress = 1.0f
-  }
 
   val size by animateFloatAsState(
     targetValue = progress,
@@ -56,6 +40,11 @@ fun CompletionRatioProgressBar() {
       easing = LinearOutSlowInEasing,
     ),
   )
+
+  LaunchedEffect(key1 = completionRatio) {
+    progress = completionRatio / 100f
+  }
+
   Column(
     modifier = Modifier
       .fillMaxWidth()
@@ -80,14 +69,9 @@ fun CompletionRatioProgressBar() {
           .fillMaxWidth(size)
           .fillMaxHeight()
           .clip(RoundedCornerShape(5.dp))
-          .background(Primary)
+          .background(progressColor)
           .animateContentSize(),
       )
     }
-  }
-
-  // Use this when you want your progress bar should animate when you open your app
-  LaunchedEffect(key1 = true) {
-    progressCount = 7
   }
 }

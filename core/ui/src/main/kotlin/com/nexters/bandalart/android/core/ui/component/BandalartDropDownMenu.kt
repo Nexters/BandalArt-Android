@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -33,14 +34,18 @@ import com.nexters.bandalart.android.core.ui.theme.Gray800
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
+// TODO Alert Dialog 가 닫히면 DropDorwnMenu 도 닫히도록 구현
 @Composable
 fun BandalartDropDownMenu(
   modifier: Modifier = Modifier,
   onResult: (Boolean) -> Unit,
   isDropDownMenuExpanded: Boolean,
-  onDeleteClicked: () -> Unit,
+  onDeleteClicked: (String) -> Unit,
+  bandalartKey: String,
+  title: String?,
 ) {
   var dialogOpened by remember { mutableStateOf(false) }
+
   MaterialTheme(
     shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
   ) {
@@ -58,17 +63,23 @@ fun BandalartDropDownMenu(
       DropdownMenuItem(
         modifier = Modifier
           .wrapContentSize()
-          .padding(horizontal = 7.dp),
+          .padding(horizontal = 7.dp)
+          .clickable {},
         text = {
           Row {
             val image = painterResource(id = R.drawable.ic_image)
             Image(
               painter = image,
               contentDescription = "Image Icon",
-              modifier = Modifier.height(14.dp).align(CenterVertically),
+              modifier = Modifier
+                .height(14.dp)
+                .align(CenterVertically),
             )
             Text(
-              modifier = Modifier.fillMaxHeight().padding(start = 13.dp).align(CenterVertically),
+              modifier = Modifier
+                .fillMaxHeight()
+                .padding(start = 13.dp)
+                .align(CenterVertically),
               text = "이미지 내보내기",
               color = Gray800,
               fontSize = 14.sp.nonScaleSp,
@@ -83,18 +94,24 @@ fun BandalartDropDownMenu(
       DropdownMenuItem(
         modifier = Modifier
           .wrapContentSize()
-          .padding(horizontal = 7.dp),
+          .padding(horizontal = 7.dp)
+          .clickable {},
         text = {
           Row {
             val image = painterResource(id = R.drawable.ic_delete)
             Image(
               painter = image,
               contentDescription = "Delete Icon",
-              modifier = Modifier.height(14.dp).align(CenterVertically),
+              modifier = Modifier
+                .height(14.dp)
+                .align(CenterVertically),
               colorFilter = ColorFilter.tint(Error),
             )
             Text(
-              modifier = Modifier.fillMaxHeight().padding(start = 13.dp).align(CenterVertically),
+              modifier = Modifier
+                .fillMaxHeight()
+                .padding(start = 13.dp)
+                .align(CenterVertically),
               text = "삭제하기",
               color = Error,
               fontSize = 14.sp.nonScaleSp,
@@ -105,12 +122,14 @@ fun BandalartDropDownMenu(
         },
         onClick = { dialogOpened = true },
       )
+      // TODO 데이터 연동
       BandalartDeleteAlertDialog(
-        title = "'8구단 드래프트 1순위'\n만다라트를 삭제하시겠어요?",
-        message = "삭제된 만다라트는 다시 복구할 수 없어요.",
+        title = if (title.isNullOrEmpty()) "지금 작성중인\n반다라트를 삭제하시겠어요?" else "'$title'\n반다라트를 삭제하시겠어요?",
+        message = "삭제된 반다라트는 다시 복구할 수 없어요.",
         dialogOpened = dialogOpened,
-        onDeleteClicked = onDeleteClicked,
+        onDeleteClicked = { onDeleteClicked(bandalartKey) },
         onCancleClicked = { dialogOpened = !dialogOpened },
+        bandalartKey = bandalartKey,
       )
     }
   }

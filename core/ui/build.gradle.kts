@@ -19,9 +19,9 @@ android {
 dependencies {
   implementations(
     projects.core.designsystem,
+    libs.kotlinx.datetime,
     libs.androidx.core,
     libs.androidx.appcompat,
-    libs.android.material,
     libs.bundles.androidx.compose,
   )
 }

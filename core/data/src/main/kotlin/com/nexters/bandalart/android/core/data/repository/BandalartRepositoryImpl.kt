@@ -6,7 +6,6 @@ import com.nexters.bandalart.android.core.data.mapper.toEntity
 import com.nexters.bandalart.android.core.data.mapper.toModel
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.domain.entity.BandalartListEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import javax.inject.Inject
@@ -19,8 +18,8 @@ class BandalartRepositoryImpl @Inject constructor(
     bandalartRemoteDataSource.createBandalart()
   }
 
-  override suspend fun getBandalartList(): BandalartListEntity? {
-    return bandalartRemoteDataSource.getBandalartList()?.toEntity()
+  override suspend fun getBandalartList(): List<BandalartDetailEntity>? {
+    return bandalartRemoteDataSource.getBandalartList()?.map { it.toEntity() }
   }
 
   override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailEntity? {

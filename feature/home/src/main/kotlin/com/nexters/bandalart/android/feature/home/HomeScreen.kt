@@ -32,12 +32,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
@@ -68,34 +70,35 @@ import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.extension.toColor
+import com.nexters.bandalart.android.core.ui.extension.toFormatDate
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray200
+import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray500
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.Primary
-import com.nexters.bandalart.android.core.ui.theme.Secondary
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.bottomSheetContent
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 
 @Composable
 internal fun HomeRoute(
+  modifier: Modifier = Modifier,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
-  onAddBandalart: () -> Unit,
-  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
-  modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val bandalartDetailData = uiState.bandalartDetailData
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -108,28 +111,32 @@ internal fun HomeRoute(
   }
 
   HomeScreen(
+    modifier = modifier,
     uiState = uiState,
+    bandalartDetailData = bandalartDetailData ?: BandalartDetailUiModel(),
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
-    onAddBandalart = onAddBandalart,
-    onShowBandalartList = onShowBandalartList,
     onShowSnackbar = onShowSnackbar,
-    getBandalartMainCell = viewModel::getBandalartMainCell,
-    modifier = modifier,
+    getBandalartList = viewModel::getBandalartList,
+    getBandalartDetail = viewModel::getBandalartDetail,
+    createBandalart = viewModel::createBandalart,
+    deleteBandalart = viewModel::deleteBandalart,
   )
 }
 
 @Suppress("unused")
 @Composable
 internal fun HomeScreen(
+  modifier: Modifier = Modifier,
   uiState: HomeUiState,
+  bandalartDetailData: BandalartDetailUiModel,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
-  onAddBandalart: () -> Unit,
-  onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
-  getBandalartMainCell: suspend (String) -> Unit,
-  modifier: Modifier = Modifier,
+  getBandalartList: () -> Unit,
+  getBandalartDetail: (String) -> Unit,
+  createBandalart: () -> Unit,
+  deleteBandalart: (String) -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -138,10 +145,13 @@ internal fun HomeScreen(
   val emojiPickerState = rememberModalBottomSheetState(
     skipPartiallyExpanded = emojiSkipPartiallyExpanded,
   )
+  // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf("😎") }
   LaunchedEffect(key1 = Unit) {
-    // getBandalartMainCell("K3mLJ")
-    getBandalartMainCell("3sF4I")
+    // getBandalartList()
+    getBandalartDetail("3sF4I")
+    // getBandalartDetail("WUFva")
+    // getBandalartDetail("K3mLJ")
   }
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -158,14 +168,13 @@ internal fun HomeScreen(
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
-          // 임시로 네비게이션 버튼의 역할을 대신 수행함
-          // onAddBandalart = onAddBandalart,
-          onAddBandalart = navigateToComplete,
-          onShowBandalartList = onShowBandalartList,
+          // 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
+          onAddBandalart = createBandalart,
+          onShowBandalartList = {},
         )
-        Divider(
-          color = Gray100,
+        HorizontalDivider(
           thickness = 1.dp,
+          color = Gray100,
         )
         Column(
           modifier.padding(horizontal = 16.dp),
@@ -223,10 +232,7 @@ internal fun HomeScreen(
                 contentDescription = "Edit Icon",
                 modifier = Modifier
                   .align(Alignment.BottomEnd)
-                  .offset(
-                    x = 4.dp,
-                    y = 4.dp,
-                  ),
+                  .offset(x = 4.dp, y = 4.dp),
               )
             }
           }
@@ -237,8 +243,8 @@ internal fun HomeScreen(
               .wrapContentHeight(),
           ) {
             FixedSizeText(
-              text = "완벽한 2024년",
-              color = Gray900,
+              text = bandalartDetailData.title ?: "메인 목표를 입력해주세요",
+              color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
               fontWeight = FontWeight.W700,
               fontSize = 20.sp,
               letterSpacing = (-0.4).sp,
@@ -256,7 +262,9 @@ internal fun HomeScreen(
             BandalartDropDownMenu(
               onResult = { isDropDownMenuExpanded = it },
               isDropDownMenuExpanded = isDropDownMenuExpanded,
-              onDeleteClicked = { },
+              onDeleteClicked = { bandalartKey -> deleteBandalart(bandalartKey) },
+              bandalartKey = bandalartDetailData.key,
+              title = bandalartDetailData.title,
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
@@ -266,65 +274,76 @@ internal fun HomeScreen(
           ) {
             // TODO 데이터 연동
             FixedSizeText(
-              text = "달성률 (0%)",
+              text = "달성률 (65%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
               letterSpacing = (-0.24).sp,
             )
-            val image =
-              painterResource(id = R.drawable.ic_vertical_line)
-            Image(
-              painter = image,
-              contentDescription = "Vertical Line Icon",
-              modifier = Modifier.padding(start = 6.dp),
-            )
-            // TODO 데이터 연동
-            FixedSizeText(
-              text = "~24년 12월 31일",
-              color = Gray600,
-              fontWeight = FontWeight.W500,
-              fontSize = 12.sp,
-              letterSpacing = (-0.24).sp,
-              modifier = Modifier.padding(start = 6.dp),
-            )
+            if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
+              VerticalDivider(
+                modifier = Modifier
+                  .height(8.dp)
+                  .padding(start = 6.dp),
+                thickness = 1.dp,
+                color = Gray300,
+              )
+              FixedSizeText(
+                text = bandalartDetailData.dueDate.toFormatDate(),
+                color = Gray600,
+                fontWeight = FontWeight.W500,
+                fontSize = 12.sp,
+                letterSpacing = (-0.24).sp,
+                modifier = Modifier.padding(start = 6.dp),
+              )
+            }
             Spacer(modifier = Modifier.weight(1f))
-            Box(
-              modifier
-                .clip(RoundedCornerShape(24.dp))
-                .background(color = Primary),
-            ) {
-              Row(
-                modifier = Modifier.padding(start = 9.dp, end = 9.dp),
-                verticalAlignment = Alignment.CenterVertically,
+            if (bandalartDetailData.isCompleted) {
+              Box(
+                modifier
+                  .clip(RoundedCornerShape(24.dp))
+                  .background(color = bandalartDetailData.mainColor.toColor()),
               ) {
-                Icon(
-                  imageVector = Icons.Default.Check,
-                  contentDescription = "Check Icon",
-                  tint = Gray900,
-                  modifier = Modifier.size(13.dp),
-                )
-                FixedSizeText(
-                  text = "달성 완료!",
-                  color = Gray900,
-                  fontWeight = FontWeight.W600,
-                  fontSize = 10.sp,
-                  letterSpacing = (-0.2).sp,
-                  modifier = Modifier.padding(start = 2.dp),
-                )
+                Row(
+                  modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+                  verticalAlignment = Alignment.CenterVertically,
+                ) {
+                  Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Check Icon",
+                    tint = Gray900,
+                    modifier = Modifier.size(13.dp),
+                  )
+                  FixedSizeText(
+                    text = "달성 완료!",
+                    color = Gray900,
+                    fontWeight = FontWeight.W600,
+                    fontSize = 10.sp,
+                    letterSpacing = (-0.2).sp,
+                    modifier = Modifier.padding(start = 2.dp),
+                  )
+                }
               }
             }
           }
           Spacer(modifier = Modifier.height(8.dp))
-          CompletionRatioProgressBar()
+          // TODO 데이터 연동
+          CompletionRatioProgressBar(
+            completionRatio = 65,
+            progressColor = bandalartDetailData.mainColor.toColor(),
+          )
           Spacer(modifier = Modifier.height(18.dp))
         }
         when {
           uiState.isLoading -> {
-            LoadingWheel()
+            LoadingWheel(bandalartDetailData.mainColor.toColor())
           }
-          uiState.bandalartData != null -> {
-            BandalartChart(bandalartData = uiState.bandalartData)
+          uiState.bandalartChartData != null -> {
+            BandalartChart(
+              bandalartChartData = uiState.bandalartChartData,
+              mainColor = bandalartDetailData.mainColor.toColor(),
+              subColor = bandalartDetailData.subColor.toColor(),
+            )
           }
           // TODO Network Eroor 상황 처리
           uiState.error != null -> {
@@ -383,13 +402,15 @@ data class SubCell(
   val colCnt: Int,
   val subCellRowIndex: Int,
   val subCellColIndex: Int,
-  val bandalartData: BandalartCellUiModel,
+  val bandalartChartData: BandalartCellUiModel,
 )
 
 @Composable
 private fun BandalartChart(
   modifier: Modifier = Modifier,
-  bandalartData: BandalartCellUiModel,
+  bandalartChartData: BandalartCellUiModel,
+  mainColor: Color,
+  subColor: Color,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -397,10 +418,10 @@ private fun BandalartChart(
   }
 
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1, bandalartData.children[0]),
-    SubCell(3, 2, 1, 0, bandalartData.children[1]),
-    SubCell(3, 2, 1, 1, bandalartData.children[2]),
-    SubCell(2, 3, 0, 1, bandalartData.children[3]),
+    SubCell(2, 3, 1, 1, bandalartChartData.children[0]),
+    SubCell(3, 2, 1, 0, bandalartChartData.children[1]),
+    SubCell(3, 2, 1, 1, bandalartChartData.children[2]),
+    SubCell(2, 3, 0, 1, bandalartChartData.children[3]),
   )
 
   Layout(
@@ -419,6 +440,8 @@ private fun BandalartChart(
               rows = subCellList[index].rowCnt,
               cols = subCellList[index].colCnt,
               subCell = subCellList[index],
+              mainColor = mainColor,
+              subColor = subColor,
             )
           },
         )
@@ -427,11 +450,13 @@ private fun BandalartChart(
         modifier
           .layoutId("Main")
           .clip(RoundedCornerShape(10.dp))
-          .background(color = Primary),
+          .background(color = mainColor),
         content = {
           Cell(
             isMainCell = true,
-            cell = bandalartData,
+            cell = bandalartChartData,
+            mainColor = mainColor,
+            subColor = subColor,
           )
         },
       )
@@ -474,6 +499,8 @@ fun CellGrid(
   rows: Int,
   cols: Int,
   subCell: SubCell,
+  mainColor: Color,
+  subColor: Color,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -499,7 +526,9 @@ fun CellGrid(
               rowCnt = rows,
             ),
             modifier = Modifier.weight(1f),
-            cell = if (isSubCell) subCell.bandalartData else subCell.bandalartData.children[taskIndex++],
+            cell = if (isSubCell) subCell.bandalartChartData else subCell.bandalartChartData.children[taskIndex++],
+            mainColor = mainColor,
+            subColor = subColor,
           )
         }
       }
@@ -524,6 +553,8 @@ fun Cell(
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
+  mainColor: Color,
+  subColor: Color,
 ) {
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val skipPartiallyExpanded by remember { mutableStateOf(true) }
@@ -532,9 +563,9 @@ fun Cell(
     skipPartiallyExpanded = skipPartiallyExpanded,
   )
   val backgroundColor = when {
-    isMainCell -> Primary
-    cellInfo.isSubCell and cell.isCompleted -> Secondary.copy(alpha = 0.6f)
-    cellInfo.isSubCell and !cell.isCompleted -> Secondary
+    isMainCell -> mainColor
+    cellInfo.isSubCell and cell.isCompleted -> subColor.copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cell.isCompleted -> subColor
     cell.isCompleted -> Gray200
     else -> White
   }
@@ -560,13 +591,13 @@ fun Cell(
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
               cellText = "메인목표",
-              cellTextColor = Secondary,
+              cellTextColor = subColor,
               fontWeight = FontWeight.W700,
             )
             Icon(
               imageVector = Icons.Default.Add,
               contentDescription = "Add Icon",
-              tint = Secondary,
+              tint = subColor,
               modifier = Modifier.size(20.dp),
             )
           }
@@ -574,13 +605,13 @@ fun Cell(
       } else {
         CellText(
           cellText = cell.title,
-          cellTextColor = Secondary,
+          cellTextColor = subColor,
           fontWeight = FontWeight.W700,
         )
       }
       // 서브 목표
     } else if (cellInfo.isSubCell) {
-      val cellTextColor = Primary
+      val cellTextColor = mainColor
       val fontWeight = FontWeight.W700
       // 서브 목표가 빈 경우
       if (cell.title.isNullOrEmpty()) {
