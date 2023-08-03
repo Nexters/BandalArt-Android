@@ -32,12 +32,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -170,9 +171,9 @@ internal fun HomeScreen(
           onAddBandalart = createBandalart,
           onShowBandalartList = {},
         )
-        Divider(
-          color = Gray100,
+        HorizontalDivider(
           thickness = 1.dp,
+          color = Gray100
         )
         Column(
           modifier.padding(horizontal = 16.dp),
@@ -282,12 +283,12 @@ internal fun HomeScreen(
               letterSpacing = (-0.24).sp,
             )
             if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
-              val image =
-                painterResource(id = R.drawable.ic_vertical_line)
-              Image(
-                painter = image,
-                contentDescription = "Vertical Line Icon",
-                modifier = Modifier.padding(start = 6.dp),
+              VerticalDivider(
+                modifier = Modifier
+                  .height(8.dp)
+                  .padding(start = 6.dp),
+                thickness = 1.dp,
+                color = Gray300,
               )
               FixedSizeText(
                 text = bandalartDetailData.dueDate.toFormatDate(),
