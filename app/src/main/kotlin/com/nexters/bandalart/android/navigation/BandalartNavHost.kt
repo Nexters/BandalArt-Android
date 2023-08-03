@@ -27,8 +27,6 @@ fun BandalartNavHost(
     homeScreen(
       navigateToOnBoarding = navController::navigateToOnBoarding,
       navigateToComplete = navController::navigateToComplete,
-      onAddBandalart = {},
-      onShowBandalartList = {},
       onShowSnackbar = onShowSnackbar,
     )
     onBoardingScreen(

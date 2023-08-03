@@ -5,7 +5,6 @@ package com.nexters.bandalart.android.core.data.remote.datasource
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartListResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartCellRequest
 import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import io.ktor.client.HttpClient
@@ -27,7 +26,7 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
     }
   }
 
-  override suspend fun getBandalartList(): BandalartListResponse? {
+  override suspend fun getBandalartList(): List<BandalartDetailResponse>? {
     return client.safeRequest {
       get("v1/bandalarts").body()
     }

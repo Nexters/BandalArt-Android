@@ -26,6 +26,5 @@ val Black = Color(0xFF060A27)
 val Gray = Color(0xFFDDE0FF)
 val Error = Color(0xFFFF2727)
 
-// Todo 색 선택 기능을 추가하면 네이밍이 달라져야 함
-val Primary = Color(0xFF3FFFBA)
-val Secondary = Color(0xFF111827)
+val MainColor = Color(0xFF3FFFBA)
+val SubColor = Color(0xFF111827)

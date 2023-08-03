@@ -20,7 +20,6 @@ dependencies {
   implementations(
     libs.androidx.core,
     libs.androidx.appcompat,
-    libs.android.material,
     libs.bundles.androidx.compose
   )
 }

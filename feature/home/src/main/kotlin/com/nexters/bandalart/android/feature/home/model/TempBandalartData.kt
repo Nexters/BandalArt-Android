@@ -2,7 +2,7 @@ package com.nexters.bandalart.android.feature.home.model
 
 // 임시 데이터
 // 데이터의 구조를 파악 하기 위함
-val bandalartData = BandalartCellUiModel(
+val tempBandalartData = BandalartCellUiModel(
   key = "6km1Z",
   title = "넥스터즈 1등하기",
   description = null,
