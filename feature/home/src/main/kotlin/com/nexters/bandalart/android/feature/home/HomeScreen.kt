@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
@@ -84,8 +85,8 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.bottomSheetContent
@@ -123,6 +124,8 @@ internal fun HomeRoute(
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
+    openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
+    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) }
   )
 }
 
@@ -140,6 +143,8 @@ internal fun HomeScreen(
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
+  openDropDownMenu: (Boolean) -> Unit,
+  openBandalartDeleteAlertDialog: (Boolean) -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -151,11 +156,37 @@ internal fun HomeScreen(
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf("😎") }
   val testBandalartKey = "3sF4I"
+
   LaunchedEffect(key1 = Unit) {
     getBandalartDetail(testBandalartKey)
-    // getBandalartDetail("WUFva")
     // getBandalartDetail("K3mLJ")
   }
+
+  LaunchedEffect(key1 = uiState.isBandalartDeleted) {
+    if (uiState.isBandalartDeleted) {
+      openBandalartDeleteAlertDialog(false)
+    }
+  }
+
+  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
+    if (bandalartDetailData.isCompleted) {
+      navigateToComplete()
+    }
+  }
+
+  if (uiState.isBandalartDeleteAlertDialogOpened) {
+    BandalartDeleteAlertDialog(
+      title = if (bandalartDetailData.title.isNullOrEmpty()) {
+        "지금 작성중인\n반다라트를 삭제하시겠어요?"
+      } else {
+        "'$bandalartDetailData.title'\n반다라트를 삭제하시겠어요?"
+      },
+      message = "삭제된 반다라트는 다시 복구할 수 없어요.",
+      onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
+      onCancelClicked = { openBandalartDeleteAlertDialog(false) },
+    )
+  }
+
   Surface(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
@@ -235,10 +266,7 @@ internal fun HomeScreen(
                 contentDescription = "Edit Icon",
                 modifier = Modifier
                   .align(Alignment.BottomEnd)
-                  .offset(
-                    x = 4.dp,
-                    y = 4.dp,
-                  ),
+                  .offset(x = 4.dp, y = 4.dp),
               )
             }
           }
@@ -256,21 +284,21 @@ internal fun HomeScreen(
               letterSpacing = (-0.4).sp,
               modifier = Modifier.align(Alignment.Center),
             )
-            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
             val image = painterResource(id = R.drawable.ic_option)
             Image(
               painter = image,
               contentDescription = "Option Icon",
               modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clickable(onClick = { isDropDownMenuExpanded = true }),
+                .clickable(onClick = { openDropDownMenu(true) }),
             )
             BandalartDropDownMenu(
-              onResult = { isDropDownMenuExpanded = it },
-              isDropDownMenuExpanded = isDropDownMenuExpanded,
-              onDeleteClicked = { bandalartKey -> deleteBandalart(bandalartKey) },
-              bandalartKey = bandalartDetailData.key,
-              title = bandalartDetailData.title,
+              openDropDownMenu = openDropDownMenu,
+              isDropDownMenuOpened = uiState.isDropDownMenuOpened,
+              onDeleteClicked = {
+                openBandalartDeleteAlertDialog(true)
+                openDropDownMenu(false)
+              },
             )
           }
           Spacer(modifier = Modifier.height(24.dp))
@@ -350,7 +378,8 @@ internal fun HomeScreen(
               mainColor = bandalartDetailData.mainColor.toColor(),
               subColor = bandalartDetailData.subColor.toColor(),
               updateBandalartCell = updateBandalartCell,
-              bandalartKey = testBandalartKey,
+              // bandalartKey = testBandalartKey,
+              bandalartKey = bandalartDetailData.key
             )
           }
           // TODO Network Eroor 상황 처리
@@ -381,14 +410,6 @@ internal fun HomeScreen(
                 painter = image,
                 contentDescription = "Share Icon",
               )
-//              // FixedSizeText 로 적용하면 텍스트가 보이지 않음
-//              FixedSizeText(
-//                text = "공유하기",
-//                color = Gray900,
-//                fontWeight = FontWeight.W700,
-//                fontSize = 12.sp,
-//                modifier = Modifier.padding(start = 4.dp),
-//              )
               Text(
                 text = "공유하기",
                 color = Gray900,

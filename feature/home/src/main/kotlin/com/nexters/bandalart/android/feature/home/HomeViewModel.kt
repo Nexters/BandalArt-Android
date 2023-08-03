@@ -46,9 +46,11 @@ data class HomeUiState(
   val isCellUpdated: Boolean = false,
   val isCellDeleted: Boolean = false,
   val isBandalartCompleted: Boolean = false,
-  val isBandalartDeleted: Boolean = false,
-  val isLoading: Boolean = true,
   val isBandalartCreated: Boolean = false,
+  val isBandalartDeleted: Boolean = false,
+  val isDropDownMenuOpened: Boolean = false,
+  val isBandalartDeleteAlertDialogOpened: Boolean = false,
+  val isLoading: Boolean = true,
   val error: Throwable? = null,
 )
 
@@ -200,8 +202,11 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
             isLoading = false,
+            isBandalartDeleted = true,
             error = null,
           )
+          openBandalartDeleteAlertDialog(false)
+          openDropDownMenu(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트가 삭제되었어요."))
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -211,7 +216,7 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartChartData = null,
+            isBandalartDeleted = false,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -241,11 +246,26 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = exception,
           )
-          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
       }
+    }
+  }
+
+  fun openDropDownMenu(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isDropDownMenuOpened = state
+      )
+    }
+  }
+
+  fun openBandalartDeleteAlertDialog(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isBandalartDeleteAlertDialogOpened = state
+      )
     }
   }
 }
