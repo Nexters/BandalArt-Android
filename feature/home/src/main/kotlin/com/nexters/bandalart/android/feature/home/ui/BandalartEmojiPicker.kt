@@ -10,14 +10,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,16 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray400
-import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -62,28 +60,11 @@ fun BandalartEmojiPicker(
     Column(
       modifier = modifier
         .fillMaxWidth()
-        .background(White),
+        .background(White)
+        .padding(
+          top = if (isBottomSheet) 16.dp else 0.dp,
+        ),
     ) {
-      Text(
-        modifier = Modifier
-          .align(Alignment.End)
-          .padding(
-            end = 20.dp,
-            top = if (isBottomSheet) 16.dp else 0.dp,
-          )
-          .clickable {
-            emojiPickerScope
-              .launch { emojiPickerState.hide() }
-              .invokeOnCompletion {
-                if (!emojiPickerState.isVisible) onResult(selectedEmoji, false)
-              }
-          },
-        text = "완료",
-        color = Gray900,
-        fontFamily = pretendard,
-        fontWeight = FontWeight.W700,
-        fontSize = 16.sp.nonScaleSp,
-      )
       var emojiIndex = 0
       Column(
         modifier = Modifier
@@ -139,6 +120,11 @@ fun BandalartEmojiPicker(
                         prevSelectedEmoji = selectedEmoji
                         selectedEmoji = emojiItem
                       }
+                      emojiPickerScope
+                        .launch { emojiPickerState.hide() }
+                        .invokeOnCompletion {
+                          if (!emojiPickerState.isVisible) onResult(selectedEmoji, false)
+                        }
                     },
                   contentAlignment = Alignment.Center,
                 ) {
@@ -152,6 +138,7 @@ fun BandalartEmojiPicker(
           }
         }
       }
+      Spacer(modifier = Modifier.height(NavigationBarHeightDp))
     }
   }
 }
