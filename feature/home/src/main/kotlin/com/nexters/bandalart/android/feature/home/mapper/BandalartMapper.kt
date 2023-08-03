@@ -18,11 +18,10 @@ internal fun BandalartCellEntity.toUiModel(): BandalartCellUiModel {
   )
 }
 
-internal fun UpdateBandalartCellModel.toEntity(): UpdateBandalartCellEntity {
-  return UpdateBandalartCellEntity(
+internal fun UpdateBandalartCellModel.toEntity() =
+  UpdateBandalartCellEntity(
     title = title,
     description = description,
     dueDate = dueDate,
     isCompleted = isCompleted,
   )
-}
