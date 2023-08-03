@@ -12,5 +12,5 @@ data class UpdateBandalartCellRequest(
   @SerialName("dueDate")
   val dueDate: String?,
   @SerialName("isCompleted")
-  val isCompleted: Boolean,
+  val isCompleted: Boolean?,
 )

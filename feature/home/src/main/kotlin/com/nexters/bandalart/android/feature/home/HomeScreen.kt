@@ -80,6 +80,7 @@ import com.nexters.bandalart.android.core.ui.theme.Secondary
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.bottomSheetContent
@@ -115,6 +116,7 @@ internal fun HomeRoute(
     onShowBandalartList = onShowBandalartList,
     onShowSnackbar = onShowSnackbar,
     getBandalartMainCell = viewModel::getBandalartMainCell,
+    updateBandalartCell = viewModel::updateBandalartCell,
     modifier = modifier,
   )
 }
@@ -129,6 +131,7 @@ internal fun HomeScreen(
   onShowBandalartList: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   getBandalartMainCell: suspend (String) -> Unit,
+  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val scrollState = rememberScrollState()
@@ -139,9 +142,10 @@ internal fun HomeScreen(
     skipPartiallyExpanded = emojiSkipPartiallyExpanded,
   )
   var currentEmoji by remember { mutableStateOf("😎") }
+  val testBandalartKey = "3sF4I"
   LaunchedEffect(key1 = Unit) {
     // getBandalartMainCell("K3mLJ")
-    getBandalartMainCell("3sF4I")
+    getBandalartMainCell(testBandalartKey)
   }
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -324,7 +328,11 @@ internal fun HomeScreen(
             LoadingWheel()
           }
           uiState.bandalartData != null -> {
-            BandalartChart(bandalartData = uiState.bandalartData)
+            BandalartChart(
+              bandalartData = uiState.bandalartData,
+              updateBandalartCell = updateBandalartCell,
+              bandalartKey = testBandalartKey,
+            )
           }
           // TODO Network Eroor 상황 처리
           uiState.error != null -> {
@@ -390,6 +398,8 @@ data class SubCell(
 private fun BandalartChart(
   modifier: Modifier = Modifier,
   bandalartData: BandalartCellUiModel,
+  bandalartKey: String,
+  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -419,6 +429,8 @@ private fun BandalartChart(
               rows = subCellList[index].rowCnt,
               cols = subCellList[index].colCnt,
               subCell = subCellList[index],
+              bandalartKey = bandalartKey,
+              updateBandalartCell = updateBandalartCell,
             )
           },
         )
@@ -431,7 +443,9 @@ private fun BandalartChart(
         content = {
           Cell(
             isMainCell = true,
-            cell = bandalartData,
+            cellData = bandalartData,
+            bandalartKey = bandalartKey,
+            updateBandalartCell = updateBandalartCell,
           )
         },
       )
@@ -474,6 +488,8 @@ fun CellGrid(
   rows: Int,
   cols: Int,
   subCell: SubCell,
+  bandalartKey: String,
+  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -499,7 +515,9 @@ fun CellGrid(
               rowCnt = rows,
             ),
             modifier = Modifier.weight(1f),
-            cell = if (isSubCell) subCell.bandalartData else subCell.bandalartData.children[taskIndex++],
+            cellData = if (isSubCell) subCell.bandalartData else subCell.bandalartData.children[taskIndex++],
+            bandalartKey = bandalartKey,
+            updateBandalartCell = updateBandalartCell,
           )
         }
       }
@@ -520,7 +538,9 @@ fun Cell(
   modifier: Modifier = Modifier,
   isMainCell: Boolean,
   cellInfo: CellInfo = CellInfo(),
-  cell: BandalartCellUiModel,
+  cellData: BandalartCellUiModel,
+  bandalartKey: String,
+  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
@@ -533,9 +553,9 @@ fun Cell(
   )
   val backgroundColor = when {
     isMainCell -> Primary
-    cellInfo.isSubCell and cell.isCompleted -> Secondary.copy(alpha = 0.6f)
-    cellInfo.isSubCell and !cell.isCompleted -> Secondary
-    cell.isCompleted -> Gray200
+    cellInfo.isSubCell and cellData.isCompleted -> Secondary.copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cellData.isCompleted -> Secondary
+    cellData.isCompleted -> Gray200
     else -> White
   }
   Box(
@@ -555,7 +575,7 @@ fun Cell(
     // 메인 목표
     if (isMainCell) {
       // 메인 목표가 빈 경우
-      if (cell.title.isNullOrEmpty()) {
+      if (cellData.title.isNullOrEmpty()) {
         Box(contentAlignment = Alignment.Center) {
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
@@ -573,7 +593,7 @@ fun Cell(
         }
       } else {
         CellText(
-          cellText = cell.title,
+          cellText = cellData.title,
           cellTextColor = Secondary,
           fontWeight = FontWeight.W700,
         )
@@ -583,7 +603,7 @@ fun Cell(
       val cellTextColor = Primary
       val fontWeight = FontWeight.W700
       // 서브 목표가 빈 경우
-      if (cell.title.isNullOrEmpty()) {
+      if (cellData.title.isNullOrEmpty()) {
         Column(
           horizontalAlignment = Alignment.CenterHorizontally,
           verticalArrangement = Arrangement.Center,
@@ -603,19 +623,19 @@ fun Cell(
       } else {
         // 서브 목표를 달성할 경우
         CellText(
-          cellText = cell.title,
+          cellText = cellData.title,
           cellTextColor = cellTextColor,
           fontWeight = fontWeight,
-          textAlpha = if (cell.isCompleted) 0.6f else 1f,
+          textAlpha = if (cellData.isCompleted) 0.6f else 1f,
         )
       }
     } else {
       // 테스크
-      val cellTextColor = if (cell.isCompleted) Gray400 else Gray900
+      val cellTextColor = if (cellData.isCompleted) Gray400 else Gray900
       val fontWeight = FontWeight.W500
 
       // 테스크가 비어있는 경우
-      if (cell.title.isNullOrEmpty()) {
+      if (cellData.title.isNullOrEmpty()) {
         Icon(
           imageVector = Icons.Default.Add,
           contentDescription = "Add Icon",
@@ -624,13 +644,13 @@ fun Cell(
         )
       } else {
         // 테스크의 목표를 달성한 경우
-        if (cell.isCompleted) {
+        if (cellData.isCompleted) {
           Box(
             modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
           ) {
             CellText(
-              cellText = cell.title,
+              cellText = cellData.title,
               cellTextColor = cellTextColor,
               fontWeight = fontWeight,
             )
@@ -645,7 +665,7 @@ fun Cell(
           }
         } else {
           CellText(
-            cellText = cell.title,
+            cellText = cellData.title,
             cellTextColor = cellTextColor,
             fontWeight = fontWeight,
           )
@@ -665,6 +685,9 @@ fun Cell(
           bottomSheetState = bottomSheetState,
           isSubCell = cellInfo.isSubCell,
           isMainCell = isMainCell,
+          cellData = cellData,
+          bandalartKey = bandalartKey,
+          updateBandalartCell = updateBandalartCell,
         ),
         dragHandle = null,
       )

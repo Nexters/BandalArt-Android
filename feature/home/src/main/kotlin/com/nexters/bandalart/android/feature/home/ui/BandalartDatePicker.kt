@@ -46,6 +46,7 @@ fun BandalartDatePicker(
   onResult: (String, Boolean) -> Unit,
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
+  currentDueDate: String? = "",
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,

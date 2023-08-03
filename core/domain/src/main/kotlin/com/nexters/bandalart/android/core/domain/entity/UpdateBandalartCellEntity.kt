@@ -13,5 +13,5 @@ data class UpdateBandalartCellEntity(
   val title: String,
   val description: String?,
   val dueDate: String?,
-  val isCompleted: Boolean,
+  val isCompleted: Boolean?,
 )
