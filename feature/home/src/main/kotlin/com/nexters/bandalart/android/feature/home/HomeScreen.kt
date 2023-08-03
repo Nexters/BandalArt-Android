@@ -174,7 +174,7 @@ internal fun HomeScreen(
         )
         HorizontalDivider(
           thickness = 1.dp,
-          color = Gray100
+          color = Gray100,
         )
         Column(
           modifier.padding(horizontal = 16.dp),

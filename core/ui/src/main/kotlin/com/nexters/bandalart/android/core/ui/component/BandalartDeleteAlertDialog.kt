@@ -29,7 +29,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 // TODO 삭제하기를 눌렀을 때, 성공하든 실패하든 AlertDialog 가 닫히도록 구현
 @Composable
