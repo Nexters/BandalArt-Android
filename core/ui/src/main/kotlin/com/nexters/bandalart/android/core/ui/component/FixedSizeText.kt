@@ -18,6 +18,7 @@ fun FixedSizeText(
   fontWeight: FontWeight,
   fontSize: TextUnit,
   letterSpacing: TextUnit = TextUnit.Unspecified,
+  lineHeight: TextUnit = TextUnit.Unspecified,
   textAlign: TextAlign? = null,
 ) {
   Text(
@@ -27,6 +28,7 @@ fun FixedSizeText(
     fontFamily = pretendard,
     fontWeight = fontWeight,
     fontSize = fontSize.nonScaleSp,
+    lineHeight = lineHeight,
     letterSpacing = letterSpacing.nonScaleSp,
     textAlign = textAlign,
   )

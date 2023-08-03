@@ -42,7 +42,7 @@ fun BandalartDropDownMenu(
   isDropDownMenuExpanded: Boolean,
   onDeleteClicked: (String) -> Unit,
   bandalartKey: String,
-  title: String,
+  title: String?,
 ) {
   var dialogOpened by remember { mutableStateOf(false) }
 
@@ -124,7 +124,7 @@ fun BandalartDropDownMenu(
       )
       // TODO 데이터 연동
       BandalartDeleteAlertDialog(
-        title = "'$title'\n반다라트를 삭제하시겠어요?",
+        title = if (title.isNullOrEmpty()) "지금 작성중인\n반다라트를 삭제하시겠어요?" else "'$title'\n반다라트를 삭제하시겠어요?",
         message = "삭제된 반다라트는 다시 복구할 수 없어요.",
         dialogOpened = dialogOpened,
         onDeleteClicked = { onDeleteClicked(bandalartKey) },

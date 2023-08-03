@@ -150,6 +150,7 @@ internal fun HomeScreen(
   LaunchedEffect(key1 = Unit) {
     // getBandalartList()
     getBandalartDetail("3sF4I")
+    // getBandalartDetail("WUFva")
     // getBandalartDetail("K3mLJ")
   }
   Surface(
@@ -258,16 +259,13 @@ internal fun HomeScreen(
                 .align(Alignment.CenterEnd)
                 .clickable(onClick = { isDropDownMenuExpanded = true }),
             )
-            // TODO 메인 목표가 비어있을 때 드롭 다운 메뉴 활성화 여부 결정
-            if (!bandalartDetailData.title.isNullOrEmpty()) {
-              BandalartDropDownMenu(
-                onResult = { isDropDownMenuExpanded = it },
-                isDropDownMenuExpanded = isDropDownMenuExpanded,
-                onDeleteClicked = { bandalartKey -> deleteBandalart(bandalartKey) },
-                bandalartKey = bandalartDetailData.key,
-                title = bandalartDetailData.title,
-              )
-            }
+            BandalartDropDownMenu(
+              onResult = { isDropDownMenuExpanded = it },
+              isDropDownMenuExpanded = isDropDownMenuExpanded,
+              onDeleteClicked = { bandalartKey -> deleteBandalart(bandalartKey) },
+              bandalartKey = bandalartDetailData.key,
+              title = bandalartDetailData.title,
+            )
           }
           Spacer(modifier = Modifier.height(24.dp))
           Row(

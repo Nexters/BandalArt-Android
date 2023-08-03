@@ -57,27 +57,30 @@ fun BandalartDeleteAlertDialog(
           Image(
             painter = image,
             contentDescription = "Delete Icon",
-            modifier = Modifier.height(28.dp).align(Alignment.CenterHorizontally),
+            modifier = Modifier
+              .height(28.dp)
+              .align(Alignment.CenterHorizontally),
           )
           Spacer(modifier = Modifier.height(18.dp))
-          Text(
+          FixedSizeText(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = title,
             color = Gray900,
-            fontSize = 20.sp.nonScaleSp,
-            fontFamily = pretendard,
+            fontSize = 20.sp,
             fontWeight = FontWeight.W700,
             textAlign = TextAlign.Center,
+            lineHeight = 30.sp,
+            letterSpacing = (-0.4).sp,
           )
           Spacer(modifier = Modifier.height(8.dp))
-          Text(
+          FixedSizeText(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = message,
             color = Gray400,
-            fontSize = 14.sp.nonScaleSp,
-            fontFamily = pretendard,
+            fontSize = 14.sp,
             fontWeight = FontWeight.W500,
             textAlign = TextAlign.Center,
+            letterSpacing = (-0.28).sp,
           )
           Spacer(modifier = Modifier.height(30.dp))
           Row(
@@ -103,8 +106,8 @@ fun BandalartDeleteAlertDialog(
               Text(
                 text = "취소",
                 fontSize = 16.sp.nonScaleSp,
-                fontFamily = pretendard,
                 fontWeight = FontWeight.W600,
+                color = Gray900,
               )
             }
             Spacer(modifier = Modifier.width(9.dp))
@@ -123,8 +126,8 @@ fun BandalartDeleteAlertDialog(
               Text(
                 text = "삭제하기",
                 fontSize = 16.sp.nonScaleSp,
-                fontFamily = pretendard,
                 fontWeight = FontWeight.W600,
+                color = White,
               )
             }
           }
