@@ -106,6 +106,8 @@ fun bottomSheetContent(
     )
     var currentEmoji by remember { mutableStateOf("") }
     var title by rememberSaveable { mutableStateOf(cellData.title ?: "") }
+    var mainColor by rememberSaveable { mutableStateOf("#3FFFBA") }
+    var subColor by rememberSaveable { mutableStateOf("#3FFFBA") }
     var dueDate by rememberSaveable { mutableStateOf(cellData.dueDate ?: "") }
     var description by rememberSaveable { mutableStateOf(cellData.description ?: "") }
     var isCompleted by remember { mutableStateOf(cellData.isCompleted) }
@@ -229,6 +231,18 @@ fun bottomSheetContent(
               emojiPickerState = emojiPickerState,
             ),
           )
+        }
+        if (isMainCell) {
+          Spacer(modifier = Modifier.height(22.dp))
+          BottomSheetSubTitleText(text = "색상 테마")
+          BandalartColorPicker(
+            initColor = ThemeColor(mainColor, subColor),
+            onResult = {
+              mainColor = it.mainColor
+              subColor = it.subColor
+            },
+          )
+          Spacer(modifier = Modifier.height(3.dp))
         }
         Spacer(modifier = Modifier.height(25.dp))
         BottomSheetSubTitleText(text = "마감일 (선택)")
@@ -393,3 +407,17 @@ fun bottomSheetContent(
     }
   }
 }
+
+data class ThemeColor(
+  val mainColor: String,
+  val subColor: String,
+)
+
+val allColor = listOf(
+  ThemeColor("#3FFFBA", "#3FFFBA"),
+  ThemeColor("#4E3FFF", "#B5AEFF"),
+  ThemeColor("#3FF3FF", "#3FF3FF"),
+  ThemeColor("#93FF3F", "#93FF3F"),
+  ThemeColor("#FBFF3F", "#FBFF3F"),
+  ThemeColor("#FFB423", "#FFB423"),
+)
