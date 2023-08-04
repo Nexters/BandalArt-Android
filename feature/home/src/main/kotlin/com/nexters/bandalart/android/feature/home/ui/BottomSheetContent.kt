@@ -71,7 +71,9 @@ import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -82,9 +84,12 @@ fun bottomSheetContent(
   bottomSheetState: SheetState,
   isSubCell: Boolean,
   isMainCell: Boolean,
+  isBlankCell: Boolean,
   cellData: BandalartCellUiModel,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     var openDatePickerPush by rememberSaveable { mutableStateOf(false) }
@@ -115,6 +120,7 @@ fun bottomSheetContent(
       BottomSheetTopBar(
         isMainCell = isMainCell,
         isSubCell = isSubCell,
+        isBlankCell = isBlankCell,
         scope = scope,
         bottomSheetState = bottomSheetState,
         onResult = onResult,
@@ -329,22 +335,51 @@ fun bottomSheetContent(
             .padding(horizontal = 8.dp)
             .imePadding(),
         ) {
-          BottomSheetDeleteButton(modifier = Modifier.weight(1f))
-          Spacer(modifier = Modifier.width(9.dp))
+          if (!isBlankCell) {
+            BottomSheetDeleteButton(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(9.dp))
+          }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
+            isBlankCell = title.isEmpty(),
             onClick = {
               scope.launch {
-                updateBandalartCell(
-                  bandalartKey,
-                  cellData.key,
-                  UpdateBandalartCellModel(
-                    title = title,
-                    description = description,
-                    dueDate = dueDate.ifEmpty { null },
-                    isCompleted = if (!isSubCell && !isMainCell) isCompleted else null,
-                  ),
-                )
+                if (isMainCell) {
+                  updateBandalartMainCell(
+                    bandalartKey,
+                    cellData.key,
+                    UpdateBandalartMainCellModel(
+                      title = title,
+                      description = description,
+                      dueDate = dueDate.ifEmpty { null },
+                      emoji = currentEmoji,
+                      mainColor = "",
+                      subColor = "",
+                    ),
+                  )
+                } else if (isSubCell) {
+                  updateBandalartSubCell(
+                    bandalartKey,
+                    cellData.key,
+                    UpdateBandalartSubCellModel(
+                      title = title,
+                      description = description,
+                      dueDate = dueDate.ifEmpty { null },
+                    ),
+                  )
+                } else {
+                  updateBandalartTaskCell(
+                    bandalartKey,
+                    cellData.key,
+                    UpdateBandalartTaskCellModel(
+                      title = title,
+                      description = description,
+                      dueDate = dueDate.ifEmpty { null },
+                      isCompleted = isCompleted,
+                    ),
+                  )
+                }
+
                 // Todo 실패 처리해줘야함
                 bottomSheetState.hide()
               }.invokeOnCompletion {

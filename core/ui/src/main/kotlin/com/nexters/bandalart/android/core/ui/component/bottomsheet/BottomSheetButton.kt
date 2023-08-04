@@ -30,12 +30,14 @@ fun BottomSheetDeleteButton(
 @Composable
 fun BottomSheetCompleteButton(
   modifier: Modifier = Modifier,
+  isBlankCell: Boolean,
   onClick: () -> Unit,
 ) {
   FilledIconButton(
     onClick = onClick,
     colors = IconButtonColors(Gray900, White, Gray200, Gray400),
     modifier = modifier.height(56.dp),
+    enabled = !isBlankCell,
   ) {
     BottomSheetButtonText(text = "완료")
   }

@@ -20,9 +20,17 @@ fun BottomSheetTitleText(
   modifier: Modifier = Modifier,
   isMainCell: Boolean,
   isSubCell: Boolean,
+  isBlankCell: Boolean,
 ) {
   Text(
-    text = if (isMainCell) "메인 목표 수정" else if (isSubCell) "서브 목표 수정" else "태스크 수정",
+    text =
+    if (isBlankCell)
+      if (isMainCell) "메인 목표 입력"
+      else if (isSubCell) "서브 목표 입력"
+      else "태스크 입력"
+    else if (isMainCell) "메인 목표 수정"
+    else if (isSubCell) "서브 목표 수정"
+    else "태스크 수정",
     modifier = modifier.fillMaxWidth(),
     textAlign = TextAlign.Center,
     color = Gray900,

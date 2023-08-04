@@ -1,0 +1,49 @@
+package com.nexters.bandalart.android.core.domain.entity
+
+/**
+ * 반다라트 메인 셀 수정
+ *
+ * @param title 셀 제목
+ * @param description 셀 설명
+ * @param dueDate 셀 마감일, 미설정인 경우 null
+ * @param emoji 셀 프로필 이모지
+ * @param mainColor 셀 메인 색상
+ * @param subColor 셀 서브 색상
+ */
+data class UpdateBandalartMainCellEntity(
+  val title: String,
+  val description: String?,
+  val dueDate: String?,
+  val isCompleted: Boolean? = null,
+  val emoji: String?,
+  val mainColor: String,
+  val subColor: String,
+)
+
+/**
+ * 반다라트 서브 셀 수정
+ *
+ * @param title 셀 제목
+ * @param description 셀 설명
+ * @param dueDate 셀 마감일, 미설정인 경우 null
+ */
+data class UpdateBandalartSubCellEntity(
+  val title: String,
+  val description: String?,
+  val dueDate: String?,
+)
+
+/**
+ * 반다라트 태스크 셀 수정
+ *
+ * @param title 셀 제목
+ * @param description 셀 설명
+ * @param dueDate 셀 마감일, 미설정인 경우 null
+ * @param isCompleted 셀 완료 여부
+ */
+data class UpdateBandalartTaskCellEntity(
+  val title: String,
+  val description: String?,
+  val dueDate: String?,
+  val isCompleted: Boolean? = null,
+)

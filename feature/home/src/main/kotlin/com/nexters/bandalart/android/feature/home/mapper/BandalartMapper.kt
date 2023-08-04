@@ -2,10 +2,14 @@ package com.nexters.bandalart.android.feature.home.mapper
 
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 
 internal fun BandalartDetailEntity.toUiModel() =
   BandalartDetailUiModel(
@@ -34,8 +38,25 @@ internal fun BandalartCellEntity.toUiModel(): BandalartCellUiModel {
   )
 }
 
-internal fun UpdateBandalartCellModel.toEntity() =
-  UpdateBandalartCellEntity(
+internal fun UpdateBandalartMainCellModel.toEntity() =
+  UpdateBandalartMainCellEntity(
+    title = title,
+    description = description,
+    dueDate = dueDate,
+    emoji = emoji,
+    mainColor = mainColor,
+    subColor = subColor,
+  )
+
+internal fun UpdateBandalartSubCellModel.toEntity() =
+  UpdateBandalartSubCellEntity(
+    title = title,
+    description = description,
+    dueDate = dueDate,
+  )
+
+internal fun UpdateBandalartTaskCellModel.toEntity() =
+  UpdateBandalartTaskCellEntity(
     title = title,
     description = description,
     dueDate = dueDate,

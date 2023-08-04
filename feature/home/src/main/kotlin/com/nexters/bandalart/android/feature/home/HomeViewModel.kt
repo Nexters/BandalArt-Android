@@ -7,12 +7,16 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartSubCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartTaskCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -69,7 +73,9 @@ class HomeViewModel @Inject constructor(
   private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
-  private val updateBandalartCellUseCase: UpdateBandalartCellUseCase,
+  private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
+  private val updateBandalartSubCellUseCase: UpdateBandalartSubCellUseCase,
+  private val updateBandalartTaskCellUseCase: UpdateBandalartTaskCellUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -229,13 +235,67 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun updateBandalartCell(
+  fun updateBandalartMainCell(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartCellModel: UpdateBandalartCellModel,
+    updateBandalartMainCellModel: UpdateBandalartMainCellModel,
   ) {
     viewModelScope.launch {
-      val result = updateBandalartCellUseCase(bandalartKey, cellKey, updateBandalartCellModel.toEntity())
+      val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          getBandalartMainCell(bandalartKey)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
+  fun updateBandalartSubCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartSubCellModel: UpdateBandalartSubCellModel,
+  ) {
+    viewModelScope.launch {
+      val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          getBandalartMainCell(bandalartKey)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
+  fun updateBandalartTaskCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
+  ) {
+    viewModelScope.launch {
+      val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
           getBandalartMainCell(bandalartKey)

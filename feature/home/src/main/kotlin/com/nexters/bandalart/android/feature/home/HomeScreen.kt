@@ -85,7 +85,9 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
@@ -119,7 +121,9 @@ internal fun HomeRoute(
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
-    updateBandalartCell = viewModel::updateBandalartCell,
+    updateBandalartMainCell = viewModel::updateBandalartMainCell,
+    updateBandalartSubCell = viewModel::updateBandalartSubCell,
+    updateBandalartTaskCell = viewModel::updateBandalartTaskCell,
     getBandalartList = viewModel::getBandalartList,
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
@@ -138,7 +142,9 @@ internal fun HomeScreen(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
   getBandalartList: () -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
@@ -155,7 +161,7 @@ internal fun HomeScreen(
   )
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf("😎") }
-  val testBandalartKey = "3sF4I"
+  val testBandalartKey = "JWjMl"
 
   LaunchedEffect(key1 = Unit) {
     getBandalartDetail(testBandalartKey)
@@ -377,7 +383,9 @@ internal fun HomeScreen(
               bandalartChartData = uiState.bandalartChartData,
               mainColor = bandalartDetailData.mainColor.toColor(),
               subColor = bandalartDetailData.subColor.toColor(),
-              updateBandalartCell = updateBandalartCell,
+              updateBandalartMainCell = updateBandalartMainCell,
+              updateBandalartSubCell = updateBandalartSubCell,
+              updateBandalartTaskCell = updateBandalartTaskCell,
               bandalartKey = bandalartDetailData.key,
             )
           }
@@ -440,7 +448,9 @@ private fun BandalartChart(
   mainColor: Color,
   subColor: Color,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -473,7 +483,9 @@ private fun BandalartChart(
               mainColor = mainColor,
               subColor = subColor,
               bandalartKey = bandalartKey,
-              updateBandalartCell = updateBandalartCell,
+              updateBandalartMainCell = updateBandalartMainCell,
+              updateBandalartSubCell = updateBandalartSubCell,
+              updateBandalartTaskCell = updateBandalartTaskCell,
             )
           },
         )
@@ -490,7 +502,9 @@ private fun BandalartChart(
             subColor = subColor,
             cellData = bandalartChartData,
             bandalartKey = bandalartKey,
-            updateBandalartCell = updateBandalartCell,
+            updateBandalartMainCell = updateBandalartMainCell,
+            updateBandalartSubCell = updateBandalartSubCell,
+            updateBandalartTaskCell = updateBandalartTaskCell,
           )
         },
       )
@@ -536,7 +550,9 @@ fun CellGrid(
   mainColor: Color,
   subColor: Color,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -566,7 +582,9 @@ fun CellGrid(
             mainColor = mainColor,
             subColor = subColor,
             bandalartKey = bandalartKey,
-            updateBandalartCell = updateBandalartCell,
+            updateBandalartMainCell = updateBandalartMainCell,
+            updateBandalartSubCell = updateBandalartSubCell,
+            updateBandalartTaskCell = updateBandalartTaskCell,
           )
         }
       }
@@ -589,7 +607,9 @@ fun Cell(
   cellInfo: CellInfo = CellInfo(),
   cellData: BandalartCellUiModel,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
@@ -736,9 +756,12 @@ fun Cell(
           bottomSheetState = bottomSheetState,
           isSubCell = cellInfo.isSubCell,
           isMainCell = isMainCell,
+          isBlankCell = cellData.title.isNullOrEmpty(),
           cellData = cellData,
           bandalartKey = bandalartKey,
-          updateBandalartCell = updateBandalartCell,
+          updateBandalartMainCell = updateBandalartMainCell,
+          updateBandalartSubCell = updateBandalartSubCell,
+          updateBandalartTaskCell = updateBandalartTaskCell,
         ),
         dragHandle = null,
       )

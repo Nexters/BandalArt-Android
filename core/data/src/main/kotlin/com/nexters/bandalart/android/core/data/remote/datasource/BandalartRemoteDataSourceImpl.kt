@@ -5,7 +5,9 @@ package com.nexters.bandalart.android.core.data.remote.datasource
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartCellRequest
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
 import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -56,14 +58,38 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
     }
   }
 
-  override suspend fun updateBandalartCell(
+  override suspend fun updateBandalartMainCell(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartRequest: UpdateBandalartCellRequest,
+    updateBandalartMainRequest: UpdateBandalartMainCellRequest,
   ) {
     client.safeRequest {
       patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartRequest)
+        setBody(updateBandalartMainRequest)
+      }
+    }
+  }
+
+  override suspend fun updateBandalartSubCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartSubRequest: UpdateBandalartSubCellRequest,
+  ) {
+    client.safeRequest {
+      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+        setBody(updateBandalartSubRequest)
+      }
+    }
+  }
+
+  override suspend fun updateBandalartTaskCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartTaskRequest: UpdateBandalartTaskCellRequest,
+  ) {
+    client.safeRequest {
+      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+        setBody(updateBandalartTaskRequest)
       }
     }
   }
