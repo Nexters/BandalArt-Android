@@ -27,28 +27,33 @@ import timber.log.Timber
 /**
  * HomeUiState
  *
+ * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
  * @param bandalartChartData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
  * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
  * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
  * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
- * @param isBandalartDeleted 반다라트 표가 삭제됨
  * @param isBandalartCreated 반다라트 표가 생성됨
+ * @param isBandalartDeleted 반다라트 표가 삭제됨
+ * @param isDropDownMenuOpened 드롭다운메뉴가 열림
+ * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param error 서버와의 통신을 실패
  */
 
 // TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
-  val bandalartListData: List<BandalartDetailUiModel>? = null,
+  val bandalartList: List<BandalartDetailUiModel> = emptyList(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartChartData: BandalartCellUiModel? = null,
   val isCellUpdated: Boolean = false,
   val isCellDeleted: Boolean = false,
   val isBandalartCompleted: Boolean = false,
-  val isBandalartDeleted: Boolean = false,
-  val isLoading: Boolean = true,
   val isBandalartCreated: Boolean = false,
+  val isBandalartDeleted: Boolean = false,
+  val isDropDownMenuOpened: Boolean = false,
+  val isBandalartDeleteAlertDialogOpened: Boolean = false,
+  val isLoading: Boolean = true,
   val error: Throwable? = null,
 )
 
@@ -81,7 +86,7 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartListData = result.getOrNull()!!.map { it.toUiModel() },
+            bandalartList = result.getOrNull()!!.map { it.toUiModel() },
             error = null,
           )
         }
@@ -93,7 +98,7 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartListData = null,
+            bandalartList = emptyList(),
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -200,8 +205,10 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
             isLoading = false,
+            isBandalartDeleted = true,
             error = null,
           )
+          openBandalartDeleteAlertDialog(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트가 삭제되었어요."))
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -211,9 +218,10 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartChartData = null,
+            isBandalartDeleted = false,
             error = exception,
           )
+          openBandalartDeleteAlertDialog(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
@@ -241,11 +249,26 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = exception,
           )
-          // TODO 에러 메세지 커스텀
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
       }
+    }
+  }
+
+  fun openDropDownMenu(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isDropDownMenuOpened = state,
+      )
+    }
+  }
+
+  fun openBandalartDeleteAlertDialog(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isBandalartDeleteAlertDialogOpened = state,
+      )
     }
   }
 }
