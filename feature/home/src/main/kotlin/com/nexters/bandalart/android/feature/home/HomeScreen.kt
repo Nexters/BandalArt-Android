@@ -185,7 +185,7 @@ internal fun HomeScreen(
       title = if (bandalartDetailData.title.isNullOrEmpty()) {
         "지금 작성중인\n반다라트를 삭제하시겠어요?"
       } else {
-        "'$bandalartDetailData.title'\n반다라트를 삭제하시겠어요?"
+        "'${bandalartDetailData.title}'\n반다라트를 삭제하시겠어요?"
       },
       message = "삭제된 반다라트는 다시 복구할 수 없어요.",
       onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
@@ -208,8 +208,8 @@ internal fun HomeScreen(
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
-          // 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
-          onAddBandalart = createBandalart,
+          // Todo 이것마저도 잠시 막아놓음 !! 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
+          onAddBandalart = {},
           onShowBandalartList = {},
         )
         HorizontalDivider(
