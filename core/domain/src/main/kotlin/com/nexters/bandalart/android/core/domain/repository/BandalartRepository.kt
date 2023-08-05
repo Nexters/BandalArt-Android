@@ -1,7 +1,7 @@
 package com.nexters.bandalart.android.core.domain.repository
 
-import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity

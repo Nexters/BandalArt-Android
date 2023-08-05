@@ -33,6 +33,9 @@ internal fun BandalartCellResponse.toEntity(): BandalartCellEntity {
     dueDate = dueDate,
     isCompleted = isCompleted,
     completionRatio = completionRatio,
+    profileEmoji = null,
+    mainColor = null,
+    subColor = null,
     parentKey = parentKey,
     children = children.map { it.toEntity() },
   )

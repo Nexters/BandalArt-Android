@@ -7,6 +7,9 @@ data class BandalartCellUiModel(
   val dueDate: String? = "",
   val isCompleted: Boolean = false,
   val completionRatio: Int = 0,
+  val profileEmoji: String? = "",
+  val mainColor: String? = "",
+  val subColor: String? = "",
   val parentKey: String? = "",
   val children: List<BandalartCellUiModel> = emptyList(),
 )
