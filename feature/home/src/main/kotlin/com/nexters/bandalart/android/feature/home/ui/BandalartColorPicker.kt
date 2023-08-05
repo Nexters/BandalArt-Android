@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.extension.toColor
+import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 
 @Composable
@@ -42,7 +44,7 @@ fun BandalartColorPicker(
       ) {
         if (it == initSelected) {
           Card(
-            border = BorderStroke(1.5.dp, it.mainColor.toColor()),
+            border = BorderStroke(1.5.dp, Gray900),
             modifier = Modifier
               .height(45.dp)
               .aspectRatio(1f),
