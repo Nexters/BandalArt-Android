@@ -633,8 +633,8 @@ fun Cell(
   )
   val backgroundColor = when {
     isMainCell -> mainColor
-    cellInfo.isSubCell and cellData.isCompleted -> subColor.copy(alpha = 0.6f)
-    cellInfo.isSubCell and !cellData.isCompleted -> subColor
+    cellInfo.isSubCell and cellData.isCompleted -> Gray900.copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cellData.isCompleted -> Gray900
     cellData.isCompleted -> Gray200
     else -> White
   }
@@ -654,19 +654,20 @@ fun Cell(
   ) {
     // 메인 목표
     if (isMainCell) {
+      val cellTextColor = if (cellData.mainColor == "#4E3FFF") White else Gray900
       // 메인 목표가 빈 경우
       if (cellData.title.isNullOrEmpty()) {
         Box(contentAlignment = Alignment.Center) {
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
               cellText = "메인목표",
-              cellTextColor = subColor,
+              cellTextColor = cellTextColor,
               fontWeight = FontWeight.W700,
             )
             Icon(
               imageVector = Icons.Default.Add,
               contentDescription = "Add Icon",
-              tint = subColor,
+              tint = cellTextColor,
               modifier = Modifier.size(20.dp),
             )
           }
@@ -674,13 +675,13 @@ fun Cell(
       } else {
         CellText(
           cellText = cellData.title,
-          cellTextColor = subColor,
+          cellTextColor = cellTextColor,
           fontWeight = FontWeight.W700,
         )
       }
       // 서브 목표
     } else if (cellInfo.isSubCell) {
-      val cellTextColor = mainColor
+      val cellTextColor = subColor
       val fontWeight = FontWeight.W700
       // 서브 목표가 빈 경우
       if (cellData.title.isNullOrEmpty()) {
