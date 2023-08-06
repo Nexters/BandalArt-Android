@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +49,7 @@ fun BandalartColorPicker(
               .height(45.dp)
               .aspectRatio(1f),
             shape = RoundedCornerShape(90.dp),
-            colors = CardColors(White, White, White, White),
+            colors = CardDefaults.cardColors(White),
             content = { },
           )
         }
@@ -61,12 +62,7 @@ fun BandalartColorPicker(
               onResult(initSelected)
             },
           shape = RoundedCornerShape(90.dp),
-          colors = CardColors(
-            it.mainColor.toColor(),
-            it.mainColor.toColor(),
-            it.mainColor.toColor(),
-            it.mainColor.toColor(),
-          ),
+          colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
           content = { },
         )
       }

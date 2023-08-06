@@ -113,7 +113,7 @@ fun BandalartEmojiPicker(
                   modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .background(Gray100)
+                    .background(color = Gray100)
                     .clickable {
                       if (selectedEmoji == emojiItem) selectedEmoji = null
                       else {
