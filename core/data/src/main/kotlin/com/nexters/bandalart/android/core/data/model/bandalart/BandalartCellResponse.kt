@@ -17,6 +17,12 @@ data class BandalartCellResponse(
   val isCompleted: Boolean,
   @SerialName("completionRatio")
   val completionRatio: Int,
+  @SerialName("profileEmoji")
+  val profileEmoji: String?,
+  @SerialName("mainColor")
+  val mainColor: String?,
+  @SerialName("subColor")
+  val subColor: String?,
   @SerialName("parentKey")
   val parentKey: String?,
   @SerialName("children")

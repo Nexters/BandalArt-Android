@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 fun BottomSheetTopBar(
   isMainCell: Boolean,
   isSubCell: Boolean,
+  isBlankCell: Boolean,
   scope: CoroutineScope,
   bottomSheetState: SheetState,
   onResult: (Boolean) -> Unit,
@@ -34,7 +35,7 @@ fun BottomSheetTopBar(
       .fillMaxWidth()
       .padding(horizontal = 16.dp),
   ) {
-    BottomSheetTitleText(isMainCell = isMainCell, isSubCell = isSubCell)
+    BottomSheetTitleText(isMainCell = isMainCell, isSubCell = isSubCell, isBlankCell = isBlankCell)
     IconButton(
       modifier = Modifier
         .align(Alignment.CenterEnd)

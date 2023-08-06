@@ -53,6 +53,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentText
@@ -71,7 +72,9 @@ import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -82,9 +85,13 @@ fun bottomSheetContent(
   bottomSheetState: SheetState,
   isSubCell: Boolean,
   isMainCell: Boolean,
+  isBlankCell: Boolean,
   cellData: BandalartCellUiModel,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     var openDatePickerPush by rememberSaveable { mutableStateOf(false) }
@@ -99,12 +106,35 @@ fun bottomSheetContent(
     val emojiPickerState = rememberModalBottomSheetState(
       skipPartiallyExpanded = emojiSkipPartiallyExpanded,
     )
-    var currentEmoji by remember { mutableStateOf("") }
+    var openDeleteAlertDialog by rememberSaveable { mutableStateOf(false) }
+    var currentEmoji by remember { mutableStateOf(cellData.profileEmoji) }
     var title by rememberSaveable { mutableStateOf(cellData.title ?: "") }
+    var mainColor by rememberSaveable { mutableStateOf(cellData.mainColor ?: "#3FFFBA") }
+    var subColor by rememberSaveable { mutableStateOf(cellData.subColor ?: "#111827") }
     var dueDate by rememberSaveable { mutableStateOf(cellData.dueDate ?: "") }
     var description by rememberSaveable { mutableStateOf(cellData.description ?: "") }
     var isCompleted by remember { mutableStateOf(cellData.isCompleted) }
     val scrollable = rememberScrollState()
+
+    if (openDeleteAlertDialog) {
+      BandalartDeleteAlertDialog(
+        title = "해당 셀을 삭제하시겠어요?",
+        message = if (isMainCell) {
+          "메인 목표 삭제는 반다라트 전체가 삭제되고 \n다시 복구할 수 없어요."
+        } else if (isSubCell) {
+          "서브 목표 삭제는 하위 태스크와 함께 삭제되고 \n 다시 복구할 수 없어요."
+        } else {
+          "삭제된 내용은 다시 복구할 수 없어요."
+        },
+        onDeleteClicked = {
+          deleteBandalartCell(bandalartKey, cellData.key)
+          openDeleteAlertDialog = false
+          onResult(false)
+        },
+        onCancelClicked = { openDeleteAlertDialog = false },
+      )
+    }
+
     Column(
       modifier = Modifier
         .background(White)
@@ -115,6 +145,7 @@ fun bottomSheetContent(
       BottomSheetTopBar(
         isMainCell = isMainCell,
         isSubCell = isSubCell,
+        isBlankCell = isBlankCell,
         scope = scope,
         bottomSheetState = bottomSheetState,
         onResult = onResult,
@@ -153,7 +184,7 @@ fun bottomSheetContent(
                     },
                   contentAlignment = Alignment.Center,
                 ) {
-                  if (currentEmoji.isEmpty()) {
+                  if (currentEmoji.isNullOrEmpty()) {
                     val image = painterResource(id = R.drawable.ic_empty_emoji)
                     Image(
                       painter = image,
@@ -167,7 +198,7 @@ fun bottomSheetContent(
                   }
                 }
               }
-              if (currentEmoji.isEmpty()) {
+              if (currentEmoji.isNullOrEmpty()) {
                 val image = painterResource(id = R.drawable.ic_edit)
                 Image(
                   painter = image,
@@ -223,6 +254,18 @@ fun bottomSheetContent(
               emojiPickerState = emojiPickerState,
             ),
           )
+        }
+        if (isMainCell) {
+          Spacer(modifier = Modifier.height(22.dp))
+          BottomSheetSubTitleText(text = "색상 테마")
+          BandalartColorPicker(
+            initColor = ThemeColor(mainColor, subColor),
+            onResult = {
+              mainColor = it.mainColor
+              subColor = it.subColor
+            },
+          )
+          Spacer(modifier = Modifier.height(3.dp))
         }
         Spacer(modifier = Modifier.height(25.dp))
         BottomSheetSubTitleText(text = "마감일 (선택)")
@@ -329,22 +372,60 @@ fun bottomSheetContent(
             .padding(horizontal = 8.dp)
             .imePadding(),
         ) {
-          BottomSheetDeleteButton(modifier = Modifier.weight(1f))
-          Spacer(modifier = Modifier.width(9.dp))
+          if (!isBlankCell) {
+            BottomSheetDeleteButton(
+              modifier = Modifier.weight(1f),
+              onClick = {
+                scope.launch {
+                  openDeleteAlertDialog = !openDeleteAlertDialog
+                }.invokeOnCompletion {
+                  if (!bottomSheetState.isVisible) { onResult(false) }
+                }
+              },
+            )
+            Spacer(modifier = Modifier.width(9.dp))
+          }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
+            isBlankCell = title.isEmpty(),
             onClick = {
               scope.launch {
-                updateBandalartCell(
-                  bandalartKey,
-                  cellData.key,
-                  UpdateBandalartCellModel(
-                    title = title,
-                    description = description,
-                    dueDate = dueDate.ifEmpty { null },
-                    isCompleted = if (!isSubCell && !isMainCell) isCompleted else null,
-                  ),
-                )
+                if (isMainCell) {
+                  updateBandalartMainCell(
+                    bandalartKey,
+                    cellData.key,
+                    UpdateBandalartMainCellModel(
+                      title = title,
+                      description = description,
+                      dueDate = dueDate.ifEmpty { null },
+                      profileEmoji = currentEmoji,
+                      mainColor = mainColor,
+                      subColor = subColor,
+                    ),
+                  )
+                } else if (isSubCell) {
+                  updateBandalartSubCell(
+                    bandalartKey,
+                    cellData.key,
+                    UpdateBandalartSubCellModel(
+                      title = title,
+                      description = description,
+                      dueDate = dueDate.ifEmpty { null },
+                    ),
+                  )
+                } else {
+                  updateBandalartTaskCell(
+                    bandalartKey,
+                    cellData.key,
+                    UpdateBandalartTaskCellModel(
+                      title = title,
+                      description = description,
+                      dueDate = dueDate.ifEmpty { null },
+                      isCompleted = isCompleted,
+                    ),
+                  )
+                }
+
                 // Todo 실패 처리해줘야함
                 bottomSheetState.hide()
               }.invokeOnCompletion {
@@ -358,3 +439,17 @@ fun bottomSheetContent(
     }
   }
 }
+
+data class ThemeColor(
+  val mainColor: String,
+  val subColor: String,
+)
+
+val allColor = listOf(
+  ThemeColor("#3FFFBA", "#3FFFBA"),
+  ThemeColor("#4E3FFF", "#B5AEFF"),
+  ThemeColor("#3FF3FF", "#3FF3FF"),
+  ThemeColor("#93FF3F", "#93FF3F"),
+  ThemeColor("#FBFF3F", "#FBFF3F"),
+  ThemeColor("#FFB423", "#FFB423"),
+)

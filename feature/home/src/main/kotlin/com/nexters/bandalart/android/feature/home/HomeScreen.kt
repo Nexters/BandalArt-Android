@@ -85,7 +85,9 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
@@ -119,11 +121,14 @@ internal fun HomeRoute(
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
-    updateBandalartCell = viewModel::updateBandalartCell,
+    updateBandalartMainCell = viewModel::updateBandalartMainCell,
+    updateBandalartSubCell = viewModel::updateBandalartSubCell,
+    updateBandalartTaskCell = viewModel::updateBandalartTaskCell,
     getBandalartList = viewModel::getBandalartList,
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
+    deleteBandalartCell = viewModel::deleteBandalartCell,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
   )
@@ -138,11 +143,14 @@ internal fun HomeScreen(
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
   getBandalartList: () -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
 ) {
@@ -154,8 +162,8 @@ internal fun HomeScreen(
     skipPartiallyExpanded = emojiSkipPartiallyExpanded,
   )
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
-  var currentEmoji by remember { mutableStateOf("😎") }
-  val testBandalartKey = "3sF4I"
+  var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
+  val testBandalartKey = "JWjMl"
 
   LaunchedEffect(key1 = Unit) {
     getBandalartDetail(testBandalartKey)
@@ -179,7 +187,7 @@ internal fun HomeScreen(
       title = if (bandalartDetailData.title.isNullOrEmpty()) {
         "지금 작성중인\n반다라트를 삭제하시겠어요?"
       } else {
-        "'$bandalartDetailData.title'\n반다라트를 삭제하시겠어요?"
+        "'${bandalartDetailData.title}'\n반다라트를 삭제하시겠어요?"
       },
       message = "삭제된 반다라트는 다시 복구할 수 없어요.",
       onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
@@ -202,8 +210,8 @@ internal fun HomeScreen(
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
-          // 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
-          onAddBandalart = createBandalart,
+          // Todo 이것마저도 잠시 막아놓음 !! 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
+          onAddBandalart = {},
           onShowBandalartList = {},
         )
         HorizontalDivider(
@@ -227,7 +235,7 @@ internal fun HomeScreen(
                   .clickable { openEmojiBottomSheet = !openEmojiBottomSheet },
                 contentAlignment = Alignment.Center,
               ) {
-                if (currentEmoji.isEmpty()) {
+                if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
                   val image = painterResource(id = R.drawable.ic_empty_emoji)
                   Image(
                     painter = image,
@@ -235,7 +243,7 @@ internal fun HomeScreen(
                   )
                 } else {
                   EmojiText(
-                    emojiText = currentEmoji,
+                    emojiText = bandalartDetailData.profileEmoji,
                     fontSize = 22.sp,
                   )
                 }
@@ -246,11 +254,23 @@ internal fun HomeScreen(
                   onDismissRequest = { openEmojiBottomSheet = !openEmojiBottomSheet },
                   sheetState = emojiPickerState,
                   content = BandalartEmojiPicker(
-                    currentEmoji = currentEmoji,
+                    currentEmoji = bandalartDetailData.profileEmoji,
                     isBottomSheet = true,
                     onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
                       currentEmoji = currentEmojiResult
                       openEmojiBottomSheet = openEmojiBottomSheetResult
+                      updateBandalartMainCell(
+                        bandalartDetailData.key,
+                        uiState.bandalartCellData!!.key,
+                        UpdateBandalartMainCellModel(
+                          title = uiState.bandalartCellData.title,
+                          description = uiState.bandalartCellData.description,
+                          dueDate = uiState.bandalartCellData.dueDate,
+                          profileEmoji = currentEmoji,
+                          mainColor = uiState.bandalartCellData.mainColor!!,
+                          subColor = uiState.bandalartCellData.subColor!!,
+                        ),
+                      )
                     },
                     emojiPickerScope = emojiPickerScope,
                     emojiPickerState = emojiPickerState,
@@ -259,7 +279,7 @@ internal fun HomeScreen(
                 )
               }
             }
-            if (currentEmoji.isEmpty()) {
+            if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
               val image = painterResource(id = R.drawable.ic_edit)
               Image(
                 painter = image,
@@ -372,12 +392,15 @@ internal fun HomeScreen(
           uiState.isLoading -> {
             LoadingWheel(bandalartDetailData.mainColor.toColor())
           }
-          uiState.bandalartChartData != null -> {
+          uiState.bandalartCellData != null -> {
             BandalartChart(
-              bandalartChartData = uiState.bandalartChartData,
+              bandalartChartData = uiState.bandalartCellData,
               mainColor = bandalartDetailData.mainColor.toColor(),
               subColor = bandalartDetailData.subColor.toColor(),
-              updateBandalartCell = updateBandalartCell,
+              updateBandalartMainCell = updateBandalartMainCell,
+              updateBandalartSubCell = updateBandalartSubCell,
+              updateBandalartTaskCell = updateBandalartTaskCell,
+              deleteBandalartCell = deleteBandalartCell,
               bandalartKey = bandalartDetailData.key,
             )
           }
@@ -440,7 +463,10 @@ private fun BandalartChart(
   mainColor: Color,
   subColor: Color,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -473,7 +499,10 @@ private fun BandalartChart(
               mainColor = mainColor,
               subColor = subColor,
               bandalartKey = bandalartKey,
-              updateBandalartCell = updateBandalartCell,
+              updateBandalartMainCell = updateBandalartMainCell,
+              updateBandalartSubCell = updateBandalartSubCell,
+              updateBandalartTaskCell = updateBandalartTaskCell,
+              deleteBandalartCell = deleteBandalartCell,
             )
           },
         )
@@ -490,7 +519,10 @@ private fun BandalartChart(
             subColor = subColor,
             cellData = bandalartChartData,
             bandalartKey = bandalartKey,
-            updateBandalartCell = updateBandalartCell,
+            updateBandalartMainCell = updateBandalartMainCell,
+            updateBandalartSubCell = updateBandalartSubCell,
+            updateBandalartTaskCell = updateBandalartTaskCell,
+            deleteBandalartCell = deleteBandalartCell,
           )
         },
       )
@@ -536,7 +568,10 @@ fun CellGrid(
   mainColor: Color,
   subColor: Color,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -566,7 +601,10 @@ fun CellGrid(
             mainColor = mainColor,
             subColor = subColor,
             bandalartKey = bandalartKey,
-            updateBandalartCell = updateBandalartCell,
+            updateBandalartMainCell = updateBandalartMainCell,
+            updateBandalartSubCell = updateBandalartSubCell,
+            updateBandalartTaskCell = updateBandalartTaskCell,
+            deleteBandalartCell = deleteBandalartCell,
           )
         }
       }
@@ -589,7 +627,10 @@ fun Cell(
   cellInfo: CellInfo = CellInfo(),
   cellData: BandalartCellUiModel,
   bandalartKey: String,
-  updateBandalartCell: (String, String, UpdateBandalartCellModel) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
@@ -604,8 +645,8 @@ fun Cell(
   )
   val backgroundColor = when {
     isMainCell -> mainColor
-    cellInfo.isSubCell and cellData.isCompleted -> subColor.copy(alpha = 0.6f)
-    cellInfo.isSubCell and !cellData.isCompleted -> subColor
+    cellInfo.isSubCell and cellData.isCompleted -> Gray900.copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cellData.isCompleted -> Gray900
     cellData.isCompleted -> Gray200
     else -> White
   }
@@ -625,19 +666,20 @@ fun Cell(
   ) {
     // 메인 목표
     if (isMainCell) {
+      val cellTextColor = if (cellData.mainColor == "#4E3FFF") White else Gray900
       // 메인 목표가 빈 경우
       if (cellData.title.isNullOrEmpty()) {
         Box(contentAlignment = Alignment.Center) {
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
               cellText = "메인목표",
-              cellTextColor = subColor,
+              cellTextColor = cellTextColor,
               fontWeight = FontWeight.W700,
             )
             Icon(
               imageVector = Icons.Default.Add,
               contentDescription = "Add Icon",
-              tint = subColor,
+              tint = cellTextColor,
               modifier = Modifier.size(20.dp),
             )
           }
@@ -645,13 +687,13 @@ fun Cell(
       } else {
         CellText(
           cellText = cellData.title,
-          cellTextColor = subColor,
+          cellTextColor = cellTextColor,
           fontWeight = FontWeight.W700,
         )
       }
       // 서브 목표
     } else if (cellInfo.isSubCell) {
-      val cellTextColor = mainColor
+      val cellTextColor = subColor
       val fontWeight = FontWeight.W700
       // 서브 목표가 빈 경우
       if (cellData.title.isNullOrEmpty()) {
@@ -736,9 +778,13 @@ fun Cell(
           bottomSheetState = bottomSheetState,
           isSubCell = cellInfo.isSubCell,
           isMainCell = isMainCell,
+          isBlankCell = cellData.title.isNullOrEmpty(),
           cellData = cellData,
           bandalartKey = bandalartKey,
-          updateBandalartCell = updateBandalartCell,
+          updateBandalartMainCell = updateBandalartMainCell,
+          updateBandalartSubCell = updateBandalartSubCell,
+          updateBandalartTaskCell = updateBandalartTaskCell,
+          deleteBandalartCell = deleteBandalartCell,
         ),
         dragHandle = null,
       )

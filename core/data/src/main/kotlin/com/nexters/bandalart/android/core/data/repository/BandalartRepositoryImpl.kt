@@ -6,7 +6,9 @@ import com.nexters.bandalart.android.core.data.mapper.toEntity
 import com.nexters.bandalart.android.core.data.mapper.toModel
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import javax.inject.Inject
 
@@ -38,14 +40,29 @@ class BandalartRepositoryImpl @Inject constructor(
     return bandalartRemoteDataSource.getBandalartCell(bandalartKey, cellKey)?.toEntity()
   }
 
-  override suspend fun updateBandalartCell(
+  override suspend fun updateBandalartMainCell(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartCellEntity: UpdateBandalartCellEntity,
+    updateBandalartMainCellEntity: UpdateBandalartMainCellEntity,
   ) {
-    bandalartRemoteDataSource.updateBandalartCell(bandalartKey, cellKey, updateBandalartCellEntity.toModel())
+    bandalartRemoteDataSource.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellEntity.toModel())
   }
 
+  override suspend fun updateBandalartSubCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartSubCellEntity: UpdateBandalartSubCellEntity,
+  ) {
+    bandalartRemoteDataSource.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellEntity.toModel())
+  }
+
+  override suspend fun updateBandalartTaskCell(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
+  ) {
+    bandalartRemoteDataSource.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellEntity.toModel())
+  }
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
     bandalartRemoteDataSource.deleteBandalartCell(bandalartKey, cellKey)
   }
