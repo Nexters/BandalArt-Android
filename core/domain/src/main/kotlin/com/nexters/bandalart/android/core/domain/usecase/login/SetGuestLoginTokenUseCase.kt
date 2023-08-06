@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.domain.usecase
+package com.nexters.bandalart.android.core.domain.usecase.login
 
 import com.nexters.bandalart.android.core.domain.repository.GuestLoginTokenRepository
 import javax.inject.Inject
