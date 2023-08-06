@@ -128,6 +128,7 @@ internal fun HomeRoute(
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
+    deleteBandalartCell = viewModel::deleteBandalartCell,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
   )
@@ -149,6 +150,7 @@ internal fun HomeScreen(
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
 ) {
@@ -386,6 +388,7 @@ internal fun HomeScreen(
               updateBandalartMainCell = updateBandalartMainCell,
               updateBandalartSubCell = updateBandalartSubCell,
               updateBandalartTaskCell = updateBandalartTaskCell,
+              deleteBandalartCell = deleteBandalartCell,
               bandalartKey = bandalartDetailData.key,
             )
           }
@@ -451,6 +454,7 @@ private fun BandalartChart(
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
   updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -486,6 +490,7 @@ private fun BandalartChart(
               updateBandalartMainCell = updateBandalartMainCell,
               updateBandalartSubCell = updateBandalartSubCell,
               updateBandalartTaskCell = updateBandalartTaskCell,
+              deleteBandalartCell = deleteBandalartCell,
             )
           },
         )
@@ -505,6 +510,7 @@ private fun BandalartChart(
             updateBandalartMainCell = updateBandalartMainCell,
             updateBandalartSubCell = updateBandalartSubCell,
             updateBandalartTaskCell = updateBandalartTaskCell,
+            deleteBandalartCell = deleteBandalartCell,
           )
         },
       )
@@ -553,6 +559,7 @@ fun CellGrid(
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
   updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -585,6 +592,7 @@ fun CellGrid(
             updateBandalartMainCell = updateBandalartMainCell,
             updateBandalartSubCell = updateBandalartSubCell,
             updateBandalartTaskCell = updateBandalartTaskCell,
+            deleteBandalartCell = deleteBandalartCell,
           )
         }
       }
@@ -610,6 +618,7 @@ fun Cell(
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
   updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
@@ -762,6 +771,7 @@ fun Cell(
           updateBandalartMainCell = updateBandalartMainCell,
           updateBandalartSubCell = updateBandalartSubCell,
           updateBandalartTaskCell = updateBandalartTaskCell,
+          deleteBandalartCell = deleteBandalartCell,
         ),
         dragHandle = null,
       )

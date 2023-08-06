@@ -53,6 +53,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentText
@@ -90,6 +91,7 @@ fun bottomSheetContent(
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
   updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  deleteBandalartCell: (String, String) -> Unit,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     var openDatePickerPush by rememberSaveable { mutableStateOf(false) }
@@ -104,6 +106,7 @@ fun bottomSheetContent(
     val emojiPickerState = rememberModalBottomSheetState(
       skipPartiallyExpanded = emojiSkipPartiallyExpanded,
     )
+    var openDeleteAlertDialog by rememberSaveable { mutableStateOf(false) }
     var currentEmoji by remember { mutableStateOf(cellData.profileEmoji) }
     var title by rememberSaveable { mutableStateOf(cellData.title ?: "") }
     var mainColor by rememberSaveable { mutableStateOf(cellData.mainColor ?: "#3FFFBA") }
@@ -112,6 +115,26 @@ fun bottomSheetContent(
     var description by rememberSaveable { mutableStateOf(cellData.description ?: "") }
     var isCompleted by remember { mutableStateOf(cellData.isCompleted) }
     val scrollable = rememberScrollState()
+
+    if (openDeleteAlertDialog) {
+      BandalartDeleteAlertDialog(
+        title = "해당 셀을 삭제하시겠어요?",
+        message = if (isMainCell) {
+          "메인 목표 삭제는 반다라트 전체가 삭제되고 \n다시 복구할 수 없어요."
+        } else if (isSubCell) {
+          "서브 목표 삭제는 하위 태스크와 함께 삭제되고 \n 다시 복구할 수 없어요."
+        } else {
+          "삭제된 내용은 다시 복구할 수 없어요."
+        },
+        onDeleteClicked = {
+          deleteBandalartCell(bandalartKey, cellData.key)
+          openDeleteAlertDialog = false
+          onResult(false)
+        },
+        onCancelClicked = { openDeleteAlertDialog = false },
+      )
+    }
+
     Column(
       modifier = Modifier
         .background(White)
@@ -350,7 +373,16 @@ fun bottomSheetContent(
             .imePadding(),
         ) {
           if (!isBlankCell) {
-            BottomSheetDeleteButton(modifier = Modifier.weight(1f))
+            BottomSheetDeleteButton(
+              modifier = Modifier.weight(1f),
+              onClick = {
+                scope.launch {
+                  openDeleteAlertDialog = !openDeleteAlertDialog
+                }.invokeOnCompletion {
+                  if (!bottomSheetState.isVisible) { onResult(false) }
+                }
+              },
+            )
             Spacer(modifier = Modifier.width(9.dp))
           }
           BottomSheetCompleteButton(

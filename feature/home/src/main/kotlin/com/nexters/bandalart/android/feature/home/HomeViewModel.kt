@@ -57,6 +57,7 @@ data class HomeUiState(
   val isBandalartCompleted: Boolean = false,
   val isBandalartCreated: Boolean = false,
   val isBandalartDeleted: Boolean = false,
+  val isBandalartCellDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
   val isLoading: Boolean = true,
@@ -78,6 +79,7 @@ class HomeViewModel @Inject constructor(
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
   private val updateBandalartSubCellUseCase: UpdateBandalartSubCellUseCase,
   private val updateBandalartTaskCellUseCase: UpdateBandalartTaskCellUseCase,
+  private val deleteBandalartCellUseCase: DeleteBandalartCellUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -314,6 +316,31 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = exception,
           )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
+  fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
+    viewModelScope.launch {
+      val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          getBandalartMainCell(bandalartKey)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            isBandalartCellDeleted = false,
+            error = exception,
+          )
+          openBandalartDeleteAlertDialog(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
