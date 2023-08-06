@@ -43,7 +43,7 @@ fun BandalartColorPicker(
       ) {
         if (it.mainColor == initSelected.mainColor) {
           Card(
-            border = BorderStroke(1.5.dp, Gray900),
+            border = BorderStroke(width = 1.5.dp, color = Gray900),
             modifier = Modifier
               .height(45.dp)
               .aspectRatio(1f),

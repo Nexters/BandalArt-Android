@@ -96,14 +96,14 @@ fun BandalartEmojiPicker(
                 border = when (emojiItem) {
                   selectedEmoji -> {
                     BorderStroke(
-                      1.dp,
-                      Gray400,
+                      width = 1.dp,
+                      color = Gray400,
                     )
                   }
                   prevSelectedEmoji -> {
                     BorderStroke(
-                      1.dp,
-                      Color.Transparent,
+                      width = 1.dp,
+                      color = Color.Transparent,
                     )
                   }
                   else -> null
