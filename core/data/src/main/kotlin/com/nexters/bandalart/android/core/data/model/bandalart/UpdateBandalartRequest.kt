@@ -11,8 +11,8 @@ data class UpdateBandalartMainCellRequest(
   val description: String?,
   @SerialName("dueDate")
   val dueDate: String?,
-  @SerialName("emoji")
-  val emoji: String?,
+  @SerialName("profileEmoji")
+  val profileEmoji: String?,
   @SerialName("mainColor")
   val mainColor: String,
   @SerialName("subColor")

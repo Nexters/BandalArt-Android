@@ -7,11 +7,11 @@ import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 
 @Composable
 fun EmojiText(
-  emojiText: String,
+  emojiText: String?,
   fontSize: TextUnit,
 ) {
   Text(
-    text = emojiText,
+    text = emojiText ?: "",
     fontSize = fontSize.nonScaleSp,
   )
 }

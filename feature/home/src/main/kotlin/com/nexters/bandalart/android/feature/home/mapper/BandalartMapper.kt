@@ -46,7 +46,7 @@ internal fun UpdateBandalartMainCellModel.toEntity() =
     title = title,
     description = description,
     dueDate = dueDate,
-    emoji = emoji,
+    profileEmoji = profileEmoji,
     mainColor = mainColor,
     subColor = subColor,
   )

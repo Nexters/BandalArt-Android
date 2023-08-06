@@ -33,9 +33,9 @@ internal fun BandalartCellResponse.toEntity(): BandalartCellEntity {
     dueDate = dueDate,
     isCompleted = isCompleted,
     completionRatio = completionRatio,
-    profileEmoji = null,
-    mainColor = null,
-    subColor = null,
+    profileEmoji = profileEmoji,
+    mainColor = mainColor,
+    subColor = subColor,
     parentKey = parentKey,
     children = children.map { it.toEntity() },
   )
@@ -46,7 +46,7 @@ internal fun UpdateBandalartMainCellEntity.toModel(): UpdateBandalartMainCellReq
     title = title,
     description = description,
     dueDate = dueDate,
-    emoji = emoji,
+    profileEmoji = profileEmoji,
     mainColor = mainColor,
     subColor = subColor,
   )

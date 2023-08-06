@@ -41,9 +41,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun BandalartEmojiPicker(
   modifier: Modifier = Modifier,
-  currentEmoji: String,
+  currentEmoji: String?,
   isBottomSheet: Boolean,
-  onResult: (String, Boolean) -> Unit,
+  onResult: (String?, Boolean) -> Unit,
   emojiPickerScope: CoroutineScope,
   emojiPickerState: SheetState,
 ): @Composable (ColumnScope.() -> Unit) {
@@ -115,7 +115,7 @@ fun BandalartEmojiPicker(
                     .aspectRatio(1f)
                     .background(Gray100)
                     .clickable {
-                      if (selectedEmoji == emojiItem) selectedEmoji = ""
+                      if (selectedEmoji == emojiItem) selectedEmoji = null
                       else {
                         prevSelectedEmoji = selectedEmoji
                         selectedEmoji = emojiItem

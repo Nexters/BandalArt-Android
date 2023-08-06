@@ -160,7 +160,7 @@ internal fun HomeScreen(
     skipPartiallyExpanded = emojiSkipPartiallyExpanded,
   )
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
-  var currentEmoji by remember { mutableStateOf("😎") }
+  var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
   val testBandalartKey = "JWjMl"
 
   LaunchedEffect(key1 = Unit) {
@@ -233,7 +233,7 @@ internal fun HomeScreen(
                   .clickable { openEmojiBottomSheet = !openEmojiBottomSheet },
                 contentAlignment = Alignment.Center,
               ) {
-                if (currentEmoji.isEmpty()) {
+                if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
                   val image = painterResource(id = R.drawable.ic_empty_emoji)
                   Image(
                     painter = image,
@@ -241,7 +241,7 @@ internal fun HomeScreen(
                   )
                 } else {
                   EmojiText(
-                    emojiText = currentEmoji,
+                    emojiText = bandalartDetailData.profileEmoji,
                     fontSize = 22.sp,
                   )
                 }
@@ -252,7 +252,7 @@ internal fun HomeScreen(
                   onDismissRequest = { openEmojiBottomSheet = !openEmojiBottomSheet },
                   sheetState = emojiPickerState,
                   content = BandalartEmojiPicker(
-                    currentEmoji = currentEmoji,
+                    currentEmoji = bandalartDetailData.profileEmoji,
                     isBottomSheet = true,
                     onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
                       currentEmoji = currentEmojiResult
@@ -265,7 +265,7 @@ internal fun HomeScreen(
                 )
               }
             }
-            if (currentEmoji.isEmpty()) {
+            if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
               val image = painterResource(id = R.drawable.ic_edit)
               Image(
                 painter = image,

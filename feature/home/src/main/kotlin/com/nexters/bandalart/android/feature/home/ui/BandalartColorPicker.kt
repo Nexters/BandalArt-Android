@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +41,7 @@ fun BandalartColorPicker(
         contentAlignment = Alignment.Center,
         modifier = Modifier.weight(1f),
       ) {
-        if (it == initSelected) {
+        if (it.mainColor == initSelected.mainColor) {
           Card(
             border = BorderStroke(1.5.dp, Gray900),
             modifier = Modifier

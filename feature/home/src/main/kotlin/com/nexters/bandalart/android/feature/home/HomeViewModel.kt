@@ -3,6 +3,7 @@ package com.nexters.bandalart.android.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
@@ -39,6 +40,7 @@ import timber.log.Timber
  * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
  * @param isBandalartCreated 반다라트 표가 생성됨
  * @param isBandalartDeleted 반다라트 표가 삭제됨
+ * @param isBandalartCellDeleted 반다라트 셀이 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
  * @param isLoading 서버와의 통신 중 로딩 상태
@@ -84,6 +86,9 @@ class HomeViewModel @Inject constructor(
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
+  init {
+    _uiState.value = _uiState.value.copy(isLoading = true)
+  }
   fun getBandalartList() {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
@@ -116,7 +121,7 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartDetail(bandalartKey: String) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
+//      _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartDetailUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -244,7 +249,7 @@ class HomeViewModel @Inject constructor(
       val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          getBandalartMainCell(bandalartKey)
+          getBandalartDetail(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")

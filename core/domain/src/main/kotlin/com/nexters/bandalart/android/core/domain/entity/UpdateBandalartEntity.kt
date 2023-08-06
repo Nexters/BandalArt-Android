@@ -6,7 +6,7 @@ package com.nexters.bandalart.android.core.domain.entity
  * @param title 셀 제목
  * @param description 셀 설명
  * @param dueDate 셀 마감일, 미설정인 경우 null
- * @param emoji 셀 프로필 이모지
+ * @param profileEmoji 셀 프로필 이모지
  * @param mainColor 셀 메인 색상
  * @param subColor 셀 서브 색상
  */
@@ -14,8 +14,7 @@ data class UpdateBandalartMainCellEntity(
   val title: String,
   val description: String?,
   val dueDate: String?,
-  val isCompleted: Boolean? = null,
-  val emoji: String?,
+  val profileEmoji: String?,
   val mainColor: String,
   val subColor: String,
 )

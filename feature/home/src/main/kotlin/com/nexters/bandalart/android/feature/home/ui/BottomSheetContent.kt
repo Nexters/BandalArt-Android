@@ -104,10 +104,10 @@ fun bottomSheetContent(
     val emojiPickerState = rememberModalBottomSheetState(
       skipPartiallyExpanded = emojiSkipPartiallyExpanded,
     )
-    var currentEmoji by remember { mutableStateOf("") }
+    var currentEmoji by remember { mutableStateOf(cellData.profileEmoji) }
     var title by rememberSaveable { mutableStateOf(cellData.title ?: "") }
-    var mainColor by rememberSaveable { mutableStateOf("#3FFFBA") }
-    var subColor by rememberSaveable { mutableStateOf("#3FFFBA") }
+    var mainColor by rememberSaveable { mutableStateOf(cellData.mainColor ?: "#3FFFBA") }
+    var subColor by rememberSaveable { mutableStateOf(cellData.subColor ?: "#111827") }
     var dueDate by rememberSaveable { mutableStateOf(cellData.dueDate ?: "") }
     var description by rememberSaveable { mutableStateOf(cellData.description ?: "") }
     var isCompleted by remember { mutableStateOf(cellData.isCompleted) }
@@ -161,7 +161,7 @@ fun bottomSheetContent(
                     },
                   contentAlignment = Alignment.Center,
                 ) {
-                  if (currentEmoji.isEmpty()) {
+                  if (currentEmoji.isNullOrEmpty()) {
                     val image = painterResource(id = R.drawable.ic_empty_emoji)
                     Image(
                       painter = image,
@@ -175,7 +175,7 @@ fun bottomSheetContent(
                   }
                 }
               }
-              if (currentEmoji.isEmpty()) {
+              if (currentEmoji.isNullOrEmpty()) {
                 val image = painterResource(id = R.drawable.ic_edit)
                 Image(
                   painter = image,
@@ -366,9 +366,9 @@ fun bottomSheetContent(
                       title = title,
                       description = description,
                       dueDate = dueDate.ifEmpty { null },
-                      emoji = currentEmoji,
-                      mainColor = "",
-                      subColor = "",
+                      profileEmoji = currentEmoji,
+                      mainColor = mainColor,
+                      subColor = subColor,
                     ),
                   )
                 } else if (isSubCell) {
@@ -414,10 +414,10 @@ data class ThemeColor(
 )
 
 val allColor = listOf(
-  ThemeColor("#3FFFBA", "#3FFFBA"),
+  ThemeColor("#3FFFBA", "#111827"),
   ThemeColor("#4E3FFF", "#B5AEFF"),
-  ThemeColor("#3FF3FF", "#3FF3FF"),
-  ThemeColor("#93FF3F", "#93FF3F"),
-  ThemeColor("#FBFF3F", "#FBFF3F"),
-  ThemeColor("#FFB423", "#FFB423"),
+  ThemeColor("#3FF3FF", "#111827"),
+  ThemeColor("#93FF3F", "#111827"),
+  ThemeColor("#FBFF3F", "#111827"),
+  ThemeColor("#FFB423", "#111827"),
 )
