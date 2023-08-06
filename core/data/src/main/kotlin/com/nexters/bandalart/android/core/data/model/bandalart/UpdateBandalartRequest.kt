@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UpdateBandalartMainCellRequest(
   @SerialName("title")
-  val title: String,
+  val title: String?,
   @SerialName("description")
   val description: String?,
   @SerialName("dueDate")

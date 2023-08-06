@@ -259,6 +259,18 @@ internal fun HomeScreen(
                     onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
                       currentEmoji = currentEmojiResult
                       openEmojiBottomSheet = openEmojiBottomSheetResult
+                      updateBandalartMainCell(
+                        bandalartDetailData.key,
+                        uiState.bandalartCellData!!.key,
+                        UpdateBandalartMainCellModel(
+                          title = uiState.bandalartCellData.title,
+                          description = uiState.bandalartCellData.description,
+                          dueDate = uiState.bandalartCellData.dueDate,
+                          profileEmoji = currentEmoji,
+                          mainColor = uiState.bandalartCellData.mainColor!!,
+                          subColor = uiState.bandalartCellData.subColor!!,
+                        ),
+                      )
                     },
                     emojiPickerScope = emojiPickerScope,
                     emojiPickerState = emojiPickerState,
@@ -380,9 +392,9 @@ internal fun HomeScreen(
           uiState.isLoading -> {
             LoadingWheel(bandalartDetailData.mainColor.toColor())
           }
-          uiState.bandalartChartData != null -> {
+          uiState.bandalartCellData != null -> {
             BandalartChart(
-              bandalartChartData = uiState.bandalartChartData,
+              bandalartChartData = uiState.bandalartCellData,
               mainColor = bandalartDetailData.mainColor.toColor(),
               subColor = bandalartDetailData.subColor.toColor(),
               updateBandalartMainCell = updateBandalartMainCell,

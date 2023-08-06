@@ -34,7 +34,7 @@ import timber.log.Timber
  *
  * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
- * @param bandalartChartData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
+ * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
  * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
  * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
  * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
@@ -51,7 +51,7 @@ import timber.log.Timber
 data class HomeUiState(
   val bandalartList: List<BandalartDetailUiModel> = emptyList(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
-  val bandalartChartData: BandalartCellUiModel? = null,
+  val bandalartCellData: BandalartCellUiModel? = null,
   val isCellUpdated: Boolean = false,
   val isCellDeleted: Boolean = false,
   val isBandalartCompleted: Boolean = false,
@@ -142,7 +142,7 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartChartData = null,
+            bandalartCellData = null,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -159,7 +159,7 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartChartData = result.getOrNull()!!.toUiModel(),
+            bandalartCellData = result.getOrNull()!!.toUiModel(),
             error = null,
           )
         }
@@ -170,7 +170,7 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartChartData = null,
+            bandalartCellData = null,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))

@@ -11,7 +11,7 @@ package com.nexters.bandalart.android.core.domain.entity
  * @param subColor 셀 서브 색상
  */
 data class UpdateBandalartMainCellEntity(
-  val title: String,
+  val title: String?,
   val description: String?,
   val dueDate: String?,
   val profileEmoji: String?,
