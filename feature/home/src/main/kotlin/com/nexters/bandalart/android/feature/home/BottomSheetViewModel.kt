@@ -108,7 +108,6 @@ class BottomSheetViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-
           _eventFlow.emit(BottomSheetUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }

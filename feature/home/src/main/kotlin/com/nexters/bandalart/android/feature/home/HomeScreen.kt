@@ -741,9 +741,9 @@ fun Cell(
         isMainCell = isMainCell,
         isBlankCell = cellData.title.isNullOrEmpty(),
         cellData = cellData,
-        onResult = { openBottomSheetClosed, valueChanged ->
-          openBottomSheet = openBottomSheetClosed
-          bottomSheetDataChanged(valueChanged)
+        onResult = { bottomSheetState, bottomSheetDataChangedState ->
+          openBottomSheet = bottomSheetState
+          bottomSheetDataChanged(bottomSheetDataChangedState)
         },
       )
     }

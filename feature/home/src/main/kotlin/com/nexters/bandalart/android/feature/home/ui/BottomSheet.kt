@@ -84,7 +84,10 @@ fun BottomSheet(
   isMainCell: Boolean,
   isBlankCell: Boolean,
   cellData: BandalartCellUiModel,
-  onResult: (Boolean, Boolean) -> Unit,
+  onResult: (
+    bottomSheetState: Boolean,
+    bottomSheetDataChangedState: Boolean,
+  ) -> Unit,
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.bottomSheetState.collectAsStateWithLifecycle()
