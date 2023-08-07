@@ -112,7 +112,7 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartDetail(bandalartKey: String) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
+      // _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartDetailUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
