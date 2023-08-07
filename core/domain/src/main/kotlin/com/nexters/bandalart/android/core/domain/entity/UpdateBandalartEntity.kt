@@ -27,7 +27,7 @@ data class UpdateBandalartMainCellEntity(
  * @param dueDate 셀 마감일, 미설정인 경우 null
  */
 data class UpdateBandalartSubCellEntity(
-  val title: String,
+  val title: String?,
   val description: String?,
   val dueDate: String?,
 )
@@ -41,7 +41,7 @@ data class UpdateBandalartSubCellEntity(
  * @param isCompleted 셀 완료 여부
  */
 data class UpdateBandalartTaskCellEntity(
-  val title: String,
+  val title: String?,
   val description: String?,
   val dueDate: String?,
   val isCompleted: Boolean? = null,
