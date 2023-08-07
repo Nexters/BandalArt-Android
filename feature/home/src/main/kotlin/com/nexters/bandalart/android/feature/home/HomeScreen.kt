@@ -649,7 +649,9 @@ fun Cell(
               imageVector = Icons.Default.Add,
               contentDescription = "Add Icon",
               tint = cellTextColor,
-              modifier = Modifier.size(20.dp),
+              modifier = Modifier
+                .size(20.dp)
+                .offset(y = (-4).dp),
             )
           }
         }
@@ -679,7 +681,9 @@ fun Cell(
             imageVector = Icons.Default.Add,
             contentDescription = "Add Icon",
             tint = cellTextColor,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier
+              .size(20.dp)
+              .offset(y = (-4).dp),
           )
         }
       } else {
