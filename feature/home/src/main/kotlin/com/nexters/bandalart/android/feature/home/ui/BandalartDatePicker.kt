@@ -43,21 +43,21 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartDatePicker(
-  onResult: (String, Boolean) -> Unit,
+  onResult: (String?, Boolean) -> Unit,
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
-  currentDueDate: String? = "",
+  currentDueDate: String? = null,
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.fillMaxWidth(),
   ) {
     val chosenYear =
-      remember { mutableStateOf(if (currentDueDate!!.isNotEmpty()) currentDueDate.split("-")[0] else currentYear.toString()) }
+      remember { mutableStateOf(if (!currentDueDate.isNullOrEmpty()) currentDueDate.split("-")[0] else currentYear.toString()) }
     val chosenMonth =
-      remember { mutableStateOf(if (currentDueDate!!.isNotEmpty()) currentDueDate.split("-")[1] else currentMonth.toString()) }
+      remember { mutableStateOf(if (!currentDueDate.isNullOrEmpty()) currentDueDate.split("-")[1] else currentMonth.toString()) }
     val chosenDay =
-      remember { mutableStateOf(if (currentDueDate!!.isNotEmpty()) currentDueDate.split("-")[2].split("T")[0] else currentDay.toString()) }
+      remember { mutableStateOf(if (!currentDueDate.isNullOrEmpty()) currentDueDate.split("-")[2].split("T")[0] else currentDay.toString()) }
 
     Row(
       modifier = Modifier
@@ -75,7 +75,7 @@ fun BandalartDatePicker(
               .invokeOnCompletion {
                 if (!datePickerState.isVisible) {
                   onResult(
-                    "",
+                    null,
                     false,
                   )
                 }

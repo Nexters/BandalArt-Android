@@ -36,6 +36,14 @@ fun BandalartColorPicker(
     horizontalArrangement = Arrangement.SpaceEvenly,
   ) {
     var initSelected by remember { mutableStateOf(initColor) }
+    val allColor = listOf(
+      ThemeColor("#3FFFBA", "#3FFFBA"),
+      ThemeColor("#4E3FFF", "#B5AEFF"),
+      ThemeColor("#3FF3FF", "#3FF3FF"),
+      ThemeColor("#93FF3F", "#93FF3F"),
+      ThemeColor("#FBFF3F", "#FBFF3F"),
+      ThemeColor("#FFB423", "#FFB423"),
+    )
     allColor.forEach {
       Box(
         contentAlignment = Alignment.Center,
