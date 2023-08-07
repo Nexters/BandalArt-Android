@@ -38,7 +38,7 @@ internal object NetworkModule {
       defaultRequest {
         url(BuildConfig.SERVER_BASE_URL)
         contentType(ContentType.Application.Json)
-        header("X-GUEST_KEY", guestLoginToken)
+        header("X-GUEST-KEY", guestLoginToken)
       }
       install(ContentNegotiation) {
         json(Json {
