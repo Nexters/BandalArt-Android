@@ -18,4 +18,3 @@ class CreateBandalartUseCase @Inject constructor(
       repository.createBandalart() ?: throw CreateBandalartResponseIsNull
     }
 }
-

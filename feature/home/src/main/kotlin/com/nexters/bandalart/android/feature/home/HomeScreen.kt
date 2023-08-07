@@ -189,7 +189,6 @@ internal fun HomeScreen(
     }
   }
 
-
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
       bandalartList = uiState.bandalartList,

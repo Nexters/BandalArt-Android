@@ -4,13 +4,11 @@ package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -55,14 +53,7 @@ fun BandalartItem(
   val scope = rememberCoroutineScope()
 
   Row(
-    Modifier
-      .fillMaxWidth()
-      .border(
-        width = 1.5.dp,
-        color = Gray100,
-        shape = RoundedCornerShape(12.dp)
-      )
-      .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 12.dp)
+    modifier = modifier
       .clickable {
         if (currentBandalartKey != bandalartItem.key) {
           onClick(bandalartItem.key)
@@ -72,7 +63,7 @@ fun BandalartItem(
               if (!bottomSheetState.isVisible) onCancelClicked()
             }
         }
-      }
+      },
   ) {
     Box(modifier = Modifier.align(Alignment.CenterVertically)) {
       Card(shape = RoundedCornerShape(16.dp)) {
@@ -101,7 +92,7 @@ fun BandalartItem(
     Column(
       modifier = Modifier
         .weight(1f)
-        .padding(start = 8.dp)
+        .padding(start = 8.dp),
     ) {
       if (bandalartItem.isCompleted) {
         Box(

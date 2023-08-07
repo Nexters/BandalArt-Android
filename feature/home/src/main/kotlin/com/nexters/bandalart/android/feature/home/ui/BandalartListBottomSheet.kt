@@ -3,6 +3,7 @@
 package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray800
@@ -70,7 +73,7 @@ fun BandalartListBottomSheet(
     Column(
       modifier = Modifier
         .background(White)
-        .navigationBarsPadding()
+        .navigationBarsPadding(),
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       Box(
@@ -96,7 +99,7 @@ fun BandalartListBottomSheet(
             scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
               if (!bottomSheetState.isVisible) onCancelClicked()
             }
-          }
+          },
         ) {
           Icon(
             imageVector = Icons.Default.Clear,
@@ -108,15 +111,22 @@ fun BandalartListBottomSheet(
       Spacer(modifier = Modifier.height(40.dp))
       LazyColumn(
         modifier = Modifier.padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
       ) {
         items(
           count = bandalartList.size,
-          key = { index -> bandalartList[index].key }
+          key = { index -> bandalartList[index].key },
         ) { index ->
           val bandalartItem = bandalartList[index]
           BandalartItem(
-            modifier = modifier,
+            modifier = Modifier
+              .fillMaxWidth()
+              .border(
+                width = 1.5.dp,
+                color = Gray100,
+                shape = RoundedCornerShape(12.dp),
+              )
+              .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 12.dp),
             bottomSheetState = bottomSheetState,
             bandalartItem = bandalartItem,
             currentBandalartKey = currentBandalartKey,
@@ -133,7 +143,6 @@ fun BandalartListBottomSheet(
             .weight(1f)
             .height(56.dp)
             .padding(horizontal = 24.dp),
-          // TODO CreateBandalart 를 요청하고, 이를 홈 화면에 뿌려줘야 함
           onClick = createBandalart,
           colors = ButtonDefaults.buttonColors(containerColor = Gray200),
         ) {
