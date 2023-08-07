@@ -166,6 +166,7 @@ internal fun HomeScreen(
   LaunchedEffect(key1 = uiState.bottomSheetDataChanged) {
     if (uiState.bottomSheetDataChanged) {
       getBandalartDetail(uiState.bandalartList[0].key)
+      bottomSheetDataChanged(false)
     }
   }
 
@@ -295,14 +296,28 @@ internal fun HomeScreen(
               .fillMaxWidth()
               .wrapContentHeight(),
           ) {
+            var openBottomSheet by rememberSaveable { mutableStateOf(false) }
             FixedSizeText(
               text = bandalartDetailData.title ?: "메인 목표를 입력해주세요",
               color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
               fontWeight = FontWeight.W700,
               fontSize = 20.sp,
               letterSpacing = (-0.4).sp,
-              modifier = Modifier.align(Alignment.Center),
+              modifier = Modifier.align(Alignment.Center).clickable { openBottomSheet = !openBottomSheet },
             )
+            if (openBottomSheet) {
+              BottomSheet(
+                bandalartKey = bandalartDetailData.key,
+                isSubCell = false,
+                isMainCell = true,
+                isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
+                cellData = uiState.bandalartCellData,
+                onResult = { bottomSheetState, bottomSheetDataChangedState ->
+                  openBottomSheet = bottomSheetState
+                  bottomSheetDataChanged(bottomSheetDataChangedState)
+                },
+              )
+            }
             val image = painterResource(id = R.drawable.ic_option)
             Image(
               painter = image,
