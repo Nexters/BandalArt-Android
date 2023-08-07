@@ -60,6 +60,7 @@ data class HomeUiState(
   val isBandalartCellDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
+  val bottomSheetDataChanged: Boolean = false,
   val isLoading: Boolean = true,
   val error: Throwable? = null,
 )
@@ -162,6 +163,7 @@ class HomeViewModel @Inject constructor(
             bandalartCellData = result.getOrNull()!!.toUiModel(),
             error = null,
           )
+          bottomSheetDataChanged(false)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -360,6 +362,14 @@ class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
         isBandalartDeleteAlertDialogOpened = state,
+      )
+    }
+  }
+
+  fun bottomSheetDataChanged(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        bottomSheetDataChanged = state,
       )
     }
   }
