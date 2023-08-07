@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.White
@@ -29,7 +30,7 @@ import com.nexters.bandalart.android.core.ui.theme.pretendard
 @Suppress("unused")
 @Composable
 internal fun HomeTopBar(
-  onAddBandalart: () -> Unit,
+  bandalartCount: Int,
   onShowBandalartList: () -> Unit,
 ) {
   Box(
@@ -42,7 +43,7 @@ internal fun HomeTopBar(
     Row(
       modifier = Modifier.fillMaxWidth(),
     ) {
-      val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app)
+      val image = painterResource(id = R.drawable.ic_app)
       Image(
         painter = image,
         contentDescription = "App Icon",
@@ -54,17 +55,29 @@ internal fun HomeTopBar(
       Box(
         modifier = Modifier
           .padding(end = 20.dp)
-          // 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
-          .clickable(onClick = onAddBandalart),
+          .clickable(onClick = onShowBandalartList),
       ) {
-        // TODO 반다라트 표가 여러개 일때는 아이콘, 텍스트 변경
         Row(verticalAlignment = Alignment.CenterVertically) {
-          Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "Add Icon",
-            tint = Gray600,
-            modifier = Modifier.size(20.dp),
-          )
+          if (bandalartCount > 1) {
+            val image = painterResource(id = R.drawable.ic_hamburger)
+            Image(
+              painter = image,
+              contentDescription = "Hamburger Icon",
+            )
+            Text(
+              text = "목록",
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W700,
+              color = Gray600,
+              fontSize = 16.sp.nonScaleSp,
+            )
+          } else {
+            Icon(
+              imageVector = Icons.Default.Add,
+              contentDescription = "Add Icon",
+              tint = Gray600,
+              modifier = Modifier.size(20.dp),
+            )
 //          // FixedSizeText 로 적용하면 텍스트가 보이지 않음
 //          FixedSizeText(
 //            text = "추가",
@@ -72,13 +85,14 @@ internal fun HomeTopBar(
 //            fontWeight = FontWeight.W700,
 //            fontSize = 16.sp,
 //          )
-          Text(
-            text = "추가",
-            fontFamily = pretendard,
-            fontWeight = FontWeight.W700,
-            color = Gray600,
-            fontSize = 16.sp.nonScaleSp,
-          )
+            Text(
+              text = "추가",
+              fontFamily = pretendard,
+              fontWeight = FontWeight.W700,
+              color = Gray600,
+              fontSize = 16.sp.nonScaleSp,
+            )
+          }
         }
       }
     }

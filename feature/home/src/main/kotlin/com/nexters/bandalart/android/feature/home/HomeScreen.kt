@@ -85,6 +85,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BottomSheet
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
@@ -99,6 +100,7 @@ internal fun HomeRoute(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val bandalartList = uiState.bandalartList
   val bandalartDetailData = uiState.bandalartDetailData
 
   LaunchedEffect(viewModel) {
@@ -114,6 +116,7 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
+    bandalartList = bandalartList,
     bandalartDetailData = bandalartDetailData ?: BandalartDetailUiModel(),
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
@@ -126,6 +129,7 @@ internal fun HomeRoute(
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
+    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
   )
 }
 
@@ -134,6 +138,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
+  bandalartList: List<BandalartDetailUiModel>,
   bandalartDetailData: BandalartDetailUiModel,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
@@ -146,6 +151,7 @@ internal fun HomeScreen(
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  openBandalartListBottomSheet: (Boolean) -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -163,6 +169,12 @@ internal fun HomeScreen(
     getBandalartList()
   }
 
+  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
+    if (bandalartDetailData.isCompleted) {
+      navigateToComplete()
+    }
+  }
+
   LaunchedEffect(key1 = uiState.bottomSheetDataChanged) {
     if (uiState.bottomSheetDataChanged) {
       // TODO 뷰모델 내부에서 bandalartList[0].key 로 접근하는 방법으로 함수 변경 필요
@@ -176,10 +188,14 @@ internal fun HomeScreen(
     }
   }
 
-  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
-    if (bandalartDetailData.isCompleted) {
-      navigateToComplete()
-    }
+
+  if (uiState.isBandalartListBottomSheetOpened) {
+    BandalartListBottomSheet(
+      bandalartList = uiState.bandalartList,
+      getBandalartDetail = getBandalartDetail,
+      onCancelClicked = { openBandalartListBottomSheet(false) },
+      createBandalart = createBandalart,
+    )
   }
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
@@ -209,10 +225,10 @@ internal fun HomeScreen(
           .fillMaxSize()
           .padding(bottom = 32.dp),
       ) {
+        // 어쨌든 누르면 반다라트 목록을 띄우는 것은 동일
         HomeTopBar(
-          // Todo 이것마저도 잠시 막아놓음 !! 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
-          onAddBandalart = {},
-          onShowBandalartList = {},
+          bandalartCount = bandalartList.size,
+          onShowBandalartList = { openBandalartListBottomSheet(true) },
         )
         HorizontalDivider(
           thickness = 1.dp,

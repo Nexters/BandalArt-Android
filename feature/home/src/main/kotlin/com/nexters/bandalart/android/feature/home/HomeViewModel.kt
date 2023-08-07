@@ -50,6 +50,7 @@ data class HomeUiState(
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
   val bottomSheetDataChanged: Boolean = false,
+  val isBandalartListBottomSheetOpened: Boolean = false,
   val isLoading: Boolean = true,
   val error: Throwable? = null,
 )
@@ -279,6 +280,14 @@ class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
         bottomSheetDataChanged = state,
+      )
+    }
+  }
+
+  fun openBandalartListBottomSheet(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isBandalartListBottomSheetOpened = state,
       )
     }
   }
