@@ -33,9 +33,9 @@ import timber.log.Timber
  * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
  * @param isBandalartCreated 반다라트 표가 생성됨
  * @param isBandalartDeleted 반다라트 표가 삭제됨
- * @param isBandalartCellDeleted 반다라트 셀이 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
+ * @param bottomSheetDataChanged 바텀시트의 데이터가 변경됨
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param error 서버와의 통신을 실패
  */
@@ -120,7 +120,7 @@ class HomeViewModel @Inject constructor(
             bandalartDetailData = bandalartDetailData,
             error = null,
           )
-          getBandalartMainCell(bandalartDetailData.key)
+          getBandalartMainCell(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")

@@ -156,7 +156,8 @@ internal fun HomeScreen(
   )
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
-  val testBandalartKey = "JWjMl"
+  // val testBandalartKey = "JWjMl"
+  val testBandalartKey = "b_EFS"
 
   LaunchedEffect(key1 = Unit) {
     getBandalartDetail(testBandalartKey)
@@ -662,7 +663,7 @@ fun Cell(
       }
       // 서브 목표
     } else if (cellInfo.isSubCell) {
-      val cellTextColor = themeColor.subColor.toColor()
+      val cellTextColor = themeColor.mainColor.toColor()
       val fontWeight = FontWeight.W700
       // 서브 목표가 빈 경우
       if (cellData.title.isNullOrEmpty()) {
