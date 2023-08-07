@@ -156,16 +156,16 @@ internal fun HomeScreen(
   )
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
-  // val testBandalartKey = "JWjMl"
-  val testBandalartKey = "b_EFS"
+  // TODO 제거
+  val testBandalartKey = "JWjMl"
 
   LaunchedEffect(key1 = Unit) {
-    getBandalartDetail(testBandalartKey)
-    // getBandalartDetail("K3mLJ")
+    getBandalartList()
   }
 
   LaunchedEffect(key1 = uiState.bottomSheetDataChanged) {
     if (uiState.bottomSheetDataChanged) {
+      // TODO 뷰모델 내부에서 bandalartList[0].key 로 접근하는 방법으로 함수 변경 필요
       getBandalartDetail(testBandalartKey)
     }
   }

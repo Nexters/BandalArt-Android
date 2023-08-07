@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-// TODO 다른 로띠로 변경
+// TODO 다른 로띠로 변경, 배경을 투명하게 변경
 @Composable
 fun LoadingWheel(
   progressColor: Color,
