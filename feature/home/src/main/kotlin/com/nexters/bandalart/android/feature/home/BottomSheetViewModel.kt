@@ -243,4 +243,10 @@ class BottomSheetViewModel @Inject constructor(
       )
     }
   }
+
+  fun bottomSheetClosed() {
+    _bottomSheetState.update {
+      BottomSheetUiState()
+    }
+  }
 }

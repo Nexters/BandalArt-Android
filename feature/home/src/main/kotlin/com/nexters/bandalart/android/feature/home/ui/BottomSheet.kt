@@ -101,7 +101,10 @@ fun BottomSheet(
     modifier = Modifier
       .wrapContentSize()
       .statusBarsPadding(),
-    onDismissRequest = { onResult(false, false) },
+    onDismissRequest = {
+      viewModel.bottomSheetClosed()
+      onResult(false, false)
+    },
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
@@ -124,7 +127,10 @@ fun BottomSheet(
             viewModel.openDeleteCellDialog(deleteCellDialogState = false)
             bottomSheetState.hide()
           }.invokeOnCompletion {
-            if (!bottomSheetState.isVisible) { onResult(false, true) }
+            if (!bottomSheetState.isVisible) {
+              viewModel.bottomSheetClosed()
+              onResult(false, true)
+            }
           }
         },
         onCancelClicked = { viewModel.openDeleteCellDialog(deleteCellDialogState = false) },
@@ -145,6 +151,7 @@ fun BottomSheet(
         scope = scope,
         bottomSheetState = bottomSheetState,
         onResult = onResult,
+        bottomSheetClosed = viewModel::bottomSheetClosed,
       )
       Column(
         modifier = Modifier
@@ -428,7 +435,10 @@ fun BottomSheet(
                 // Todo 실패 처리해줘야함
                 bottomSheetState.hide()
               }.invokeOnCompletion {
-                if (!bottomSheetState.isVisible) { onResult(false, true) }
+                if (!bottomSheetState.isVisible) {
+                  viewModel.bottomSheetClosed()
+                  onResult(false, true)
+                }
               }
             },
           )
