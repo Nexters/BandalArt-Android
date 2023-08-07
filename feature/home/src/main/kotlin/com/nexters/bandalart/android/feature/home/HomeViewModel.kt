@@ -84,11 +84,13 @@ class HomeViewModel @Inject constructor(
       val result = getBandalartListUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
+          val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartList = result.getOrNull()!!.map { it.toUiModel() },
+            bandalartList = bandalartList,
             error = null,
           )
+          getBandalartDetail(bandalartList[0].key)
         }
         // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
@@ -110,7 +112,7 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartDetail(bandalartKey: String) {
     viewModelScope.launch {
-//      _uiState.value = _uiState.value.copy(isLoading = true)
+      _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartDetailUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {

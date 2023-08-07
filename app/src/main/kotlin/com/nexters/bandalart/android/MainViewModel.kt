@@ -2,6 +2,7 @@ package com.nexters.bandalart.android
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.GetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.SetGuestLoginTokenUseCase
@@ -32,6 +33,7 @@ class MainViewModel @Inject constructor(
   private val getGuestLoginTokenUseCase: GetGuestLoginTokenUseCase,
   private val createGuestLoginTokenUseCase: CreateGuestLoginTokenUseCase,
   private val setGuestLoginTokenUseCase: SetGuestLoginTokenUseCase,
+  private val createBandalartUseCase: CreateBandalartUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(MainUiState())
@@ -58,6 +60,7 @@ class MainViewModel @Inject constructor(
               isLoggedIn = false,
               isLoading = false,
             )
+            createBandalartUseCase()
           }
           result.isSuccess && result.getOrNull() == null -> {
             Timber.e("Request succeeded but data validation failed")

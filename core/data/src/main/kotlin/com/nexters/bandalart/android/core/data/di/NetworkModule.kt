@@ -31,11 +31,10 @@ internal object NetworkModule {
   @Provides
   fun provideKtorHttpClient(dataStoreProvider: DataStoreProvider): HttpClient {
     return HttpClient(CIO) {
-      val guestLoginToken = runBlocking {
-        dataStoreProvider.getGuestLoginToken()
-      }
-      Timber.d(guestLoginToken)
       defaultRequest {
+        val guestLoginToken = runBlocking {
+          dataStoreProvider.getGuestLoginToken()
+        }
         url(BuildConfig.SERVER_BASE_URL)
         contentType(ContentType.Application.Json)
         header("X-GUEST-KEY", guestLoginToken)
