@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
@@ -31,20 +32,23 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.ui.theme.Gray100
+import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 
 @Composable
 internal fun OnBoardingRoute(
-  onNavigateBack: () -> Unit,
+  navigateToHome: (NavOptions) -> Unit,
 ) {
   OnBoardingScreen(
-    onNavigateBack = onNavigateBack,
+    navigateToHome = { options ->
+      navigateToHome(options)
+    }
   )
 }
 
 @Composable
 internal fun OnBoardingScreen(
-  onNavigateBack: () -> Unit,
   modifier: Modifier = Modifier,
+  navigateToHome: (NavOptions) -> Unit,
 ) {
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -131,7 +135,12 @@ internal fun OnBoardingScreen(
                 }
               }
               BandalartButton(
-                onClick = onNavigateBack,
+                onClick = {
+                  val options = NavOptions.Builder()
+                    .setPopUpTo(ONBOARDING_NAVIGATION_ROUTE, inclusive = true)
+                    .build()
+                  navigateToHome(options)
+                },
                 text = "시작하기",
                 modifier = Modifier
                   .align(Alignment.BottomCenter)

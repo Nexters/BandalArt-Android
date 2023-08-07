@@ -47,7 +47,6 @@ import timber.log.Timber
  * @param error 서버와의 통신을 실패
  */
 
-// TODO Token 확인 로직의 위치 결정
 data class HomeUiState(
   val bandalartList: List<BandalartDetailUiModel> = emptyList(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
