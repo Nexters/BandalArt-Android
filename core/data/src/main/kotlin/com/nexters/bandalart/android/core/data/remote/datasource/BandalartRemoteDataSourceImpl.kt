@@ -19,7 +19,7 @@ import io.ktor.client.request.setBody
 import io.ktor.util.InternalAPI
 import javax.inject.Inject
 
-class BandalartRemoteDataSourceImpl @Inject constructor(
+internal class BandalartRemoteDataSourceImpl @Inject constructor(
   private val client: HttpClient,
 ) : BandalartRemoteDataSource {
   override suspend fun createBandalart() {
@@ -61,11 +61,11 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
   override suspend fun updateBandalartMainCell(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartMainRequest: UpdateBandalartMainCellRequest,
+    updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
   ) {
     client.safeRequest {
       patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartMainRequest)
+        setBody(updateBandalartMainCellRequest)
       }
     }
   }
@@ -73,11 +73,11 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
   override suspend fun updateBandalartSubCell(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartSubRequest: UpdateBandalartSubCellRequest,
+    updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
   ) {
     client.safeRequest {
       patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartSubRequest)
+        setBody(updateBandalartSubCellRequest)
       }
     }
   }
@@ -85,11 +85,11 @@ class BandalartRemoteDataSourceImpl @Inject constructor(
   override suspend fun updateBandalartTaskCell(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartTaskRequest: UpdateBandalartTaskCellRequest,
+    updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
   ) {
     client.safeRequest {
       patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartTaskRequest)
+        setBody(updateBandalartTaskCellRequest)
       }
     }
   }

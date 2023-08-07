@@ -7,7 +7,7 @@ import com.nexters.bandalart.android.core.domain.entity.GuestLoginTokenEntity
 import com.nexters.bandalart.android.core.domain.repository.GuestLoginTokenRepository
 import javax.inject.Inject
 
-class GuestLoginTokenRepositoryImpl @Inject constructor(
+internal class GuestLoginTokenRepositoryImpl @Inject constructor(
   private val localDataSource: GuestLoginLocalDataSource,
   private val remoteDataSource: GuestLoginRemoteDataSource,
 ) :

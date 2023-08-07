@@ -10,7 +10,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 
-class DataStoreProvider @Inject constructor(
+internal class DataStoreProvider @Inject constructor(
   private val dataStore: DataStore<Preferences>
 ) {
 

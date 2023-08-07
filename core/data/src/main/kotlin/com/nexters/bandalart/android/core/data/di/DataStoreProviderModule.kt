@@ -17,7 +17,7 @@ private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataSto
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataStoreProviderModule {
+internal object DataStoreProviderModule {
 
   @Provides
   @Singleton

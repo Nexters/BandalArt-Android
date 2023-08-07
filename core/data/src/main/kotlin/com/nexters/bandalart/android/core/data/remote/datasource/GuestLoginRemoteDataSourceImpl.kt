@@ -8,7 +8,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.post
 import javax.inject.Inject
 
-class GuestLoginRemoteDataSourceImpl @Inject constructor(
+internal class GuestLoginRemoteDataSourceImpl @Inject constructor(
   private val client: HttpClient,
 ) : GuestLoginRemoteDataSource {
   override suspend fun createGuestLoginToken(): GuestLoginTokenResponse? {

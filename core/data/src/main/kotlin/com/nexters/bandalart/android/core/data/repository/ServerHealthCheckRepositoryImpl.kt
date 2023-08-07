@@ -7,7 +7,7 @@ import io.ktor.client.request.get
 import javax.inject.Inject
 
 @Suppress("TooGenericExceptionCaught")
-class ServerHealthCheckRepositoryImpl @Inject constructor(
+internal class ServerHealthCheckRepositoryImpl @Inject constructor(
   private val client: HttpClient,
 ) : ServerHealthCheckRepository {
   override suspend fun checkServerHealth() {

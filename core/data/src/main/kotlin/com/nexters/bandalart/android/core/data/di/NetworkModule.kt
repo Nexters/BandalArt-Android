@@ -52,7 +52,7 @@ private val KtorHttpClient =
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+internal object NetworkModule {
 
   @Singleton
   @Provides
