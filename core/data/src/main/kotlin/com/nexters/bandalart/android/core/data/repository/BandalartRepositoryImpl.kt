@@ -12,7 +12,7 @@ import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellE
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import javax.inject.Inject
 
-class BandalartRepositoryImpl @Inject constructor(
+internal class BandalartRepositoryImpl @Inject constructor(
   private val bandalartRemoteDataSource: BandalartRemoteDataSource,
   private val recentBandalartKeyDataSource: RecentBandalartKeyDataSource,
 ) : BandalartRepository {

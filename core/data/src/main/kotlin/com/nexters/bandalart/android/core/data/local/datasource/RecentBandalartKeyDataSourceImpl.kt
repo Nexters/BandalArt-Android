@@ -4,7 +4,7 @@ import com.nexters.bandalart.android.core.data.datasource.RecentBandalartKeyData
 import com.nexters.bandalart.android.core.data.local.DataStoreProvider
 import javax.inject.Inject
 
-class RecentBandalartKeyDataSourceImpl @Inject constructor(
+internal class RecentBandalartKeyDataSourceImpl @Inject constructor(
   private val datastoreProvider: DataStoreProvider,
 ) : RecentBandalartKeyDataSource {
 

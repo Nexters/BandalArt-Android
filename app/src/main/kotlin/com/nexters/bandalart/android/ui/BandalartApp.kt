@@ -28,6 +28,7 @@ import com.nexters.bandalart.android.navigation.BandalartNavHost
 
 @Composable
 fun BandalartApp(
+  startDestination: String,
   appState: BandalartAppState = rememberBandalartAppState(),
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
@@ -66,14 +67,15 @@ fun BandalartApp(
     },
   ) { innerPadding ->
     BandalartNavHost(
-      appState = appState,
       modifier = Modifier.padding(innerPadding),
+      appState = appState,
       onShowSnackbar = { message ->
         snackbarHostState.showSnackbar(
           message = message,
           duration = SnackbarDuration.Short,
         ) == SnackbarResult.ActionPerformed
       },
+      startDestination = startDestination,
     )
   }
 }
