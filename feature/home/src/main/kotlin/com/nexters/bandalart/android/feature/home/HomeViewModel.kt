@@ -173,7 +173,7 @@ class HomeViewModel @Inject constructor(
 
   fun createBandalart() {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
+      // _uiState.value = _uiState.value.copy(isLoading = true)
       val result = createBandalartUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
