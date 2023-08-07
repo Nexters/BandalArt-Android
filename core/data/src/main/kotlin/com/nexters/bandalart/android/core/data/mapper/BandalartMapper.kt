@@ -2,14 +2,31 @@ package com.nexters.bandalart.android.core.data.mapper
 
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
+
+internal fun BandalartResponse.toEntity() =
+  BandalartEntity(
+    id = id,
+    key = key,
+    mainColor = mainColor,
+    subColor = subColor,
+    profileEmoji = profileEmoji,
+    cellId = cellId,
+    sharedId = sharedId,
+    userId = userId,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    deleteAt = deleteAt,
+  )
 
 internal fun BandalartDetailResponse.toEntity() =
   BandalartDetailEntity(
