@@ -38,6 +38,7 @@ import timber.log.Timber
 // TODO Token 확인 로직의 위치 결정
 data class BottomSheetUiState(
   val cellData: BandalartCellUiModel = BandalartCellUiModel(),
+  val isCellDataCopied: Boolean = false,
   val isCellUpdated: Boolean = false,
   val isCellDeleted: Boolean = false,
   val isDatePickerOpened: Boolean = false,
@@ -67,7 +68,10 @@ class BottomSheetViewModel @Inject constructor(
 
   fun copyCellData(cellData: BandalartCellUiModel) {
     _bottomSheetState.update {
-      it.copy(cellData = cellData)
+      it.copy(
+        cellData = cellData,
+        isCellDataCopied = true,
+      )
     }
   }
 

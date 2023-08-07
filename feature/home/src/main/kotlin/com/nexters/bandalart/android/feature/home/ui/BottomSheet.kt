@@ -250,7 +250,7 @@ fun BottomSheet(
             ),
           )
         }
-        if (isMainCell) {
+        if (isMainCell && uiState.isCellDataCopied) {
           Spacer(modifier = Modifier.height(22.dp))
           BottomSheetSubTitleText(text = "색상 테마")
           BandalartColorPicker(
