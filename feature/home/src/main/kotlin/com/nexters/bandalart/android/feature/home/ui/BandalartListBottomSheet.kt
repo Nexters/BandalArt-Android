@@ -110,6 +110,7 @@ fun BandalartListBottomSheet(
           BandalartItem(
             modifier = modifier,
             bandalartItem = bandalartItem,
+            // TODO ApiCall 을 요청하고 BottomSheet 가 닫히도록, 실패하면 BottomSheet가 닫히면 안됨
             onClick = getBandalartDetail,
           )
         }
@@ -121,6 +122,8 @@ fun BandalartListBottomSheet(
             .weight(1f)
             .height(56.dp)
             .padding(horizontal = 24.dp),
+          // TODO ApiCall 을 요청하고 BottomSheet 가 닫히도록, 실패하면 BottomSheet가 닫히면 안됨
+          // TODO CreateBandalart 를 요청하고, 이를 홈 화면에 뿌려줘야 함
           onClick = createBandalart,
           colors = ButtonDefaults.buttonColors(containerColor = Gray200),
         ) {
