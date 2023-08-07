@@ -68,6 +68,7 @@ import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.extension.toFormatDate
@@ -125,6 +126,7 @@ internal fun HomeRoute(
     deleteBandalart = viewModel::deleteBandalart,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
+    openNetworkErrorAlertDialog =  { state -> viewModel.openNetworkErrorAlertDialog(state)},
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
   )
 }
@@ -145,6 +147,7 @@ internal fun HomeScreen(
   deleteBandalart: (String) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
 ) {
   val scrollState = rememberScrollState()
@@ -193,6 +196,13 @@ internal fun HomeScreen(
       onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
     )
+  }
+
+  if (uiState.isNetworkErrorAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n불러오지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorAlertDialog(false) })
   }
 
   Surface(
@@ -402,10 +412,6 @@ internal fun HomeScreen(
               bottomSheetDataChanged = bottomSheetDataChanged,
               bandalartKey = bandalartDetailData.key,
             )
-          }
-          // TODO Network Eroor 상황 처리(다시 시도)
-          uiState.error != null -> {
-            // TODO ErrorAlertDialog 구현
           }
         }
         Spacer(modifier = Modifier.weight(1f))
