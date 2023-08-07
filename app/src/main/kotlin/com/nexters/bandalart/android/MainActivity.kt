@@ -39,7 +39,8 @@ class MainActivity : ComponentActivity() {
             NetworkErrorAlertDialog(
               title = "네트워크 문제로 표를\n불러오지 못했어요",
               message = "다시 시도해주시기 바랍니다.",
-              onConfirmClick = { viewModel.openNetworkErrorAlertDialog(false) })
+              onConfirmClick = { viewModel.openNetworkErrorAlertDialog(false) },
+            )
           }
 
           when {
