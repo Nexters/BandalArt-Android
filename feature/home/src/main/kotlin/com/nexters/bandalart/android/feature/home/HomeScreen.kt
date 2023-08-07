@@ -165,8 +165,7 @@ internal fun HomeScreen(
 
   LaunchedEffect(key1 = uiState.bottomSheetDataChanged) {
     if (uiState.bottomSheetDataChanged) {
-      // TODO 뷰모델 내부에서 bandalartList[0].key 로 접근하는 방법으로 함수 변경 필요
-      getBandalartDetail(testBandalartKey)
+      getBandalartDetail(uiState.bandalartList[0].key)
     }
   }
 
