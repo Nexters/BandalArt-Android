@@ -17,14 +17,14 @@ data class BandalartResponse(
   val profileEmoji: String?,
   @SerialName("cellId")
   val cellId: Int,
-  @SerialName("sharedId")
-  val sharedId: String?,
+  @SerialName("shareId")
+  val shareId: String?,
   @SerialName("userId")
   val userId: Int,
   @SerialName("createdAt")
   val createdAt: String,
   @SerialName("updatedAt")
   val updatedAt: String,
-  @SerialName("deleteAt")
-  val deleteAt: String?,
+  @SerialName("deletedAt")
+  val deletedAt: String?,
 )

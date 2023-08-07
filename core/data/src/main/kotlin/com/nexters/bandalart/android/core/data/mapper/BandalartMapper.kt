@@ -21,11 +21,11 @@ internal fun BandalartResponse.toEntity() =
     subColor = subColor,
     profileEmoji = profileEmoji,
     cellId = cellId,
-    sharedId = sharedId,
+    shareId = shareId,
     userId = userId,
     createdAt = createdAt,
     updatedAt = updatedAt,
-    deleteAt = deleteAt,
+    deletedAt = deletedAt,
   )
 
 internal fun BandalartDetailResponse.toEntity() =

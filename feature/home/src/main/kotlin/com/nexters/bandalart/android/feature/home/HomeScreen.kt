@@ -122,7 +122,7 @@ internal fun HomeRoute(
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
-    getBandalartList = viewModel::getBandalartList,
+    getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
@@ -144,7 +144,7 @@ internal fun HomeScreen(
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
-  getBandalartList: () -> Unit,
+  getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
@@ -165,8 +165,9 @@ internal fun HomeScreen(
   // TODO 제거
   val testBandalartKey = "JWjMl"
 
+  // TODO 가장 최근에 확인한 반다라트 표의 키를 담아 호출하여 해당 반다라트 표가 열리도록
   LaunchedEffect(key1 = Unit) {
-    getBandalartList()
+    getBandalartList(null)
   }
 
   LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
@@ -193,6 +194,7 @@ internal fun HomeScreen(
     BandalartListBottomSheet(
       bandalartList = uiState.bandalartList,
       getBandalartDetail = getBandalartDetail,
+      currentBandalartKey = bandalartDetailData.key,
       onCancelClicked = { openBandalartListBottomSheet(false) },
       createBandalart = createBandalart,
     )

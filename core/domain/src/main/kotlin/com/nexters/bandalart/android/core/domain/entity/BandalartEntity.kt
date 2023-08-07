@@ -23,9 +23,9 @@ data class BandalartEntity(
   val subColor: String,
   val profileEmoji: String?,
   val cellId: Int,
-  val sharedId: String?,
+  val shareId: String?,
   val userId: Int,
   val createdAt: String,
   val updatedAt: String,
-  val deleteAt: String?,
+  val deletedAt: String?,
 )

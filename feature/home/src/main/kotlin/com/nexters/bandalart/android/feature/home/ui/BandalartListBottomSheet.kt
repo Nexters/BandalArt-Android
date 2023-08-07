@@ -29,6 +29,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -44,15 +45,18 @@ import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartListBottomSheet(
   modifier: Modifier = Modifier,
   bandalartList: List<BandalartDetailUiModel>,
+  currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
 ) {
+  val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
@@ -88,7 +92,11 @@ fun BandalartListBottomSheet(
             .align(Alignment.CenterEnd)
             .height(21.dp)
             .aspectRatio(1f),
-          onClick = onCancelClicked,
+          onClick = {
+            scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+              if (!bottomSheetState.isVisible) onCancelClicked()
+            }
+          }
         ) {
           Icon(
             imageVector = Icons.Default.Clear,
@@ -109,10 +117,12 @@ fun BandalartListBottomSheet(
           val bandalartItem = bandalartList[index]
           BandalartItem(
             modifier = modifier,
+            bottomSheetState = bottomSheetState,
             bandalartItem = bandalartItem,
-            // TODO ApiCall 을 요청하고 BottomSheet 가 닫히도록, 실패하면 BottomSheet가 닫히면 안됨
+            currentBandalartKey = currentBandalartKey,
             // TODO 해당 반다라트의 키를 로컬에 저장하여 다음에 앱에 진입할때 가장 마지막에 열었던 표가 화면에 보여지도록
             onClick = getBandalartDetail,
+            onCancelClicked = onCancelClicked,
           )
         }
       }
@@ -123,7 +133,6 @@ fun BandalartListBottomSheet(
             .weight(1f)
             .height(56.dp)
             .padding(horizontal = 24.dp),
-          // TODO ApiCall 을 요청하고 BottomSheet 가 닫히도록, 실패하면 BottomSheet가 닫히면 안됨
           // TODO CreateBandalart 를 요청하고, 이를 홈 화면에 뿌려줘야 함
           onClick = createBandalart,
           colors = ButtonDefaults.buttonColors(containerColor = Gray200),

@@ -7,6 +7,8 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
@@ -68,6 +70,8 @@ class HomeViewModel @Inject constructor(
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
+  private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
+  private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -79,7 +83,8 @@ class HomeViewModel @Inject constructor(
   init {
     _uiState.value = _uiState.value.copy(isLoading = true)
   }
-  fun getBandalartList() {
+
+  fun getBandalartList(bandalartKey: String? = null) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartListUseCase()
@@ -91,7 +96,11 @@ class HomeViewModel @Inject constructor(
             bandalartList = bandalartList,
             error = null,
           )
-          getBandalartDetail(bandalartList[0].key)
+          if (bandalartKey != null) {
+            getBandalartDetail(bandalartKey)
+          } else {
+            getBandalartDetail(bandalartList[0].key)
+          }
         }
         // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
@@ -121,6 +130,7 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             bandalartDetailData = bandalartDetailData,
+            isBandalartListBottomSheetOpened = false,
             error = null,
           )
           getBandalartMainCell(bandalartKey)
@@ -132,7 +142,6 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             isLoading = false,
-            bandalartCellData = null,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -177,11 +186,13 @@ class HomeViewModel @Inject constructor(
       val result = createBandalartUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
+          val bandalart = result.getOrNull()!!
           _uiState.value = _uiState.value.copy(
+            isBandalartListBottomSheetOpened = false,
             isLoading = false,
             error = null,
           )
-          // 임시 이벤트 성공 처리
+          getBandalartList(bandalart.key)
           // TODO 표가 뒤집히는 애니메이션 구현
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("새로운 반다라트를 생성했어요."))
         }
@@ -289,6 +300,12 @@ class HomeViewModel @Inject constructor(
       _uiState.value = _uiState.value.copy(
         isBandalartListBottomSheetOpened = state,
       )
+    }
+  }
+
+  fun getRecentBandalartKey() {
+    viewModelScope.launch {
+      val bandalartKey = getRecentBandalartKeyUseCase()
     }
   }
 }
