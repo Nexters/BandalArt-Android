@@ -75,7 +75,7 @@ fun BandalartApp(
           duration = SnackbarDuration.Short,
         ) == SnackbarResult.ActionPerformed
       },
-      startDestination = startDestination
+      startDestination = startDestination,
     )
   }
 }

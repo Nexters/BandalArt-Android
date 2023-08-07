@@ -39,11 +39,11 @@ class MainActivity : ComponentActivity() {
               LoadingWheel(progressColor = MainColor)
             }
             uiState.error != null -> {
-              //TODO ErrorScreen()
+              // TODO ErrorScreen()
             }
             else -> {
               BandalartApp(
-                if (uiState.isLoggedIn) HOME_NAVIGATION_ROUTE else ONBOARDING_NAVIGATION_ROUTE
+                if (uiState.isLoggedIn) HOME_NAVIGATION_ROUTE else ONBOARDING_NAVIGATION_ROUTE,
               )
             }
           }

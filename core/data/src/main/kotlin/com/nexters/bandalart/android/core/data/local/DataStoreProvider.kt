@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 
 internal class DataStoreProvider @Inject constructor(
-  private val dataStore: DataStore<Preferences>
+  private val dataStore: DataStore<Preferences>,
 ) {
 
   companion object {

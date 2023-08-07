@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GuestLoginTokenResponse(
   @SerialName("key")
-  val key: String
+  val key: String,
 )

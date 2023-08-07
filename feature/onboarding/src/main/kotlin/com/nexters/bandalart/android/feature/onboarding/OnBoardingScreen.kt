@@ -41,7 +41,7 @@ internal fun OnBoardingRoute(
   OnBoardingScreen(
     navigateToHome = { options ->
       navigateToHome(options)
-    }
+    },
   )
 }
 
