@@ -3,21 +3,16 @@ package com.nexters.bandalart.android.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartSubCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartTaskCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,8 +30,6 @@ import timber.log.Timber
  * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
  * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
- * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
- * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
  * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
  * @param isBandalartCreated 반다라트 표가 생성됨
  * @param isBandalartDeleted 반다라트 표가 삭제됨
@@ -52,12 +45,9 @@ data class HomeUiState(
   val bandalartList: List<BandalartDetailUiModel> = emptyList(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
-  val isCellUpdated: Boolean = false,
-  val isCellDeleted: Boolean = false,
   val isBandalartCompleted: Boolean = false,
   val isBandalartCreated: Boolean = false,
   val isBandalartDeleted: Boolean = false,
-  val isBandalartCellDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
   val bottomSheetDataChanged: Boolean = false,
@@ -78,9 +68,6 @@ class HomeViewModel @Inject constructor(
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
-  private val updateBandalartSubCellUseCase: UpdateBandalartSubCellUseCase,
-  private val updateBandalartTaskCellUseCase: UpdateBandalartTaskCellUseCase,
-  private val deleteBandalartCellUseCase: DeleteBandalartCellUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -264,85 +251,6 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = exception,
           )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
-        }
-      }
-    }
-  }
-
-  fun updateBandalartSubCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartSubCellModel: UpdateBandalartSubCellModel,
-  ) {
-    viewModelScope.launch {
-      val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          getBandalartMainCell(bandalartKey)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            error = exception,
-          )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
-        }
-      }
-    }
-  }
-
-  fun updateBandalartTaskCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
-  ) {
-    viewModelScope.launch {
-      val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          getBandalartMainCell(bandalartKey)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            error = exception,
-          )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
-        }
-      }
-    }
-  }
-
-  fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    viewModelScope.launch {
-      val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          getBandalartMainCell(bandalartKey)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isBandalartCellDeleted = false,
-            error = exception,
-          )
-          openBandalartDeleteAlertDialog(false)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
