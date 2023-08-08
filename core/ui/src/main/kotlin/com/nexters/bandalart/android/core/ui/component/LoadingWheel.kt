@@ -1,8 +1,6 @@
 package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -15,12 +13,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoadingWheel(
   progressColor: Color,
+  modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = Modifier
-      .fillMaxWidth()
-      .aspectRatio(1f),
-  ) {
+  Box(modifier = modifier) {
     CircularProgressIndicator(
       modifier = Modifier
         .align(Alignment.Center)

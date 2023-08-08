@@ -61,7 +61,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.R
@@ -366,7 +365,7 @@ internal fun HomeScreen(
               )
             }
             Spacer(modifier = Modifier.weight(1f))
-            if (bandalartDetailData.isCompleted) {
+            if (uiState.bandalartDetailData != null && uiState.bandalartDetailData.isCompleted) {
               Box(
                 modifier
                   .clip(RoundedCornerShape(24.dp))
@@ -403,7 +402,12 @@ internal fun HomeScreen(
         }
         when {
           uiState.isLoading -> {
-            LoadingWheel(bandalartDetailData.mainColor.toColor())
+            LoadingWheel(
+              progressColor = bandalartDetailData.mainColor.toColor(),
+              modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
+            )
           }
           uiState.bandalartCellData != null -> {
             BandalartChart(
