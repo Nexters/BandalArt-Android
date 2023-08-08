@@ -341,9 +341,8 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            // TODO 데이터 연동
             FixedSizeText(
-              text = "달성률 (65%)",
+              text = "달성률 (${uiState.bandalartCellData?.completionRatio ?: 0}%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
@@ -396,9 +395,8 @@ internal fun HomeScreen(
             }
           }
           Spacer(modifier = Modifier.height(8.dp))
-          // TODO 데이터 연동
           CompletionRatioProgressBar(
-            completionRatio = 65,
+            completionRatio = uiState.bandalartCellData?.completionRatio ?: 0,
             progressColor = bandalartDetailData.mainColor.toColor(),
           )
           Spacer(modifier = Modifier.height(18.dp))
