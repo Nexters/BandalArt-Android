@@ -3,7 +3,6 @@
 package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -40,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray800
@@ -119,14 +116,6 @@ fun BandalartListBottomSheet(
         ) { index ->
           val bandalartItem = bandalartList[index]
           BandalartItem(
-            modifier = Modifier
-              .fillMaxWidth()
-              .border(
-                width = 1.5.dp,
-                color = Gray100,
-                shape = RoundedCornerShape(12.dp),
-              )
-              .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 12.dp),
             bottomSheetState = bottomSheetState,
             bandalartItem = bandalartItem,
             currentBandalartKey = currentBandalartKey,
