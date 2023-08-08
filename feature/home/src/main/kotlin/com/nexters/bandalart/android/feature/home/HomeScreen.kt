@@ -166,6 +166,7 @@ internal fun HomeScreen(
   val testBandalartKey = "JWjMl"
 
   // TODO 가장 최근에 확인한 반다라트 표의 키를 담아 호출하여 해당 반다라트 표가 열리도록
+  // TODO null 를 파라미터로 넣어줘야 하는 이유 학습
   LaunchedEffect(key1 = Unit) {
     getBandalartList(null)
   }
