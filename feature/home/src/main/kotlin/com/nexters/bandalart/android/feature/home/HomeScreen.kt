@@ -2,6 +2,7 @@
 
 package com.nexters.bandalart.android.feature.home
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,12 +54,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.R
@@ -156,9 +159,7 @@ internal fun HomeScreen(
   )
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
-  // TODO 제거
-  val testBandalartKey = "JWjMl"
-
+  val context = LocalContext.current
   LaunchedEffect(key1 = Unit) {
     getBandalartList()
   }
@@ -429,8 +430,18 @@ internal fun HomeScreen(
           contentAlignment = Alignment.Center,
         ) {
           Button(
-            // 임시로 네비게이션 버튼의 역할을 대신 수행함
-            onClick = { navigateToOnBoarding() },
+            onClick = {
+              val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(
+                  Intent.EXTRA_TEXT,
+                  "제가 세운 반다라트를 구경하러오세요! \n www.naver.com",
+                )
+                type = "text/plain"
+              }
+              val shareIntent = Intent.createChooser(sendIntent, null)
+              context.startActivity(shareIntent)
+            },
             colors = ButtonDefaults.buttonColors(
               containerColor = Gray100,
               contentColor = Gray100,
