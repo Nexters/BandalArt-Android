@@ -17,6 +17,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -96,10 +97,27 @@ class HomeViewModel @Inject constructor(
             bandalartList = bandalartList,
             error = null,
           )
+          // 생성한 반다라트 표를 화면에 띄우는 경우
           if (bandalartKey != null) {
             getBandalartDetail(bandalartKey)
-          } else {
-            getBandalartDetail(bandalartList[0].key)
+          }
+
+          // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생
+          if (bandalartList.isEmpty()) {
+            createBandalart()
+          }
+          // 반다라트 목록지 존재할 경우
+          else {
+            // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
+            val recentBandalartkey = getRecentBandalartKey()
+            // 가장 최근에 확인한 반다라트 표가 존재하는 경우
+            if (bandalartList.any { it.key == recentBandalartkey }) {
+              getBandalartDetail(recentBandalartkey)
+            }
+            // 가장 최근에 확인한 반다라트 표가 존재하지 않을 경우
+            else {
+              getBandalartDetail(bandalartList[0].key)
+            }
           }
         }
         // TODO 해당 케이스의 대한 처리 유무 결정
@@ -192,6 +210,7 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = null,
           )
+          // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
           getBandalartList(bandalart.key)
           // TODO 표가 뒤집히는 애니메이션 구현
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("새로운 반다라트를 생성했어요."))
@@ -304,9 +323,15 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun getRecentBandalartKey() {
+  private suspend fun getRecentBandalartKey(): String {
+    return viewModelScope.async {
+      getRecentBandalartKeyUseCase()
+    }.await()
+  }
+
+  fun setRecentBandalartKey(bandalartKey: String) {
     viewModelScope.launch {
-      val bandalartKey = getRecentBandalartKeyUseCase()
+      setRecentBandalartKeyUseCase(bandalartKey)
     }
   }
 }

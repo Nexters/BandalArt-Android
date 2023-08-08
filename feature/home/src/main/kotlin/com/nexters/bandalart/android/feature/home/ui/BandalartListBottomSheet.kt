@@ -53,6 +53,7 @@ fun BandalartListBottomSheet(
   bandalartList: List<BandalartDetailUiModel>,
   currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
+  setRecentBandalartKey: (String) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
 ) {
@@ -119,8 +120,11 @@ fun BandalartListBottomSheet(
             bottomSheetState = bottomSheetState,
             bandalartItem = bandalartItem,
             currentBandalartKey = currentBandalartKey,
-            // TODO 해당 반다라트의 키를 로컬에 저장하여 다음에 앱에 진입할때 가장 마지막에 열었던 표가 화면에 보여지도록
-            onClick = getBandalartDetail,
+            onClick = { key ->
+              // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
+              setRecentBandalartKey(key)
+              getBandalartDetail(key)
+            },
             onCancelClicked = onCancelClicked,
           )
         }

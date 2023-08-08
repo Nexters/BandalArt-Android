@@ -130,6 +130,7 @@ internal fun HomeRoute(
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
+    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key)}
   )
 }
 
@@ -152,6 +153,7 @@ internal fun HomeScreen(
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
+  setRecentBandalartKey: (String) -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -193,8 +195,9 @@ internal fun HomeScreen(
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
       bandalartList = uiState.bandalartList,
-      getBandalartDetail = getBandalartDetail,
       currentBandalartKey = bandalartDetailData.key,
+      getBandalartDetail = getBandalartDetail,
+      setRecentBandalartKey = setRecentBandalartKey,
       onCancelClicked = { openBandalartListBottomSheet(false) },
       createBandalart = createBandalart,
     )
