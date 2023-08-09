@@ -12,24 +12,24 @@ import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 @Composable
 fun FixedSizeText(
-  modifier: Modifier = Modifier,
   text: String,
+  modifier: Modifier = Modifier,
   color: Color,
-  fontWeight: FontWeight,
   fontSize: TextUnit,
+  fontWeight: FontWeight,
   letterSpacing: TextUnit = TextUnit.Unspecified,
-  lineHeight: TextUnit = TextUnit.Unspecified,
   textAlign: TextAlign? = null,
+  lineHeight: TextUnit = TextUnit.Unspecified,
 ) {
   Text(
-    modifier = modifier,
     text = text,
+    modifier = modifier,
     color = color,
-    fontFamily = pretendard,
-    fontWeight = fontWeight,
     fontSize = fontSize.nonScaleSp,
-    lineHeight = lineHeight,
+    fontWeight = fontWeight,
+    fontFamily = pretendard,
     letterSpacing = letterSpacing.nonScaleSp,
     textAlign = textAlign,
+    lineHeight = lineHeight.nonScaleSp,
   )
 }

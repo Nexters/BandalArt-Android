@@ -36,7 +36,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -81,7 +80,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray500
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -438,13 +436,12 @@ internal fun HomeScreen(
                 painter = image,
                 contentDescription = "Share Icon",
               )
-              Text(
+              FixedSizeText(
                 text = "공유하기",
-                color = Gray900,
-                fontFamily = pretendard,
-                fontWeight = FontWeight.W700,
-                fontSize = 12.sp.nonScaleSp,
                 modifier = Modifier.padding(start = 4.dp),
+                color = Gray900,
+                fontSize = 12.sp.nonScaleSp,
+                fontWeight = FontWeight.W700,
               )
             }
           }
