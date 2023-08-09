@@ -38,6 +38,7 @@ internal fun BandalartDetailResponse.toEntity() =
     cellKey = cellKey,
     dueDate = dueDate,
     isCompleted = isCompleted,
+    completionRatio = completionRatio,
     shareKey = shareKey,
   )
 

@@ -21,6 +21,8 @@ data class BandalartDetailResponse(
   val dueDate: String?,
   @SerialName("isCompleted")
   val isCompleted: Boolean,
+  @SerialName("completionRatio")
+  val completionRatio: Int,
   @SerialName("shareKey")
   val shareKey: String?,
 )

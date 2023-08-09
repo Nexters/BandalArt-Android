@@ -141,10 +141,8 @@ fun BandalartItem(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            // TODO 데이터 연동
             FixedSizeText(
-              text = "달성률 (75%)",
-              // text = "달성률 (${bandalartItem.completionRatio}%)",
+              text = "달성률 (${bandalartItem.completionRatio}%)",
               color = Gray900,
               fontWeight = FontWeight.W600,
               fontSize = 9.sp,
