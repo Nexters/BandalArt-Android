@@ -23,5 +23,6 @@ data class BandalartDetailEntity(
   val cellKey: String,
   val dueDate: String?,
   val isCompleted: Boolean,
+  val completionRatio: Int,
   val shareKey: String?,
 )

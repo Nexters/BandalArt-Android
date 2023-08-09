@@ -37,7 +37,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -70,6 +69,7 @@ import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.extension.toFormatDate
@@ -82,11 +82,11 @@ import com.nexters.bandalart.android.core.ui.theme.Gray500
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BottomSheet
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
@@ -101,7 +101,6 @@ internal fun HomeRoute(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val bandalartDetailData = uiState.bandalartDetailData
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -116,12 +115,12 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    bandalartDetailData = bandalartDetailData ?: BandalartDetailUiModel(),
+    bandalartList = uiState.bandalartList,
+    bandalartDetailData = uiState.bandalartDetailData ?: BandalartDetailUiModel(),
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
-    onShowSnackbar = onShowSnackbar,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
-    getBandalartList = viewModel::getBandalartList,
+    getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
@@ -129,6 +128,9 @@ internal fun HomeRoute(
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { bottomSheetDataChangedState -> viewModel.bottomSheetDataChanged(bottomSheetDataChangedState) },
     bottomSheetMainCellChanged = { bottomSheetMainCellChangedState -> viewModel.bottomSheetMainCellChanged(bottomSheetMainCellChangedState) },
+    openNetworkErrorAlertDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
+    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
+    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
   )
 }
 
@@ -137,12 +139,12 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
+  bandalartList: List<BandalartDetailUiModel>,
   bandalartDetailData: BandalartDetailUiModel,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
-  onShowSnackbar: suspend (String) -> Boolean,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
-  getBandalartList: () -> Unit,
+  getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
@@ -150,6 +152,9 @@ internal fun HomeScreen(
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (bottomSheetDataChangedState: Boolean) -> Unit,
   bottomSheetMainCellChanged: (bottomSheetMainCellChangedState: Boolean) -> Unit,
+  openNetworkErrorAlertDialog: (Boolean) -> Unit,
+  openBandalartListBottomSheet: (Boolean) -> Unit,
+  setRecentBandalartKey: (String) -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -161,8 +166,16 @@ internal fun HomeScreen(
   // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
   var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
   val context = LocalContext.current
+
+  // TODO null 를 파라미터로 넣어줘야 하는 이유 학습
   LaunchedEffect(key1 = Unit) {
-    getBandalartList()
+    getBandalartList(null)
+  }
+
+  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
+    if (bandalartDetailData.isCompleted) {
+      navigateToComplete()
+    }
   }
 
   LaunchedEffect(key1 = uiState.isBottomSheetDataChanged) {
@@ -182,10 +195,15 @@ internal fun HomeScreen(
     }
   }
 
-  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
-    if (bandalartDetailData.isCompleted) {
-      navigateToComplete()
-    }
+  if (uiState.isBandalartListBottomSheetOpened) {
+    BandalartListBottomSheet(
+      bandalartList = uiState.bandalartList,
+      currentBandalartKey = bandalartDetailData.key,
+      getBandalartDetail = getBandalartDetail,
+      setRecentBandalartKey = setRecentBandalartKey,
+      onCancelClicked = { openBandalartListBottomSheet(false) },
+      createBandalart = createBandalart,
+    )
   }
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
@@ -198,6 +216,14 @@ internal fun HomeScreen(
       message = "삭제된 반다라트는 다시 복구할 수 없어요.",
       onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
+    )
+  }
+
+  if (uiState.isNetworkErrorAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n불러오지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorAlertDialog(false) },
     )
   }
 
@@ -215,10 +241,10 @@ internal fun HomeScreen(
           .fillMaxSize()
           .padding(bottom = 32.dp),
       ) {
+        // 어쨌든 누르면 반다라트 목록을 띄우는 것은 동일
         HomeTopBar(
-          // Todo 이것마저도 잠시 막아놓음 !! 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
-          onAddBandalart = {},
-          onShowBandalartList = {},
+          bandalartCount = bandalartList.size,
+          onShowBandalartList = { openBandalartListBottomSheet(true) },
         )
         HorizontalDivider(
           thickness = 1.dp,
@@ -369,7 +395,8 @@ internal fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-              text = "달성률 (${uiState.bandalartCellData?.completionRatio ?: 0}%)",
+//              text = "달성률 (${uiState.bandalartCellData?.completionRatio ?: 0}%)",
+              text = "달성률 (${bandalartDetailData.completionRatio}%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
@@ -400,7 +427,7 @@ internal fun HomeScreen(
                   .background(color = bandalartDetailData.mainColor.toColor()),
               ) {
                 Row(
-                  modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+                  modifier = Modifier.padding(horizontal = 9.dp),
                   verticalAlignment = Alignment.CenterVertically,
                 ) {
                   Icon(
@@ -423,6 +450,7 @@ internal fun HomeScreen(
           }
           Spacer(modifier = Modifier.height(8.dp))
           CompletionRatioProgressBar(
+//            completionRatio = uiState.bandalartDetailData.completionRatio,
             completionRatio = uiState.bandalartCellData?.completionRatio ?: 0,
             progressColor = bandalartDetailData.mainColor.toColor(),
           )
@@ -447,10 +475,6 @@ internal fun HomeScreen(
               bottomSheetMainCellChanged = bottomSheetMainCellChanged,
               bandalartKey = bandalartDetailData.key,
             )
-          }
-          // TODO Network Eroor 상황 처리(다시 시도)
-          uiState.error != null -> {
-            // TODO ErrorAlertDialog 구현
           }
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -486,13 +510,12 @@ internal fun HomeScreen(
                 painter = image,
                 contentDescription = "Share Icon",
               )
-              Text(
+              FixedSizeText(
                 text = "공유하기",
-                color = Gray900,
-                fontFamily = pretendard,
-                fontWeight = FontWeight.W700,
-                fontSize = 12.sp.nonScaleSp,
                 modifier = Modifier.padding(start = 4.dp),
+                color = Gray900,
+                fontSize = 12.sp.nonScaleSp,
+                fontWeight = FontWeight.W700,
               )
             }
           }

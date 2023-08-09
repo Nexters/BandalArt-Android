@@ -35,7 +35,6 @@ import timber.log.Timber
  * @param error 서버와의 통신을 실패
  */
 
-// TODO Token 확인 로직의 위치 결정
 data class BottomSheetUiState(
   val cellData: BandalartCellUiModel = BandalartCellUiModel(),
   val isCellDataCopied: Boolean = false,

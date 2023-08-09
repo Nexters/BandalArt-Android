@@ -10,7 +10,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 
-// TODO 다른 로띠로 변경, 배경을 투명하게 변경
 @Composable
 fun LoadingWheel(modifier: Modifier = Modifier) {
   Box(

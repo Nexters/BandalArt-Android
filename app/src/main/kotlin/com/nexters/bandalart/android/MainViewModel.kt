@@ -18,12 +18,14 @@ import timber.log.Timber
  * MainUiState
  *
  * @param isLoggedIn 로그인 완료
+ * @param isNetworkErrorAlertDialogOpened 네트워크 에러 발생
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param error 서버와의 통신을 실패
  */
 
 data class MainUiState(
   val isLoggedIn: Boolean = false,
+  val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isLoading: Boolean = true,
   val error: Throwable? = null,
 )
@@ -80,6 +82,14 @@ class MainViewModel @Inject constructor(
           isLoading = false,
         )
       }
+    }
+  }
+
+  fun openNetworkErrorAlertDialog(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isNetworkErrorAlertDialogOpened = state,
+      )
     }
   }
 }

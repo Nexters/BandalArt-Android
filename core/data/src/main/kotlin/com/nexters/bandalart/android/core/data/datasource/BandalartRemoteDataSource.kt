@@ -2,12 +2,13 @@ package com.nexters.bandalart.android.core.data.datasource
 
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
 
 interface BandalartRemoteDataSource {
-  suspend fun createBandalart()
+  suspend fun createBandalart(): BandalartResponse?
 
   suspend fun getBandalartList(): List<BandalartDetailResponse>?
 
