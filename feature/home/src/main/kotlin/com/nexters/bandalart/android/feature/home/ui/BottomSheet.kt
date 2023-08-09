@@ -86,6 +86,7 @@ fun BottomSheet(
   cellData: BandalartCellUiModel,
   onResult: (
     bottomSheetState: Boolean,
+    bottomSheetMainCellChangedState: Boolean,
     bottomSheetDataChangedState: Boolean,
   ) -> Unit,
   viewModel: BottomSheetViewModel = hiltViewModel(),
@@ -103,7 +104,7 @@ fun BottomSheet(
       .statusBarsPadding(),
     onDismissRequest = {
       viewModel.bottomSheetClosed()
-      onResult(false, false)
+      onResult(false, false, false)
     },
     sheetState = bottomSheetState,
     dragHandle = null,
@@ -129,7 +130,7 @@ fun BottomSheet(
           }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
               viewModel.bottomSheetClosed()
-              onResult(false, true)
+              onResult(false, isMainCell, true)
             }
           }
         },
@@ -437,7 +438,7 @@ fun BottomSheet(
               }.invokeOnCompletion {
                 if (!bottomSheetState.isVisible) {
                   viewModel.bottomSheetClosed()
-                  onResult(false, true)
+                  onResult(false, isMainCell, true)
                 }
               }
             },
