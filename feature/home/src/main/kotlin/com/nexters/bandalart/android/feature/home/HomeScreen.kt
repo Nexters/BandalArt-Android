@@ -28,8 +28,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -85,9 +83,9 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.ThemeColor
@@ -95,7 +93,6 @@ import com.nexters.bandalart.android.feature.home.ui.ThemeColor
 @Composable
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
-  navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   viewModel: HomeViewModel = hiltViewModel(),
@@ -117,7 +114,6 @@ internal fun HomeRoute(
     uiState = uiState,
     bandalartList = uiState.bandalartList,
     bandalartDetailData = uiState.bandalartDetailData ?: BandalartDetailUiModel(),
-    navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
     getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
@@ -131,6 +127,8 @@ internal fun HomeRoute(
     openNetworkErrorAlertDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
+    shareBandalart = { key: String -> viewModel.shareBandalart(key) },
+    initShareUrl = viewModel::initShareUrl,
   )
 }
 
@@ -141,7 +139,6 @@ internal fun HomeScreen(
   uiState: HomeUiState,
   bandalartList: List<BandalartDetailUiModel>,
   bandalartDetailData: BandalartDetailUiModel,
-  navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   getBandalartList: (String?) -> Unit,
@@ -155,6 +152,8 @@ internal fun HomeScreen(
   openNetworkErrorAlertDialog: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
+  shareBandalart: (String) -> Unit,
+  initShareUrl: () -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -193,6 +192,22 @@ internal fun HomeScreen(
   LaunchedEffect(key1 = uiState.isBandalartDeleted) {
     if (uiState.isBandalartDeleted) {
       openBandalartDeleteAlertDialog(false)
+    }
+  }
+
+  LaunchedEffect(key1 = uiState.shareUrl) {
+    if (uiState.shareUrl.isNotEmpty()) {
+      val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+          Intent.EXTRA_TEXT,
+          "제가 세운 반다라트를 구경하러오세요! \n ${uiState.shareUrl}",
+        )
+        type = "text/plain"
+      }
+      val shareIntent = Intent.createChooser(sendIntent, null)
+      context.startActivity(shareIntent)
+      initShareUrl()
     }
   }
 
@@ -242,7 +257,6 @@ internal fun HomeScreen(
           .fillMaxSize()
           .padding(bottom = 32.dp),
       ) {
-        // 어쨌든 누르면 반다라트 목록을 띄우는 것은 동일
         HomeTopBar(
           bandalartCount = bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
@@ -384,10 +398,6 @@ internal fun HomeScreen(
                   }
                 }
               }
-              // TODO Network Eroor 상황 처리(다시 시도)
-              uiState.error != null -> {
-                // TODO ErrorAlertDialog 구현
-              }
             }
           }
           Spacer(modifier = Modifier.height(24.dp))
@@ -481,44 +491,29 @@ internal fun HomeScreen(
         Spacer(modifier = Modifier.weight(1f))
         Box(
           modifier = Modifier
-            .fillMaxWidth(),
+            .wrapContentSize()
+            .clip(RoundedCornerShape(18.dp))
+            .background(Gray100)
+            .clickable { shareBandalart(bandalartDetailData.key) }
+            .align(Alignment.CenterHorizontally),
           contentAlignment = Alignment.Center,
         ) {
-          Button(
-            onClick = {
-              val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                  Intent.EXTRA_TEXT,
-                  "제가 세운 반다라트를 구경하러오세요! \n www.naver.com",
-                )
-                type = "text/plain"
-              }
-              val shareIntent = Intent.createChooser(sendIntent, null)
-              context.startActivity(shareIntent)
-            },
-            colors = ButtonDefaults.buttonColors(
-              containerColor = Gray100,
-              contentColor = Gray100,
-            ),
-            modifier = Modifier
-              .wrapContentSize()
-              .clip(RoundedCornerShape(18.dp)),
+          Row(
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
           ) {
-            Row {
-              val image = painterResource(id = R.drawable.ic_share)
-              Image(
-                painter = image,
-                contentDescription = "Share Icon",
-              )
-              FixedSizeText(
-                text = "공유하기",
-                modifier = Modifier.padding(start = 4.dp),
-                color = Gray900,
-                fontSize = 12.sp.nonScaleSp,
-                fontWeight = FontWeight.W700,
-              )
-            }
+            val image = painterResource(id = R.drawable.ic_share)
+            Image(
+              painter = image,
+              contentDescription = "Share Icon",
+            )
+            FixedSizeText(
+              text = "공유하기",
+              modifier = Modifier.padding(start = 4.dp),
+              color = Gray900,
+              fontSize = 12.sp.nonScaleSp,
+              fontWeight = FontWeight.W700,
+            )
           }
         }
       }
