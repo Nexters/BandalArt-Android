@@ -9,6 +9,7 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartL
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
@@ -62,6 +63,7 @@ data class HomeUiState(
   val isBottomSheetMainCellChanged: Boolean = false,
   val isLoading: Boolean = false,
   val isShowSkeleton: Boolean = false,
+  val shareUrl: String = "",
   val error: Throwable? = null,
 )
 
@@ -80,6 +82,7 @@ class HomeViewModel @Inject constructor(
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
   private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
   private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
+  private val shareBandalartUseCase: ShareBandalartUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -306,59 +309,45 @@ class HomeViewModel @Inject constructor(
   }
 
   fun openDropDownMenu(state: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isDropDownMenuOpened = state,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isDropDownMenuOpened = state,
+    )
   }
 
   fun openBandalartDeleteAlertDialog(state: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isBandalartDeleteAlertDialogOpened = state,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isBandalartDeleteAlertDialogOpened = state,
+    )
   }
 
   fun bottomSheetDataChanged(isBottomSheetDataChangedState: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isBottomSheetDataChanged = isBottomSheetDataChangedState,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isBottomSheetDataChanged = isBottomSheetDataChangedState,
+    )
   }
 
   fun loadingChanged(isLoadingChanged: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isLoading = isLoadingChanged,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isLoading = isLoadingChanged,
+    )
   }
 
   fun showSkeletonChanged(isShowSkeletonChanged: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isShowSkeleton = isShowSkeletonChanged,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isShowSkeleton = isShowSkeletonChanged,
+    )
   }
 
   fun openNetworkErrorAlertDialog(state: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isNetworkErrorAlertDialogOpened = state,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isNetworkErrorAlertDialogOpened = state,
+    )
   }
 
   fun openBandalartListBottomSheet(state: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isBandalartListBottomSheetOpened = state,
-      )
-    }
+    _uiState.value = _uiState.value.copy(
+      isBandalartListBottomSheetOpened = state,
+    )
   }
 
   private suspend fun getRecentBandalartKey(): String {
@@ -371,5 +360,36 @@ class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       setRecentBandalartKeyUseCase(bandalartKey)
     }
+  }
+
+  fun shareBandalart(bandalartKey: String) {
+    viewModelScope.launch {
+      val result = shareBandalartUseCase(bandalartKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.value = _uiState.value.copy(
+            shareUrl = result.getOrNull()!!.shareUrl,
+            error = null,
+          )
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
+  fun initShareUrl() {
+    _uiState.value = _uiState.value.copy(
+      shareUrl = "",
+    )
   }
 }

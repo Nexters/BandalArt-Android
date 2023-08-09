@@ -7,6 +7,7 @@ import com.nexters.bandalart.android.core.data.mapper.toModel
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -74,5 +75,9 @@ internal class BandalartRepositoryImpl @Inject constructor(
 
   override suspend fun getRecentBandalartKey(): String {
     return recentBandalartKeyDataSource.getRecentBandalartKey()
+  }
+
+  override suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity? {
+    return bandalartRemoteDataSource.shareBandalart(bandalartKey)?.toEntity()
   }
 }
