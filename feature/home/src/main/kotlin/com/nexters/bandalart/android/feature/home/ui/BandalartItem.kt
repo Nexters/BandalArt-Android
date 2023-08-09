@@ -37,6 +37,7 @@ import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.theme.Gray100
+import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.pretendard
@@ -60,19 +61,17 @@ fun BandalartItem(
       .clip(RoundedCornerShape(12.dp))
       .border(
         width = 1.5.dp,
-        color = Gray100,
+        color = if (currentBandalartKey != bandalartItem.key) Gray100 else Gray300,
         shape = RoundedCornerShape(12.dp),
       )
       .clickable {
         if (currentBandalartKey != bandalartItem.key) {
           onClick(bandalartItem.key)
-        } else {
-          scope
-            .launch { bottomSheetState.hide() }
-            .invokeOnCompletion {
-              if (!bottomSheetState.isVisible) onCancelClicked()
-            }
         }
+        scope.launch { bottomSheetState.hide() }
+          .invokeOnCompletion {
+            if (!bottomSheetState.isVisible) onCancelClicked()
+          }
       }
       .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 12.dp),
   ) {
@@ -160,7 +159,7 @@ fun BandalartItem(
         letterSpacing = (-0.32).sp,
       )
     }
-    if (!bandalartItem.isCompleted) {
+    if (currentBandalartKey != bandalartItem.key) {
       Box(modifier = Modifier.align(Alignment.CenterVertically)) {
         Icon(
           imageVector = Icons.Default.ArrowForwardIos,

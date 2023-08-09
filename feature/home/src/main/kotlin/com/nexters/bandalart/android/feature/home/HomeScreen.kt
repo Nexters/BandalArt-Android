@@ -130,7 +130,7 @@ internal fun HomeRoute(
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
-    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key)}
+    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
   )
 }
 
