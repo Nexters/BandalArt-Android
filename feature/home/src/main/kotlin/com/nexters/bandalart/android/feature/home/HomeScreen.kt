@@ -403,7 +403,6 @@ internal fun HomeScreen(
         when {
           uiState.isLoading -> {
             LoadingWheel(
-              progressColor = bandalartDetailData.mainColor.toColor(),
               modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),

@@ -15,7 +15,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
 import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
-import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.ui.BandalartApp
@@ -39,7 +38,6 @@ class MainActivity : ComponentActivity() {
           when {
             uiState.isLoading -> {
               LoadingWheel(
-                progressColor = MainColor,
                 modifier = Modifier
                   .fillMaxWidth()
                   .aspectRatio(1f),
