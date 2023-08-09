@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
@@ -14,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
-import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.ui.BandalartApp
@@ -45,7 +46,11 @@ class MainActivity : ComponentActivity() {
 
           when {
             uiState.isLoading -> {
-              LoadingWheel(progressColor = MainColor)
+              LoadingWheel(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .aspectRatio(1f),
+              )
             }
             else -> {
               BandalartApp(

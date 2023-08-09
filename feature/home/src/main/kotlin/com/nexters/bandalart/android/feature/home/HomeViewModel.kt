@@ -38,10 +38,12 @@ import timber.log.Timber
  * @param isBandalartDeleted 반다라트 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
- * @param bottomSheetDataChanged 바텀시트의 데이터가 변경됨
  * @param isNetworkErrorAlertDialogOpened 네트워크 문제 발생
  * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
- * @param isLoading 서버와의 통신 중 로딩 상태
+ * @param isBottomSheetDataChanged 바텀시트의 데이터가 변경됨
+ * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
+ * @param isTopLoading 상단바가 서버와의 통신 중 로딩 상태
+ * @param isBottomLoading 표가 서버와의 통신 중 로딩 상태
  * @param error 서버와의 통신을 실패
  */
 
@@ -54,10 +56,12 @@ data class HomeUiState(
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
-  val bottomSheetDataChanged: Boolean = false,
   val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isBandalartListBottomSheetOpened: Boolean = false,
-  val isLoading: Boolean = true,
+  val isBottomSheetDataChanged: Boolean = false,
+  val isBottomSheetMainCellChanged: Boolean = false,
+  val isTopLoading: Boolean = true,
+  val isBottomLoading: Boolean = true,
   val error: Throwable? = null,
 )
 
@@ -85,19 +89,24 @@ class HomeViewModel @Inject constructor(
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
   init {
-    _uiState.value = _uiState.value.copy(isLoading = true)
+    _uiState.value = _uiState.value.copy(
+      isTopLoading = true,
+      isBottomLoading = true,
+    )
   }
 
   fun getBandalartList(bandalartKey: String? = null) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
+      _uiState.value = _uiState.value.copy(
+        isTopLoading = true,
+        isBottomLoading = true,
+      )
       val result = getBandalartListUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
           _uiState.value = _uiState.value.copy(
             bandalartList = bandalartList,
-            isLoading = false,
             error = null,
           )
           // 생성한 반다라트 표를 화면에 띄우는 경우
@@ -130,9 +139,10 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
+            isTopLoading = false,
+            isBottomLoading = false,
             bandalartList = emptyList(),
             isNetworkErrorAlertDialogOpened = true,
-            isLoading = false,
             error = exception,
           )
           Timber.e(exception)
@@ -143,7 +153,10 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartDetail(bandalartKey: String) {
     viewModelScope.launch {
-      // _uiState.value = _uiState.value.copy(isLoading = true)
+      _uiState.value = _uiState.value.copy(
+        isTopLoading = if (_uiState.value.isBottomSheetMainCellChanged) true else _uiState.value.isTopLoading,
+        isBottomLoading = true,
+      )
       val result = getBandalartDetailUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -151,7 +164,6 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             bandalartDetailData = bandalartDetailData,
             isBandalartListBottomSheetOpened = false,
-            isLoading = false,
             error = null,
           )
           getBandalartMainCell(bandalartKey)
@@ -162,9 +174,10 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
+            isTopLoading = false,
+            isBottomLoading = false,
             bandalartCellData = null,
             isNetworkErrorAlertDialogOpened = true,
-            isLoading = false,
             error = exception,
           )
           Timber.e(exception)
@@ -179,11 +192,13 @@ class HomeViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
+            isTopLoading = false,
+            isBottomLoading = false,
             bandalartCellData = result.getOrNull()!!.toUiModel(),
-            isLoading = false,
             error = null,
           )
-          bottomSheetDataChanged(false)
+          bottomSheetDataChanged(isBottomSheetDataChangedState = false)
+          bottomSheetMainCellChanged(isBottomSheetMainCellChangedState = false)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -193,7 +208,8 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             bandalartCellData = null,
             isNetworkErrorAlertDialogOpened = true,
-            isLoading = false,
+            isTopLoading = false,
+            isBottomLoading = false,
             error = exception,
           )
           Timber.e(exception)
@@ -204,14 +220,18 @@ class HomeViewModel @Inject constructor(
 
   fun createBandalart() {
     viewModelScope.launch {
-      // _uiState.value = _uiState.value.copy(isLoading = true)
+      _uiState.value = _uiState.value.copy(
+        isTopLoading = true,
+        isBottomLoading = true,
+      )
       val result = createBandalartUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalart = result.getOrNull()!!
           _uiState.value = _uiState.value.copy(
             isBandalartListBottomSheetOpened = false,
-            isLoading = false,
+            isTopLoading = false,
+            isBottomLoading = false,
             error = null,
           )
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
@@ -225,7 +245,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isLoading = false,
+            isTopLoading = false,
+            isBottomLoading = false,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -237,12 +258,16 @@ class HomeViewModel @Inject constructor(
 
   fun deleteBandalart(bandalartKey: String) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
+      _uiState.value = _uiState.value.copy(
+        isTopLoading = true,
+        isBottomLoading = true,
+      )
       val result = deleteBandalartUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
-            isLoading = false,
+            isTopLoading = false,
+            isBottomLoading = false,
             isBandalartDeleted = true,
             error = null,
           )
@@ -256,7 +281,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isLoading = false,
+            isTopLoading = false,
+            isBottomLoading = false,
             isBandalartDeleted = false,
             error = exception,
           )
@@ -274,6 +300,10 @@ class HomeViewModel @Inject constructor(
     updateBandalartMainCellModel: UpdateBandalartMainCellModel,
   ) {
     viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isTopLoading = true,
+        isBottomLoading = true,
+      )
       val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -285,7 +315,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isLoading = false,
+            isTopLoading = false,
+            isBottomLoading = false,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -311,18 +342,26 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun openNetworkErrorAlertDialog(state: Boolean) {
+  fun bottomSheetDataChanged(isBottomSheetDataChangedState: Boolean) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
-        isNetworkErrorAlertDialogOpened = state,
+        isBottomSheetDataChanged = isBottomSheetDataChangedState,
       )
     }
   }
 
-  fun bottomSheetDataChanged(state: Boolean) {
+  fun bottomSheetMainCellChanged(isBottomSheetMainCellChangedState: Boolean) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
-        bottomSheetDataChanged = state,
+        isBottomSheetMainCellChanged = isBottomSheetMainCellChangedState,
+      )
+    }
+  }
+
+  fun openNetworkErrorAlertDialog(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isNetworkErrorAlertDialogOpened = state,
       )
     }
   }
