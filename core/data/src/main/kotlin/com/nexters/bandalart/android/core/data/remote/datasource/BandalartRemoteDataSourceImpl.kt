@@ -6,6 +6,7 @@ import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSou
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.BandalartShareResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
@@ -98,6 +99,12 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
     client.safeRequest {
       delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
+    }
+  }
+
+  override suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse? {
+    return client.safeRequest {
+      post("v1/bandalarts/$bandalartKey/shares").body()
     }
   }
 }

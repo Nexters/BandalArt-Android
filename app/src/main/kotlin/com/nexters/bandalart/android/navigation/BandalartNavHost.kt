@@ -8,7 +8,6 @@ import com.nexters.bandalart.android.feature.complete.navigation.navigateToCompl
 import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.feature.home.navigation.homeScreen
 import com.nexters.bandalart.android.feature.home.navigation.navigateToHome
-import com.nexters.bandalart.android.feature.onboarding.navigation.navigateToOnBoarding
 import com.nexters.bandalart.android.feature.onboarding.navigation.onBoardingScreen
 import com.nexters.bandalart.android.ui.BandalartAppState
 
@@ -29,7 +28,6 @@ fun BandalartNavHost(
       navigateToHome = navController::navigateToHome,
     )
     homeScreen(
-      navigateToOnBoarding = navController::navigateToOnBoarding,
       navigateToComplete = navController::navigateToComplete,
       onShowSnackbar = onShowSnackbar,
     )

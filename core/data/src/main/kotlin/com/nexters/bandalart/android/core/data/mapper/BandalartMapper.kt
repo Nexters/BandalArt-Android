@@ -3,12 +3,14 @@ package com.nexters.bandalart.android.core.data.mapper
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.BandalartShareResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -58,7 +60,7 @@ internal fun BandalartCellResponse.toEntity(): BandalartCellEntity {
   )
 }
 
-internal fun UpdateBandalartMainCellEntity.toModel(): UpdateBandalartMainCellRequest =
+internal fun UpdateBandalartMainCellEntity.toModel() =
   UpdateBandalartMainCellRequest(
     title = title,
     description = description,
@@ -68,17 +70,24 @@ internal fun UpdateBandalartMainCellEntity.toModel(): UpdateBandalartMainCellReq
     subColor = subColor,
   )
 
-internal fun UpdateBandalartSubCellEntity.toModel(): UpdateBandalartSubCellRequest =
+internal fun UpdateBandalartSubCellEntity.toModel() =
   UpdateBandalartSubCellRequest(
     title = title,
     description = description,
     dueDate = dueDate,
   )
 
-internal fun UpdateBandalartTaskCellEntity.toModel(): UpdateBandalartTaskCellRequest =
+internal fun UpdateBandalartTaskCellEntity.toModel() =
   UpdateBandalartTaskCellRequest(
     title = title,
     description = description,
     dueDate = dueDate,
     isCompleted = isCompleted,
+  )
+
+internal fun BandalartShareResponse.toEntity() =
+  BandalartShareEntity(
+    shareUrl = shareUrl,
+    key = key,
+    endDate = endDate,
   )
