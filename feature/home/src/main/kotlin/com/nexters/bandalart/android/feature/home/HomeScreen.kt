@@ -84,6 +84,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BottomSheet
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
@@ -98,7 +99,6 @@ internal fun HomeRoute(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val bandalartDetailData = uiState.bandalartDetailData
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -113,12 +113,12 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    bandalartDetailData = bandalartDetailData ?: BandalartDetailUiModel(),
+    bandalartList = uiState.bandalartList,
+    bandalartDetailData = uiState.bandalartDetailData ?: BandalartDetailUiModel(),
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
-    onShowSnackbar = onShowSnackbar,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
-    getBandalartList = viewModel::getBandalartList,
+    getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
@@ -126,6 +126,8 @@ internal fun HomeRoute(
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     openNetworkErrorAlertDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
+    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
+    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
   )
 }
 
@@ -134,12 +136,12 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
+  bandalartList: List<BandalartDetailUiModel>,
   bandalartDetailData: BandalartDetailUiModel,
   navigateToOnBoarding: () -> Unit,
   navigateToComplete: () -> Unit,
-  onShowSnackbar: suspend (String) -> Boolean,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
-  getBandalartList: () -> Unit,
+  getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
@@ -147,6 +149,8 @@ internal fun HomeScreen(
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   openNetworkErrorAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  openBandalartListBottomSheet: (Boolean) -> Unit,
+  setRecentBandalartKey: (String) -> Unit,
 ) {
   val scrollState = rememberScrollState()
   var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -160,8 +164,15 @@ internal fun HomeScreen(
   // TODO 제거
   val testBandalartKey = "JWjMl"
 
+  // TODO null 를 파라미터로 넣어줘야 하는 이유 학습
   LaunchedEffect(key1 = Unit) {
-    getBandalartList()
+    getBandalartList(null)
+  }
+
+  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
+    if (bandalartDetailData.isCompleted) {
+      navigateToComplete()
+    }
   }
 
   LaunchedEffect(key1 = uiState.bottomSheetDataChanged) {
@@ -177,10 +188,15 @@ internal fun HomeScreen(
     }
   }
 
-  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
-    if (bandalartDetailData.isCompleted) {
-      navigateToComplete()
-    }
+  if (uiState.isBandalartListBottomSheetOpened) {
+    BandalartListBottomSheet(
+      bandalartList = uiState.bandalartList,
+      currentBandalartKey = bandalartDetailData.key,
+      getBandalartDetail = getBandalartDetail,
+      setRecentBandalartKey = setRecentBandalartKey,
+      onCancelClicked = { openBandalartListBottomSheet(false) },
+      createBandalart = createBandalart,
+    )
   }
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
@@ -218,10 +234,10 @@ internal fun HomeScreen(
           .fillMaxSize()
           .padding(bottom = 32.dp),
       ) {
+        // 어쨌든 누르면 반다라트 목록을 띄우는 것은 동일
         HomeTopBar(
-          // Todo 이것마저도 잠시 막아놓음 !! 반다라트 목록 바텀시트가 만들어지기 이전 이므로 추가 버튼을 누르면 반다라트가 생성 되도록 임시 구현
-          onAddBandalart = {},
-          onShowBandalartList = {},
+          bandalartCount = bandalartList.size,
+          onShowBandalartList = { openBandalartListBottomSheet(true) },
         )
         HorizontalDivider(
           thickness = 1.dp,
@@ -335,9 +351,8 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            // TODO 데이터 연동
             FixedSizeText(
-              text = "달성률 (65%)",
+              text = "달성률 (${bandalartDetailData.completionRatio}%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
@@ -368,7 +383,7 @@ internal fun HomeScreen(
                   .background(color = bandalartDetailData.mainColor.toColor()),
               ) {
                 Row(
-                  modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+                  modifier = Modifier.padding(horizontal = 9.dp),
                   verticalAlignment = Alignment.CenterVertically,
                 ) {
                   Icon(
@@ -390,9 +405,8 @@ internal fun HomeScreen(
             }
           }
           Spacer(modifier = Modifier.height(8.dp))
-          // TODO 데이터 연동
           CompletionRatioProgressBar(
-            completionRatio = 65,
+            completionRatio = bandalartDetailData.completionRatio,
             progressColor = bandalartDetailData.mainColor.toColor(),
           )
           Spacer(modifier = Modifier.height(18.dp))

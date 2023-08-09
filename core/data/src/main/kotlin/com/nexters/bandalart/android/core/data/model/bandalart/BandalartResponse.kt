@@ -4,7 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BandalartDetailResponse(
+data class BandalartResponse(
+  @SerialName("id")
+  val id: String,
   @SerialName("key")
   val key: String,
   @SerialName("mainColor")
@@ -13,16 +15,16 @@ data class BandalartDetailResponse(
   val subColor: String,
   @SerialName("profileEmoji")
   val profileEmoji: String?,
-  @SerialName("title")
-  val title: String?,
-  @SerialName("cellKey")
-  val cellKey: String,
-  @SerialName("dueDate")
-  val dueDate: String?,
-  @SerialName("isCompleted")
-  val isCompleted: Boolean,
-  @SerialName("completionRatio")
-  val completionRatio: Int,
-  @SerialName("shareKey")
-  val shareKey: String?,
+  @SerialName("cellId")
+  val cellId: Int,
+  @SerialName("shareId")
+  val shareId: String?,
+  @SerialName("userId")
+  val userId: Int,
+  @SerialName("createdAt")
+  val createdAt: String,
+  @SerialName("updatedAt")
+  val updatedAt: String,
+  @SerialName("deletedAt")
+  val deletedAt: String?,
 )

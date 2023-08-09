@@ -21,6 +21,7 @@ internal fun BandalartDetailEntity.toUiModel() =
     title = title,
     dueDate = dueDate,
     isCompleted = isCompleted,
+    completionRatio = completionRatio,
     shareKey = shareKey,
   )
 

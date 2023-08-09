@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.core.domain.repository
 
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -12,7 +13,7 @@ interface BandalartRepository {
   /**
    * 반다라트 생성
    */
-  suspend fun createBandalart()
+  suspend fun createBandalart(): BandalartEntity?
 
   /**
    * 반다라트 목록 조회
@@ -25,12 +26,6 @@ interface BandalartRepository {
    * @param bandalartKey 메인 셀 고유 키
    */
   suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailEntity?
-
-  /**
-   * 반다라트 수정
-   *
-   * @param bandalartKey 메인 셀 고유 키
-   */
 
   /**
    * 반다라트 삭제

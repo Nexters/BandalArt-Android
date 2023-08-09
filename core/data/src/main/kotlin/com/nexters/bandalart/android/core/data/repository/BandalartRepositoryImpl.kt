@@ -6,6 +6,7 @@ import com.nexters.bandalart.android.core.data.mapper.toEntity
 import com.nexters.bandalart.android.core.data.mapper.toModel
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -16,8 +17,8 @@ internal class BandalartRepositoryImpl @Inject constructor(
   private val bandalartRemoteDataSource: BandalartRemoteDataSource,
   private val recentBandalartKeyDataSource: RecentBandalartKeyDataSource,
 ) : BandalartRepository {
-  override suspend fun createBandalart() {
-    bandalartRemoteDataSource.createBandalart()
+  override suspend fun createBandalart(): BandalartEntity? {
+    return bandalartRemoteDataSource.createBandalart()?.toEntity()
   }
 
   override suspend fun getBandalartList(): List<BandalartDetailEntity>? {

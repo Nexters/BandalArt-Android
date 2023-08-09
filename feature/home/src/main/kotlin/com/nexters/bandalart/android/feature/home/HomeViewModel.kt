@@ -7,6 +7,8 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
@@ -15,6 +17,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -35,8 +38,9 @@ import timber.log.Timber
  * @param isBandalartDeleted 반다라트 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
- * @param isNetworkErrorAlertDialogOpened 네트워크 문제 발생
  * @param bottomSheetDataChanged 바텀시트의 데이터가 변경됨
+ * @param isNetworkErrorAlertDialogOpened 네트워크 문제 발생
+ * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param error 서버와의 통신을 실패
  */
@@ -52,6 +56,7 @@ data class HomeUiState(
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
   val bottomSheetDataChanged: Boolean = false,
   val isNetworkErrorAlertDialogOpened: Boolean = false,
+  val isBandalartListBottomSheetOpened: Boolean = false,
   val isLoading: Boolean = true,
   val error: Throwable? = null,
 )
@@ -69,6 +74,8 @@ class HomeViewModel @Inject constructor(
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
+  private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
+  private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -80,7 +87,8 @@ class HomeViewModel @Inject constructor(
   init {
     _uiState.value = _uiState.value.copy(isLoading = true)
   }
-  fun getBandalartList() {
+
+  fun getBandalartList(bandalartKey: String? = null) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
       val result = getBandalartListUseCase()
@@ -92,7 +100,28 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             error = null,
           )
-          getBandalartDetail(bandalartList[0].key)
+          // 생성한 반다라트 표를 화면에 띄우는 경우
+          if (bandalartKey != null) {
+            getBandalartDetail(bandalartKey)
+          }
+
+          // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생
+          if (bandalartList.isEmpty()) {
+            createBandalart()
+          }
+          // 반다라트 목록지 존재할 경우
+          else {
+            // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
+            val recentBandalartkey = getRecentBandalartKey()
+            // 가장 최근에 확인한 반다라트 표가 존재하는 경우
+            if (bandalartList.any { it.key == recentBandalartkey }) {
+              getBandalartDetail(recentBandalartkey)
+            }
+            // 가장 최근에 확인한 반다라트 표가 존재하지 않을 경우
+            else {
+              getBandalartDetail(bandalartList[0].key)
+            }
+          }
         }
         // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
@@ -121,6 +150,7 @@ class HomeViewModel @Inject constructor(
           val bandalartDetailData = result.getOrNull()!!.toUiModel()
           _uiState.value = _uiState.value.copy(
             bandalartDetailData = bandalartDetailData,
+            isBandalartListBottomSheetOpened = false,
             isLoading = false,
             error = null,
           )
@@ -174,15 +204,18 @@ class HomeViewModel @Inject constructor(
 
   fun createBandalart() {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
+      // _uiState.value = _uiState.value.copy(isLoading = true)
       val result = createBandalartUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
+          val bandalart = result.getOrNull()!!
           _uiState.value = _uiState.value.copy(
+            isBandalartListBottomSheetOpened = false,
             isLoading = false,
             error = null,
           )
-          // 임시 이벤트 성공 처리
+          // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
+          getBandalartList(bandalart.key)
           // TODO 표가 뒤집히는 애니메이션 구현
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("새로운 반다라트를 생성했어요."))
         }
@@ -214,6 +247,7 @@ class HomeViewModel @Inject constructor(
             error = null,
           )
           openBandalartDeleteAlertDialog(false)
+          getBandalartList()
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트가 삭제되었어요."))
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -290,6 +324,26 @@ class HomeViewModel @Inject constructor(
       _uiState.value = _uiState.value.copy(
         bottomSheetDataChanged = state,
       )
+    }
+  }
+
+  fun openBandalartListBottomSheet(state: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isBandalartListBottomSheetOpened = state,
+      )
+    }
+  }
+
+  private suspend fun getRecentBandalartKey(): String {
+    return viewModelScope.async {
+      getRecentBandalartKeyUseCase()
+    }.await()
+  }
+
+  fun setRecentBandalartKey(bandalartKey: String) {
+    viewModelScope.launch {
+      setRecentBandalartKeyUseCase(bandalartKey)
     }
   }
 }
