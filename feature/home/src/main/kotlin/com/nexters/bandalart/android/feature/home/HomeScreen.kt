@@ -86,7 +86,6 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellM
 import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar

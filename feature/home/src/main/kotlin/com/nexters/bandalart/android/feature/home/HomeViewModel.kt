@@ -45,6 +45,7 @@ import timber.log.Timber
  * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
+ * @param shareUrl 공유 링크
  * @param error 서버와의 통신을 실패
  */
 
@@ -308,6 +309,31 @@ class HomeViewModel @Inject constructor(
     }
   }
 
+  fun shareBandalart(bandalartKey: String) {
+    viewModelScope.launch {
+      val result = shareBandalartUseCase(bandalartKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.value = _uiState.value.copy(
+            shareUrl = result.getOrNull()!!.shareUrl,
+            error = null,
+          )
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
+          Timber.e(exception)
+        }
+      }
+    }
+  }
+
   fun openDropDownMenu(state: Boolean) {
     _uiState.value = _uiState.value.copy(
       isDropDownMenuOpened = state,
@@ -361,32 +387,6 @@ class HomeViewModel @Inject constructor(
       setRecentBandalartKeyUseCase(bandalartKey)
     }
   }
-
-  fun shareBandalart(bandalartKey: String) {
-    viewModelScope.launch {
-      val result = shareBandalartUseCase(bandalartKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.value = _uiState.value.copy(
-            shareUrl = result.getOrNull()!!.shareUrl,
-            error = null,
-          )
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            error = exception,
-          )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
-        }
-      }
-    }
-  }
-
   fun initShareUrl() {
     _uiState.value = _uiState.value.copy(
       shareUrl = "",

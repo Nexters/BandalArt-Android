@@ -154,10 +154,12 @@ fun BandalartSkeletonScreen(
           }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        CompletionRatioProgressBar(
-          completionRatio = 80,
-          progressColor = Gray300,
-        )
+        Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+          CompletionRatioProgressBar(
+            completionRatio = 99,
+            progressColor = Gray300,
+          )
+        }
         Spacer(modifier = Modifier.height(18.dp))
         BandalartSkeletonChart(brush = brush)
       }
