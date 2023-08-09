@@ -155,7 +155,7 @@ fun BandalartSkeletonScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
         CompletionRatioProgressBar(
-          completionRatio = 70,
+          completionRatio = 80,
           progressColor = Gray300,
         )
         Spacer(modifier = Modifier.height(18.dp))

@@ -2,8 +2,13 @@ package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -14,6 +19,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.ui.theme.Black
+import com.nexters.bandalart.android.core.ui.theme.White
 
 @Composable
 fun LoadingWheel(modifier: Modifier = Modifier) {
@@ -35,11 +41,23 @@ fun LoadingWheel(modifier: Modifier = Modifier) {
         .background(Black.copy(alpha = 0.5f)),
       contentAlignment = Alignment.Center,
     ) {
-      LottieAnimation(
-        modifier = Modifier.height(60.dp),
-        composition = composition,
-        progress = { progress },
-      )
+      Card(
+        modifier = Modifier
+          .height(75.dp)
+          .aspectRatio(1f)
+          .align(Alignment.Center),
+        shape = RoundedCornerShape(90.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(White),
+      ) {
+        LottieAnimation(
+          modifier = Modifier
+            .fillMaxSize()
+            .padding(5.dp),
+          composition = composition,
+          progress = { progress },
+        )
+      }
     }
   }
 }
