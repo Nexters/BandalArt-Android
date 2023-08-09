@@ -23,6 +23,4 @@ data class BandalartDetailResponse(
   val isCompleted: Boolean,
   @SerialName("completionRatio")
   val completionRatio: Int,
-  @SerialName("shareKey")
-  val shareKey: String?,
 )

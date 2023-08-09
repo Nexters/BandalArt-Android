@@ -22,7 +22,6 @@ internal fun BandalartDetailEntity.toUiModel() =
     dueDate = dueDate,
     isCompleted = isCompleted,
     completionRatio = completionRatio,
-    shareKey = shareKey,
   )
 
 // 재귀 호출시 컴파일러가 타입을 추론할 수 없기 때문에 예외적으로 반환타입을 지정
