@@ -42,8 +42,8 @@ import timber.log.Timber
  * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
  * @param isBottomSheetDataChanged 바텀시트의 데이터가 변경됨
  * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
- * @param isTopLoading 상단바가 서버와의 통신 중 로딩 상태
- * @param isBottomLoading 표가 서버와의 통신 중 로딩 상태
+ * @param isLoading 서버와의 통신 중 로딩 상태
+ * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
  * @param error 서버와의 통신을 실패
  */
 
@@ -60,8 +60,8 @@ data class HomeUiState(
   val isBandalartListBottomSheetOpened: Boolean = false,
   val isBottomSheetDataChanged: Boolean = false,
   val isBottomSheetMainCellChanged: Boolean = false,
-  val isTopLoading: Boolean = true,
-  val isBottomLoading: Boolean = true,
+  val isLoading: Boolean = false,
+  val isShowSkeleton: Boolean = false,
   val error: Throwable? = null,
 )
 
@@ -90,17 +90,12 @@ class HomeViewModel @Inject constructor(
 
   init {
     _uiState.value = _uiState.value.copy(
-      isTopLoading = true,
-      isBottomLoading = true,
+      isShowSkeleton = true,
     )
   }
 
   fun getBandalartList(bandalartKey: String? = null) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isTopLoading = true,
-        isBottomLoading = true,
-      )
       val result = getBandalartListUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -111,6 +106,7 @@ class HomeViewModel @Inject constructor(
           )
           // 생성한 반다라트 표를 화면에 띄우는 경우
           if (bandalartKey != null) {
+            _uiState.value = _uiState.value.copy(isShowSkeleton = true)
             getBandalartDetail(bandalartKey)
           }
 
@@ -128,6 +124,7 @@ class HomeViewModel @Inject constructor(
             }
             // 가장 최근에 확인한 반다라트 표가 존재하지 않을 경우
             else {
+              _uiState.value = _uiState.value.copy(isShowSkeleton = true)
               getBandalartDetail(bandalartList[0].key)
             }
           }
@@ -139,8 +136,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             bandalartList = emptyList(),
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
@@ -153,10 +150,6 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartDetail(bandalartKey: String) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isTopLoading = if (_uiState.value.isBottomSheetMainCellChanged) true else _uiState.value.isTopLoading,
-        isBottomLoading = true,
-      )
       val result = getBandalartDetailUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -174,8 +167,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             bandalartCellData = null,
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
@@ -192,13 +185,12 @@ class HomeViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             bandalartCellData = result.getOrNull()!!.toUiModel(),
             error = null,
           )
           bottomSheetDataChanged(isBottomSheetDataChangedState = false)
-          bottomSheetMainCellChanged(isBottomSheetMainCellChangedState = false)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -208,8 +200,8 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             bandalartCellData = null,
             isNetworkErrorAlertDialogOpened = true,
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             error = exception,
           )
           Timber.e(exception)
@@ -220,18 +212,13 @@ class HomeViewModel @Inject constructor(
 
   fun createBandalart() {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isTopLoading = true,
-        isBottomLoading = true,
-      )
+      _uiState.value = _uiState.value.copy(isShowSkeleton = true)
       val result = createBandalartUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalart = result.getOrNull()!!
           _uiState.value = _uiState.value.copy(
             isBandalartListBottomSheetOpened = false,
-            isTopLoading = false,
-            isBottomLoading = false,
             error = null,
           )
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
@@ -245,8 +232,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -258,16 +245,11 @@ class HomeViewModel @Inject constructor(
 
   fun deleteBandalart(bandalartKey: String) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isTopLoading = true,
-        isBottomLoading = true,
-      )
+      _uiState.value = _uiState.value.copy(isShowSkeleton = true)
       val result = deleteBandalartUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
             isBandalartDeleted = true,
             error = null,
           )
@@ -281,8 +263,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             isBandalartDeleted = false,
             error = exception,
           )
@@ -300,10 +282,7 @@ class HomeViewModel @Inject constructor(
     updateBandalartMainCellModel: UpdateBandalartMainCellModel,
   ) {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isTopLoading = true,
-        isBottomLoading = true,
-      )
+      _uiState.value = _uiState.value.copy(isLoading = true)
       val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -315,8 +294,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
-            isTopLoading = false,
-            isBottomLoading = false,
+            isLoading = false,
+            isShowSkeleton = false,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
@@ -350,10 +329,18 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun bottomSheetMainCellChanged(isBottomSheetMainCellChangedState: Boolean) {
+  fun loadingChanged(isLoadingChanged: Boolean) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
-        isBottomSheetMainCellChanged = isBottomSheetMainCellChangedState,
+        isLoading = isLoadingChanged,
+      )
+    }
+  }
+
+  fun showSkeletonChanged(isShowSkeletonChanged: Boolean) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(
+        isShowSkeleton = isShowSkeletonChanged,
       )
     }
   }
