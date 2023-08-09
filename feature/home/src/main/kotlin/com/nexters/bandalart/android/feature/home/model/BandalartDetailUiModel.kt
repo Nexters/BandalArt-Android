@@ -10,5 +10,4 @@ data class BandalartDetailUiModel(
   val dueDate: String? = "",
   val isCompleted: Boolean = false,
   val completionRatio: Int = 0,
-  val shareKey: String? = "",
 )
