@@ -22,7 +22,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -40,7 +39,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import kotlinx.coroutines.launch
 
@@ -68,12 +66,13 @@ fun BandalartItem(
         if (currentBandalartKey != bandalartItem.key) {
           onClick(bandalartItem.key)
         }
-        scope.launch { bottomSheetState.hide() }
+        scope
+          .launch { bottomSheetState.hide() }
           .invokeOnCompletion {
             if (!bottomSheetState.isVisible) onCancelClicked()
           }
       }
-      .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 12.dp),
+      .padding(horizontal = 16.dp, vertical = 12.dp),
   ) {
     Box(modifier = Modifier.align(Alignment.CenterVertically)) {
       Card(shape = RoundedCornerShape(16.dp)) {
@@ -111,7 +110,7 @@ fun BandalartItem(
             .background(color = bandalartItem.mainColor.toColor()),
         ) {
           Row(
-            modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+            modifier = Modifier.padding(horizontal = 9.dp),
             verticalAlignment = Alignment.CenterVertically,
           ) {
             Icon(
@@ -150,10 +149,9 @@ fun BandalartItem(
           }
         }
       }
-      Text(
+      FixedSizeText(
         text = bandalartItem.title ?: "",
         color = Gray900,
-        fontFamily = pretendard,
         fontWeight = FontWeight.W700,
         fontSize = 16.sp,
         letterSpacing = (-0.32).sp,

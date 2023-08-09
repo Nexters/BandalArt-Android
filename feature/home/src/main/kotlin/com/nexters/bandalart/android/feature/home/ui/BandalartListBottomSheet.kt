@@ -26,7 +26,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray200
@@ -43,7 +43,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray800
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import kotlinx.coroutines.launch
 
@@ -79,13 +78,12 @@ fun BandalartListBottomSheet(
           .fillMaxWidth()
           .padding(horizontal = 16.dp),
       ) {
-        Text(
+        FixedSizeText(
           text = "반다라트 목록",
           modifier = modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
           color = Gray900,
           fontSize = 16.sp.nonScaleSp,
-          fontFamily = pretendard,
           fontWeight = FontWeight.W700,
         )
         IconButton(
@@ -147,7 +145,7 @@ fun BandalartListBottomSheet(
               modifier = Modifier.size(20.dp),
             )
             Spacer(modifier = Modifier.padding(start = 4.dp))
-            Text(
+            FixedSizeText(
               text = "반다라트 추가",
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,

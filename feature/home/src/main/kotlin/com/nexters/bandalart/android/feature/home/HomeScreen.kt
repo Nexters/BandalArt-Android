@@ -100,8 +100,6 @@ internal fun HomeRoute(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val bandalartList = uiState.bandalartList
-  val bandalartDetailData = uiState.bandalartDetailData
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -116,8 +114,8 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    bandalartList = bandalartList,
-    bandalartDetailData = bandalartDetailData ?: BandalartDetailUiModel(),
+    bandalartList = uiState.bandalartList,
+    bandalartDetailData = uiState.bandalartDetailData ?: BandalartDetailUiModel(),
     navigateToOnBoarding = navigateToOnBoarding,
     navigateToComplete = navigateToComplete,
     onShowSnackbar = onShowSnackbar,
@@ -378,7 +376,7 @@ internal fun HomeScreen(
                   .background(color = bandalartDetailData.mainColor.toColor()),
               ) {
                 Row(
-                  modifier = Modifier.padding(start = 9.dp, end = 9.dp),
+                  modifier = Modifier.padding(horizontal = 9.dp),
                   verticalAlignment = Alignment.CenterVertically,
                 ) {
                   Icon(
