@@ -500,7 +500,7 @@ internal fun HomeScreen(
         ) {
           Row(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
           ) {
             val image = painterResource(id = R.drawable.ic_share)
             Image(

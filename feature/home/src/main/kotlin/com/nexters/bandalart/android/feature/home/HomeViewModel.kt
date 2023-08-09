@@ -404,7 +404,7 @@ class HomeViewModel @Inject constructor(
 
   fun initShareUrl() {
     _uiState.value = _uiState.value.copy(
-      shareUrl = ""
+      shareUrl = "",
     )
   }
 }

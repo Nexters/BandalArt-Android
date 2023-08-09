@@ -1,6 +1,5 @@
 package com.nexters.bandalart.android.core.domain.entity
 
-
 /**
  * 반다라트 공유
  *
