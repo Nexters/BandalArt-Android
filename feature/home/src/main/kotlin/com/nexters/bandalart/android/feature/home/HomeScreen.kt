@@ -87,7 +87,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BottomSheet
+import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.ThemeColor
@@ -126,8 +126,8 @@ internal fun HomeRoute(
     deleteBandalart = viewModel::deleteBandalart,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
-    bottomSheetDataChanged = { bottomSheetDataChangedState -> viewModel.bottomSheetDataChanged(bottomSheetDataChangedState) },
-    bottomSheetMainCellChanged = { bottomSheetMainCellChangedState -> viewModel.bottomSheetMainCellChanged(bottomSheetMainCellChangedState) },
+    bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
+    bottomSheetMainCellChanged = { state -> viewModel.bottomSheetMainCellChanged(state) },
     openNetworkErrorAlertDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
@@ -150,8 +150,8 @@ internal fun HomeScreen(
   deleteBandalart: (String) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
-  bottomSheetDataChanged: (bottomSheetDataChangedState: Boolean) -> Unit,
-  bottomSheetMainCellChanged: (bottomSheetMainCellChangedState: Boolean) -> Unit,
+  bottomSheetDataChanged: (Boolean) -> Unit,
+  bottomSheetMainCellChanged: (Boolean) -> Unit,
   openNetworkErrorAlertDialog: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
@@ -185,7 +185,8 @@ internal fun HomeScreen(
 //      } else {
 //        getBandalartMainCell(uiState.bandalartList[0].key)
 //      }
-      getBandalartDetail(uiState.bandalartList[0].key)
+//      getBandalartDetail(uiState.bandalartList[0].key)
+      getBandalartList(null)
     }
   }
 
@@ -351,7 +352,7 @@ internal fun HomeScreen(
                         .clickable { openBottomSheet = !openBottomSheet },
                     )
                     if (openBottomSheet) {
-                      BottomSheet(
+                      BandalartBottomSheet(
                         bandalartKey = bandalartDetailData.key,
                         isSubCell = false,
                         isMainCell = true,
@@ -539,8 +540,8 @@ private fun BandalartChart(
   bandalartChartData: BandalartCellUiModel,
   themeColor: ThemeColor,
   bandalartKey: String,
-  bottomSheetDataChanged: (bottomSheetDataChangedState: Boolean) -> Unit,
-  bottomSheetMainCellChanged: (bottomSheetMainCellChangedState: Boolean) -> Unit,
+  bottomSheetDataChanged: (Boolean) -> Unit,
+  bottomSheetMainCellChanged: (Boolean) -> Unit,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -635,8 +636,8 @@ fun CellGrid(
   subCell: SubCell,
   themeColor: ThemeColor,
   bandalartKey: String,
-  bottomSheetDataChanged: (bottomSheetDataChangedState: Boolean) -> Unit,
-  bottomSheetMainCellChanged: (bottomSheetMainCellChangedState: Boolean) -> Unit,
+  bottomSheetDataChanged: (Boolean) -> Unit,
+  bottomSheetMainCellChanged: (Boolean) -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -689,8 +690,8 @@ fun Cell(
   cellInfo: CellInfo = CellInfo(),
   cellData: BandalartCellUiModel,
   bandalartKey: String,
-  bottomSheetDataChanged: (bottomSheetDataChangedState: Boolean) -> Unit,
-  bottomSheetMainCellChanged: (bottomSheetMainCellChangedState: Boolean) -> Unit,
+  bottomSheetDataChanged: (Boolean) -> Unit,
+  bottomSheetMainCellChanged: (Boolean) -> Unit,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
@@ -824,7 +825,7 @@ fun Cell(
       }
     }
     if (openBottomSheet) {
-      BottomSheet(
+      BandalartBottomSheet(
         bandalartKey = bandalartKey,
         isSubCell = cellInfo.isSubCell,
         isMainCell = isMainCell,

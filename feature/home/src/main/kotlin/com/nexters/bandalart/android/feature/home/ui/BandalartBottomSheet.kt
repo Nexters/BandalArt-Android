@@ -78,7 +78,7 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellM
 import kotlinx.coroutines.launch
 
 @Composable
-fun BottomSheet(
+fun BandalartBottomSheet(
   bandalartKey: String,
   isSubCell: Boolean,
   isMainCell: Boolean,
