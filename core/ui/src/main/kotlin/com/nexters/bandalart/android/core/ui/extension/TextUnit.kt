@@ -7,4 +7,5 @@ import androidx.compose.ui.unit.sp
 
 val TextUnit.nonScaleSp
   @Composable
-  get() = (this.value / LocalDensity.current.fontScale).sp
+  get() = if (this == TextUnit.Unspecified) this
+  else (this.value / LocalDensity.current.fontScale).sp
