@@ -36,7 +36,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -68,6 +67,7 @@ import com.nexters.bandalart.android.core.ui.component.CellText
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.extension.toFormatDate
@@ -80,7 +80,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray500
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -125,6 +124,7 @@ internal fun HomeRoute(
     deleteBandalart = viewModel::deleteBandalart,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
+    openNetworkErrorAlertDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
   )
 }
@@ -145,6 +145,7 @@ internal fun HomeScreen(
   deleteBandalart: (String) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
 ) {
   val scrollState = rememberScrollState()
@@ -192,6 +193,14 @@ internal fun HomeScreen(
       message = "삭제된 반다라트는 다시 복구할 수 없어요.",
       onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
+    )
+  }
+
+  if (uiState.isNetworkErrorAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n불러오지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorAlertDialog(false) },
     )
   }
 
@@ -403,10 +412,6 @@ internal fun HomeScreen(
               bandalartKey = bandalartDetailData.key,
             )
           }
-          // TODO Network Eroor 상황 처리(다시 시도)
-          uiState.error != null -> {
-            // TODO ErrorAlertDialog 구현
-          }
         }
         Spacer(modifier = Modifier.weight(1f))
         Box(
@@ -431,13 +436,12 @@ internal fun HomeScreen(
                 painter = image,
                 contentDescription = "Share Icon",
               )
-              Text(
+              FixedSizeText(
                 text = "공유하기",
-                color = Gray900,
-                fontFamily = pretendard,
-                fontWeight = FontWeight.W700,
-                fontSize = 12.sp.nonScaleSp,
                 modifier = Modifier.padding(start = 4.dp),
+                color = Gray900,
+                fontSize = 12.sp.nonScaleSp,
+                fontWeight = FontWeight.W700,
               )
             }
           }

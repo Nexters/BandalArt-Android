@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
 import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
@@ -34,12 +35,17 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background,
         ) {
+          if (uiState.isNetworkErrorAlertDialogOpened) {
+            NetworkErrorAlertDialog(
+              title = "네트워크 문제로 표를\n불러오지 못했어요",
+              message = "다시 시도해주시기 바랍니다.",
+              onConfirmClick = { viewModel.openNetworkErrorAlertDialog(false) },
+            )
+          }
+
           when {
             uiState.isLoading -> {
               LoadingWheel(progressColor = MainColor)
-            }
-            uiState.error != null -> {
-              // TODO ErrorScreen()
             }
             else -> {
               BandalartApp(

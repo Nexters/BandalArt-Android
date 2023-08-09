@@ -1,5 +1,6 @@
 package com.nexters.bandalart.android.core.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-// TODO 다른 로띠로 변경, 배경을 투명하게 변경
+// TODO 다른 로띠로 변경
 @Composable
 fun LoadingWheel(
   progressColor: Color,
@@ -19,7 +20,8 @@ fun LoadingWheel(
   Box(
     modifier = Modifier
       .fillMaxWidth()
-      .aspectRatio(1f),
+      .aspectRatio(1f)
+      .background(Color.Transparent),
   ) {
     CircularProgressIndicator(
       modifier = Modifier
