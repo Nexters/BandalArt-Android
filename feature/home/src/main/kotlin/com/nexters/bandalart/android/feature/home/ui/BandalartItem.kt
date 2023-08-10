@@ -47,7 +47,7 @@ fun BandalartItem(
   modifier: Modifier = Modifier,
   bottomSheetState: SheetState,
   bandalartItem: BandalartDetailUiModel,
-  currentBandalartKey: String,
+  currentBandalartKey: String? = null,
   onClick: (String) -> Unit,
   onCancelClicked: () -> Unit,
 ) {

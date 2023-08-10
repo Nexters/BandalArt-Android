@@ -50,7 +50,7 @@ import kotlinx.coroutines.launch
 fun BandalartListBottomSheet(
   modifier: Modifier = Modifier,
   bandalartList: List<BandalartDetailUiModel>,
-  currentBandalartKey: String,
+  currentBandalartKey: String? = null,
   getBandalartDetail: (String) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,

@@ -80,7 +80,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
@@ -112,8 +111,6 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    bandalartList = uiState.bandalartList,
-    bandalartDetailData = uiState.bandalartDetailData ?: BandalartDetailUiModel(),
     navigateToComplete = navigateToComplete,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
     getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
@@ -123,12 +120,6 @@ internal fun HomeRoute(
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
-    openNetworkErrorGetBandalartAlertDialog = { state -> viewModel.openNetworkErrorGetBandalartAlertDialog(state) },
-    openLimitCreateBandalartAlertDialog = { state -> viewModel.openLimitCreateBandalartAlertDialog(state) },
-    openNetworkErrorCreateBandalartAlertDialog = { state -> viewModel.openNetworkErrorCreateBandalartAlertDialog(state) },
-    openNetworkErrorDeleteBandalartAlertDialog = { state -> viewModel.openNetworkErrorDeleteBandalartAlertDialog(state) },
-    openNetworkErrorUpdateBandalartAlertDialog = { state -> viewModel.openNetworkErrorUpdateBandalartAlertDialog(state) },
-    openNetworkErrorShareBandalartAlertDialog = { state -> viewModel.openNetworkErrorShareBandalartAlertDialog(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     loadingChanged = { state -> viewModel.loadingChanged(state) },
     showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
@@ -143,8 +134,6 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
-  bandalartList: List<BandalartDetailUiModel>,
-  bandalartDetailData: BandalartDetailUiModel,
   navigateToComplete: () -> Unit,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   getBandalartList: (String?) -> Unit,
@@ -154,12 +143,6 @@ internal fun HomeScreen(
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
-  openNetworkErrorGetBandalartAlertDialog: (Boolean) -> Unit,
-  openLimitCreateBandalartAlertDialog: (Boolean) -> Unit,
-  openNetworkErrorCreateBandalartAlertDialog: (Boolean) -> Unit,
-  openNetworkErrorDeleteBandalartAlertDialog: (Boolean) -> Unit,
-  openNetworkErrorUpdateBandalartAlertDialog: (Boolean) -> Unit,
-  openNetworkErrorShareBandalartAlertDialog: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
   loadingChanged: (Boolean) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
@@ -181,8 +164,8 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
-    if (bandalartDetailData.isCompleted) {
+  LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
+    if (uiState.bandalartDetailData?.isCompleted == true) {
       navigateToComplete()
     }
   }
@@ -206,7 +189,7 @@ internal fun HomeScreen(
         action = Intent.ACTION_SEND
         putExtra(
           Intent.EXTRA_TEXT,
-          "제가 세운 반다라트를 구경하러오세요! \n ${uiState.shareUrl}",
+          "제가 만든 반다라트를 구경하러오세요! \n ${uiState.shareUrl}",
         )
         type = "text/plain"
       }
@@ -219,7 +202,7 @@ internal fun HomeScreen(
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
       bandalartList = uiState.bandalartList,
-      currentBandalartKey = bandalartDetailData.key,
+      currentBandalartKey = uiState.bandalartDetailData?.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
       showSkeletonChanged = showSkeletonChanged,
@@ -230,64 +213,25 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
     BandalartDeleteAlertDialog(
-      title = if (bandalartDetailData.title.isNullOrEmpty()) {
+      title = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) {
         "지금 작성중인\n반다라트를 삭제하시겠어요?"
       } else {
-        "'${bandalartDetailData.title}'\n반다라트를 삭제하시겠어요?"
+        "'${uiState.bandalartDetailData?.title}'\n반다라트를 삭제하시겠어요?"
       },
       message = "삭제된 반다라트는 다시 복구할 수 없어요.",
-      onDeleteClicked = { deleteBandalart(bandalartDetailData.key) },
+      onDeleteClicked = { uiState.bandalartDetailData?.let { deleteBandalart(it.key) } },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
     )
   }
 
-  if (uiState.isNetworkErrorCreateBandalartAlertDialogOpened) {
-    NetworkErrorAlertDialog(
-      title = "네트워크 문제로 표를\n생성하지 못했어요",
-      message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { openNetworkErrorCreateBandalartAlertDialog(false) },
-    )
-  }
-
-  if (uiState.isLimitCreateBandalartAlertDialogOpened) {
-    NetworkErrorAlertDialog(
-      title = "제한된 횟수로 인해 표를\n생성하지 못했어요",
-      message = "최대 생성 가능 개수는 2개입니다.",
-      onConfirmClick = { openLimitCreateBandalartAlertDialog(false) },
-    )
-  }
-
-  if (uiState.isNetworkErrorGetBandalartAlertDialogOpened) {
+  if (uiState.isNetworkErrorAlertDialogOpened) {
     NetworkErrorAlertDialog(
       title = "네트워크 문제로 표를\n불러오지 못했어요",
       message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { openNetworkErrorGetBandalartAlertDialog(false) },
+      onConfirmClick = { getBandalartList(null) },
     )
   }
 
-  if (uiState.isNetworkErrorDeleteBandalartAlertDialogOpened) {
-    NetworkErrorAlertDialog(
-      title = "네트워크 문제로 표를\n삭제하지 못했어요",
-      message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { openNetworkErrorDeleteBandalartAlertDialog(false) },
-    )
-  }
-
-  if (uiState.isNetworkErrorUpdateBandalartAlertDialogOpened) {
-    NetworkErrorAlertDialog(
-      title = "네트워크 문제로 표를\n수정하지 못했어요",
-      message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { openNetworkErrorUpdateBandalartAlertDialog(false) },
-    )
-  }
-
-  if (uiState.isNetworkErrorShareBandalartAlertDialogOpened) {
-    NetworkErrorAlertDialog(
-      title = "네트워크 문제로 공유 링크를\n불러오지 못했어요",
-      message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { openNetworkErrorShareBandalartAlertDialog(false) },
-    )
-  }
   Surface(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
@@ -300,7 +244,7 @@ internal fun HomeScreen(
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
-          bandalartCount = bandalartList.size,
+          bandalartCount = uiState.bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
         )
         HorizontalDivider(
@@ -325,7 +269,7 @@ internal fun HomeScreen(
                     .clickable { openEmojiBottomSheet = !openEmojiBottomSheet },
                   contentAlignment = Alignment.Center,
                 ) {
-                  if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+                  if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
                     val image = painterResource(id = R.drawable.ic_empty_emoji)
                     Image(
                       painter = image,
@@ -333,7 +277,7 @@ internal fun HomeScreen(
                     )
                   } else {
                     EmojiText(
-                      emojiText = bandalartDetailData.profileEmoji,
+                      emojiText = uiState.bandalartDetailData?.profileEmoji,
                       fontSize = 22.sp,
                     )
                   }
@@ -349,7 +293,7 @@ internal fun HomeScreen(
                       onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
                         openEmojiBottomSheet = openEmojiBottomSheetResult
                         updateBandalartMainCell(
-                          bandalartDetailData.key,
+                          uiState.bandalartDetailData!!.key,
                           uiState.bandalartCellData!!.key,
                           UpdateBandalartMainCellModel(
                             title = uiState.bandalartCellData.title ?: "",
@@ -368,7 +312,7 @@ internal fun HomeScreen(
                   )
                 }
               }
-              if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+              if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
                 val image = painterResource(id = R.drawable.ic_edit)
                 Image(
                   painter = image,
@@ -387,8 +331,8 @@ internal fun HomeScreen(
             ) {
               var openBottomSheet by rememberSaveable { mutableStateOf(false) }
               FixedSizeText(
-                text = bandalartDetailData.title ?: "메인 목표를 입력해주세요",
-                color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
+                text = uiState.bandalartDetailData?.title ?: "메인 목표를 입력해주세요",
+                color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
                 fontWeight = FontWeight.W700,
                 fontSize = 20.sp,
                 letterSpacing = (-0.4).sp,
@@ -397,17 +341,19 @@ internal fun HomeScreen(
                   .clickable { openBottomSheet = !openBottomSheet },
               )
               if (openBottomSheet) {
-                BandalartBottomSheet(
-                  bandalartKey = bandalartDetailData.key,
-                  isSubCell = false,
-                  isMainCell = true,
-                  isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
-                  cellData = uiState.bandalartCellData,
-                  onResult = { bottomSheetState, bottomSheetDataChangedState ->
-                    openBottomSheet = bottomSheetState
-                    bottomSheetDataChanged(bottomSheetDataChangedState)
-                  },
-                )
+                uiState.bandalartDetailData?.let {
+                  BandalartBottomSheet(
+                    bandalartKey = it.key,
+                    isSubCell = false,
+                    isMainCell = true,
+                    isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
+                    cellData = uiState.bandalartCellData,
+                    onResult = { bottomSheetState, bottomSheetDataChangedState ->
+                      openBottomSheet = bottomSheetState
+                      bottomSheetDataChanged(bottomSheetDataChangedState)
+                    },
+                  )
+                }
               }
               val image = painterResource(id = R.drawable.ic_option)
               Image(
@@ -433,13 +379,13 @@ internal fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-              text = "달성률 (${bandalartDetailData.completionRatio}%)",
+              text = "달성률 (${uiState.bandalartDetailData?.completionRatio ?: 0}%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
               letterSpacing = (-0.24).sp,
             )
-            if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
+            if (!uiState.bandalartDetailData?.dueDate.isNullOrEmpty()) {
               VerticalDivider(
                 modifier = Modifier
                   .height(8.dp)
@@ -447,21 +393,23 @@ internal fun HomeScreen(
                 thickness = 1.dp,
                 color = Gray300,
               )
-              FixedSizeText(
-                text = bandalartDetailData.dueDate.toFormatDate(),
-                color = Gray600,
-                fontWeight = FontWeight.W500,
-                fontSize = 12.sp,
-                letterSpacing = (-0.24).sp,
-                modifier = Modifier.padding(start = 6.dp),
-              )
+              uiState.bandalartDetailData?.dueDate?.let {
+                FixedSizeText(
+                  text = it.toFormatDate(),
+                  color = Gray600,
+                  fontWeight = FontWeight.W500,
+                  fontSize = 12.sp,
+                  letterSpacing = (-0.24).sp,
+                  modifier = Modifier.padding(start = 6.dp),
+                )
+              }
             }
             Spacer(modifier = Modifier.weight(1f))
             if (uiState.bandalartDetailData != null && uiState.bandalartDetailData.isCompleted) {
               Box(
                 modifier
                   .clip(RoundedCornerShape(24.dp))
-                  .background(color = bandalartDetailData.mainColor.toColor()),
+                  .background(color = uiState.bandalartDetailData.mainColor.toColor()),
               ) {
                 Row(
                   modifier = Modifier.padding(horizontal = 9.dp),
@@ -488,21 +436,23 @@ internal fun HomeScreen(
           Spacer(modifier = Modifier.height(8.dp))
           CompletionRatioProgressBar(
             completionRatio = uiState.bandalartCellData?.completionRatio ?: 0,
-            progressColor = bandalartDetailData.mainColor.toColor(),
+            progressColor = (uiState.bandalartDetailData?.mainColor ?: "#3FFFBA").toColor(),
           )
           Spacer(modifier = Modifier.height(18.dp))
         }
         when {
           uiState.bandalartCellData != null -> {
-            BandalartChart(
-              bandalartChartData = uiState.bandalartCellData,
-              themeColor = ThemeColor(
-                mainColor = bandalartDetailData.mainColor,
-                subColor = bandalartDetailData.subColor,
-              ),
-              bottomSheetDataChanged = bottomSheetDataChanged,
-              bandalartKey = bandalartDetailData.key,
-            )
+            uiState.bandalartDetailData?.let {
+              BandalartChart(
+                bandalartChartData = uiState.bandalartCellData,
+                themeColor = ThemeColor(
+                  mainColor = uiState.bandalartDetailData.mainColor,
+                  subColor = uiState.bandalartDetailData.subColor,
+                ),
+                bottomSheetDataChanged = bottomSheetDataChanged,
+                bandalartKey = it.key,
+              )
+            }
           }
         }
         Spacer(modifier = Modifier.height(64.dp))
@@ -512,7 +462,7 @@ internal fun HomeScreen(
             .wrapContentSize()
             .clip(RoundedCornerShape(18.dp))
             .background(Gray100)
-            .clickable { shareBandalart(bandalartDetailData.key) }
+            .clickable { uiState.bandalartDetailData?.let { shareBandalart(it.key) } }
             .align(Alignment.CenterHorizontally),
           contentAlignment = Alignment.Center,
         ) {
