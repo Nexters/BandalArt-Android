@@ -71,7 +71,6 @@ sealed class HomeUiEvent {
   data class ShowSnackbar(val message: String) : HomeUiEvent()
 }
 
-@Suppress("unused")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getBandalartListUseCase: GetBandalartListUseCase,
@@ -90,13 +89,6 @@ class HomeViewModel @Inject constructor(
 
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
-
-  init {
-    _uiState.value = _uiState.value.copy(
-      isTopLoading = true,
-      isBottomLoading = true,
-    )
-  }
 
   fun getBandalartList(bandalartKey: String? = null) {
     viewModelScope.launch {

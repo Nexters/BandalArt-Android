@@ -3,7 +3,6 @@
 
   <style name="Theme.Bandalart.Splash" parent="Theme.SplashScreen">
     <item name="windowSplashScreenBackground">#FFFFFF</item>
-    <!--    스플래시 아이콘은 여기에 추가 해주면 됨-->
     <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
     <item name="postSplashScreenTheme">@style/Theme.Bandalart</item>
   </style>
