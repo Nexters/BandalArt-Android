@@ -71,7 +71,6 @@ sealed class HomeUiEvent {
   data class ShowSnackbar(val message: String) : HomeUiEvent()
 }
 
-@Suppress("unused")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getBandalartListUseCase: GetBandalartListUseCase,
