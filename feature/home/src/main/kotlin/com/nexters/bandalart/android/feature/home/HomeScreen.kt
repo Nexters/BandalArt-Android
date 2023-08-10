@@ -189,15 +189,17 @@ internal fun HomeScreen(
   }
 
   if (uiState.isBandalartListBottomSheetOpened) {
-    BandalartListBottomSheet(
-      bandalartList = uiState.bandalartList,
-      currentBandalartKey = uiState.bandalartDetailData?.key,
-      getBandalartDetail = getBandalartDetail,
-      setRecentBandalartKey = setRecentBandalartKey,
-      showSkeletonChanged = showSkeletonChanged,
-      onCancelClicked = { openBandalartListBottomSheet(false) },
-      createBandalart = createBandalart,
-    )
+    uiState.bandalartDetailData?.key?.let {
+      BandalartListBottomSheet(
+        bandalartList = uiState.bandalartList,
+        currentBandalartKey = it,
+        getBandalartDetail = getBandalartDetail,
+        setRecentBandalartKey = setRecentBandalartKey,
+        showSkeletonChanged = showSkeletonChanged,
+        onCancelClicked = { openBandalartListBottomSheet(false) },
+        createBandalart = createBandalart,
+      )
+    }
   }
 
   if (uiState.isEmojiBottomSheetOpened) {
