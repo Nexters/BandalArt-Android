@@ -28,11 +28,18 @@ fun BandalartNavHost(
       navigateToHome = navController::navigateToHome,
     )
     homeScreen(
-      navigateToComplete = navController::navigateToComplete,
+      navigateToComplete = { key, title, emoji ->
+        navController.navigateToComplete(
+          bandalartKey = key,
+          bandalartTitle = title,
+          bandalartProfileEmoji = emoji
+        )
+      },
       onShowSnackbar = onShowSnackbar,
     )
     completeScreen(
       onNavigateBack = navController::popBackStack,
+      onShowSnackbar = onShowSnackbar,
     )
   }
 }

@@ -93,7 +93,7 @@ import com.nexters.bandalart.android.feature.home.ui.ThemeColor
 @Composable
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
-  navigateToComplete: () -> Unit,
+  navigateToComplete: (String, String, String) -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -114,7 +114,7 @@ internal fun HomeRoute(
     uiState = uiState,
     bandalartList = uiState.bandalartList,
     bandalartDetailData = uiState.bandalartDetailData ?: BandalartDetailUiModel(),
-    navigateToComplete = navigateToComplete,
+    navigateToComplete = { key: String, title: String, emoji: String -> navigateToComplete(key, title, emoji) },
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
     getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
@@ -145,7 +145,7 @@ internal fun HomeScreen(
   uiState: HomeUiState,
   bandalartList: List<BandalartDetailUiModel>,
   bandalartDetailData: BandalartDetailUiModel,
-  navigateToComplete: () -> Unit,
+  navigateToComplete: (String, String, String) -> Unit,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
@@ -181,9 +181,14 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
+  // TODO 다시 돌아올 수 있도록, 매번 목표 달성 화면으로 이동하지 않도록
   LaunchedEffect(key1 = bandalartDetailData.isCompleted) {
     if (bandalartDetailData.isCompleted) {
-      navigateToComplete()
+      navigateToComplete(
+        bandalartDetailData.key,
+        bandalartDetailData.title!!,
+        bandalartDetailData.profileEmoji ?: ""
+      )
     }
   }
 
@@ -302,6 +307,13 @@ internal fun HomeScreen(
         HomeTopBar(
           bandalartCount = bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
+          onLogoClicked = {
+            navigateToComplete(
+              bandalartDetailData.key,
+              bandalartDetailData.title!!,
+              bandalartDetailData.profileEmoji ?: "",
+            )
+          },
         )
         HorizontalDivider(
           thickness = 1.dp,
