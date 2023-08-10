@@ -39,6 +39,7 @@ import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
+import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -201,7 +202,7 @@ fun BandalartSkeletonChart(
           modifier
             .layoutId("Sub ${index + 1}")
             .clip(RoundedCornerShape(12.dp))
-            .background(color = Gray100),
+            .background(color = Gray400),
           content = {
             SkeletonCellGrid(
               rows = subCellList[index].rowCnt,

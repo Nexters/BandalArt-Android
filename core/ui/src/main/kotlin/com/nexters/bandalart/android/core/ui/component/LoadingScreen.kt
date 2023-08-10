@@ -22,7 +22,7 @@ import com.nexters.bandalart.android.core.ui.theme.Black
 import com.nexters.bandalart.android.core.ui.theme.White
 
 @Composable
-fun LoadingWheel(modifier: Modifier = Modifier) {
+fun LoadingScreen(modifier: Modifier = Modifier) {
   Box(
     modifier = modifier,
     contentAlignment = Alignment.Center,
