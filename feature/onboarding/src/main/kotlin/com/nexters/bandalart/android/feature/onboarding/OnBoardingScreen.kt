@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -144,8 +143,7 @@ internal fun OnBoardingScreen(
                 text = "시작하기",
                 modifier = Modifier
                   .align(Alignment.BottomCenter)
-                  // .padding(bottom = 32.dp)
-                  .offset(y = (-32).dp),
+                  .padding(bottom = 32.dp),
               )
             }
           }
