@@ -2,6 +2,7 @@
 
 plugins {
   bandalart("android-library")
+  bandalart("android-hilt")
 }
 
 android {
@@ -24,6 +25,8 @@ dependencies {
     libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
     libs.lottie.compose,
+    libs.timber,
     libs.bundles.androidx.compose,
+    libs.bundles.androidx.lifecycle,
   )
 }
