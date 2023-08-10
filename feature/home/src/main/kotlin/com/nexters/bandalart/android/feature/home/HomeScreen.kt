@@ -6,8 +6,6 @@ import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +23,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -293,14 +292,11 @@ internal fun HomeScreen(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
   ) {
-    Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .scrollable(scrollState, Orientation.Vertical),
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
       Column(
         modifier = Modifier
           .fillMaxSize()
+          .verticalScroll(scrollState)
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
@@ -509,6 +505,7 @@ internal fun HomeScreen(
             )
           }
         }
+        Spacer(modifier = Modifier.height(64.dp))
         Spacer(modifier = Modifier.weight(1f))
         Box(
           modifier = Modifier

@@ -47,9 +47,6 @@ class MainViewModel @Inject constructor(
 
   private fun getGuestLoginToken() {
     viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isLoading = true,
-      )
       val guestLoginToken = getGuestLoginTokenUseCase()
       Timber.d(guestLoginToken)
       if (guestLoginToken.isEmpty()) {
