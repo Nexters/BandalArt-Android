@@ -391,7 +391,6 @@ internal fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-//              text = "달성률 (${uiState.bandalartCellData?.completionRatio ?: 0}%)",
               text = "달성률 (${bandalartDetailData.completionRatio}%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
@@ -446,7 +445,6 @@ internal fun HomeScreen(
           }
           Spacer(modifier = Modifier.height(8.dp))
           CompletionRatioProgressBar(
-//            completionRatio = uiState.bandalartDetailData.completionRatio,
             completionRatio = uiState.bandalartCellData?.completionRatio ?: 0,
             progressColor = bandalartDetailData.mainColor.toColor(),
           )
@@ -674,8 +672,8 @@ fun Cell(
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val backgroundColor = when {
     isMainCell -> themeColor.mainColor.toColor()
-    cellInfo.isSubCell and cellData.isCompleted -> Gray900.copy(alpha = 0.6f)
-    cellInfo.isSubCell and !cellData.isCompleted -> Gray900
+    cellInfo.isSubCell and cellData.isCompleted -> themeColor.subColor.toColor().copy(alpha = 0.6f)
+    cellInfo.isSubCell and !cellData.isCompleted -> themeColor.subColor.toColor()
     cellData.isCompleted -> Gray200
     else -> White
   }
@@ -695,7 +693,7 @@ fun Cell(
   ) {
     // 메인 목표
     if (isMainCell) {
-      val cellTextColor = if (cellData.mainColor == "#4E3FFF") White else Gray900
+      val cellTextColor = themeColor.subColor.toColor()
       // 메인 목표가 빈 경우
       if (cellData.title.isNullOrEmpty()) {
         Box(contentAlignment = Alignment.Center) {
