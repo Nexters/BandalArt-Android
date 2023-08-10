@@ -246,9 +246,7 @@ internal fun HomeScreen(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
   ) {
-    Box(
-      modifier = Modifier.fillMaxSize()
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
       Column(
         modifier = Modifier
           .fillMaxSize()
