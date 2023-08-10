@@ -2,6 +2,7 @@
 
 package com.nexters.bandalart.android.feature.home.ui
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -45,6 +46,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -70,6 +72,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.feature.home.BottomSheetUiEvent
 import com.nexters.bandalart.android.feature.home.BottomSheetViewModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -96,6 +99,7 @@ fun BandalartBottomSheet(
   }
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val context = LocalContext.current
 
   ModalBottomSheet(
     modifier = Modifier
@@ -108,6 +112,26 @@ fun BandalartBottomSheet(
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
+    LaunchedEffect(key1 = uiState.isCellUpdated) {
+      if (uiState.isCellUpdated) {
+        scope.launch {
+          bottomSheetState.hide()
+          viewModel.bottomSheetClosed()
+          onResult(false, true)
+        }
+      }
+    }
+
+    LaunchedEffect(viewModel) {
+      viewModel.eventFlow.collect { event ->
+        when (event) {
+          is BottomSheetUiEvent.ShowSnackbar -> {
+            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+          }
+        }
+      }
+    }
+
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
         title = "해당 셀을 삭제하시겠어요?",
@@ -396,49 +420,40 @@ fun BandalartBottomSheet(
             modifier = Modifier.weight(1f),
             isBlankCell = uiState.cellData.title.isNullOrEmpty(),
             onClick = {
-              scope.launch {
-                if (isMainCell) {
-                  viewModel.updateBandalartMainCell(
-                    bandalartKey = bandalartKey,
-                    cellKey = cellData.key,
-                    updateBandalartMainCellModel = UpdateBandalartMainCellModel(
-                      title = uiState.cellData.title ?: "",
-                      description = uiState.cellData.description,
-                      dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                      profileEmoji = uiState.cellData.profileEmoji,
-                      mainColor = uiState.cellData.mainColor ?: "#3FFFBA",
-                      subColor = uiState.cellData.subColor ?: "#111827",
-                    ),
-                  )
-                } else if (isSubCell) {
-                  viewModel.updateBandalartSubCell(
-                    bandalartKey = bandalartKey,
-                    cellKey = cellData.key,
-                    updateBandalartSubCellModel = UpdateBandalartSubCellModel(
-                      title = uiState.cellData.title,
-                      description = uiState.cellData.description,
-                      dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                    ),
-                  )
-                } else {
-                  viewModel.updateBandalartTaskCell(
-                    bandalartKey = bandalartKey,
-                    cellKey = cellData.key,
-                    updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
-                      title = uiState.cellData.title.toString(),
-                      description = uiState.cellData.description,
-                      dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                      isCompleted = uiState.cellData.isCompleted,
-                    ),
-                  )
-                }
-                // Todo 실패 처리해줘야함
-                bottomSheetState.hide()
-              }.invokeOnCompletion {
-                if (!bottomSheetState.isVisible) {
-                  viewModel.bottomSheetClosed()
-                  onResult(false, true)
-                }
+              if (isMainCell) {
+                viewModel.updateBandalartMainCell(
+                  bandalartKey = bandalartKey,
+                  cellKey = cellData.key,
+                  updateBandalartMainCellModel = UpdateBandalartMainCellModel(
+                    title = uiState.cellData.title ?: "",
+                    description = uiState.cellData.description,
+                    dueDate = uiState.cellData.dueDate?.ifEmpty { null },
+                    profileEmoji = uiState.cellData.profileEmoji,
+                    mainColor = uiState.cellData.mainColor ?: "#3FFFBA",
+                    subColor = uiState.cellData.subColor ?: "#111827",
+                  ),
+                )
+              } else if (isSubCell) {
+                viewModel.updateBandalartSubCell(
+                  bandalartKey = bandalartKey,
+                  cellKey = cellData.key,
+                  updateBandalartSubCellModel = UpdateBandalartSubCellModel(
+                    title = uiState.cellData.title,
+                    description = uiState.cellData.description,
+                    dueDate = uiState.cellData.dueDate?.ifEmpty { null },
+                  ),
+                )
+              } else {
+                viewModel.updateBandalartTaskCell(
+                  bandalartKey = bandalartKey,
+                  cellKey = cellData.key,
+                  updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
+                    title = uiState.cellData.title.toString(),
+                    description = uiState.cellData.description,
+                    dueDate = uiState.cellData.dueDate?.ifEmpty { null },
+                    isCompleted = uiState.cellData.isCompleted,
+                  ),
+                )
               }
             },
           )

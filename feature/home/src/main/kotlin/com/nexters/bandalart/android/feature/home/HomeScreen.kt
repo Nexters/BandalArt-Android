@@ -124,7 +124,12 @@ internal fun HomeRoute(
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
-    openNetworkErrorAlertDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
+    openNetworkErrorGetBandalartAlertDialog = { state -> viewModel.openNetworkErrorGetBandalartAlertDialog(state) },
+    openLimitCreateBandalartAlertDialog = { state -> viewModel.openLimitCreateBandalartAlertDialog(state) },
+    openNetworkErrorCreateBandalartAlertDialog = { state -> viewModel.openNetworkErrorCreateBandalartAlertDialog(state) },
+    openNetworkErrorDeleteBandalartAlertDialog = { state -> viewModel.openNetworkErrorDeleteBandalartAlertDialog(state) },
+    openNetworkErrorUpdateBandalartAlertDialog = { state -> viewModel.openNetworkErrorUpdateBandalartAlertDialog(state) },
+    openNetworkErrorShareBandalartAlertDialog = { state -> viewModel.openNetworkErrorShareBandalartAlertDialog(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     loadingChanged = { state -> viewModel.loadingChanged(state) },
     showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
@@ -150,7 +155,12 @@ internal fun HomeScreen(
   openDropDownMenu: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
-  openNetworkErrorAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorGetBandalartAlertDialog: (Boolean) -> Unit,
+  openLimitCreateBandalartAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorCreateBandalartAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorDeleteBandalartAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorUpdateBandalartAlertDialog: (Boolean) -> Unit,
+  openNetworkErrorShareBandalartAlertDialog: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
   loadingChanged: (Boolean) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
@@ -165,8 +175,6 @@ internal fun HomeScreen(
   val emojiPickerState = rememberModalBottomSheetState(
     skipPartiallyExpanded = emojiSkipPartiallyExpanded,
   )
-  // TODO 데이터 연동(BandalartDetail 에 emoji 데이터가 추가된 이후에)
-  var currentEmoji by remember { mutableStateOf(bandalartDetailData.profileEmoji) }
   val context = LocalContext.current
 
   // TODO null 를 파라미터로 넣어줘야 하는 이유 학습
@@ -234,14 +242,53 @@ internal fun HomeScreen(
     )
   }
 
-  if (uiState.isNetworkErrorAlertDialogOpened) {
+  if (uiState.isNetworkErrorCreateBandalartAlertDialogOpened) {
     NetworkErrorAlertDialog(
-      title = "네트워크 문제로 표를\n불러오지 못했어요",
+      title = "네트워크 문제로 표를\n생성하지 못했어요",
       message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { openNetworkErrorAlertDialog(false) },
+      onConfirmClick = { openNetworkErrorCreateBandalartAlertDialog(false) },
     )
   }
 
+  if (uiState.isLimitCreateBandalartAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "제한된 횟수로 인해 표를\n생성하지 못했어요",
+      message = "최대 생성 가능 개수는 2개입니다.",
+      onConfirmClick = { openLimitCreateBandalartAlertDialog(false) },
+    )
+  }
+
+  if (uiState.isNetworkErrorGetBandalartAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n불러오지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorGetBandalartAlertDialog(false) },
+    )
+  }
+
+  if (uiState.isNetworkErrorDeleteBandalartAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n삭제하지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorDeleteBandalartAlertDialog(false) },
+    )
+  }
+
+  if (uiState.isNetworkErrorUpdateBandalartAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n수정하지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorUpdateBandalartAlertDialog(false) },
+    )
+  }
+
+  if (uiState.isNetworkErrorShareBandalartAlertDialogOpened) {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 공유 링크를\n불러오지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = { openNetworkErrorShareBandalartAlertDialog(false) },
+    )
+  }
   Surface(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
@@ -301,10 +348,9 @@ internal fun HomeScreen(
                     onDismissRequest = { openEmojiBottomSheet = !openEmojiBottomSheet },
                     sheetState = emojiPickerState,
                     content = BandalartEmojiPicker(
-                      currentEmoji = bandalartDetailData.profileEmoji,
+                      currentEmoji = uiState.bandalartCellData?.profileEmoji,
                       isBottomSheet = true,
                       onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
-                        currentEmoji = currentEmojiResult
                         openEmojiBottomSheet = openEmojiBottomSheetResult
                         updateBandalartMainCell(
                           bandalartDetailData.key,
@@ -313,7 +359,7 @@ internal fun HomeScreen(
                             title = uiState.bandalartCellData.title ?: "",
                             description = uiState.bandalartCellData.description,
                             dueDate = uiState.bandalartCellData.dueDate,
-                            profileEmoji = currentEmoji,
+                            profileEmoji = currentEmojiResult,
                             mainColor = uiState.bandalartCellData.mainColor!!,
                             subColor = uiState.bandalartCellData.subColor!!,
                           ),
@@ -492,12 +538,12 @@ internal fun HomeScreen(
           }
         }
       }
-      if (uiState.isShowSkeleton) {
-        BandalartSkeleton()
-      }
       when {
         uiState.isLoading -> {
           LoadingScreen()
+        }
+        uiState.isShowSkeleton -> {
+          BandalartSkeleton()
         }
       }
     }
