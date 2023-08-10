@@ -17,7 +17,7 @@ fun NavController.navigateToComplete(
   navOptions: NavOptions? = null,
   bandalartKey: String,
   bandalartTitle: String,
-  bandalartProfileEmoji: String,
+  bandalartProfileEmoji: String?,
 ) {
   this.navigate("complete_route/$bandalartKey/$bandalartTitle/$bandalartProfileEmoji", navOptions)
 }

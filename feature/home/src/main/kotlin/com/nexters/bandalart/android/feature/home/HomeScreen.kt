@@ -187,7 +187,7 @@ internal fun HomeScreen(
       navigateToComplete(
         bandalartDetailData.key,
         bandalartDetailData.title!!,
-        bandalartDetailData.profileEmoji ?: "",
+        if (bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else bandalartDetailData.profileEmoji,
       )
     }
   }
@@ -308,12 +308,14 @@ internal fun HomeScreen(
           bandalartCount = bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
           onLogoClicked = {
-            navigateToComplete(
-              bandalartDetailData.key,
-              bandalartDetailData.title!!,
-              bandalartDetailData.profileEmoji ?: "",
-            )
-          },
+            if (bandalartDetailData.title != null) {
+              navigateToComplete(
+                bandalartDetailData.key,
+                bandalartDetailData.title,
+                if (bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else bandalartDetailData.profileEmoji,
+              )
+            }
+          }
         )
         HorizontalDivider(
           thickness = 1.dp,

@@ -171,7 +171,7 @@ internal fun CompleteScreen(
                     .background(Gray100),
                   contentAlignment = Alignment.Center,
                 ) {
-                  if (uiState.profileEmoji.isNullOrEmpty()) {
+                  if (uiState.profileEmoji == "default emoji") {
                     val image = painterResource(id = R.drawable.ic_empty_emoji)
                     Image(
                       painter = image,
