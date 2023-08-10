@@ -82,7 +82,9 @@ class BottomSheetViewModel @Inject constructor(
     viewModelScope.launch {
       val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
       when {
-        result.isSuccess && result.getOrNull() != null -> { }
+        result.isSuccess && result.getOrNull() != null -> {
+          _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
+        }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
@@ -104,7 +106,9 @@ class BottomSheetViewModel @Inject constructor(
     viewModelScope.launch {
       val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
       when {
-        result.isSuccess && result.getOrNull() != null -> { }
+        result.isSuccess && result.getOrNull() != null -> {
+          _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
+        }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
@@ -126,7 +130,9 @@ class BottomSheetViewModel @Inject constructor(
     viewModelScope.launch {
       val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
       when {
-        result.isSuccess && result.getOrNull() != null -> { }
+        result.isSuccess && result.getOrNull() != null -> {
+          _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
+        }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }

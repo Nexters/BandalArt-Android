@@ -37,12 +37,12 @@ fun BandalartColorPicker(
   ) {
     var initSelected by remember { mutableStateOf(initColor) }
     val allColor = listOf(
-      ThemeColor("#3FFFBA", "#3FFFBA"),
-      ThemeColor("#4E3FFF", "#B5AEFF"),
-      ThemeColor("#3FF3FF", "#3FF3FF"),
-      ThemeColor("#93FF3F", "#93FF3F"),
-      ThemeColor("#FBFF3F", "#FBFF3F"),
-      ThemeColor("#FFB423", "#FFB423"),
+      ThemeColor("#3FFFBA", "#111827"),
+      ThemeColor("#3FF3FF", "#111827"),
+      ThemeColor("#93FF3F", "#111827"),
+      ThemeColor("#FBFF3F", "#111827"),
+      ThemeColor("#FFB423", "#111827"),
+      ThemeColor("#FF9DF5", "#111827"),
     )
     allColor.forEach {
       Box(

@@ -53,6 +53,7 @@ fun BandalartListBottomSheet(
   currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
+  showSkeletonChanged: (Boolean) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
 ) {
@@ -121,6 +122,7 @@ fun BandalartListBottomSheet(
             onClick = { key ->
               // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
               setRecentBandalartKey(key)
+              showSkeletonChanged(true)
               getBandalartDetail(key)
             },
             onCancelClicked = onCancelClicked,

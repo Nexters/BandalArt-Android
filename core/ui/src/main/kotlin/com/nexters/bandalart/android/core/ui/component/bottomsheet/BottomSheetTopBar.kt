@@ -28,7 +28,7 @@ fun BottomSheetTopBar(
   isBlankCell: Boolean,
   scope: CoroutineScope,
   bottomSheetState: SheetState,
-  onResult: (Boolean, Boolean, Boolean) -> Unit,
+  onResult: (Boolean, Boolean) -> Unit,
   bottomSheetClosed: () -> Unit,
 ) {
   Box(
@@ -46,7 +46,7 @@ fun BottomSheetTopBar(
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
           if (!bottomSheetState.isVisible) {
             bottomSheetClosed
-            onResult(false, false, false)
+            onResult(false, false)
           }
         }
       },

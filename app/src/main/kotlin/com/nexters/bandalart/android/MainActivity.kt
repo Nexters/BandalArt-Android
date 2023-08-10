@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexters.bandalart.android.core.ui.component.LoadingWheel
+import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.theme.BandalartTheme
 import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
           when {
             uiState.isLoading -> {
-              LoadingWheel(
+              LoadingScreen(
                 modifier = Modifier
                   .fillMaxWidth()
                   .aspectRatio(1f),
