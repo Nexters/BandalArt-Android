@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.allColor
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
@@ -36,14 +38,7 @@ fun BandalartColorPicker(
     horizontalArrangement = Arrangement.SpaceEvenly,
   ) {
     var initSelected by remember { mutableStateOf(initColor) }
-    val allColor = listOf(
-      ThemeColor("#3FFFBA", "#111827"),
-      ThemeColor("#3FF3FF", "#111827"),
-      ThemeColor("#93FF3F", "#111827"),
-      ThemeColor("#FBFF3F", "#111827"),
-      ThemeColor("#FFB423", "#111827"),
-      ThemeColor("#FF9DF5", "#111827"),
-    )
+
     allColor.forEach {
       Box(
         contentAlignment = Alignment.Center,
@@ -57,8 +52,7 @@ fun BandalartColorPicker(
               .aspectRatio(1f),
             shape = RoundedCornerShape(90.dp),
             colors = CardDefaults.cardColors(White),
-            content = { },
-          )
+          ) { }
         }
         Card(
           modifier = Modifier
@@ -70,8 +64,7 @@ fun BandalartColorPicker(
             },
           shape = RoundedCornerShape(90.dp),
           colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
-          content = { },
-        )
+        ) { }
       }
     }
   }

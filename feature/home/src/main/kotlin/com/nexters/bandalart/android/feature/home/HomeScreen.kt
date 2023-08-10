@@ -67,6 +67,7 @@ import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
+import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.extension.toFormatDate
@@ -81,13 +82,11 @@ import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
-import com.nexters.bandalart.android.feature.home.ui.ThemeColor
 
 @Composable
 internal fun HomeRoute(
@@ -118,6 +117,8 @@ internal fun HomeRoute(
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
+    openEmojiBottomSheet = { state -> viewModel.openEmojiBottomSheet(state) },
+    openCellBottomSheet = { state -> viewModel.openCellBottomSheet(state) },
     openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
@@ -129,7 +130,6 @@ internal fun HomeRoute(
   )
 }
 
-@Suppress("unused")
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
@@ -141,6 +141,8 @@ internal fun HomeScreen(
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
+  openEmojiBottomSheet: (Boolean) -> Unit,
+  openCellBottomSheet: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
@@ -150,13 +152,6 @@ internal fun HomeScreen(
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
 ) {
-  val scrollState = rememberScrollState()
-  var openEmojiBottomSheet by rememberSaveable { mutableStateOf(false) }
-  val emojiSkipPartiallyExpanded by remember { mutableStateOf(true) }
-  val emojiPickerScope = rememberCoroutineScope()
-  val emojiPickerState = rememberModalBottomSheetState(
-    skipPartiallyExpanded = emojiSkipPartiallyExpanded,
-  )
   val context = LocalContext.current
 
   // TODO null 를 파라미터로 넣어줘야 하는 이유 학습
@@ -174,12 +169,6 @@ internal fun HomeScreen(
     if (uiState.isBottomSheetDataChanged) {
       loadingChanged(true)
       getBandalartList(null)
-    }
-  }
-
-  LaunchedEffect(key1 = uiState.isBandalartDeleted) {
-    if (uiState.isBandalartDeleted) {
-      openBandalartDeleteAlertDialog(false)
     }
   }
 
@@ -211,6 +200,53 @@ internal fun HomeScreen(
     )
   }
 
+  if (uiState.isEmojiBottomSheetOpened) {
+    val emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(
+      modifier = Modifier.wrapContentSize(),
+      onDismissRequest = { openEmojiBottomSheet(false) },
+      sheetState = emojiPickerState,
+      content = BandalartEmojiPicker(
+        currentEmoji = uiState.bandalartCellData?.profileEmoji,
+        isBottomSheet = true,
+        onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
+          openEmojiBottomSheet(openEmojiBottomSheetResult)
+          updateBandalartMainCell(
+            uiState.bandalartDetailData!!.key,
+            uiState.bandalartCellData!!.key,
+            UpdateBandalartMainCellModel(
+              title = uiState.bandalartCellData.title ?: "",
+              description = uiState.bandalartCellData.description,
+              dueDate = uiState.bandalartCellData.dueDate,
+              profileEmoji = currentEmojiResult,
+              mainColor = uiState.bandalartCellData.mainColor!!,
+              subColor = uiState.bandalartCellData.subColor!!,
+            ),
+          )
+        },
+        emojiPickerScope = rememberCoroutineScope(),
+        emojiPickerState = emojiPickerState,
+      ),
+      dragHandle = null,
+    )
+  }
+
+  if (uiState.isCellBottomSheetOpened) {
+    uiState.bandalartDetailData?.let {
+      BandalartBottomSheet(
+        bandalartKey = it.key,
+        isSubCell = false,
+        isMainCell = true,
+        isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
+        cellData = uiState.bandalartCellData,
+        onResult = { bottomSheetState, bottomSheetDataChangedState ->
+          openCellBottomSheet(bottomSheetState)
+          bottomSheetDataChanged(bottomSheetDataChangedState)
+        },
+      )
+    }
+  }
+
   if (uiState.isBandalartDeleteAlertDialogOpened) {
     BandalartDeleteAlertDialog(
       title = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) {
@@ -240,7 +276,7 @@ internal fun HomeScreen(
       Column(
         modifier = Modifier
           .fillMaxSize()
-          .verticalScroll(scrollState)
+          .verticalScroll(rememberScrollState())
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
@@ -266,7 +302,7 @@ internal fun HomeScreen(
                     .width(52.dp)
                     .aspectRatio(1f)
                     .background(Gray100)
-                    .clickable { openEmojiBottomSheet = !openEmojiBottomSheet },
+                    .clickable { openEmojiBottomSheet(true) },
                   contentAlignment = Alignment.Center,
                 ) {
                   if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
@@ -281,35 +317,6 @@ internal fun HomeScreen(
                       fontSize = 22.sp,
                     )
                   }
-                }
-                if (openEmojiBottomSheet) {
-                  ModalBottomSheet(
-                    modifier = Modifier.wrapContentSize(),
-                    onDismissRequest = { openEmojiBottomSheet = !openEmojiBottomSheet },
-                    sheetState = emojiPickerState,
-                    content = BandalartEmojiPicker(
-                      currentEmoji = uiState.bandalartCellData?.profileEmoji,
-                      isBottomSheet = true,
-                      onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
-                        openEmojiBottomSheet = openEmojiBottomSheetResult
-                        updateBandalartMainCell(
-                          uiState.bandalartDetailData!!.key,
-                          uiState.bandalartCellData!!.key,
-                          UpdateBandalartMainCellModel(
-                            title = uiState.bandalartCellData.title ?: "",
-                            description = uiState.bandalartCellData.description,
-                            dueDate = uiState.bandalartCellData.dueDate,
-                            profileEmoji = currentEmojiResult,
-                            mainColor = uiState.bandalartCellData.mainColor!!,
-                            subColor = uiState.bandalartCellData.subColor!!,
-                          ),
-                        )
-                      },
-                      emojiPickerScope = emojiPickerScope,
-                      emojiPickerState = emojiPickerState,
-                    ),
-                    dragHandle = null,
-                  )
                 }
               }
               if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
@@ -329,7 +336,6 @@ internal fun HomeScreen(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             ) {
-              var openBottomSheet by rememberSaveable { mutableStateOf(false) }
               FixedSizeText(
                 text = uiState.bandalartDetailData?.title ?: "메인 목표를 입력해주세요",
                 color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
@@ -338,23 +344,8 @@ internal fun HomeScreen(
                 letterSpacing = (-0.4).sp,
                 modifier = Modifier
                   .align(Alignment.Center)
-                  .clickable { openBottomSheet = !openBottomSheet },
+                  .clickable { openCellBottomSheet(true) },
               )
-              if (openBottomSheet) {
-                uiState.bandalartDetailData?.let {
-                  BandalartBottomSheet(
-                    bandalartKey = it.key,
-                    isSubCell = false,
-                    isMainCell = true,
-                    isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
-                    cellData = uiState.bandalartCellData,
-                    onResult = { bottomSheetState, bottomSheetDataChangedState ->
-                      openBottomSheet = bottomSheetState
-                      bottomSheetDataChanged(bottomSheetDataChangedState)
-                    },
-                  )
-                }
-              }
               val image = painterResource(id = R.drawable.ic_option)
               Image(
                 painter = image,
@@ -455,7 +446,6 @@ internal fun HomeScreen(
             }
           }
         }
-        Spacer(modifier = Modifier.height(64.dp))
         Spacer(modifier = Modifier.weight(1f))
         Box(
           modifier = Modifier
@@ -486,12 +476,8 @@ internal fun HomeScreen(
         }
       }
       when {
-        uiState.isLoading -> {
-          LoadingScreen()
-        }
-        uiState.isShowSkeleton -> {
-          BandalartSkeleton()
-        }
+        uiState.isLoading -> { LoadingScreen() }
+        uiState.isShowSkeleton -> { BandalartSkeleton() }
       }
     }
   }

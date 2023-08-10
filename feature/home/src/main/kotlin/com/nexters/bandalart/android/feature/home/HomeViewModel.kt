@@ -34,13 +34,13 @@ import timber.log.Timber
  * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
  * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
- * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
- * @param isBandalartCreated 반다라트 표가 생성됨
- * @param isBandalartDeleted 반다라트 표가 삭제됨
+ * @param isBandalartDeleted 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
  * @param isNetworkErrorAlertDialogOpened 통신 시 네트워크 문제 발생
  * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
+ * @param isCellBottomSheetOpened 반다라트 셀 바텀시트가 열림
+ * @param isEmojiBottomSheetOpened 반다라트 이모지 바텀시트가 열림
  * @param isBottomSheetDataChanged 바텀시트의 데이터가 변경됨
  * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
  * @param isLoading 서버와의 통신 중 로딩 상태
@@ -53,13 +53,13 @@ data class HomeUiState(
   val bandalartList: List<BandalartDetailUiModel> = emptyList(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
-  val isBandalartCompleted: Boolean = false,
-  val isBandalartCreated: Boolean = false,
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
   val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isBandalartListBottomSheetOpened: Boolean = false,
+  val isCellBottomSheetOpened: Boolean = false,
+  val isEmojiBottomSheetOpened: Boolean = false,
   val isBottomSheetDataChanged: Boolean = false,
   val isBottomSheetMainCellChanged: Boolean = false,
   val isLoading: Boolean = false,
@@ -344,6 +344,18 @@ class HomeViewModel @Inject constructor(
     )
   }
 
+  fun openEmojiBottomSheet(state: Boolean) {
+    _uiState.value = _uiState.value.copy(
+      isEmojiBottomSheetOpened = state,
+    )
+  }
+
+  fun openCellBottomSheet(state: Boolean) {
+    _uiState.value = _uiState.value.copy(
+      isCellBottomSheetOpened = state,
+    )
+  }
+
   fun bottomSheetDataChanged(isBottomSheetDataChangedState: Boolean) {
     _uiState.value = _uiState.value.copy(
       isBottomSheetDataChanged = isBottomSheetDataChangedState,
@@ -362,7 +374,7 @@ class HomeViewModel @Inject constructor(
     )
   }
 
-  fun openNetworkErrorAlertDialog(state: Boolean) {
+  private fun openNetworkErrorAlertDialog(state: Boolean) {
     _uiState.value = _uiState.value.copy(
       isNetworkErrorAlertDialogOpened = state,
     )
