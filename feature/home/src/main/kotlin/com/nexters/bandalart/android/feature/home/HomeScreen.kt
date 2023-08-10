@@ -315,7 +315,7 @@ internal fun HomeScreen(
                 if (bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else bandalartDetailData.profileEmoji,
               )
             }
-          }
+          },
         )
         HorizontalDivider(
           thickness = 1.dp,
