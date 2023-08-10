@@ -91,13 +91,6 @@ class HomeViewModel @Inject constructor(
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
-  init {
-    _uiState.value = _uiState.value.copy(
-      isTopLoading = true,
-      isBottomLoading = true,
-    )
-  }
-
   fun getBandalartList(bandalartKey: String? = null) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(
