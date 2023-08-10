@@ -53,7 +53,6 @@ internal fun CompleteRoute(
   onShowSnackbar: suspend (String) -> Boolean,
   viewModel: CompleteViewModel = hiltViewModel(),
 ) {
-
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   LaunchedEffect(viewModel) {
@@ -71,7 +70,7 @@ internal fun CompleteRoute(
     uiState = uiState,
     onNavigateBack = onNavigateBack,
     shareBandalart = viewModel::shareBandalart,
-    initShareUrl = viewModel::initShareUrl
+    initShareUrl = viewModel::initShareUrl,
   )
 }
 

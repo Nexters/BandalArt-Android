@@ -11,17 +11,15 @@ import com.nexters.bandalart.android.feature.complete.CompleteRoute
 const val BANDALART_KEY = "bandalart_key"
 const val BANDALART_TITLE = "bandalart_title"
 const val BANDALART_PROFILE_EMOJI = "bandalart_profile_image"
-const val completeNavigationRoute =
-  "complete_route/{${BANDALART_KEY}}/{${BANDALART_TITLE}}/{${BANDALART_PROFILE_EMOJI}}"
+const val COMPLETE_NAVIGATION_ROUTE = "complete_route/{$BANDALART_KEY}/{$BANDALART_TITLE}/{$BANDALART_PROFILE_EMOJI}"
 
 fun NavController.navigateToComplete(
   navOptions: NavOptions? = null,
   bandalartKey: String,
   bandalartTitle: String,
   bandalartProfileEmoji: String,
-
 ) {
-  this.navigate("complete_route/${bandalartKey}/${bandalartTitle}/${bandalartProfileEmoji}", navOptions)
+  this.navigate("complete_route/$bandalartKey/$bandalartTitle/$bandalartProfileEmoji", navOptions)
 }
 
 fun NavGraphBuilder.completeScreen(
@@ -29,7 +27,7 @@ fun NavGraphBuilder.completeScreen(
   onShowSnackbar: suspend (String) -> Boolean,
 ) {
   composable(
-    route = completeNavigationRoute,
+    route = COMPLETE_NAVIGATION_ROUTE,
     arguments = listOf(
       navArgument(BANDALART_KEY) {
         type = NavType.StringType
@@ -40,7 +38,7 @@ fun NavGraphBuilder.completeScreen(
       navArgument(BANDALART_PROFILE_EMOJI) {
         type = NavType.StringType
       },
-    )
+    ),
   ) {
     CompleteRoute(
       onNavigateBack = onNavigateBack,

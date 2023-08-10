@@ -18,7 +18,7 @@ import com.nexters.bandalart.android.core.ui.theme.pretendard
 val cellLineBreak = LineBreak(
   strategy = LineBreak.Strategy.Simple,
   strictness = LineBreak.Strictness.Normal,
-  wordBreak = LineBreak.WordBreak.Phrase
+  wordBreak = LineBreak.WordBreak.Phrase,
 )
 
 @Composable
@@ -41,8 +41,6 @@ fun CellText(
     lineHeight = 16.8.sp.nonScaleSp,
     letterSpacing = (-0.24).sp.nonScaleSp,
     textAlign = TextAlign.Center,
-    style = TextStyle(
-      lineBreak = cellLineBreak
-    )
+    style = TextStyle(lineBreak = cellLineBreak),
   )
 }

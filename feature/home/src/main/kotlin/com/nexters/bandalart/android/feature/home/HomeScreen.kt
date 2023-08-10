@@ -187,7 +187,7 @@ internal fun HomeScreen(
       navigateToComplete(
         bandalartDetailData.key,
         bandalartDetailData.title!!,
-        bandalartDetailData.profileEmoji ?: ""
+        bandalartDetailData.profileEmoji ?: "",
       )
     }
   }

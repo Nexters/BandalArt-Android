@@ -32,7 +32,7 @@ fun BandalartNavHost(
         navController.navigateToComplete(
           bandalartKey = key,
           bandalartTitle = title,
-          bandalartProfileEmoji = emoji
+          bandalartProfileEmoji = emoji,
         )
       },
       onShowSnackbar = onShowSnackbar,
