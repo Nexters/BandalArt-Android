@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,9 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
+import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray300
-import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -48,7 +50,9 @@ import com.nexters.bandalart.android.core.ui.theme.White
 @Composable
 fun BandalartSkeletonScreen(
   modifier: Modifier = Modifier,
-  brush: Brush,
+  taskBrush: Brush,
+  subBrush: Brush,
+  mainBrush: Brush,
 ) {
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -128,7 +132,7 @@ fun BandalartSkeletonScreen(
                   letterSpacing = (-0.4).sp,
                   modifier = Modifier
                     .align(Alignment.Center)
-                    .background(brush),
+                    .background(subBrush),
                 )
                 val image = painterResource(id = R.drawable.ic_option)
                 Image(
@@ -145,7 +149,7 @@ fun BandalartSkeletonScreen(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-              text = "달성률 (--%)",
+              text = "달성률 (-%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
@@ -157,12 +161,43 @@ fun BandalartSkeletonScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Box(modifier = Modifier.padding(horizontal = 16.dp)) {
           CompletionRatioProgressBar(
-            completionRatio = 99,
+            completionRatio = 0,
             progressColor = Gray300,
           )
         }
         Spacer(modifier = Modifier.height(18.dp))
-        BandalartSkeletonChart(brush = brush)
+        BandalartSkeletonChart(
+          taskBrush = taskBrush,
+          subBrush = subBrush,
+          mainBrush = mainBrush,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+          modifier = Modifier
+            .wrapContentSize()
+            .clip(RoundedCornerShape(18.dp))
+            .background(Gray100)
+            .align(Alignment.CenterHorizontally),
+          contentAlignment = Alignment.Center,
+        ) {
+          Row(
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            val image = painterResource(id = R.drawable.ic_share)
+            Image(
+              painter = image,
+              contentDescription = "Share Icon",
+            )
+            FixedSizeText(
+              text = "공유하기",
+              modifier = Modifier.padding(start = 4.dp),
+              color = Gray900,
+              fontSize = 12.sp.nonScaleSp,
+              fontWeight = FontWeight.W700,
+            )
+          }
+        }
       }
     }
   }
@@ -178,7 +213,9 @@ data class SubCell(
 @Composable
 fun BandalartSkeletonChart(
   modifier: Modifier = Modifier,
-  brush: Brush,
+  taskBrush: Brush,
+  subBrush: Brush,
+  mainBrush: Brush,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
@@ -202,13 +239,15 @@ fun BandalartSkeletonChart(
           modifier
             .layoutId("Sub ${index + 1}")
             .clip(RoundedCornerShape(12.dp))
-            .background(color = Gray400),
+            .background(color = Gray200),
           content = {
             SkeletonCellGrid(
               rows = subCellList[index].rowCnt,
               cols = subCellList[index].colCnt,
               subCell = subCellList[index],
-              brush = brush,
+              taskBrush = taskBrush,
+              subBrush = subBrush,
+              mainBrush = mainBrush,
             )
           },
         )
@@ -217,11 +256,13 @@ fun BandalartSkeletonChart(
         modifier
           .layoutId("Main")
           .clip(RoundedCornerShape(10.dp))
-          .background(brush = brush),
+          .background(brush = taskBrush),
         content = {
           SkeletonCell(
             isMainCell = true,
-            brush = brush,
+            taskBrush = taskBrush,
+            subBrush = subBrush,
+            mainBrush = mainBrush,
           )
         },
       )
@@ -264,7 +305,9 @@ fun SkeletonCellGrid(
   rows: Int,
   cols: Int,
   subCell: SubCell,
-  brush: Brush,
+  taskBrush: Brush,
+  subBrush: Brush,
+  mainBrush: Brush,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -289,7 +332,9 @@ fun SkeletonCellGrid(
               rowCnt = rows,
             ),
             modifier = Modifier.weight(1f),
-            brush = brush,
+            taskBrush = taskBrush,
+            subBrush = subBrush,
+            mainBrush = mainBrush,
           )
         }
       }
@@ -309,7 +354,9 @@ data class SkeletonCellInfo(
 fun SkeletonCell(
   modifier: Modifier = Modifier,
   isMainCell: Boolean,
-  brush: Brush,
+  taskBrush: Brush,
+  subBrush: Brush,
+  mainBrush: Brush,
   skeletonCellInfo: SkeletonCellInfo = SkeletonCellInfo(),
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
@@ -325,7 +372,7 @@ fun SkeletonCell(
       )
       .aspectRatio(1f)
       .clip(RoundedCornerShape(10.dp))
-      .background(brush),
+      .background(if (isMainCell) mainBrush else if (skeletonCellInfo.isSubCell) subBrush else taskBrush),
     contentAlignment = Alignment.Center,
   ) { }
 }
