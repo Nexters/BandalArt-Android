@@ -112,8 +112,8 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    navigateToComplete = { key: String, title: String, emoji: String -> navigateToComplete(key, title, emoji) },
-    getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
+    navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
+    getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
     createBandalart = viewModel::createBandalart,
@@ -127,9 +127,10 @@ internal fun HomeRoute(
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
-    shareBandalart = { key: String -> viewModel.shareBandalart(key) },
+    shareBandalart = { key -> viewModel.shareBandalart(key) },
     initShareUrl = viewModel::initShareUrl,
     navigateToOnBoarding = navigateToOnBoarding,
+    checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
   )
 }
 
@@ -155,6 +156,7 @@ internal fun HomeScreen(
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
   navigateToOnBoarding: () -> Unit,
+  checkCompletedBandalartKey: suspend (String) -> Boolean,
 ) {
   val context = LocalContext.current
 
@@ -163,14 +165,18 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  // TODO 다시 돌아올 수 있도록, 매번 목표 달성 화면으로 이동하지 않도록
+  // TODO 매번 목표 달성 화면으로 이동하지 않도록
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
+    // 목표를 달성했을 경우
     if (uiState.bandalartDetailData?.isCompleted == true) {
-      navigateToComplete(
-        uiState.bandalartDetailData.key,
-        uiState.bandalartDetailData.title!!,
-        if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
-      )
+      // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
+      if(uiState.bandalartDetailData.key.let { checkCompletedBandalartKey(it) }) {
+        navigateToComplete(
+          uiState.bandalartDetailData.key,
+          uiState.bandalartDetailData.title!!,
+          if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
+        )
+      }
     }
   }
 

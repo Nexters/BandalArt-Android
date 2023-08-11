@@ -1,9 +1,11 @@
 package com.nexters.bandalart.android.core.data.di
 
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
+import com.nexters.bandalart.android.core.data.datasource.CompletedBandalartKeyDataSource
 import com.nexters.bandalart.android.core.data.datasource.GuestLoginLocalDataSource
 import com.nexters.bandalart.android.core.data.datasource.GuestLoginRemoteDataSource
 import com.nexters.bandalart.android.core.data.datasource.RecentBandalartKeyDataSource
+import com.nexters.bandalart.android.core.data.local.datasource.CompletedBandalartKeyDataStoreImpl
 import com.nexters.bandalart.android.core.data.local.datasource.GuestLoginLocalDataSourceImpl
 import com.nexters.bandalart.android.core.data.local.datasource.RecentBandalartKeyDataSourceImpl
 import com.nexters.bandalart.android.core.data.remote.datasource.BandalartRemoteDataSourceImpl
@@ -33,4 +35,8 @@ internal abstract class DataSourceModule {
   @Binds
   @Singleton
   abstract fun bindBandalartRemoteDataSource(bandalartRemoteDataSourceImpl: BandalartRemoteDataSourceImpl): BandalartRemoteDataSource
+
+  @Binds
+  @Singleton
+  abstract fun bindCompletedBandalartKeyDataSource(completedBandalartKeyDataStoreImpl: CompletedBandalartKeyDataStoreImpl): CompletedBandalartKeyDataSource
 }

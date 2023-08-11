@@ -2,12 +2,14 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.InsertCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
@@ -63,6 +65,7 @@ data class HomeUiState(
   val isBottomSheetDataChanged: Boolean = false,
   val isBottomSheetMainCellChanged: Boolean = false,
   val shareUrl: String = "",
+  val isBandalartFirstCompleted: Boolean = false,
   val isShowSkeleton: Boolean = false,
   val isLoading: Boolean = false,
   val error: Throwable? = null,
@@ -83,6 +86,8 @@ class HomeViewModel @Inject constructor(
   private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
   private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
   private val shareBandalartUseCase: ShareBandalartUseCase,
+  private val insertCompletedBandalartKeyUseCase: InsertCompletedBandalartKeyUseCase,
+  private val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -113,11 +118,11 @@ class HomeViewModel @Inject constructor(
             getBandalartDetail(bandalartKey)
           }
 
-          // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생
+          // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
           if (bandalartList.isEmpty()) {
             createBandalart()
           }
-          // 반다라트 목록지 존재할 경우
+          // 반다라트 목록이 존재할 경우
           else {
             // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
             val recentBandalartkey = getRecentBandalartKey()
@@ -128,7 +133,11 @@ class HomeViewModel @Inject constructor(
             // 가장 최근에 확인한 반다라트 표가 존재하지 않을 경우
             else {
               _uiState.value = _uiState.value.copy(isShowSkeleton = true)
+              // 목록에 가장 첫번째 표를 화면에 띄움
               getBandalartDetail(bandalartList[0].key)
+            }
+            bandalartList.filter { it.isCompleted }.forEach {
+              insertCompletedBandalartKey(it.key)
             }
           }
         }
@@ -397,9 +406,22 @@ class HomeViewModel @Inject constructor(
       setRecentBandalartKeyUseCase(bandalartKey)
     }
   }
+
   fun initShareUrl() {
     _uiState.value = _uiState.value.copy(
       shareUrl = "",
     )
+  }
+
+  fun insertCompletedBandalartKey(bandalartKey: String) {
+    viewModelScope.launch {
+      insertCompletedBandalartKeyUseCase(bandalartKey)
+    }
+  }
+
+  suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
+    return viewModelScope.async {
+      checkCompletedBandalartKeyUseCase(bandalartKey)
+    }.await()
   }
 }

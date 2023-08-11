@@ -3,6 +3,7 @@ package com.nexters.bandalart.android.feature.complete
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_KEY
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_PROFILE_EMOJI
@@ -43,6 +44,7 @@ sealed class CompleteUiEvent {
 @HiltViewModel
 class CompleteViewModel @Inject constructor(
   private val shareBandalartUseCase: ShareBandalartUseCase,
+  private val deleteCompletedBandalartKeyUseCase: DeleteCompletedBandalartKeyUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -58,6 +60,7 @@ class CompleteViewModel @Inject constructor(
 
   init {
     initComplete()
+    deleteCompletedBandalartKey(key)
   }
 
   private fun initComplete() {
@@ -96,5 +99,11 @@ class CompleteViewModel @Inject constructor(
     _uiState.value = _uiState.value.copy(
       shareUrl = "",
     )
+  }
+
+  private fun deleteCompletedBandalartKey(bandalartKey: String) {
+    viewModelScope.launch {
+      deleteCompletedBandalartKeyUseCase(bandalartKey)
+    }
   }
 }
