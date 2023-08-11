@@ -79,6 +79,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.Gray500
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
+import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -111,19 +112,19 @@ internal fun HomeRoute(
     modifier = modifier,
     uiState = uiState,
     navigateToComplete = navigateToComplete,
-    updateBandalartMainCell = viewModel::updateBandalartMainCell,
     getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
+    updateBandalartMainCell = viewModel::updateBandalartMainCell,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
-    openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
-    openEmojiBottomSheet = { state -> viewModel.openEmojiBottomSheet(state) },
-    openCellBottomSheet = { state -> viewModel.openCellBottomSheet(state) },
-    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
-    bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
-    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     loadingChanged = { state -> viewModel.loadingChanged(state) },
     showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
+    openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
+    openEmojiBottomSheet = { state -> viewModel.openEmojiBottomSheet(state) },
+    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
+    openCellBottomSheet = { state -> viewModel.openCellBottomSheet(state) },
+    bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
+    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
     shareBandalart = { key: String -> viewModel.shareBandalart(key) },
     initShareUrl = viewModel::initShareUrl,
@@ -135,19 +136,19 @@ internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
   navigateToComplete: () -> Unit,
-  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
+  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
-  openDropDownMenu: (Boolean) -> Unit,
-  openEmojiBottomSheet: (Boolean) -> Unit,
-  openCellBottomSheet: (Boolean) -> Unit,
-  openBandalartDeleteAlertDialog: (Boolean) -> Unit,
-  bottomSheetDataChanged: (Boolean) -> Unit,
-  openBandalartListBottomSheet: (Boolean) -> Unit,
   loadingChanged: (Boolean) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
+  openDropDownMenu: (Boolean) -> Unit,
+  openEmojiBottomSheet: (Boolean) -> Unit,
+  openBandalartDeleteAlertDialog: (Boolean) -> Unit,
+  openCellBottomSheet: (Boolean) -> Unit,
+  bottomSheetDataChanged: (Boolean) -> Unit,
+  openBandalartListBottomSheet: (Boolean) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
@@ -189,24 +190,22 @@ internal fun HomeScreen(
   }
 
   if (uiState.isBandalartListBottomSheetOpened) {
-    uiState.bandalartDetailData?.key?.let {
-      BandalartListBottomSheet(
-        bandalartList = uiState.bandalartList,
-        currentBandalartKey = it,
-        getBandalartDetail = getBandalartDetail,
-        setRecentBandalartKey = setRecentBandalartKey,
-        showSkeletonChanged = showSkeletonChanged,
-        onCancelClicked = { openBandalartListBottomSheet(false) },
-        createBandalart = createBandalart,
-      )
-    }
+    BandalartListBottomSheet(
+      bandalartList = uiState.bandalartList,
+      currentBandalartKey = uiState.bandalartDetailData!!.key,
+      getBandalartDetail = getBandalartDetail,
+      setRecentBandalartKey = setRecentBandalartKey,
+      showSkeletonChanged = showSkeletonChanged,
+      onCancelClicked = { openBandalartListBottomSheet(false) },
+      createBandalart = createBandalart,
+    )
   }
 
   if (uiState.isEmojiBottomSheetOpened) {
     val emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
-      modifier = Modifier.wrapContentSize(),
       onDismissRequest = { openEmojiBottomSheet(false) },
+      modifier = Modifier.wrapContentSize(),
       sheetState = emojiPickerState,
       content = BandalartEmojiPicker(
         currentEmoji = uiState.bandalartCellData?.profileEmoji,
@@ -234,19 +233,17 @@ internal fun HomeScreen(
   }
 
   if (uiState.isCellBottomSheetOpened) {
-    uiState.bandalartDetailData?.let {
-      BandalartBottomSheet(
-        bandalartKey = it.key,
-        isSubCell = false,
-        isMainCell = true,
-        isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
-        cellData = uiState.bandalartCellData,
-        onResult = { bottomSheetState, bottomSheetDataChangedState ->
-          openCellBottomSheet(bottomSheetState)
-          bottomSheetDataChanged(bottomSheetDataChangedState)
-        },
-      )
-    }
+    BandalartBottomSheet(
+      bandalartKey = uiState.bandalartDetailData!!.key,
+      isSubCell = false,
+      isMainCell = true,
+      isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
+      cellData = uiState.bandalartCellData,
+      onResult = { bottomSheetState, bottomSheetDataChangedState ->
+        openCellBottomSheet(bottomSheetState)
+        bottomSheetDataChanged(bottomSheetDataChangedState)
+      },
+    )
   }
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
@@ -386,16 +383,14 @@ internal fun HomeScreen(
                 thickness = 1.dp,
                 color = Gray300,
               )
-              uiState.bandalartDetailData?.dueDate?.let {
-                FixedSizeText(
-                  text = it.toFormatDate(),
-                  color = Gray600,
-                  fontWeight = FontWeight.W500,
-                  fontSize = 12.sp,
-                  letterSpacing = (-0.24).sp,
-                  modifier = Modifier.padding(start = 6.dp),
-                )
-              }
+              FixedSizeText(
+                text = uiState.bandalartDetailData?.dueDate!!.toFormatDate(),
+                color = Gray600,
+                fontWeight = FontWeight.W500,
+                fontSize = 12.sp,
+                letterSpacing = (-0.24).sp,
+                modifier = Modifier.padding(start = 6.dp),
+              )
             }
             Spacer(modifier = Modifier.weight(1f))
             if (uiState.bandalartDetailData != null && uiState.bandalartDetailData.isCompleted) {
@@ -429,23 +424,21 @@ internal fun HomeScreen(
           Spacer(modifier = Modifier.height(8.dp))
           CompletionRatioProgressBar(
             completionRatio = uiState.bandalartCellData?.completionRatio ?: 0,
-            progressColor = (uiState.bandalartDetailData?.mainColor ?: "#3FFFBA").toColor(),
+            progressColor = (uiState.bandalartCellData?.mainColor?.toColor() ?: MainColor),
           )
           Spacer(modifier = Modifier.height(18.dp))
         }
         when {
-          uiState.bandalartCellData != null -> {
-            uiState.bandalartDetailData?.let {
-              BandalartChart(
-                bandalartChartData = uiState.bandalartCellData,
-                themeColor = ThemeColor(
-                  mainColor = uiState.bandalartDetailData.mainColor,
-                  subColor = uiState.bandalartDetailData.subColor,
-                ),
-                bottomSheetDataChanged = bottomSheetDataChanged,
-                bandalartKey = it.key,
-              )
-            }
+          uiState.bandalartCellData != null && uiState.bandalartDetailData != null -> {
+            BandalartChart(
+              bandalartKey = uiState.bandalartDetailData.key,
+              uiState = uiState,
+              themeColor = ThemeColor(
+                mainColor = uiState.bandalartDetailData.mainColor,
+                subColor = uiState.bandalartDetailData.subColor,
+              ),
+              bottomSheetDataChanged = bottomSheetDataChanged,
+            )
           }
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -496,9 +489,9 @@ data class SubCell(
 @Composable
 private fun BandalartChart(
   modifier: Modifier = Modifier,
-  bandalartChartData: BandalartCellUiModel,
-  themeColor: ThemeColor,
   bandalartKey: String,
+  uiState: HomeUiState,
+  themeColor: ThemeColor,
   bottomSheetDataChanged: (Boolean) -> Unit,
 ) {
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
@@ -507,10 +500,10 @@ private fun BandalartChart(
   }
 
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1, bandalartChartData.children[0]),
-    SubCell(3, 2, 1, 0, bandalartChartData.children[1]),
-    SubCell(3, 2, 1, 1, bandalartChartData.children[2]),
-    SubCell(2, 3, 0, 1, bandalartChartData.children[3]),
+    SubCell(2, 3, 1, 1, uiState.bandalartCellData!!.children[0]),
+    SubCell(3, 2, 1, 0, uiState.bandalartCellData.children[1]),
+    SubCell(3, 2, 1, 1, uiState.bandalartCellData.children[2]),
+    SubCell(2, 3, 0, 1, uiState.bandalartCellData.children[3]),
   )
 
   Layout(
@@ -526,11 +519,11 @@ private fun BandalartChart(
             .background(color = Gray100),
           content = {
             CellGrid(
+              bandalartKey = bandalartKey,
+              themeColor = themeColor,
+              subCell = subCellList[index],
               rows = subCellList[index].rowCnt,
               cols = subCellList[index].colCnt,
-              subCell = subCellList[index],
-              themeColor = themeColor,
-              bandalartKey = bandalartKey,
               bottomSheetDataChanged = bottomSheetDataChanged,
             )
           },
@@ -540,12 +533,12 @@ private fun BandalartChart(
         modifier
           .layoutId("Main")
           .clip(RoundedCornerShape(10.dp))
-          .background(color = themeColor.mainColor.toColor()),
+          .background(color = (uiState.bandalartCellData.mainColor?.toColor() ?: MainColor)),
         content = {
           Cell(
             isMainCell = true,
             themeColor = themeColor,
-            cellData = bandalartChartData,
+            cellData = uiState.bandalartCellData,
             bandalartKey = bandalartKey,
             bottomSheetDataChanged = bottomSheetDataChanged,
           )
@@ -587,11 +580,11 @@ private fun BandalartChart(
 
 @Composable
 fun CellGrid(
+  bandalartKey: String,
+  themeColor: ThemeColor,
+  subCell: SubCell,
   rows: Int,
   cols: Int,
-  subCell: SubCell,
-  themeColor: ThemeColor,
-  bandalartKey: String,
   bottomSheetDataChanged: (Boolean) -> Unit,
 ) {
   Column(
@@ -609,6 +602,9 @@ fun CellGrid(
         repeat(cols) { colIndex ->
           val isSubCell = rowIndex == subCell.subCellRowIndex && colIndex == subCell.subCellColIndex
           Cell(
+            modifier = Modifier.weight(1f),
+            bandalartKey = bandalartKey,
+            themeColor = themeColor,
             isMainCell = false,
             cellInfo = CellInfo(
               isSubCell = isSubCell,
@@ -617,10 +613,8 @@ fun CellGrid(
               colCnt = cols,
               rowCnt = rows,
             ),
-            modifier = Modifier.weight(1f),
-            cellData = if (isSubCell) subCell.bandalartChartData else subCell.bandalartChartData.children[taskIndex++],
-            themeColor = themeColor,
-            bandalartKey = bandalartKey,
+            cellData = if (isSubCell) subCell.bandalartChartData
+            else subCell.bandalartChartData.children[taskIndex++],
             bottomSheetDataChanged = bottomSheetDataChanged,
           )
         }
@@ -640,15 +634,15 @@ data class CellInfo(
 @Composable
 fun Cell(
   modifier: Modifier = Modifier,
+  bandalartKey: String,
+  themeColor: ThemeColor,
   isMainCell: Boolean,
   cellInfo: CellInfo = CellInfo(),
   cellData: BandalartCellUiModel,
-  bandalartKey: String,
   bottomSheetDataChanged: (Boolean) -> Unit,
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
-  themeColor: ThemeColor,
 ) {
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val backgroundColor = when {
