@@ -170,7 +170,7 @@ internal fun HomeScreen(
     // 목표를 달성했을 경우
     if (uiState.bandalartDetailData?.isCompleted == true) {
       // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
-      if(uiState.bandalartDetailData.key.let { checkCompletedBandalartKey(it) }) {
+      if (uiState.bandalartDetailData.key.let { checkCompletedBandalartKey(it) }) {
         navigateToComplete(
           uiState.bandalartDetailData.key,
           uiState.bandalartDetailData.title!!,
@@ -497,8 +497,12 @@ internal fun HomeScreen(
         }
       }
       when {
-        uiState.isLoading -> { LoadingScreen() }
-        uiState.isShowSkeleton -> { BandalartSkeleton() }
+        uiState.isLoading -> {
+          LoadingScreen()
+        }
+        uiState.isShowSkeleton -> {
+          BandalartSkeleton()
+        }
       }
     }
   }
