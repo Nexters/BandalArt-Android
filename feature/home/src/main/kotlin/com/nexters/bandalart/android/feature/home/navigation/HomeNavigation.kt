@@ -8,13 +8,12 @@ import com.nexters.bandalart.android.feature.home.HomeRoute
 
 const val HOME_NAVIGATION_ROUTE = "home_route"
 
-@Suppress("unused")
 fun NavController.navigateToHome(navOptions: NavOptions? = null) {
   this.navigate(HOME_NAVIGATION_ROUTE, navOptions)
 }
 
 fun NavGraphBuilder.homeScreen(
-  navigateToComplete: () -> Unit,
+  navigateToComplete: (String, String, String) -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
 ) {
   composable(route = HOME_NAVIGATION_ROUTE) {

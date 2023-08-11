@@ -92,7 +92,7 @@ import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 @Composable
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
-  navigateToComplete: () -> Unit,
+  navigateToComplete: (String, String, String) -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -111,7 +111,7 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    navigateToComplete = navigateToComplete,
+    navigateToComplete = { key: String, title: String, emoji: String -> navigateToComplete(key, title, emoji) },
     getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
@@ -135,7 +135,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
-  navigateToComplete: () -> Unit,
+  navigateToComplete: (String, String, String) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
@@ -160,9 +160,14 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
+  // TODO 다시 돌아올 수 있도록, 매번 목표 달성 화면으로 이동하지 않도록
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
     if (uiState.bandalartDetailData?.isCompleted == true) {
-      navigateToComplete()
+      navigateToComplete(
+        uiState.bandalartDetailData.key,
+        uiState.bandalartDetailData.title!!,
+        if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
+      )
     }
   }
 
@@ -281,6 +286,15 @@ internal fun HomeScreen(
         HomeTopBar(
           bandalartCount = uiState.bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
+          onLogoClicked = {
+            if (uiState.bandalartDetailData?.title != null) {
+              navigateToComplete(
+                uiState.bandalartDetailData.key,
+                uiState.bandalartDetailData.title,
+                if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
+              )
+            }
+          },
         )
         HorizontalDivider(
           thickness = 1.dp,
@@ -441,6 +455,7 @@ internal fun HomeScreen(
             )
           }
         }
+        Spacer(modifier = Modifier.height(64.dp))
         Spacer(modifier = Modifier.weight(1f))
         Box(
           modifier = Modifier
