@@ -33,7 +33,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
@@ -123,9 +122,7 @@ internal fun CompleteScreen(
         modifier = Modifier.align(Alignment.TopCenter),
       )
       Column(
-        Modifier
-          .fillMaxSize()
-          .zIndex(1f),
+        Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Spacer(modifier = Modifier.height(16.dp))
