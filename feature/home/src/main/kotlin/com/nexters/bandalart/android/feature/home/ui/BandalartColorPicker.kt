@@ -61,11 +61,11 @@ fun BandalartColorPicker(
           shape = RoundedCornerShape(90.dp),
           colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
         ) {
-          Box(modifier = Modifier
-            .clickable {
+          Box(
+            modifier = Modifier.clickable {
               initSelected = it
               onResult(initSelected)
-            }
+            },
           )
         }
       }
