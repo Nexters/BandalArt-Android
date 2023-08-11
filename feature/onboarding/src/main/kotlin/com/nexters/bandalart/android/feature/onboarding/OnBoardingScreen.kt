@@ -53,6 +53,14 @@ internal fun OnBoardingScreen(
   modifier: Modifier = Modifier,
   navigateToHome: (NavOptions) -> Unit,
 ) {
+  val composition by rememberLottieComposition(
+    spec = LottieCompositionSpec.RawRes(R.raw.lottie_onboarding),
+  )
+  val progress by animateLottieCompositionAsState(
+    composition = composition,
+    iterations = LottieConstants.IterateForever,
+  )
+
   Surface(
     modifier = modifier.fillMaxSize(),
   ) {
@@ -119,13 +127,6 @@ internal fun OnBoardingScreen(
                       .background(White),
                     contentAlignment = Alignment.Center,
                   ) {
-                    val composition by rememberLottieComposition(
-                      spec = LottieCompositionSpec.RawRes(R.raw.lottie_onboarding),
-                    )
-                    val progress by animateLottieCompositionAsState(
-                      composition = composition,
-                      iterations = LottieConstants.IterateForever,
-                    )
                     LottieAnimation(
                       composition = composition,
                       progress = { progress },
