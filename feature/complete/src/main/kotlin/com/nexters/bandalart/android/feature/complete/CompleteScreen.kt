@@ -35,6 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.EmojiText
@@ -83,6 +88,13 @@ internal fun CompleteScreen(
   initShareUrl: () -> Unit,
 ) {
   val context = LocalContext.current
+  val composition by rememberLottieComposition(
+    spec = LottieCompositionSpec.RawRes(R.raw.lottie_finish),
+  )
+  val progress by animateLottieCompositionAsState(
+    composition = composition,
+    iterations = LottieConstants.IterateForever,
+  )
 
   LaunchedEffect(key1 = uiState.shareUrl) {
     if (uiState.shareUrl.isNotEmpty()) {
@@ -104,6 +116,11 @@ internal fun CompleteScreen(
     modifier = modifier.fillMaxSize(),
   ) {
     Box {
+      LottieAnimation(
+        composition = composition,
+        progress = { progress },
+        modifier = Modifier.align(Alignment.TopCenter),
+      )
       Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -129,115 +146,116 @@ internal fun CompleteScreen(
         }
         Spacer(modifier = Modifier.height(40.dp))
         TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
-        Spacer(modifier = Modifier.height(50.dp))
-        EmojiText(
-          emojiText = "🥳",
-          fontSize = 100.sp,
-        )
-        Spacer(modifier = Modifier.height(60.dp))
-        FixedSizeText(
-          text = "달성 완료 반다라트",
-          color = Gray400,
-          fontWeight = FontWeight.W600,
-          fontSize = 14.sp,
-          letterSpacing = (-0.28).sp,
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Box(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 33.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .border(
-              width = 2.dp,
-              color = Gray300,
-              shape = RoundedCornerShape(12.dp),
-            ),
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
           Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
           ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Card(
-              shape = RoundedCornerShape(12.dp),
-              elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            FixedSizeText(
+              text = "달성 완료 반다라트",
+              color = Gray400,
+              fontWeight = FontWeight.W600,
+              fontSize = 14.sp,
+              letterSpacing = (-0.28).sp,
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Box(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 33.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                  width = 2.dp,
+                  color = Gray300,
+                  shape = RoundedCornerShape(12.dp),
+                ),
             ) {
-              Column {
-                Box(
-                  modifier = Modifier
-                    .width(52.dp)
-                    .aspectRatio(1f)
-                    .background(Gray100),
-                  contentAlignment = Alignment.Center,
+              Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+              ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Card(
+                  shape = RoundedCornerShape(12.dp),
+                  elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 ) {
-                  if (uiState.profileEmoji == "default emoji") {
-                    val image = painterResource(id = R.drawable.ic_empty_emoji)
-                    Image(
-                      painter = image,
-                      contentDescription = "Empty Emoji Icon",
-                    )
-                  } else {
-                    EmojiText(
-                      emojiText = uiState.profileEmoji,
-                      fontSize = 22.sp,
-                    )
+                  Column {
+                    Box(
+                      modifier = Modifier
+                        .width(52.dp)
+                        .aspectRatio(1f)
+                        .background(Gray100),
+                      contentAlignment = Alignment.Center,
+                    ) {
+                      if (uiState.profileEmoji == "default emoji") {
+                        val image = painterResource(id = R.drawable.ic_empty_emoji)
+                        Image(
+                          painter = image,
+                          contentDescription = "Empty Emoji Icon",
+                        )
+                      } else {
+                        EmojiText(
+                          emojiText = uiState.profileEmoji,
+                          fontSize = 22.sp,
+                        )
+                      }
+                    }
                   }
                 }
+                Spacer(modifier = Modifier.height(6.dp))
+                FixedSizeText(
+                  text = uiState.title,
+                  color = Black,
+                  fontWeight = FontWeight.W700,
+                  fontSize = 16.sp,
+                  letterSpacing = (-0.32).sp,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
               }
             }
-            Spacer(modifier = Modifier.height(6.dp))
-            FixedSizeText(
-              text = uiState.title,
-              color = Black,
-              fontWeight = FontWeight.W700,
-              fontSize = 16.sp,
-              letterSpacing = (-0.32).sp,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
           }
+//          // MVP 제외
+//          Box(
+//            modifier = Modifier
+//              .clickable(onClick = {})
+//              .align(Alignment.BottomCenter)
+//              .offset(y = (-110).dp),
+//          ) {
+//            Column {
+//              Row(verticalAlignment = Alignment.CenterVertically) {
+//                val image = painterResource(id = R.drawable.ic_gallery)
+//                Image(
+//                  painter = image,
+//                  contentDescription = "Option Icon",
+//                )
+//                Text(
+//                  text = buildAnnotatedString {
+//                    withStyle(
+//                      style = SpanStyle(
+//                        textDecoration = TextDecoration.Underline,
+//                      ),
+//                    ) {
+//                      append("이미지 저장하기")
+//                    }
+//                  },
+//                  color = Gray400,
+//                  fontFamily = pretendard,
+//                  fontWeight = FontWeight.W600,
+//                  fontSize = 16.sp.nonScaleSp,
+//                  letterSpacing = -(0.32).sp.nonScaleSp,
+//                )
+//              }
+//            }
+//          }
+          BandalartButton(
+            onClick = shareBandalart,
+            text = "링크 공유하기",
+            modifier = Modifier
+              .align(Alignment.BottomCenter)
+              .padding(bottom = 32.dp),
+          )
         }
       }
-//      // MVP 제외
-//      Box(
-//        modifier = Modifier
-//          .clickable(onClick = {})
-//          .align(Alignment.BottomCenter)
-//          .offset(y = (-110).dp),
-//      ) {
-//        Column {
-//          Row(verticalAlignment = Alignment.CenterVertically) {
-//            val image = painterResource(id = R.drawable.ic_gallery)
-//            Image(
-//              painter = image,
-//              contentDescription = "Option Icon",
-//            )
-//            Text(
-//              text = buildAnnotatedString {
-//                withStyle(
-//                  style = SpanStyle(
-//                    textDecoration = TextDecoration.Underline,
-//                  ),
-//                ) {
-//                  append("이미지 저장하기")
-//                }
-//              },
-//              color = Gray400,
-//              fontFamily = pretendard,
-//              fontWeight = FontWeight.W600,
-//              fontSize = 16.sp.nonScaleSp,
-//              letterSpacing = -(0.32).sp.nonScaleSp,
-//            )
-//          }
-//        }
-//      }
-      BandalartButton(
-        onClick = shareBandalart,
-        text = "링크 공유하기",
-        modifier = Modifier
-          .align(Alignment.BottomCenter)
-          .padding(bottom = 32.dp),
-      )
     }
   }
 }
