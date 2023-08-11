@@ -93,6 +93,7 @@ import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
   navigateToComplete: (String, String, String) -> Unit,
+  navigateToOnBoarding: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -128,6 +129,7 @@ internal fun HomeRoute(
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
     shareBandalart = { key: String -> viewModel.shareBandalart(key) },
     initShareUrl = viewModel::initShareUrl,
+    navigateToOnBoarding = navigateToOnBoarding
   )
 }
 
@@ -152,6 +154,7 @@ internal fun HomeScreen(
   setRecentBandalartKey: (String) -> Unit,
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
+  navigateToOnBoarding: () -> Unit
 ) {
   val context = LocalContext.current
 
@@ -382,12 +385,14 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
+            // TODO 온보딩 navigation 제거
             FixedSizeText(
               text = "달성률 (${uiState.bandalartDetailData?.completionRatio ?: 0}%)",
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
               letterSpacing = (-0.24).sp,
+              modifier = Modifier.clickable { navigateToOnBoarding() }
             )
             if (!uiState.bandalartDetailData?.dueDate.isNullOrEmpty()) {
               VerticalDivider(

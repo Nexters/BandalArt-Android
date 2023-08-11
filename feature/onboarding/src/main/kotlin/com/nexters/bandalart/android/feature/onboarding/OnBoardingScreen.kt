@@ -3,6 +3,7 @@
 package com.nexters.bandalart.android.feature.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,15 +23,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
-import com.nexters.bandalart.android.core.ui.theme.Gray100
+import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 
 @Composable
@@ -66,7 +70,7 @@ internal fun OnBoardingScreen(
       )
       HorizontalPager(
         state = pagerState,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
       ) { page ->
         when (page) {
           0 -> {
@@ -80,22 +84,19 @@ internal fun OnBoardingScreen(
               Card(
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                modifier = Modifier.padding(horizontal = 16.dp),
               ) {
                 Box(
                   modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .background(Gray100),
+                    .background(White),
                   contentAlignment = Alignment.Center,
                 ) {
-                  val composition by rememberLottieComposition(
-                    spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_empty_box),
-                  )
-                  val progress by animateLottieCompositionAsState(composition)
-                  LottieAnimation(
-                    composition = composition,
-                    progress = { progress },
+                  val image = painterResource(id = R.drawable.ic_onboarding)
+                  Image(
+                    painter = image,
+                    contentDescription = "Delete Icon",
+                    modifier = Modifier.fillMaxSize(),
                   )
                 }
               }
@@ -110,22 +111,21 @@ internal fun OnBoardingScreen(
                 Spacer(modifier = Modifier.height(50.dp))
                 TitleText(text = "이제 반다라트와 함께\n부담 없이 계획을 세워봐요")
                 Spacer(modifier = Modifier.height(50.dp))
-                Card(
-                  shape = RoundedCornerShape(16.dp),
-                  elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                  modifier = Modifier.padding(horizontal = 16.dp),
-                ) {
+                Card(shape = RoundedCornerShape(16.dp)) {
                   Box(
                     modifier = Modifier
                       .fillMaxWidth()
                       .aspectRatio(1f)
-                      .background(Gray100),
+                      .background(White),
                     contentAlignment = Alignment.Center,
                   ) {
                     val composition by rememberLottieComposition(
-                      spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_empty_box),
+                      spec = LottieCompositionSpec.RawRes(R.raw.lottie_onboarding),
                     )
-                    val progress by animateLottieCompositionAsState(composition)
+                    val progress by animateLottieCompositionAsState(
+                      composition = composition,
+                      iterations = LottieConstants.IterateForever,
+                    )
                     LottieAnimation(
                       composition = composition,
                       progress = { progress },
