@@ -6,12 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.pretendard
+
+val cellLineBreak = LineBreak(
+  strategy = LineBreak.Strategy.Simple,
+  strictness = LineBreak.Strictness.Normal,
+  wordBreak = LineBreak.WordBreak.Phrase,
+)
 
 @Composable
 fun CellText(
@@ -33,5 +41,6 @@ fun CellText(
     lineHeight = 16.8.sp.nonScaleSp,
     letterSpacing = (-0.24).sp.nonScaleSp,
     textAlign = TextAlign.Center,
+    style = TextStyle(lineBreak = cellLineBreak),
   )
 }

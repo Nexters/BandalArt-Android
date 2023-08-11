@@ -62,9 +62,9 @@ data class HomeUiState(
   val isEmojiBottomSheetOpened: Boolean = false,
   val isBottomSheetDataChanged: Boolean = false,
   val isBottomSheetMainCellChanged: Boolean = false,
-  val isLoading: Boolean = false,
-  val isShowSkeleton: Boolean = false,
   val shareUrl: String = "",
+  val isShowSkeleton: Boolean = false,
+  val isLoading: Boolean = false,
   val error: Throwable? = null,
 )
 
