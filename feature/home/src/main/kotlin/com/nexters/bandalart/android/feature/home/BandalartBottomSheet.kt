@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.feature.home
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -65,6 +65,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTe
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
+import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
@@ -72,12 +73,13 @@ import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.feature.home.BottomSheetUiEvent
-import com.nexters.bandalart.android.feature.home.BottomSheetViewModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
+import com.nexters.bandalart.android.feature.home.ui.BandalartColorPicker
+import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
+import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import kotlinx.coroutines.launch
 
 @Composable
@@ -97,18 +99,18 @@ fun BandalartBottomSheet(
   LaunchedEffect(key1 = Unit) {
     viewModel.copyCellData(cellData = cellData)
   }
+  val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-  val context = LocalContext.current
 
   ModalBottomSheet(
-    modifier = Modifier
-      .wrapContentSize()
-      .statusBarsPadding(),
     onDismissRequest = {
       viewModel.bottomSheetClosed()
       onResult(false, false)
     },
+    modifier = Modifier
+      .wrapContentSize()
+      .statusBarsPadding(),
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
@@ -121,7 +123,6 @@ fun BandalartBottomSheet(
         }
       }
     }
-
     LaunchedEffect(viewModel) {
       viewModel.eventFlow.collect { event ->
         when (event) {
@@ -131,7 +132,6 @@ fun BandalartBottomSheet(
         }
       }
     }
-
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
         title = "해당 셀을 삭제하시겠어요?",
@@ -336,9 +336,7 @@ fun BandalartBottomSheet(
         AnimatedVisibility(visible = uiState.isDatePickerOpened) {
           BandalartDatePicker(
             onResult = { dueDateResult, openDatePickerPushResult ->
-              viewModel.dueDateChanged(
-                dueDate = if (dueDateResult.isNullOrEmpty()) null else dueDateResult,
-              )
+              viewModel.dueDateChanged(dueDate = if (dueDateResult.isNullOrEmpty()) null else dueDateResult)
               viewModel.openDatePicker(datePickerState = openDatePickerPushResult)
             },
             datePickerScope = rememberCoroutineScope(),
@@ -463,8 +461,3 @@ fun BandalartBottomSheet(
     }
   }
 }
-
-data class ThemeColor(
-  val mainColor: String,
-  val subColor: String,
-)

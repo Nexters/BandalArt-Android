@@ -91,7 +91,7 @@ fun NetworkErrorAlertDialog(
             colors = ButtonDefaults.buttonColors(containerColor = Gray900),
           ) {
             Text(
-              text = "확인",
+              text = "다시 시도하기",
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = White,

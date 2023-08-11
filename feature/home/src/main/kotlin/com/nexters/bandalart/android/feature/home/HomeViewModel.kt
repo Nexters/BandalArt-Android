@@ -34,18 +34,13 @@ import timber.log.Timber
  * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
  * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
- * @param isBandalartCompleted 반다라트 표의 메인 목표를 달성함
- * @param isBandalartCreated 반다라트 표가 생성됨
- * @param isBandalartDeleted 반다라트 표가 삭제됨
+ * @param isBandalartDeleted 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
- * @param isNetworkErrorGetBandalartAlertDialogOpened 표 데이터 Get 통신 시 네트워크 문제 발생
- * @param isLimitCreateBandalartAlertDialogOpened 표 데이터 Create 통신 시 네트워크 문제 발생
- * @param isNetworkErrorCreateBandalartAlertDialogOpened 표 데이터 Create 통신 시 네트워크 문제 발생
- * @param isNetworkErrorDeleteBandalartAlertDialogOpened 표 데이터 Delete 통신 시 네트워크 문제 발생
- * @param isNetworkErrorUpdateBandalartAlertDialogOpened 표 데이터 Update 통신 시 네트워크 문제 발생
- * @param isNetworkErrorShareBandalartAlertDialogOpened 표 공유 Url Get 통신 시 네트워크 문제 발생
+ * @param isNetworkErrorAlertDialogOpened 통신 시 네트워크 문제 발생
  * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
+ * @param isCellBottomSheetOpened 반다라트 셀 바텀시트가 열림
+ * @param isEmojiBottomSheetOpened 반다라트 이모지 바텀시트가 열림
  * @param isBottomSheetDataChanged 바텀시트의 데이터가 변경됨
  * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
  * @param isLoading 서버와의 통신 중 로딩 상태
@@ -58,18 +53,13 @@ data class HomeUiState(
   val bandalartList: List<BandalartDetailUiModel> = emptyList(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
-  val isBandalartCompleted: Boolean = false,
-  val isBandalartCreated: Boolean = false,
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
-  val isNetworkErrorGetBandalartAlertDialogOpened: Boolean = false,
-  val isLimitCreateBandalartAlertDialogOpened: Boolean = false,
-  val isNetworkErrorCreateBandalartAlertDialogOpened: Boolean = false,
-  val isNetworkErrorDeleteBandalartAlertDialogOpened: Boolean = false,
-  val isNetworkErrorUpdateBandalartAlertDialogOpened: Boolean = false,
-  val isNetworkErrorShareBandalartAlertDialogOpened: Boolean = false,
+  val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isBandalartListBottomSheetOpened: Boolean = false,
+  val isCellBottomSheetOpened: Boolean = false,
+  val isEmojiBottomSheetOpened: Boolean = false,
   val isBottomSheetDataChanged: Boolean = false,
   val isBottomSheetMainCellChanged: Boolean = false,
   val shareUrl: String = "",
@@ -152,7 +142,7 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             isShowSkeleton = false,
             bandalartList = emptyList(),
-            isNetworkErrorGetBandalartAlertDialogOpened = true,
+            isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
           Timber.e(exception)
@@ -183,7 +173,7 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             isShowSkeleton = false,
             bandalartCellData = null,
-            isNetworkErrorGetBandalartAlertDialogOpened = true,
+            isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
           Timber.e(exception)
@@ -204,6 +194,7 @@ class HomeViewModel @Inject constructor(
             error = null,
           )
           bottomSheetDataChanged(isBottomSheetDataChangedState = false)
+          openNetworkErrorAlertDialog(false)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -212,7 +203,7 @@ class HomeViewModel @Inject constructor(
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(
             bandalartCellData = null,
-            isNetworkErrorGetBandalartAlertDialogOpened = true,
+            isNetworkErrorAlertDialogOpened = true,
             isLoading = false,
             isShowSkeleton = false,
             error = exception,
@@ -240,11 +231,6 @@ class HomeViewModel @Inject constructor(
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("새로운 반다라트를 생성했어요."))
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            isNetworkErrorCreateBandalartAlertDialogOpened = true,
-          )
           Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
@@ -252,9 +238,10 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             isShowSkeleton = false,
-            isNetworkErrorCreateBandalartAlertDialogOpened = true,
+            isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
       }
@@ -284,10 +271,9 @@ class HomeViewModel @Inject constructor(
             isLoading = false,
             isShowSkeleton = false,
             isBandalartDeleted = false,
-            isNetworkErrorDeleteBandalartAlertDialogOpened = true,
             error = exception,
           )
-          openBandalartDeleteAlertDialog(false)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
       }
@@ -304,7 +290,7 @@ class HomeViewModel @Inject constructor(
       val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          getBandalartDetail(bandalartKey)
+          getBandalartList(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -314,9 +300,9 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             isShowSkeleton = false,
-            isNetworkErrorUpdateBandalartAlertDialogOpened = true,
             error = exception,
           )
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
       }
@@ -338,10 +324,8 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            error = exception,
-            isNetworkErrorShareBandalartAlertDialogOpened = true,
-          )
+          _uiState.value = _uiState.value.copy(error = exception)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
           Timber.e(exception)
         }
       }
@@ -357,6 +341,18 @@ class HomeViewModel @Inject constructor(
   fun openBandalartDeleteAlertDialog(state: Boolean) {
     _uiState.value = _uiState.value.copy(
       isBandalartDeleteAlertDialogOpened = state,
+    )
+  }
+
+  fun openEmojiBottomSheet(state: Boolean) {
+    _uiState.value = _uiState.value.copy(
+      isEmojiBottomSheetOpened = state,
+    )
+  }
+
+  fun openCellBottomSheet(state: Boolean) {
+    _uiState.value = _uiState.value.copy(
+      isCellBottomSheetOpened = state,
     )
   }
 
@@ -378,39 +374,9 @@ class HomeViewModel @Inject constructor(
     )
   }
 
-  fun openNetworkErrorGetBandalartAlertDialog(state: Boolean) {
+  private fun openNetworkErrorAlertDialog(state: Boolean) {
     _uiState.value = _uiState.value.copy(
-      isNetworkErrorGetBandalartAlertDialogOpened = state,
-    )
-  }
-
-  fun openLimitCreateBandalartAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isLimitCreateBandalartAlertDialogOpened = state,
-    )
-  }
-
-  fun openNetworkErrorCreateBandalartAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isNetworkErrorCreateBandalartAlertDialogOpened = state,
-    )
-  }
-
-  fun openNetworkErrorDeleteBandalartAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isNetworkErrorDeleteBandalartAlertDialogOpened = state,
-    )
-  }
-
-  fun openNetworkErrorUpdateBandalartAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isNetworkErrorUpdateBandalartAlertDialogOpened = state,
-    )
-  }
-
-  fun openNetworkErrorShareBandalartAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isNetworkErrorShareBandalartAlertDialogOpened = state,
+      isNetworkErrorAlertDialogOpened = state,
     )
   }
 
