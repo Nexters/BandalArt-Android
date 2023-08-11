@@ -78,7 +78,7 @@ internal fun OnBoardingScreen(
       )
       HorizontalPager(
         state = pagerState,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
       ) { page ->
         when (page) {
           0 -> {

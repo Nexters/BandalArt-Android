@@ -120,8 +120,7 @@ internal fun CompleteScreen(
       LottieAnimation(
         composition = composition,
         progress = { progress },
-        modifier = Modifier
-          .align(Alignment.TopCenter)
+        modifier = Modifier.align(Alignment.TopCenter),
       )
       Column(
         Modifier
@@ -172,7 +171,7 @@ internal fun CompleteScreen(
                   width = 2.dp,
                   color = Gray300,
                   shape = RoundedCornerShape(12.dp),
-                )
+                ),
             ) {
               Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -226,7 +225,7 @@ internal fun CompleteScreen(
 //          .clickable(onClick = {})
 //          .align(Alignment.BottomCenter)
 //          .offset(y = (-110).dp),
-//      ) {
+//      ) {동
 //        Column {
 //          Row(verticalAlignment = Alignment.CenterVertically) {
 //            val image = painterResource(id = R.drawable.ic_gallery)

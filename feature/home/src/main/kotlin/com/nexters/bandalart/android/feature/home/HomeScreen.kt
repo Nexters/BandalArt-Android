@@ -129,7 +129,7 @@ internal fun HomeRoute(
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
     shareBandalart = { key: String -> viewModel.shareBandalart(key) },
     initShareUrl = viewModel::initShareUrl,
-    navigateToOnBoarding = navigateToOnBoarding
+    navigateToOnBoarding = navigateToOnBoarding,
   )
 }
 
@@ -154,7 +154,7 @@ internal fun HomeScreen(
   setRecentBandalartKey: (String) -> Unit,
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
-  navigateToOnBoarding: () -> Unit
+  navigateToOnBoarding: () -> Unit,
 ) {
   val context = LocalContext.current
 
@@ -392,7 +392,7 @@ internal fun HomeScreen(
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
               letterSpacing = (-0.24).sp,
-              modifier = Modifier.clickable { navigateToOnBoarding() }
+              modifier = Modifier.clickable { navigateToOnBoarding() },
             )
             if (!uiState.bandalartDetailData?.dueDate.isNullOrEmpty()) {
               VerticalDivider(
