@@ -29,7 +29,6 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
 // TODO 목표 달성화면 로띠 연동 후에 onLogoClicked 제거
-@Suppress("unused")
 @Composable
 internal fun HomeTopBar(
   bandalartCount: Int,

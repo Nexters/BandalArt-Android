@@ -135,7 +135,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
-  navigateToComplete: () -> Unit,
+  navigateToComplete: (String, String, String) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
@@ -164,9 +164,9 @@ internal fun HomeScreen(
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
     if (uiState.bandalartDetailData?.isCompleted == true) {
       navigateToComplete(
-        uiState.bandalartDetailData?.key,
-        uiState.bandalartDetailData?.title!!,
-        if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) "default emoji" else bandalartDetailData.profileEmoji,
+        uiState.bandalartDetailData.key,
+        uiState.bandalartDetailData.title!!,
+        if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
       )
     }
   }
@@ -289,9 +289,9 @@ internal fun HomeScreen(
           onLogoClicked = {
             if (uiState.bandalartDetailData?.title != null) {
               navigateToComplete(
-                uiState.bandalartDetailData?.key,
-                uiState.bandalartDetailData?.title,
-                if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) "default emoji" else bandalartDetailData.profileEmoji,
+                uiState.bandalartDetailData.key,
+                uiState.bandalartDetailData.title,
+                if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
               )
             }
           },
