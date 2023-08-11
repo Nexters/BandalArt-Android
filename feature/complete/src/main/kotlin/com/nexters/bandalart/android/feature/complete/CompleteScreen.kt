@@ -217,48 +217,48 @@ internal fun CompleteScreen(
               }
             }
           }
+//          // MVP 제외
+//          Box(
+//            modifier = Modifier
+//              .clickable(onClick = {})
+//              .align(Alignment.BottomCenter)
+//              .offset(y = (-110).dp),
+//          ) {
+//            Column {
+//              Row(verticalAlignment = Alignment.CenterVertically) {
+//                val image = painterResource(id = R.drawable.ic_gallery)
+//                Image(
+//                  painter = image,
+//                  contentDescription = "Option Icon",
+//                )
+//                Text(
+//                  text = buildAnnotatedString {
+//                    withStyle(
+//                      style = SpanStyle(
+//                        textDecoration = TextDecoration.Underline,
+//                      ),
+//                    ) {
+//                      append("이미지 저장하기")
+//                    }
+//                  },
+//                  color = Gray400,
+//                  fontFamily = pretendard,
+//                  fontWeight = FontWeight.W600,
+//                  fontSize = 16.sp.nonScaleSp,
+//                  letterSpacing = -(0.32).sp.nonScaleSp,
+//                )
+//              }
+//            }
+//          }
+          BandalartButton(
+            onClick = shareBandalart,
+            text = "링크 공유하기",
+            modifier = Modifier
+              .align(Alignment.BottomCenter)
+              .padding(bottom = 32.dp),
+          )
         }
       }
-//      // MVP 제외
-//      Box(
-//        modifier = Modifier
-//          .clickable(onClick = {})
-//          .align(Alignment.BottomCenter)
-//          .offset(y = (-110).dp),
-//      ) {동
-//        Column {
-//          Row(verticalAlignment = Alignment.CenterVertically) {
-//            val image = painterResource(id = R.drawable.ic_gallery)
-//            Image(
-//              painter = image,
-//              contentDescription = "Option Icon",
-//            )
-//            Text(
-//              text = buildAnnotatedString {
-//                withStyle(
-//                  style = SpanStyle(
-//                    textDecoration = TextDecoration.Underline,
-//                  ),
-//                ) {
-//                  append("이미지 저장하기")
-//                }
-//              },
-//              color = Gray400,
-//              fontFamily = pretendard,
-//              fontWeight = FontWeight.W600,
-//              fontSize = 16.sp.nonScaleSp,
-//              letterSpacing = -(0.32).sp.nonScaleSp,
-//            )
-//          }
-//        }
-//      }
-      BandalartButton(
-        onClick = shareBandalart,
-        text = "링크 공유하기",
-        modifier = Modifier
-          .align(Alignment.BottomCenter)
-          .padding(bottom = 32.dp),
-      )
     }
   }
 }
