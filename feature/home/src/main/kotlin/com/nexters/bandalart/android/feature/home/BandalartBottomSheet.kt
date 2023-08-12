@@ -423,7 +423,7 @@ fun BandalartBottomSheet(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartMainCellModel = UpdateBandalartMainCellModel(
-                    title = uiState.cellData.title?.trim() ?: "",
+                    title = uiState.cellData.title?.trim(),
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                     profileEmoji = uiState.cellData.profileEmoji,

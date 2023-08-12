@@ -224,7 +224,7 @@ internal fun HomeScreen(
             uiState.bandalartDetailData!!.key,
             uiState.bandalartCellData!!.key,
             UpdateBandalartMainCellModel(
-              title = uiState.bandalartCellData.title ?: "",
+              title = uiState.bandalartCellData.title,
               description = uiState.bandalartCellData.description,
               dueDate = uiState.bandalartCellData.dueDate,
               profileEmoji = currentEmojiResult,
