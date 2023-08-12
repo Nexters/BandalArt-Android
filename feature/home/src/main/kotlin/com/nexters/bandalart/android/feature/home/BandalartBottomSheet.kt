@@ -44,9 +44,12 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -99,12 +102,10 @@ fun BandalartBottomSheet(
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.bottomSheetState.collectAsStateWithLifecycle()
-  LaunchedEffect(key1 = Unit) {
-    viewModel.copyCellData(cellData = cellData)
-  }
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val focusRequester = remember { FocusRequester() }
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -118,6 +119,14 @@ fun BandalartBottomSheet(
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
+    LaunchedEffect(key1 = Unit) {
+      viewModel.copyCellData(cellData = cellData)
+    }
+    LaunchedEffect(key1 = uiState.isCellDataCopied) {
+      if (uiState.isCellDataCopied && uiState.cellData.title.isNullOrEmpty()) {
+        focusRequester.requestFocus()
+      }
+    }
     LaunchedEffect(key1 = uiState.isCellUpdated) {
       if (uiState.isCellUpdated) {
         scope.launch {
@@ -245,7 +254,8 @@ fun BandalartBottomSheet(
             BasicTextField(
               modifier = Modifier
                 .fillMaxWidth()
-                .height(18.dp),
+                .height(18.dp)
+                .focusRequester(focusRequester),
               value = uiState.cellData.title ?: "",
               onValueChange = {
                 viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
