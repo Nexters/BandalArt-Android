@@ -45,7 +45,7 @@ fun BottomSheetTopBar(
       onClick = {
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
           if (!bottomSheetState.isVisible) {
-            bottomSheetClosed
+            bottomSheetClosed()
             onResult(false, false)
           }
         }
