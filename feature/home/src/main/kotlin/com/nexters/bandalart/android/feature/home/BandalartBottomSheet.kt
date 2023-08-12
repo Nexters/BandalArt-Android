@@ -225,14 +225,14 @@ fun BandalartBottomSheet(
                   }
                 }
               }
-                val image = painterResource(id = R.drawable.ic_edit)
-                Image(
-                  painter = image,
-                  contentDescription = "Edit Icon",
-                  modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .offset(x = 4.dp, y = 4.dp),
-                )
+              val image = painterResource(id = R.drawable.ic_edit)
+              Image(
+                painter = image,
+                contentDescription = "Edit Icon",
+                modifier = Modifier
+                  .align(Alignment.BottomEnd)
+                  .offset(x = 4.dp, y = 4.dp),
+              )
             }
           }
           Column(modifier = Modifier.padding(top = 10.dp)) {

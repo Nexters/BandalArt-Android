@@ -13,20 +13,17 @@ data class BandalartCellUiModel(
   val parentKey: String? = "",
   val children: List<BandalartCellUiModel> = emptyList(),
 ) {
-  fun copy(): BandalartCellUiModel {
-
-    return BandalartCellUiModel(
-      key,
-      title,
-      description,
-      dueDate,
-      isCompleted,
-      completionRatio,
-      profileEmoji,
-      mainColor,
-      subColor,
-      parentKey,
-      children
-    )
-  }
+  fun copy(): BandalartCellUiModel = BandalartCellUiModel(
+    key,
+    title,
+    description,
+    dueDate,
+    isCompleted,
+    completionRatio,
+    profileEmoji,
+    mainColor,
+    subColor,
+    parentKey,
+    children,
+  )
 }
