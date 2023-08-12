@@ -1,7 +1,6 @@
 package com.nexters.bandalart.android.feature.home.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.allColor
+import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
@@ -57,17 +57,14 @@ fun BandalartColorPicker(
         Card(
           modifier = Modifier
             .height(36.dp)
-            .aspectRatio(1f),
-          shape = RoundedCornerShape(90.dp),
-          colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
-        ) {
-          Box(
-            modifier = Modifier.clickable {
+            .aspectRatio(1f)
+            .noRippleClickable {
               initSelected = it
               onResult(initSelected)
             },
-          )
-        }
+          shape = RoundedCornerShape(90.dp),
+          colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
+        ) { }
       }
     }
   }
