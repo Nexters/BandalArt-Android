@@ -34,7 +34,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 
 @Composable
@@ -62,7 +62,9 @@ internal fun OnBoardingScreen(
   )
 
   Surface(
-    modifier = modifier.fillMaxSize(),
+    modifier = modifier
+      .fillMaxSize()
+      .background(Gray50),
   ) {
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -91,13 +93,14 @@ internal fun OnBoardingScreen(
               Spacer(modifier = Modifier.height(50.dp))
               Card(
                 shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.padding(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
               ) {
                 Box(
                   modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .background(White),
+                    .background(Gray50),
                   contentAlignment = Alignment.Center,
                 ) {
                   val image = painterResource(id = R.drawable.ic_onboarding)
@@ -119,17 +122,21 @@ internal fun OnBoardingScreen(
                 Spacer(modifier = Modifier.height(50.dp))
                 TitleText(text = "이제 반다라트와 함께\n부담 없이 계획을 세워봐요")
                 Spacer(modifier = Modifier.height(50.dp))
-                Card(shape = RoundedCornerShape(16.dp)) {
+                Card(
+                  shape = RoundedCornerShape(16.dp),
+                  modifier = Modifier.padding(16.dp)
+                ) {
                   Box(
                     modifier = Modifier
                       .fillMaxWidth()
                       .aspectRatio(1f)
-                      .background(White),
+                      .background(Gray50),
                     contentAlignment = Alignment.Center,
                   ) {
                     LottieAnimation(
                       composition = composition,
                       progress = { progress },
+                      modifier = Modifier.fillMaxSize()
                     )
                   }
                 }
