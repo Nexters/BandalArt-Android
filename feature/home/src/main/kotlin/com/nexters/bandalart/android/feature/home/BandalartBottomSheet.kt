@@ -225,7 +225,6 @@ fun BandalartBottomSheet(
                   }
                 }
               }
-              if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
                 val image = painterResource(id = R.drawable.ic_edit)
                 Image(
                   painter = image,
@@ -234,7 +233,6 @@ fun BandalartBottomSheet(
                     .align(Alignment.BottomEnd)
                     .offset(x = 4.dp, y = 4.dp),
                 )
-              }
             }
           }
           Column(modifier = Modifier.padding(top = 10.dp)) {
