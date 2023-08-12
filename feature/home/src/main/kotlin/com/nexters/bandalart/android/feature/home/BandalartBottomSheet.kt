@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -47,6 +48,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -103,7 +105,6 @@ fun BandalartBottomSheet(
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-//  val keyboardController = LocalSoftwareKeyboardController.current
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -164,11 +165,13 @@ fun BandalartBottomSheet(
       )
     }
 
+    val focusManager = LocalFocusManager.current
     Column(
       modifier = Modifier
         .background(White)
         .navigationBarsPadding()
-        .verticalScroll(rememberScrollState()),
+        .verticalScroll(rememberScrollState())
+        .noRippleClickable { focusManager.clearFocus() },
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
@@ -248,11 +251,11 @@ fun BandalartBottomSheet(
                 viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-//              keyboardActions = KeyboardActions(
-//                onDone = {
-//                  keyboardController?.hide()
-//                }
-//              ),
+              keyboardActions = KeyboardActions(
+                onDone = {
+                  focusManager.clearFocus()
+                },
+              ),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
@@ -365,6 +368,11 @@ fun BandalartBottomSheet(
                 )
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+              keyboardActions = KeyboardActions(
+                onDone = {
+                  focusManager.clearFocus()
+                },
+              ),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
