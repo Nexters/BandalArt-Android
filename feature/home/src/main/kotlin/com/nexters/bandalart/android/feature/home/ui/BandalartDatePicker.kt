@@ -158,7 +158,7 @@ fun DateSelectionSection(
         items = years,
         isYear = true,
         isMonth = true,
-        firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1968),
+        firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1963),
         onItemSelected = onYearChosen,
       )
       InfiniteItemsPicker(
