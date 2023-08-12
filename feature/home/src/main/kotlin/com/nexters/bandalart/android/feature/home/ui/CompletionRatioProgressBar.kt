@@ -16,7 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ fun CompletionRatioProgressBar(
   completionRatio: Int,
   progressColor: Color,
 ) {
-  var progress by remember { mutableStateOf(0f) }
+  var progress by remember { mutableFloatStateOf(0f) }
 
   val size by animateFloatAsState(
     targetValue = progress,
