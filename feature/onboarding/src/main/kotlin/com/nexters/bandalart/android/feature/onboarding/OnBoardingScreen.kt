@@ -124,7 +124,7 @@ internal fun OnBoardingScreen(
                 Spacer(modifier = Modifier.height(50.dp))
                 Card(
                   shape = RoundedCornerShape(16.dp),
-                  modifier = Modifier.padding(16.dp)
+                  modifier = Modifier.padding(16.dp),
                 ) {
                   Box(
                     modifier = Modifier
@@ -136,7 +136,7 @@ internal fun OnBoardingScreen(
                     LottieAnimation(
                       composition = composition,
                       progress = { progress },
-                      modifier = Modifier.fillMaxSize()
+                      modifier = Modifier.fillMaxSize(),
                     )
                   }
                 }
