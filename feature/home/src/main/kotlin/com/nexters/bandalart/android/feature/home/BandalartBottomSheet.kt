@@ -384,8 +384,8 @@ fun BandalartBottomSheet(
             BottomSheetDivider()
           }
         }
-        Spacer(modifier = Modifier.height(28.dp))
         if (!isSubCell && !isMainCell) {
+          Spacer(modifier = Modifier.height(28.dp))
           BottomSheetSubTitleText(text = "달성 여부")
           Spacer(modifier = Modifier.height(12.dp))
           Box(modifier = Modifier.fillMaxWidth()) {
@@ -410,8 +410,9 @@ fun BandalartBottomSheet(
                 .height(28.dp),
             )
           }
+          Spacer(modifier = Modifier.height(4.dp))
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         Row(
           modifier = Modifier
             .fillMaxWidth()
