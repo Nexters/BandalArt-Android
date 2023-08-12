@@ -95,8 +95,12 @@ fun BandalartDatePicker(
               .invokeOnCompletion {
                 if (!datePickerState.isVisible) {
                   onResult(
-                    "${chosenYear.value}-${chosenMonth.value}-${chosenDay.value}"
-                      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    "${chosenYear.value}-${chosenMonth.value}-${
+                      if (chosenMonth.value == "2")
+                        if (chosenDay.value == "31" || chosenDay.value == "30") "28"
+                        else chosenDay.value
+                      else chosenDay.value
+                    }".format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                     false,
                   )
                 }
@@ -154,7 +158,7 @@ fun DateSelectionSection(
         items = years,
         isYear = true,
         isMonth = true,
-        firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1968),
+        firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1963),
         onItemSelected = onYearChosen,
       )
       InfiniteItemsPicker(
@@ -237,6 +241,6 @@ val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
 
-val years = (1950..2050).map { it }
+val years = (2000..2050).map { it }
 val monthsNumber = (1..12).map { it }
 val days = (1..31).map { it }

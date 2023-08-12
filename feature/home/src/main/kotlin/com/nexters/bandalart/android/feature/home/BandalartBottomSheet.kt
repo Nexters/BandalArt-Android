@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -47,6 +48,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -57,6 +59,7 @@ import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
+import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentPlaceholder
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDeleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDivider
@@ -66,12 +69,12 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTo
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
-import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -110,7 +113,8 @@ fun BandalartBottomSheet(
     },
     modifier = Modifier
       .wrapContentSize()
-      .statusBarsPadding(),
+      .statusBarsPadding()
+      .noRippleClickable { },
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
@@ -161,11 +165,13 @@ fun BandalartBottomSheet(
       )
     }
 
+    val focusManager = LocalFocusManager.current
     Column(
       modifier = Modifier
         .background(White)
         .navigationBarsPadding()
-        .verticalScroll(rememberScrollState()),
+        .verticalScroll(rememberScrollState())
+        .noRippleClickable { focusManager.clearFocus() },
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
@@ -225,16 +231,14 @@ fun BandalartBottomSheet(
                   }
                 }
               }
-              if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
-                val image = painterResource(id = R.drawable.ic_edit)
-                Image(
-                  painter = image,
-                  contentDescription = "Edit Icon",
-                  modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .offset(x = 4.dp, y = 4.dp),
-                )
-              }
+              val image = painterResource(id = R.drawable.ic_edit)
+              Image(
+                painter = image,
+                contentDescription = "Edit Icon",
+                modifier = Modifier
+                  .align(Alignment.BottomEnd)
+                  .offset(x = 4.dp, y = 4.dp),
+              )
             }
           }
           Column(modifier = Modifier.padding(top = 10.dp)) {
@@ -247,10 +251,15 @@ fun BandalartBottomSheet(
                 viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+              keyboardActions = KeyboardActions(
+                onDone = {
+                  focusManager.clearFocus()
+                },
+              ),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (uiState.cellData.title.isNullOrEmpty()) BottomSheetContentText(text = "15자 이내로 입력해주세요.")
+                if (uiState.cellData.title.isNullOrEmpty()) BottomSheetContentPlaceholder(text = "15자 이내로 입력해주세요")
                 innerTextField()
               },
             )
@@ -311,15 +320,14 @@ fun BandalartBottomSheet(
                 if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(emojiPickerState = false)
               },
           ) {
-            val dueDateText = uiState.cellData.dueDate?.split("-")
-            BottomSheetContentText(
-              color = if (uiState.cellData.dueDate.isNullOrEmpty()) Gray400 else Gray900,
-              text =
-              if (dueDateText.isNullOrEmpty()) "마감일을 선택해주세요."
-              else {
-                dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
-              },
-            )
+            if (uiState.cellData.dueDate.isNullOrEmpty()) {
+              BottomSheetContentPlaceholder(text = "마감일을 선택해주세요")
+            } else {
+              val dueDateText = uiState.cellData.dueDate!!.split("-")
+              BottomSheetContentText(
+                text = dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일",
+              )
+            }
             Icon(
               modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -360,10 +368,15 @@ fun BandalartBottomSheet(
                 )
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+              keyboardActions = KeyboardActions(
+                onDone = {
+                  focusManager.clearFocus()
+                },
+              ),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (uiState.cellData.description.isNullOrEmpty()) BottomSheetContentText(text = "메모를 입력해주세요.")
+                if (uiState.cellData.description.isNullOrEmpty()) BottomSheetContentPlaceholder(text = "메모를 입력해주세요")
                 innerTextField()
               },
             )
@@ -379,7 +392,6 @@ fun BandalartBottomSheet(
             BottomSheetContentText(
               modifier = Modifier.align(Alignment.CenterStart),
               text = if (uiState.cellData.isCompleted) "달성" else "미달성",
-              color = Gray900,
             )
             Switch(
               checked = uiState.cellData.isCompleted,
@@ -416,14 +428,14 @@ fun BandalartBottomSheet(
           }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
-            isBlankCell = uiState.cellData.title.isNullOrEmpty(),
+            isBlankCell = uiState.cellData.title?.trim().isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
             onClick = {
               if (isMainCell) {
                 viewModel.updateBandalartMainCell(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartMainCellModel = UpdateBandalartMainCellModel(
-                    title = uiState.cellData.title ?: "",
+                    title = uiState.cellData.title?.trim(),
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                     profileEmoji = uiState.cellData.profileEmoji,
@@ -436,7 +448,7 @@ fun BandalartBottomSheet(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartSubCellModel = UpdateBandalartSubCellModel(
-                    title = uiState.cellData.title,
+                    title = uiState.cellData.title?.trim(),
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                   ),
@@ -446,7 +458,7 @@ fun BandalartBottomSheet(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
-                    title = uiState.cellData.title.toString(),
+                    title = uiState.cellData.title?.trim(),
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                     isCompleted = uiState.cellData.isCompleted,

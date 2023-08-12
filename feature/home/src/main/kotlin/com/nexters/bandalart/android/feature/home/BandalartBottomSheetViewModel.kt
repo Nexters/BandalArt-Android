@@ -37,6 +37,7 @@ import timber.log.Timber
 
 data class BottomSheetUiState(
   val cellData: BandalartCellUiModel = BandalartCellUiModel(),
+  val cellDataForCheck: BandalartCellUiModel = BandalartCellUiModel(),
   val isCellDataCopied: Boolean = false,
   val isCellUpdated: Boolean = false,
   val isCellDeleted: Boolean = false,
@@ -69,6 +70,7 @@ class BottomSheetViewModel @Inject constructor(
     _bottomSheetState.update {
       it.copy(
         cellData = cellData,
+        cellDataForCheck = cellData.copy(),
         isCellDataCopied = true,
       )
     }

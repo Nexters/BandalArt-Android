@@ -224,7 +224,7 @@ internal fun HomeScreen(
             uiState.bandalartDetailData!!.key,
             uiState.bandalartCellData!!.key,
             UpdateBandalartMainCellModel(
-              title = uiState.bandalartCellData.title ?: "",
+              title = uiState.bandalartCellData.title,
               description = uiState.bandalartCellData.description,
               dueDate = uiState.bandalartCellData.dueDate,
               profileEmoji = currentEmojiResult,
@@ -353,7 +353,7 @@ internal fun HomeScreen(
                 .wrapContentHeight(),
             ) {
               FixedSizeText(
-                text = uiState.bandalartDetailData?.title ?: "메인 목표를 입력해주세요",
+                text = uiState.bandalartDetailData?.title ?: "메인목표를 입력해주세요",
                 color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
                 fontWeight = FontWeight.W700,
                 fontSize = 20.sp,

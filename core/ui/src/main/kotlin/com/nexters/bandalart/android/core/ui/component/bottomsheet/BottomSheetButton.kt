@@ -21,7 +21,10 @@ fun BottomSheetDeleteButton(
     colors = IconButtonColors(Gray200, Gray900, Gray200, Gray900),
     modifier = modifier.height(56.dp),
   ) {
-    BottomSheetButtonText(text = "삭제")
+    BottomSheetButtonText(
+      text = "삭제",
+      color = Gray900,
+    )
   }
 }
 
@@ -37,6 +40,9 @@ fun BottomSheetCompleteButton(
     modifier = modifier.height(56.dp),
     enabled = !isBlankCell,
   ) {
-    BottomSheetButtonText(text = "완료")
+    BottomSheetButtonText(
+      text = "완료",
+      color = if (isBlankCell) Gray400 else White,
+    )
   }
 }
