@@ -42,7 +42,7 @@ fun BottomSheetCompleteButton(
   ) {
     BottomSheetButtonText(
       text = "완료",
-      color = if (isBlankCell) Gray900 else White,
+      color = if (isBlankCell) Gray400 else White,
     )
   }
 }

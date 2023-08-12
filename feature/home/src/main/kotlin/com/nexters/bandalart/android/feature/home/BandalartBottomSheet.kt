@@ -309,15 +309,6 @@ fun BandalartBottomSheet(
                 if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(emojiPickerState = false)
               },
           ) {
-//            val dueDateText = uiState.cellData.dueDate?.split("-")
-//            BottomSheetContentText(
-//              color = if (uiState.cellData.dueDate.isNullOrEmpty()) Gray400 else Gray900,
-//              text =
-//              if (dueDateText.isNullOrEmpty()) "마감일을 선택해주세요"
-//              else {
-//                dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
-//              },
-//            )
             if (uiState.cellData.dueDate.isNullOrEmpty()) {
               BottomSheetContentPlaceholder(text = "마감일을 선택해주세요")
             } else {
@@ -421,7 +412,7 @@ fun BandalartBottomSheet(
           }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
-            isBlankCell = uiState.cellData.title?.trim().isNullOrEmpty(),
+            isBlankCell = uiState.cellData.title?.trim().isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
             onClick = {
               if (isMainCell) {
                 viewModel.updateBandalartMainCell(
