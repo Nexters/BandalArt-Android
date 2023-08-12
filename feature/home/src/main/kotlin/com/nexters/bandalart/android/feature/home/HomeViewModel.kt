@@ -116,6 +116,7 @@ class HomeViewModel @Inject constructor(
           if (bandalartKey != null) {
             _uiState.value = _uiState.value.copy(isShowSkeleton = true)
             getBandalartDetail(bandalartKey)
+            return@launch
           }
 
           // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
