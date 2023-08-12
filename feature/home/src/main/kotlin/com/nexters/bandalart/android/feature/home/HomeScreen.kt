@@ -517,13 +517,16 @@ internal fun HomeScreen(
   }
 }
 
-fun updateBandalartListTitles(list: List<BandalartDetailUiModel>): List<BandalartDetailUiModel> {
+private fun updateBandalartListTitles(list: List<BandalartDetailUiModel>): List<BandalartDetailUiModel> {
   var counter = 1
   return list.map { item ->
     if (item.title.isNullOrEmpty()) {
       val updatedTitle = "새 반다라트 $counter"
       counter += 1
-      item.copy(title = updatedTitle)
+      item.copy(
+        title = updatedTitle,
+        isGeneratedTitle = true,
+      )
     } else {
       item
     }
