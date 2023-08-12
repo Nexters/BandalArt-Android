@@ -91,6 +91,7 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 
+@Suppress("unused")
 @Composable
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
@@ -135,7 +136,7 @@ internal fun HomeRoute(
     initShareUrl = viewModel::initShareUrl,
     navigateToOnBoarding = navigateToOnBoarding,
     checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
-    openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state)}
+    openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
   )
 }
 
