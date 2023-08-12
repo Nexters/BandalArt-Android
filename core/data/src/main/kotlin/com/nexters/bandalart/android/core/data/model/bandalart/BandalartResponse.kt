@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BandalartResponse(
-  @SerialName("id")
-  val id: String,
   @SerialName("key")
   val key: String,
   @SerialName("mainColor")
@@ -15,16 +13,6 @@ data class BandalartResponse(
   val subColor: String,
   @SerialName("profileEmoji")
   val profileEmoji: String?,
-  @SerialName("cellId")
-  val cellId: Int,
-  @SerialName("shareId")
-  val shareId: String?,
-  @SerialName("userId")
-  val userId: Int,
-  @SerialName("createdAt")
-  val createdAt: String,
-  @SerialName("updatedAt")
-  val updatedAt: String,
-  @SerialName("deletedAt")
-  val deletedAt: String?,
+  @SerialName("completionRatio")
+  val completionRatio: Int,
 )

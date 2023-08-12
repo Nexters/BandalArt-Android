@@ -225,6 +225,10 @@ class HomeViewModel @Inject constructor(
 
   fun createBandalart() {
     viewModelScope.launch {
+      if (_uiState.value.bandalartList.size + 1 > 5) {
+        _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트는 최대 5개 생성할 수 있어요."))
+        return@launch
+      }
       _uiState.value = _uiState.value.copy(isShowSkeleton = true)
       val result = createBandalartUseCase()
       when {

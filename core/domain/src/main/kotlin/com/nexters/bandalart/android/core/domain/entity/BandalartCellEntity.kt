@@ -8,7 +8,7 @@ package com.nexters.bandalart.android.core.domain.entity
  * @param description 셀 설명
  * @param dueDate 셀 마감일, 미설정인 경우 null
  * @param isCompleted 셀 완료 여부
- * @param completionRatio 달성률(%)
+ * @param completionRatio 목표 달성률(%)
  * @param profileEmoji 프로필 이모지 (Sub Cell, Task Cell 이면 null)
  * @param mainColor 메인 테마 색상 (Sub Cell, Task Cell 이면 null)
  * @param subColor 서브 테마 색상 (Sub Cell, Task Cell 이면 null)
