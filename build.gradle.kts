@@ -12,6 +12,8 @@ plugins {
   alias(libs.plugins.android.library) apply false
   alias(libs.plugins.android.hilt) apply false
   alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.google.service) apply false
+  alias(libs.plugins.firebase.crashlytics) apply false
 }
 
 buildscript {

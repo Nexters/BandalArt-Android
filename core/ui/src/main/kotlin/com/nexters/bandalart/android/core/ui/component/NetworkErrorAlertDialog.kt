@@ -35,7 +35,7 @@ fun NetworkErrorAlertDialog(
   message: String,
   onConfirmClick: () -> Unit,
 ) {
-  Dialog(onDismissRequest = onConfirmClick) {
+  Dialog(onDismissRequest = {}) {
     Surface(
       shape = RoundedCornerShape(16.dp),
       color = White,
@@ -49,11 +49,9 @@ fun NetworkErrorAlertDialog(
         Image(
           painter = image,
           contentDescription = "Delete Icon",
-          modifier = Modifier
-            .height(28.dp)
-            .align(Alignment.CenterHorizontally),
+          modifier = Modifier.align(Alignment.CenterHorizontally),
         )
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
           modifier = Modifier.align(Alignment.CenterHorizontally),
           text = title,

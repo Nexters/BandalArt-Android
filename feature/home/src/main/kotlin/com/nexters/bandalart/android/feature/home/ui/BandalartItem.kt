@@ -151,7 +151,7 @@ fun BandalartItem(
       }
       FixedSizeText(
         text = bandalartItem.title ?: "",
-        color = Gray900,
+        color = if (bandalartItem.isGeneratedTitle) Gray300 else Gray900,
         fontWeight = FontWeight.W700,
         fontSize = 16.sp,
         letterSpacing = (-0.32).sp,

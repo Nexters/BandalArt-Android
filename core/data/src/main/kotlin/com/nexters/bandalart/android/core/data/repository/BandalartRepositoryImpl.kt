@@ -1,6 +1,7 @@
 package com.nexters.bandalart.android.core.data.repository
 
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
+import com.nexters.bandalart.android.core.data.datasource.CompletedBandalartKeyDataSource
 import com.nexters.bandalart.android.core.data.datasource.RecentBandalartKeyDataSource
 import com.nexters.bandalart.android.core.data.mapper.toEntity
 import com.nexters.bandalart.android.core.data.mapper.toModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 internal class BandalartRepositoryImpl @Inject constructor(
   private val bandalartRemoteDataSource: BandalartRemoteDataSource,
   private val recentBandalartKeyDataSource: RecentBandalartKeyDataSource,
+  private val completedBandalartKeyDataSource: CompletedBandalartKeyDataSource,
 ) : BandalartRepository {
   override suspend fun createBandalart(): BandalartEntity? {
     return bandalartRemoteDataSource.createBandalart()?.toEntity()
@@ -79,5 +81,17 @@ internal class BandalartRepositoryImpl @Inject constructor(
 
   override suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity? {
     return bandalartRemoteDataSource.shareBandalart(bandalartKey)?.toEntity()
+  }
+
+  override suspend fun insertCompletedBandalartKey(bandalartKey: String) {
+    completedBandalartKeyDataSource.insertCompletedBandalartKey(bandalartKey)
+  }
+
+  override suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
+    return completedBandalartKeyDataSource.checkCompletedBandalartKey(bandalartKey)
+  }
+
+  override suspend fun deleteCompletedBandalartKey(bandalartKey: String) {
+    completedBandalartKeyDataSource.deleteCompletedBandalartKey(bandalartKey)
   }
 }

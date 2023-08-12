@@ -3,6 +3,8 @@
 plugins {
   bandalart("android-application")
   bandalart("android-hilt")
+  alias(libs.plugins.google.service)
+  alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -36,5 +38,8 @@ dependencies {
     libs.timber,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle,
+    platform(libs.firebase.bom),
+    libs.firebase.analytics,
+    libs.firebase.crashlytics
   )
 }

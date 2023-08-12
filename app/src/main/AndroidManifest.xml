@@ -24,6 +24,10 @@
         android:name="com.nexters.bandalart.android.initialize.TimberInitializer"
         android:value="androidx.startup" />
 
+      <meta-data
+        android:name="com.nexters.bandalart.android.initialize.FirebaseCrashlyticsInitializer"
+        android:value="androidx.startup" />
+
     </provider>
 
     <activity

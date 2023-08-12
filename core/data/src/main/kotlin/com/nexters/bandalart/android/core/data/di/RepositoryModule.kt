@@ -18,13 +18,19 @@ internal abstract class RepositoryModule {
 
   @Binds
   @Singleton
-  abstract fun bindGuestLoginTokenRepository(guestLoginTokenRepositoryImpl: GuestLoginTokenRepositoryImpl): GuestLoginTokenRepository
+  abstract fun bindGuestLoginTokenRepository(
+    guestLoginTokenRepositoryImpl: GuestLoginTokenRepositoryImpl,
+  ): GuestLoginTokenRepository
 
   @Binds
   @Singleton
-  abstract fun bindServerHealthCheckRepository(serverHealthCheckRepositoryImpl: ServerHealthCheckRepositoryImpl): ServerHealthCheckRepository
+  abstract fun bindServerHealthCheckRepository(
+    serverHealthCheckRepositoryImpl: ServerHealthCheckRepositoryImpl,
+  ): ServerHealthCheckRepository
 
   @Binds
   @Singleton
-  abstract fun bindBandalartRepository(bandalartRepositoryImpl: BandalartRepositoryImpl): BandalartRepository
+  abstract fun bindBandalartRepository(
+    bandalartRepositoryImpl: BandalartRepositoryImpl,
+  ): BandalartRepository
 }

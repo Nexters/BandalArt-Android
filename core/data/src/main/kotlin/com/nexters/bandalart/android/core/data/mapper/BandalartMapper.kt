@@ -17,17 +17,11 @@ import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellE
 
 internal fun BandalartResponse.toEntity() =
   BandalartEntity(
-    id = id,
     key = key,
     mainColor = mainColor,
     subColor = subColor,
     profileEmoji = profileEmoji,
-    cellId = cellId,
-    shareId = shareId,
-    userId = userId,
-    createdAt = createdAt,
-    updatedAt = updatedAt,
-    deletedAt = deletedAt,
+    completionRatio = completionRatio,
   )
 
 internal fun BandalartDetailResponse.toEntity() =

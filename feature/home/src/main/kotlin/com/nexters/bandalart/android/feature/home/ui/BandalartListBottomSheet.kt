@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -109,6 +110,7 @@ fun BandalartListBottomSheet(
       LazyColumn(
         modifier = Modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(bottom = NavigationBarHeightDp + 32.dp),
       ) {
         items(
           count = bandalartList.size,
@@ -128,35 +130,36 @@ fun BandalartListBottomSheet(
             onCancelClicked = onCancelClicked,
           )
         }
-      }
-      Spacer(modifier = Modifier.height(20.dp))
-      Row {
-        Button(
-          modifier = Modifier
-            .weight(1f)
-            .height(56.dp)
-            .padding(horizontal = 24.dp),
-          onClick = createBandalart,
-          colors = ButtonDefaults.buttonColors(containerColor = Gray200),
-        ) {
+        item {
+          Spacer(modifier = Modifier.height(20.dp))
           Row {
-            Icon(
-              imageVector = Icons.Default.Add,
-              contentDescription = "Add Icon",
-              tint = Gray600,
-              modifier = Modifier.size(20.dp),
-            )
-            Spacer(modifier = Modifier.padding(start = 4.dp))
-            FixedSizeText(
-              text = "반다라트 추가",
-              fontSize = 16.sp.nonScaleSp,
-              fontWeight = FontWeight.W600,
-              color = Gray800,
-            )
+            Button(
+              modifier = Modifier
+                .weight(1f)
+                .height(56.dp)
+                .padding(horizontal = 24.dp),
+              onClick = createBandalart,
+              colors = ButtonDefaults.buttonColors(containerColor = Gray200),
+            ) {
+              Row {
+                Icon(
+                  imageVector = Icons.Default.Add,
+                  contentDescription = "Add Icon",
+                  tint = Gray600,
+                  modifier = Modifier.size(20.dp),
+                )
+                Spacer(modifier = Modifier.padding(start = 4.dp))
+                FixedSizeText(
+                  text = "반다라트 추가",
+                  fontSize = 16.sp.nonScaleSp,
+                  fontWeight = FontWeight.W600,
+                  color = Gray800,
+                )
+              }
+            }
           }
         }
       }
-      Spacer(modifier = Modifier.height(NavigationBarHeightDp + 32.dp))
     }
   }
 }

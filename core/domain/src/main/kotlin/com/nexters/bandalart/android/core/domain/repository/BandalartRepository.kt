@@ -109,4 +109,22 @@ interface BandalartRepository {
    * @param bandalartKey 반다라트 고유 키
    */
   suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity?
+
+  /**
+   * 목표를 달성한 반다라트를 목표를 달성한 반다라트 목록에 저장
+   * @param bandalartKey 반다라트 고유 키
+   */
+  suspend fun insertCompletedBandalartKey(bandalartKey: String)
+
+  /**
+   * 이미 목표를 달성한 반다라트 인지 여부 확인
+   * @param bandalartKey 반다라트 고유 키
+   */
+  suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean
+
+  /**
+   * 목표 달성 화면을 띄워줬던 반다라트를 목표를 달성한 반다라트 목록에서 제거
+   * @param bandalartKey 반다라트 고유 키
+   */
+  suspend fun deleteCompletedBandalartKey(bandalartKey: String)
 }

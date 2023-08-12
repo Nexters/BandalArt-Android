@@ -3,6 +3,7 @@
 package com.nexters.bandalart.android.feature.home
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -82,6 +83,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
@@ -89,6 +91,7 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 
+@Suppress("unused")
 @Composable
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
@@ -98,12 +101,14 @@ internal fun HomeRoute(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
       when (event) {
         is HomeUiEvent.ShowSnackbar -> {
-          onShowSnackbar(event.message)
+          // onShowSnackbar(event.message)
+          Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
         }
       }
     }
@@ -112,8 +117,8 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
-    navigateToComplete = { key: String, title: String, emoji: String -> navigateToComplete(key, title, emoji) },
-    getBandalartList = { key: String? -> viewModel.getBandalartList(key) },
+    navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
+    getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
     createBandalart = viewModel::createBandalart,
@@ -127,12 +132,15 @@ internal fun HomeRoute(
     bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
     openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
-    shareBandalart = { key: String -> viewModel.shareBandalart(key) },
+    shareBandalart = { key -> viewModel.shareBandalart(key) },
     initShareUrl = viewModel::initShareUrl,
     navigateToOnBoarding = navigateToOnBoarding,
+    checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
+    openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
   )
 }
 
+@Suppress("unused")
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
@@ -155,6 +163,8 @@ internal fun HomeScreen(
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
   navigateToOnBoarding: () -> Unit,
+  checkCompletedBandalartKey: suspend (String) -> Boolean,
+  openNetworkErrorDialog: (Boolean) -> Unit,
 ) {
   val context = LocalContext.current
 
@@ -163,14 +173,18 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  // TODO 다시 돌아올 수 있도록, 매번 목표 달성 화면으로 이동하지 않도록
+  // TODO 매번 목표 달성 화면으로 이동하지 않도록
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
+    // 목표를 달성했을 경우
     if (uiState.bandalartDetailData?.isCompleted == true) {
-      navigateToComplete(
-        uiState.bandalartDetailData.key,
-        uiState.bandalartDetailData.title!!,
-        if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
-      )
+      // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
+      if (uiState.bandalartDetailData.key.let { checkCompletedBandalartKey(it) }) {
+        navigateToComplete(
+          uiState.bandalartDetailData.key,
+          uiState.bandalartDetailData.title!!,
+          if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
+        )
+      }
     }
   }
 
@@ -199,7 +213,7 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
-      bandalartList = uiState.bandalartList,
+      bandalartList = updateBandalartListTitles(uiState.bandalartList),
       currentBandalartKey = uiState.bandalartDetailData!!.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
@@ -271,7 +285,11 @@ internal fun HomeScreen(
     NetworkErrorAlertDialog(
       title = "네트워크 문제로 표를\n불러오지 못했어요",
       message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { getBandalartList(null) },
+      onConfirmClick = {
+        openNetworkErrorDialog(false)
+        loadingChanged(true)
+        getBandalartList(null)
+      },
     )
   }
 
@@ -491,9 +509,29 @@ internal fun HomeScreen(
         }
       }
       when {
-        uiState.isLoading -> { LoadingScreen() }
-        uiState.isShowSkeleton -> { BandalartSkeleton() }
+        uiState.isLoading -> {
+          LoadingScreen()
+        }
+        uiState.isShowSkeleton -> {
+          BandalartSkeleton()
+        }
       }
+    }
+  }
+}
+
+private fun updateBandalartListTitles(list: List<BandalartDetailUiModel>): List<BandalartDetailUiModel> {
+  var counter = 1
+  return list.map { item ->
+    if (item.title.isNullOrEmpty()) {
+      val updatedTitle = "새 반다라트 $counter"
+      counter += 1
+      item.copy(
+        title = updatedTitle,
+        isGeneratedTitle = true,
+      )
+    } else {
+      item
     }
   }
 }
