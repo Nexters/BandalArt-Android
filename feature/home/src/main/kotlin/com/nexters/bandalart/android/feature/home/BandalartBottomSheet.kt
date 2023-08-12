@@ -57,6 +57,7 @@ import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
+import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentPlaceholder
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetContentText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDeleteButton
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDivider
@@ -250,7 +251,7 @@ fun BandalartBottomSheet(
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (uiState.cellData.title.isNullOrEmpty()) BottomSheetContentText(text = "15자 이내로 입력해주세요.")
+                if (uiState.cellData.title.isNullOrEmpty()) BottomSheetContentPlaceholder(text = "15자 이내로 입력해주세요")
                 innerTextField()
               },
             )
@@ -311,15 +312,23 @@ fun BandalartBottomSheet(
                 if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(emojiPickerState = false)
               },
           ) {
-            val dueDateText = uiState.cellData.dueDate?.split("-")
-            BottomSheetContentText(
-              color = if (uiState.cellData.dueDate.isNullOrEmpty()) Gray400 else Gray900,
-              text =
-              if (dueDateText.isNullOrEmpty()) "마감일을 선택해주세요."
-              else {
-                dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
-              },
-            )
+//            val dueDateText = uiState.cellData.dueDate?.split("-")
+//            BottomSheetContentText(
+//              color = if (uiState.cellData.dueDate.isNullOrEmpty()) Gray400 else Gray900,
+//              text =
+//              if (dueDateText.isNullOrEmpty()) "마감일을 선택해주세요"
+//              else {
+//                dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
+//              },
+//            )
+            if (uiState.cellData.dueDate.isNullOrEmpty()) {
+              BottomSheetContentPlaceholder(text = "마감일을 선택해주세요")
+            } else {
+              val dueDateText = uiState.cellData.dueDate!!.split("-")
+               BottomSheetContentText(
+                 text = dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
+               )
+            }
             Icon(
               modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -363,7 +372,7 @@ fun BandalartBottomSheet(
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (uiState.cellData.description.isNullOrEmpty()) BottomSheetContentText(text = "메모를 입력해주세요.")
+                if (uiState.cellData.description.isNullOrEmpty()) BottomSheetContentPlaceholder(text = "메모를 입력해주세요")
                 innerTextField()
               },
             )
@@ -379,7 +388,6 @@ fun BandalartBottomSheet(
             BottomSheetContentText(
               modifier = Modifier.align(Alignment.CenterStart),
               text = if (uiState.cellData.isCompleted) "달성" else "미달성",
-              color = Gray900,
             )
             Switch(
               checked = uiState.cellData.isCompleted,
