@@ -50,34 +50,40 @@ class MainViewModel @Inject constructor(
       val guestLoginToken = getGuestLoginTokenUseCase()
       Timber.d(guestLoginToken)
       if (guestLoginToken.isEmpty()) {
-        val result = createGuestLoginTokenUseCase()
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            val newGuestLoginToken = result.getOrNull()!!
-            setGuestLoginTokenUseCase(newGuestLoginToken.key)
-            _uiState.value = _uiState.value.copy(
-              isLoggedIn = false,
-              isLoading = false,
-            )
-            createBandalartUseCase()
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()
-            _uiState.value = _uiState.value.copy(
-              isLoggedIn = false,
-              isLoading = false,
-            )
-            Timber.e(exception)
-          }
-        }
+        createGuestLoginToken()
       } else {
         _uiState.value = _uiState.value.copy(
           isLoggedIn = true,
           isLoading = false,
         )
+      }
+    }
+  }
+
+  private fun createGuestLoginToken() {
+    viewModelScope.launch {
+      val result = createGuestLoginTokenUseCase()
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          val newGuestLoginToken = result.getOrNull()!!
+          setGuestLoginTokenUseCase(newGuestLoginToken.key)
+          _uiState.value = _uiState.value.copy(
+            isLoggedIn = false,
+            isLoading = false,
+          )
+          createBandalartUseCase()
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()
+          _uiState.value = _uiState.value.copy(
+            isLoggedIn = false,
+            isLoading = false,
+          )
+          Timber.e(exception)
+        }
       }
     }
   }
