@@ -67,6 +67,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTo
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
@@ -102,6 +103,7 @@ fun BandalartBottomSheet(
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+//  val keyboardController = LocalSoftwareKeyboardController.current
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -110,7 +112,8 @@ fun BandalartBottomSheet(
     },
     modifier = Modifier
       .wrapContentSize()
-      .statusBarsPadding(),
+      .statusBarsPadding()
+      .noRippleClickable { },
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
@@ -245,6 +248,11 @@ fun BandalartBottomSheet(
                 viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+//              keyboardActions = KeyboardActions(
+//                onDone = {
+//                  keyboardController?.hide()
+//                }
+//              ),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
