@@ -151,7 +151,7 @@ fun BandalartItem(
       }
       FixedSizeText(
         text = bandalartItem.title ?: "",
-        color = Gray900,
+        color = if (isFormattedAsNewBandalart(bandalartItem.title)) Gray300 else Gray900,
         fontWeight = FontWeight.W700,
         fontSize = 16.sp,
         letterSpacing = (-0.32).sp,
@@ -169,3 +169,9 @@ fun BandalartItem(
     }
   }
 }
+
+private fun isFormattedAsNewBandalart(title: String?): Boolean {
+  val pattern = "^새 반다라트 [0-9]{1,2}$".toRegex()
+  return title?.matches(pattern) ?: false
+}
+

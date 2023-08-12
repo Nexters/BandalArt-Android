@@ -384,7 +384,7 @@ class HomeViewModel @Inject constructor(
     )
   }
 
-  private fun openNetworkErrorAlertDialog(state: Boolean) {
+  fun openNetworkErrorAlertDialog(state: Boolean) {
     _uiState.value = _uiState.value.copy(
       isNetworkErrorAlertDialogOpened = state,
     )

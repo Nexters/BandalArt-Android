@@ -82,6 +82,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
@@ -131,9 +132,11 @@ internal fun HomeRoute(
     initShareUrl = viewModel::initShareUrl,
     navigateToOnBoarding = navigateToOnBoarding,
     checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
+    openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state)}
   )
 }
 
+@Suppress("unused")
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
@@ -157,6 +160,7 @@ internal fun HomeScreen(
   initShareUrl: () -> Unit,
   navigateToOnBoarding: () -> Unit,
   checkCompletedBandalartKey: suspend (String) -> Boolean,
+  openNetworkErrorDialog: (Boolean) -> Unit,
 ) {
   val context = LocalContext.current
 
@@ -205,7 +209,7 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
-      bandalartList = uiState.bandalartList,
+      bandalartList = updateBandalartListTitles(uiState.bandalartList),
       currentBandalartKey = uiState.bandalartDetailData!!.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
@@ -273,11 +277,16 @@ internal fun HomeScreen(
     )
   }
 
+  // TODO 다시 시도 로직 변경(이전에 호출 했던 함수를 호출 하는 방식으로)
+  // 외부 영역 클릭 막기
   if (uiState.isNetworkErrorAlertDialogOpened) {
     NetworkErrorAlertDialog(
       title = "네트워크 문제로 표를\n불러오지 못했어요",
       message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = { getBandalartList(null) },
+      onConfirmClick = {
+        getBandalartList(null)
+        // openNetworkErrorDialog(false)
+      },
     )
   }
 
@@ -504,6 +513,19 @@ internal fun HomeScreen(
           BandalartSkeleton()
         }
       }
+    }
+  }
+}
+
+fun updateBandalartListTitles(list: List<BandalartDetailUiModel>): List<BandalartDetailUiModel> {
+  var counter = 1
+  return list.map { item ->
+    if (item.title.isNullOrEmpty()) {
+      val updatedTitle = "새 반다라트 $counter"
+      counter += 1
+      item.copy(title = updatedTitle)
+    } else {
+      item
     }
   }
 }

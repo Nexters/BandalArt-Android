@@ -28,6 +28,7 @@ import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 
+// TODO 다시 시도 눌렀을 때 dialog 닫히고, 로딩 -> 실패시 다시 뜨도록
 @Composable
 fun NetworkErrorAlertDialog(
   modifier: Modifier = Modifier,
