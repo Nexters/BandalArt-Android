@@ -36,7 +36,7 @@ fun NetworkErrorAlertDialog(
   message: String,
   onConfirmClick: () -> Unit,
 ) {
-  Dialog(onDismissRequest = onConfirmClick) {
+  Dialog(onDismissRequest = {}) {
     Surface(
       shape = RoundedCornerShape(16.dp),
       color = White,

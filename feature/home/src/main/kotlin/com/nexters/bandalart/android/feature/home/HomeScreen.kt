@@ -3,6 +3,7 @@
 package com.nexters.bandalart.android.feature.home
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -99,12 +100,14 @@ internal fun HomeRoute(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
       when (event) {
         is HomeUiEvent.ShowSnackbar -> {
-          onShowSnackbar(event.message)
+          // onShowSnackbar(event.message)
+          Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
         }
       }
     }
@@ -277,15 +280,14 @@ internal fun HomeScreen(
     )
   }
 
-  // TODO 다시 시도 로직 변경(이전에 호출 했던 함수를 호출 하는 방식으로)
-  // 외부 영역 클릭 막기
   if (uiState.isNetworkErrorAlertDialogOpened) {
     NetworkErrorAlertDialog(
       title = "네트워크 문제로 표를\n불러오지 못했어요",
       message = "다시 시도해주시기 바랍니다.",
       onConfirmClick = {
+        openNetworkErrorDialog(false)
+        loadingChanged(true)
         getBandalartList(null)
-        // openNetworkErrorDialog(false)
       },
     )
   }

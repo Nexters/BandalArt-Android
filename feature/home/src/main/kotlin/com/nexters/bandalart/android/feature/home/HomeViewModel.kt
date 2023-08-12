@@ -151,7 +151,6 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             isShowSkeleton = false,
-            bandalartList = emptyList(),
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
@@ -248,7 +247,6 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             isLoading = false,
             isShowSkeleton = false,
-            isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
           _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
