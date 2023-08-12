@@ -416,14 +416,14 @@ fun BandalartBottomSheet(
           }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
-            isBlankCell = uiState.cellData.title.isNullOrEmpty(),
+            isBlankCell = uiState.cellData.title?.trim().isNullOrEmpty(),
             onClick = {
               if (isMainCell) {
                 viewModel.updateBandalartMainCell(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartMainCellModel = UpdateBandalartMainCellModel(
-                    title = uiState.cellData.title ?: "",
+                    title = uiState.cellData.title?.trim() ?: "",
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                     profileEmoji = uiState.cellData.profileEmoji,
@@ -436,7 +436,7 @@ fun BandalartBottomSheet(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartSubCellModel = UpdateBandalartSubCellModel(
-                    title = uiState.cellData.title,
+                    title = uiState.cellData.title?.trim(),
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                   ),
@@ -446,7 +446,7 @@ fun BandalartBottomSheet(
                   bandalartKey = bandalartKey,
                   cellKey = cellData.key,
                   updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
-                    title = uiState.cellData.title.toString(),
+                    title = uiState.cellData.title?.trim(),
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                     isCompleted = uiState.cellData.isCompleted,
