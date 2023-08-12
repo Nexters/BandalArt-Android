@@ -72,7 +72,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray700
-import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -325,9 +324,9 @@ fun BandalartBottomSheet(
               BottomSheetContentPlaceholder(text = "마감일을 선택해주세요")
             } else {
               val dueDateText = uiState.cellData.dueDate!!.split("-")
-               BottomSheetContentText(
-                 text = dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일"
-               )
+              BottomSheetContentText(
+                text = dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일",
+              )
             }
             Icon(
               modifier = Modifier

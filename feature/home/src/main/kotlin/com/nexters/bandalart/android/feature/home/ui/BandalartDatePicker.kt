@@ -96,8 +96,8 @@ fun BandalartDatePicker(
                 if (!datePickerState.isVisible) {
                   onResult(
                     "${chosenYear.value}-${chosenMonth.value}-${
-                      if (chosenMonth.value=="2") 
-                        if(chosenDay.value =="31" || chosenDay.value =="30") "28"
+                      if (chosenMonth.value == "2")
+                        if (chosenDay.value == "31" || chosenDay.value == "30") "28"
                         else chosenDay.value
                       else chosenDay.value
                     }".format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
