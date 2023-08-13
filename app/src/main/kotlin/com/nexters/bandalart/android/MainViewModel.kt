@@ -7,7 +7,7 @@ import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginT
 import com.nexters.bandalart.android.core.domain.usecase.login.GetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.SetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.feature.home.ui.StringResource
+import com.nexters.bandalart.android.feature.home.util.StringResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel

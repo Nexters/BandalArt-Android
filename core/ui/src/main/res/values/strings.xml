@@ -18,12 +18,16 @@
   <string name="homescreen_complete_ratio_text">달성률 %1$d%%</string>
   <string name="homescreen_complete_text">달성 완료!</string>
   <string name="homescreen_share_text">공유하기</string>
+
+<!-- BandalartChart.kt -->
   <string name="homescreen_layout_id_text">Sub %1$d</string>
   <string name="homescreen_sub1_id_text">Sub 1</string>
   <string name="homescreen_sub2_id_text">Sub 2</string>
   <string name="homescreen_sub3_id_text">Sub 3</string>
   <string name="homescreen_sub4_id_text">Sub 4</string>
   <string name="homescreen_main_id_text">Main</string>
+
+<!-- BandalartCell.kt -->
   <string name="homescreen_main_cell_text">메인목표</string>
   <string name="homescreen_sub_cell_text">서브목표</string>
 
