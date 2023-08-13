@@ -2,11 +2,13 @@ package com.nexters.bandalart.android.feature.home.mapper
 
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
@@ -66,3 +68,6 @@ internal fun UpdateBandalartTaskCellModel.toEntity() =
     dueDate = dueDate,
     isCompleted = isCompleted,
   )
+
+internal fun UpdateBandalartEmojiModel.toEntity() =
+  UpdateBandalartEmojiEntity(profileEmoji = profileEmoji)

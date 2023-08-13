@@ -13,11 +13,13 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBand
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.InsertCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.StringResource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,6 +80,7 @@ class HomeViewModel @Inject constructor(
   private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
+  private val updateBandalartEmojiUseCase: UpdateBandalartEmojiUseCase,
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
   private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
   private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
@@ -302,6 +305,35 @@ class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
       val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          getBandalartList(bandalartKey)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            isShowSkeleton = false,
+            error = exception,
+          )
+          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _snackbarMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+        }
+      }
+    }
+  }
+
+  fun updateBandalartEmoji(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartEmojiModel: UpdateBandalartEmojiModel,
+  ) {
+    viewModelScope.launch {
+      _uiState.value = _uiState.value.copy(isLoading = true)
+      val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
           getBandalartList(bandalartKey)

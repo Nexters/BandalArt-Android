@@ -84,6 +84,7 @@ import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
@@ -127,6 +128,7 @@ internal fun HomeRoute(
     getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     updateBandalartMainCell = viewModel::updateBandalartMainCell,
+    updateBandalartEmoji = viewModel::updateBandalartEmoji,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
     loadingChanged = { state -> viewModel.loadingChanged(state) },
@@ -155,6 +157,7 @@ internal fun HomeScreen(
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
   loadingChanged: (Boolean) -> Unit,
@@ -240,17 +243,10 @@ internal fun HomeScreen(
         isBottomSheet = true,
         onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
           openEmojiBottomSheet(openEmojiBottomSheetResult)
-          updateBandalartMainCell(
+          updateBandalartEmoji(
             uiState.bandalartDetailData!!.key,
             uiState.bandalartCellData!!.key,
-            UpdateBandalartMainCellModel(
-              title = uiState.bandalartCellData.title,
-              description = uiState.bandalartCellData.description,
-              dueDate = uiState.bandalartCellData.dueDate,
-              profileEmoji = currentEmojiResult,
-              mainColor = uiState.bandalartCellData.mainColor!!,
-              subColor = uiState.bandalartCellData.subColor!!,
-            ),
+            UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
           )
         },
         emojiPickerScope = rememberCoroutineScope(),

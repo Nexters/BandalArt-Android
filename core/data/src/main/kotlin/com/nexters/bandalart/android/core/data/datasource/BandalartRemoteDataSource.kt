@@ -4,6 +4,7 @@ import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailRe
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartShareResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartEmojiRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
@@ -37,6 +38,12 @@ interface BandalartRemoteDataSource {
     bandalartKey: String,
     cellKey: String,
     updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
+  )
+
+  suspend fun updateBandalartEmoji(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
   )
 
   suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String)
