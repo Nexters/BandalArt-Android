@@ -33,31 +33,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.extension.toFormatStringToLocalDateTime
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.pretendard
-import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartDatePicker(
-  onResult: (String?, Boolean) -> Unit,
+  onResult: (LocalDateTime?, Boolean) -> Unit,
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
-  currentDueDate: String? = null,
+  currentDueDate: LocalDateTime,
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.fillMaxWidth(),
   ) {
-    val chosenYear =
-      remember { mutableStateOf(if (!currentDueDate.isNullOrEmpty()) currentDueDate.split("-")[0] else currentYear.toString()) }
-    val chosenMonth =
-      remember { mutableStateOf(if (!currentDueDate.isNullOrEmpty()) currentDueDate.split("-")[1] else currentMonth.toString()) }
-    val chosenDay =
-      remember { mutableStateOf(if (!currentDueDate.isNullOrEmpty()) currentDueDate.split("-")[2].split("T")[0] else currentDay.toString()) }
+    val chosenYear = remember { mutableStateOf(currentDueDate.year.toString()) }
+    val chosenMonth = remember { mutableStateOf(currentDueDate.monthValue.toString()) }
+    val chosenDay = remember { mutableStateOf(currentDueDate.dayOfMonth.toString()) }
 
     Row(
       modifier = Modifier
@@ -91,16 +89,12 @@ fun BandalartDatePicker(
         modifier = Modifier
           .padding(start = 16.dp)
           .clickable {
-            datePickerScope.launch { datePickerState.hide() }
+            datePickerScope
+              .launch { datePickerState.hide() }
               .invokeOnCompletion {
                 if (!datePickerState.isVisible) {
                   onResult(
-                    "${chosenYear.value}-${chosenMonth.value}-${
-                      if (chosenMonth.value == "2")
-                        if (chosenDay.value == "31" || chosenDay.value == "30") "28"
-                        else chosenDay.value
-                      else chosenDay.value
-                    }".format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    selectedDateWithValidate(chosenYear.value, chosenMonth.value, chosenDay.value),
                     false,
                   )
                 }
@@ -237,10 +231,18 @@ fun InfiniteItemsPicker(
   }
 }
 
-val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
-
 val years = (2000..2050).map { it }
 val monthsNumber = (1..12).map { it }
 val days = (1..31).map { it }
+
+fun selectedDateWithValidate(year: String, month: String, day: String): LocalDateTime {
+  return "$year-${month.padStart(2, '0')}-${
+    if (month == "2")
+      if (day == "31" || day == "30") "28"
+      else day.padStart(2, '0')
+    else if (month == "4" || month == "6" || month == "9" || month == "11")
+      if (day == "31") "30"
+      else day.padStart(2, '0')
+    else day.padStart(2, '0')
+  }T00:00".toFormatStringToLocalDateTime()
+}

@@ -74,6 +74,8 @@ import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.extension.toFormatStringToLocalDateTime
+import com.nexters.bandalart.android.core.ui.extension.toFormatLocalDateTimeStringToString
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
@@ -86,6 +88,7 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellM
 import com.nexters.bandalart.android.feature.home.ui.BandalartColorPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -335,9 +338,8 @@ fun BandalartBottomSheet(
             if (uiState.cellData.dueDate.isNullOrEmpty()) {
               BottomSheetContentPlaceholder(text = "마감일을 선택해주세요")
             } else {
-              val dueDateText = uiState.cellData.dueDate!!.split("-")
               BottomSheetContentText(
-                text = dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일",
+                text = uiState.cellData.dueDate!!.toFormatLocalDateTimeStringToString(),
               )
             }
             Icon(
@@ -356,12 +358,12 @@ fun BandalartBottomSheet(
         AnimatedVisibility(visible = uiState.isDatePickerOpened) {
           BandalartDatePicker(
             onResult = { dueDateResult, openDatePickerPushResult ->
-              viewModel.dueDateChanged(dueDate = if (dueDateResult.isNullOrEmpty()) null else dueDateResult)
+              viewModel.dueDateChanged(dueDate = dueDateResult.toString())
               viewModel.openDatePicker(datePickerState = openDatePickerPushResult)
             },
             datePickerScope = rememberCoroutineScope(),
             datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            currentDueDate = uiState.cellData.dueDate,
+            currentDueDate = uiState.cellData.dueDate?.toFormatStringToLocalDateTime() ?: LocalDateTime.now(),
           )
         }
         Spacer(modifier = Modifier.height(28.dp))
