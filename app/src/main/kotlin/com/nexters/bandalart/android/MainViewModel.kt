@@ -6,11 +6,15 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandala
 import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.GetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.SetGuestLoginTokenUseCase
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.feature.home.ui.StringResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -41,6 +45,9 @@ class MainViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(MainUiState())
   val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
+  private val _logMessage = Channel<StringResource>()
+  val logMessage = _logMessage.receiveAsFlow()
+
   init {
     getGuestLoginToken()
   }
@@ -62,15 +69,15 @@ class MainViewModel @Inject constructor(
             createBandalartUseCase()
           }
           result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
+            _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
           }
           result.isFailure -> {
-            val exception = result.exceptionOrNull()
+            val exception = result.exceptionOrNull()!!
             _uiState.value = _uiState.value.copy(
               isLoggedIn = false,
               isLoading = false,
             )
-            Timber.e(exception)
+            _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
           }
         }
       } else {

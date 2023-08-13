@@ -17,13 +17,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray400
@@ -38,6 +39,7 @@ fun BandalartDeleteAlertDialog(
   onDeleteClicked: () -> Unit,
   onCancelClicked: () -> Unit,
 ) {
+  val context = LocalContext.current
   Dialog(onDismissRequest = { onCancelClicked() }) {
     Surface(
       shape = RoundedCornerShape(16.dp),
@@ -48,10 +50,12 @@ fun BandalartDeleteAlertDialog(
           .fillMaxWidth()
           .padding(top = 24.dp),
       ) {
-        val image = painterResource(id = R.drawable.ic_delete)
+        val image = painterResource(
+          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
+        )
         Image(
           painter = image,
-          contentDescription = "Delete Icon",
+          contentDescription = context.getString(R.string.delete_descrption_text),
           modifier = Modifier
             .height(28.dp)
             .align(Alignment.CenterHorizontally),
@@ -99,7 +103,7 @@ fun BandalartDeleteAlertDialog(
             ),
           ) {
             Text(
-              text = "취소",
+              text = context.getString(R.string.delete_bandalart_cancle_text),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = Gray900,
@@ -119,7 +123,7 @@ fun BandalartDeleteAlertDialog(
             ),
           ) {
             Text(
-              text = "삭제하기",
+              text = context.getString(R.string.delete_bandalart_delete_text),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = White,

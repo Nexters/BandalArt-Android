@@ -1,7 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!-- OnBoardingScreen.kt -->
+  <string name="onboarding_title1_text">복잡하고 막막한 \n 만다라트 계획표는 이제 안녕!</string>
+  <string name="onboarding_title2_text">이제 반다라트와 함께\n 부담 없이 계획을 세워봐요</string>
+  <string name="onboarding_start_text">시작하기</string>
+
+<!-- CompleteScreen.kt -->
+  <string name="complete_title_text">반다라트의 모든 목표를 달성했어요. \n 정말 대단해요!</string>
+  <string name="complete_share_text">링크 공유하기</string>
+  <string name="complete_chart_text">달성 완료 반다라트</string>
+
+<!--  HomeScreen.kt -->
+  <string name="homescreen_default_emoji_text">default emoji</string>
+  <string name="homescreen_share_url_text">제가 만든 반다라트를 구경하러오세요! \n %1$s</string>
+  <string name="homescreen_share_type_text">text/plain</string>
+  <string name="homescreen_empty_title_text">메인목표를 입력해주세요</string>
+  <string name="homescreen_complete_ratio_text">달성률 %1$d%%</string>
+  <string name="homescreen_complete_text">달성 완료!</string>
+  <string name="homescreen_share_text">공유하기</string>
+  <string name="homescreen_layout_id_text">Sub %1$d</string>
+  <string name="homescreen_sub1_id_text">Sub 1</string>
+  <string name="homescreen_sub2_id_text">Sub 2</string>
+  <string name="homescreen_sub3_id_text">Sub 3</string>
+  <string name="homescreen_sub4_id_text">Sub 4</string>
+  <string name="homescreen_main_id_text">Main</string>
+  <string name="homescreen_main_cell_text">메인목표</string>
+  <string name="homescreen_sub_cell_text">서브목표</string>
+
+<!-- HomeTopbar.kt -->
+  <string name="hometopbar_list_text">목록</string>
+  <string name="hometopbar_add_text">추가</string>
+
+<!--  BandalartListBottomSheet.kt -->
+  <string name="bandalart_list_empty_title_text">새 반다라트 %1$d</string>
+  <string name="bandalart_list_title_text">반다라트 목록</string>
+  <string name="bandalart_list_add_text">반다라트 추가</string>
+
+<!-- BandalartDropDownMenu.kt -->
+  <string name="dropdown_delete_text">삭제하기</string>
+
+<!--  BandalartBottomSheet.kt -->
+  <string name="bottomsheet_title_text">목표 이름 (필수)</string>
+  <string name="bottomsheet_title_placeholder_text">15자 이내로 입력해주세요</string>
+  <string name="bottomsheet_color_text">색상 테마</string>
+  <string name="bottomsheet_duedate_text">마감일 (선택)</string>
+  <string name="bottomsheet_duedate_placeholder_text">마감일을 선택해주세요</string>
+  <string name="bottomsheet_description_text">메모 (선택)</string>
+  <string name="bottomsheet_description_placeholder_text">메모를 입력해주세요</string>
+  <string name="bottomsheet_isCompleted_text">달성 여부</string>
+  <string name="bottomsheet_Completed_text">달성</string>
+  <string name="bottomsheet_unCompleted_text">미달성</string>
+
+<!-- BandalartDatePicker.kt -->
+  <string name="datepicker_year_text">%1$s년</string>
+  <string name="datepicker_month_text">%1$s월</string>
+  <string name="datepicker_day_text">%1$s일</string>
+
+<!-- BandalartDeleteAlertDialog -->
+  <string name="delete_bandalart_dialog_empty_title_text">지금 작성중인 \n 반다라트를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_dialog_title_text">%1$s \n 반다라트를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_dialog_message_text">삭제된 반다라트는 다시 복구할 수 없어요.</string>
+  <string name="delete_bandalart_cell_dialog_title_text">해당 셀을 삭제하시겠어요?</string>
+  <string name="delete_bandalart_maincell_dialog_message_text">메인 목표 삭제는 반다라트 전체가 삭제되고 \n 다시 복구할 수 없어요.</string>
+  <string name="delete_bandalart_subcell_dialog_message_text">서브 목표 삭제는 하위 태스크와 함께 삭제되고 \n 다시 복구할 수 없어요.</string>
+  <string name="delete_bandalart_taskcell_dialog_message_text">삭제된 내용은 다시 복구할 수 없어요.</string>
+  <string name="delete_bandalart_delete_text">삭제하기</string>
+  <string name="delete_bandalart_cancle_text">취소</string>
+
+<!-- NetworkErrorAlertDialog -->
+  <string name="network_error_dialog_title_text">네트워크 문제로 표를 \n 불러오지 못했어요</string>
+  <string name="network_error_dialog_message_text">다시 시도해주시기 바랍니다.</string>
+  <string name="network_error_retry_message_text">다시 시도하기</string>
+
+<!-- BandalartSkeletonScreen.kt-->
+  <string name="skeleton_title_text">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+  <string name="skeleton_complete_ratio_text">달성률 (-%)</string>
+
+
+<!-- HomeScreenViewModel.kt, BandalartBottomSheetViewModel.kt -->
   <string name="data_validation_text">Request succeeded but data validation failed</string>
   <string name="create_bandalart_text">새로운 반다라트를 생성했어요.</string>
   <string name="limit_create_bandalart_text">반다라트는 최대 5개 생성할 수 있어요.</string>
   <string name="delete_bandalart_text">반다라트가 삭제되었어요.</string>
+
+<!-- image descrption -->
+  <string name="empty_emoji_descrption_text">Empty Emoji Icon</string>
+  <string name="edit_descrption_text">Edit Icon</string>
+  <string name="arrow_forward_descrption_text">Arrow Forward Icon</string>
+  <string name="option_descrption_text">Option Icon</string>
+  <string name="check_descrption_text">Check Icon</string>
+  <string name="share_descrption_text">Share Icon</string>
+  <string name="add_descrption_text">Add Icon</string>
+  <string name="complete_descrption_text">Complete Icon</string>
+  <string name="app_descrption_text">App Icon</string>
+  <string name="hamburger_descrption_text">Hamburger Icon</string>
+  <string name="clear_descrption_text">Clear Icon</string>
+  <string name="delete_descrption_text">Delete Icon</string>
+
+<!--  label -->
+  <string name="skeleton_trans_animate_label_text">Hamburger Icon</string>
+
 </resources>

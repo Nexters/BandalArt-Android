@@ -16,12 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Error
 import com.nexters.bandalart.android.core.ui.theme.White
@@ -34,6 +35,7 @@ fun BandalartDropDownMenu(
   isDropDownMenuOpened: Boolean,
   onDeleteClicked: () -> Unit,
 ) {
+  val context = LocalContext.current
   MaterialTheme(
     shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
   ) {
@@ -85,10 +87,12 @@ fun BandalartDropDownMenu(
           .padding(horizontal = 7.dp),
         text = {
           Row {
-            val image = painterResource(id = R.drawable.ic_delete)
+            val image = painterResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
+            )
             Image(
               painter = image,
-              contentDescription = "Delete Icon",
+              contentDescription = context.getString(R.string.delete_descrption_text),
               modifier = Modifier
                 .height(14.dp)
                 .align(CenterVertically),
@@ -99,7 +103,7 @@ fun BandalartDropDownMenu(
                 .fillMaxHeight()
                 .padding(start = 13.dp)
                 .align(CenterVertically),
-              text = "삭제하기",
+              text = context.getString(R.string.dropdown_delete_text),
               color = Error,
               fontSize = 14.sp.nonScaleSp,
               fontFamily = pretendard,

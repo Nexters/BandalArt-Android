@@ -1,9 +1,13 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
+@file:SuppressLint("StringFormatInvalid")
 
 package com.nexters.bandalart.android.feature.home
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.nexters.bandalart.android.core.ui.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,7 +64,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CellText
@@ -85,7 +88,6 @@ import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
@@ -93,7 +95,6 @@ import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import timber.log.Timber
 
-@Suppress("unused")
 @Composable
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
@@ -127,7 +128,6 @@ internal fun HomeRoute(
     navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
     getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
-    updateBandalartMainCell = viewModel::updateBandalartMainCell,
     updateBandalartEmoji = viewModel::updateBandalartEmoji,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
@@ -148,7 +148,6 @@ internal fun HomeRoute(
   )
 }
 
-@Suppress("unused")
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
@@ -156,7 +155,6 @@ internal fun HomeScreen(
   navigateToComplete: (String, String, String) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
-  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
   updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
@@ -191,7 +189,9 @@ internal fun HomeScreen(
         navigateToComplete(
           uiState.bandalartDetailData.key,
           uiState.bandalartDetailData.title!!,
-          if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
+          if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+            context.getString(R.string.homescreen_default_emoji_text)
+          } else uiState.bandalartDetailData.profileEmoji,
         )
       }
     }
@@ -210,9 +210,9 @@ internal fun HomeScreen(
         action = Intent.ACTION_SEND
         putExtra(
           Intent.EXTRA_TEXT,
-          "제가 만든 반다라트를 구경하러오세요! \n ${uiState.shareUrl}",
+          context.getString(R.string.homescreen_share_url_text, uiState.shareUrl),
         )
-        type = "text/plain"
+        type = context.getString(R.string.homescreen_share_type_text)
       }
       val shareIntent = Intent.createChooser(sendIntent, null)
       context.startActivity(shareIntent)
@@ -222,7 +222,7 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
-      bandalartList = updateBandalartListTitles(uiState.bandalartList),
+      bandalartList = updateBandalartListTitles(uiState.bandalartList, context),
       currentBandalartKey = uiState.bandalartDetailData!!.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
@@ -273,11 +273,11 @@ internal fun HomeScreen(
   if (uiState.isBandalartDeleteAlertDialogOpened) {
     BandalartDeleteAlertDialog(
       title = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) {
-        "지금 작성중인\n반다라트를 삭제하시겠어요?"
+        context.getString(R.string.delete_bandalart_dialog_empty_title_text)
       } else {
-        "'${uiState.bandalartDetailData?.title}'\n반다라트를 삭제하시겠어요?"
+        context.getString(R.string.delete_bandalart_dialog_title_text, uiState.bandalartDetailData?.title)
       },
-      message = "삭제된 반다라트는 다시 복구할 수 없어요.",
+      message = context.getString(R.string.delete_bandalart_dialog_message_text),
       onDeleteClicked = { uiState.bandalartDetailData?.let { deleteBandalart(it.key) } },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
     )
@@ -285,8 +285,8 @@ internal fun HomeScreen(
 
   if (uiState.isNetworkErrorAlertDialogOpened) {
     NetworkErrorAlertDialog(
-      title = "네트워크 문제로 표를\n불러오지 못했어요",
-      message = "다시 시도해주시기 바랍니다.",
+      title = context.getString(R.string.network_error_dialog_title_text),
+      message = context.getString(R.string.network_error_dialog_message_text),
       onConfirmClick = {
         openNetworkErrorDialog(false)
         loadingChanged(true)
@@ -314,7 +314,9 @@ internal fun HomeScreen(
               navigateToComplete(
                 uiState.bandalartDetailData.key,
                 uiState.bandalartDetailData.title,
-                if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
+                if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+                  context.getString(R.string.homescreen_default_emoji_text)
+                } else uiState.bandalartDetailData.profileEmoji,
               )
             }
           },
@@ -342,10 +344,12 @@ internal fun HomeScreen(
                   contentAlignment = Alignment.Center,
                 ) {
                   if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
-                    val image = painterResource(id = R.drawable.ic_empty_emoji)
+                    val image = painterResource(
+                      id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                    )
                     Image(
                       painter = image,
-                      contentDescription = "Empty Emoji Icon",
+                      contentDescription = context.getString(R.string.empty_emoji_descrption_text),
                     )
                   } else {
                     EmojiText(
@@ -356,10 +360,12 @@ internal fun HomeScreen(
                 }
               }
               if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
-                val image = painterResource(id = R.drawable.ic_edit)
+                val image = painterResource(
+                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+                )
                 Image(
                   painter = image,
-                  contentDescription = "Edit Icon",
+                  contentDescription = context.getString(R.string.edit_descrption_text),
                   modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .offset(x = 4.dp, y = 4.dp),
@@ -373,7 +379,7 @@ internal fun HomeScreen(
                 .wrapContentHeight(),
             ) {
               FixedSizeText(
-                text = uiState.bandalartDetailData?.title ?: "메인목표를 입력해주세요",
+                text = uiState.bandalartDetailData?.title ?: context.getString(R.string.homescreen_empty_title_text),
                 color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
                 fontWeight = FontWeight.W700,
                 fontSize = 20.sp,
@@ -382,10 +388,12 @@ internal fun HomeScreen(
                   .align(Alignment.Center)
                   .clickable { openCellBottomSheet(true) },
               )
-              val image = painterResource(id = R.drawable.ic_option)
+              val image = painterResource(
+                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
+              )
               Image(
                 painter = image,
-                contentDescription = "Option Icon",
+                contentDescription = context.getString(R.string.option_descrption_text),
                 modifier = Modifier
                   .align(Alignment.CenterEnd)
                   .clickable(onClick = { openDropDownMenu(true) }),
@@ -407,7 +415,10 @@ internal fun HomeScreen(
           ) {
             // TODO 온보딩 navigation 제거
             FixedSizeText(
-              text = "달성률 (${uiState.bandalartDetailData?.completionRatio ?: 0}%)",
+              text = context.getString(
+                R.string.homescreen_complete_ratio_text,
+                uiState.bandalartDetailData?.completionRatio ?: 0,
+              ),
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
@@ -444,12 +455,12 @@ internal fun HomeScreen(
                 ) {
                   Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Check Icon",
+                    contentDescription = context.getString(R.string.check_descrption_text),
                     tint = Gray900,
                     modifier = Modifier.size(13.dp),
                   )
                   FixedSizeText(
-                    text = "달성 완료!",
+                    text = context.getString(R.string.homescreen_complete_text),
                     color = Gray900,
                     fontWeight = FontWeight.W600,
                     fontSize = 10.sp,
@@ -495,13 +506,15 @@ internal fun HomeScreen(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            val image = painterResource(id = R.drawable.ic_share)
+            val image = painterResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_share,
+            )
             Image(
               painter = image,
-              contentDescription = "Share Icon",
+              contentDescription = context.getString(R.string.share_descrption_text),
             )
             FixedSizeText(
-              text = "공유하기",
+              text = context.getString(R.string.homescreen_share_text),
               modifier = Modifier.padding(start = 4.dp),
               color = Gray900,
               fontSize = 12.sp.nonScaleSp,
@@ -522,11 +535,14 @@ internal fun HomeScreen(
   }
 }
 
-private fun updateBandalartListTitles(list: List<BandalartDetailUiModel>): List<BandalartDetailUiModel> {
+private fun updateBandalartListTitles(
+  list: List<BandalartDetailUiModel>,
+  context: Context,
+): List<BandalartDetailUiModel> {
   var counter = 1
   return list.map { item ->
     if (item.title.isNullOrEmpty()) {
-      val updatedTitle = "새 반다라트 $counter"
+      val updatedTitle = context.getString(R.string.bandalart_list_empty_title_text, counter)
       counter += 1
       item.copy(
         title = updatedTitle,
@@ -554,6 +570,7 @@ private fun BandalartChart(
   themeColor: ThemeColor,
   bottomSheetDataChanged: (Boolean) -> Unit,
 ) {
+  val context = LocalContext.current
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
     screenWidthDp - (15.dp * 2)
@@ -574,7 +591,7 @@ private fun BandalartChart(
       for (index in subCellList.indices) {
         Box(
           modifier
-            .layoutId("Sub ${index + 1}")
+            .layoutId(context.getString(R.string.homescreen_layout_id_text, index + 1))
             .clip(RoundedCornerShape(12.dp))
             .background(color = Gray100),
           content = {
@@ -591,7 +608,7 @@ private fun BandalartChart(
       }
       Box(
         modifier
-          .layoutId("Main")
+          .layoutId(context.getString(R.string.homescreen_main_id_text))
           .clip(RoundedCornerShape(10.dp))
           .background(color = (uiState.bandalartCellData.mainColor?.toColor() ?: MainColor)),
         content = {
@@ -606,11 +623,11 @@ private fun BandalartChart(
       )
     },
   ) { measurables, constraints ->
-    val sub1 = measurables.first { it.layoutId == "Sub 1" }
-    val sub2 = measurables.first { it.layoutId == "Sub 2" }
-    val sub3 = measurables.first { it.layoutId == "Sub 3" }
-    val sub4 = measurables.first { it.layoutId == "Sub 4" }
-    val main = measurables.first { it.layoutId == "Main" }
+    val sub1 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub1_id_text) }
+    val sub2 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub2_id_text) }
+    val sub3 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub3_id_text) }
+    val sub4 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub4_id_text) }
+    val main = measurables.first { it.layoutId == context.getString(R.string.homescreen_main_id_text) }
 
     val chartWidth = paddedMaxWidth.roundToPx()
     val mainWidth = chartWidth / 5
@@ -704,6 +721,7 @@ fun Cell(
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
 ) {
+  val context = LocalContext.current
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val backgroundColor = when {
     isMainCell -> themeColor.mainColor.toColor()
@@ -734,13 +752,13 @@ fun Cell(
         Box(contentAlignment = Alignment.Center) {
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
-              cellText = "메인목표",
+              cellText = context.getString(R.string.homescreen_main_cell_text),
               cellTextColor = cellTextColor,
               fontWeight = FontWeight.W700,
             )
             Icon(
               imageVector = Icons.Default.Add,
-              contentDescription = "Add Icon",
+              contentDescription = context.getString(R.string.add_descrption_text),
               tint = cellTextColor,
               modifier = Modifier
                 .size(20.dp)
@@ -766,13 +784,13 @@ fun Cell(
           verticalArrangement = Arrangement.Center,
         ) {
           CellText(
-            cellText = "서브목표",
+            cellText = context.getString(R.string.homescreen_sub_cell_text),
             cellTextColor = cellTextColor,
             fontWeight = fontWeight,
           )
           Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Add Icon",
+            contentDescription = context.getString(R.string.add_descrption_text),
             tint = cellTextColor,
             modifier = Modifier
               .size(20.dp)
@@ -797,7 +815,7 @@ fun Cell(
       if (cellData.title.isNullOrEmpty()) {
         Icon(
           imageVector = Icons.Default.Add,
-          contentDescription = "Add Icon",
+          contentDescription = context.getString(R.string.add_descrption_text),
           tint = Gray500,
           modifier = Modifier.size(20.dp),
         )
@@ -813,10 +831,12 @@ fun Cell(
               cellTextColor = cellTextColor,
               fontWeight = fontWeight,
             )
-            val image = painterResource(id = R.drawable.ic_cell_check)
+            val image = painterResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_cell_check,
+            )
             Image(
               painter = image,
-              contentDescription = "Complete Icon",
+              contentDescription = context.getString(R.string.complete_descrption_text),
               modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = (-4).dp, y = (-4).dp),

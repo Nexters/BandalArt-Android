@@ -27,11 +27,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.toColor
@@ -51,6 +52,7 @@ fun BandalartItem(
   onClick: (String) -> Unit,
   onCancelClicked: () -> Unit,
 ) {
+  val context = LocalContext.current
   val scope = rememberCoroutineScope()
 
   Row(
@@ -84,10 +86,12 @@ fun BandalartItem(
           contentAlignment = Alignment.Center,
         ) {
           if (bandalartItem.profileEmoji.isNullOrEmpty()) {
-            val image = painterResource(id = R.drawable.ic_empty_emoji)
+            val image = painterResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+            )
             Image(
               painter = image,
-              contentDescription = "Empty Emoji Icon",
+              contentDescription = context.getString(R.string.empty_emoji_descrption_text),
             )
           } else {
             EmojiText(
@@ -115,12 +119,12 @@ fun BandalartItem(
           ) {
             Icon(
               imageVector = Icons.Default.Check,
-              contentDescription = "Check Icon",
+              contentDescription = context.getString(R.string.check_descrption_text),
               tint = Gray900,
               modifier = Modifier.size(13.dp),
             )
             FixedSizeText(
-              text = "달성 완료!",
+              text = context.getString(R.string.homescreen_complete_text),
               color = Gray900,
               fontWeight = FontWeight.W600,
               fontSize = 10.sp,
@@ -140,7 +144,10 @@ fun BandalartItem(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-              text = "달성률 (${bandalartItem.completionRatio}%)",
+              text = context.getString(
+                R.string.homescreen_complete_ratio_text,
+                bandalartItem.completionRatio,
+              ),
               color = Gray900,
               fontWeight = FontWeight.W600,
               fontSize = 9.sp,
@@ -161,7 +168,7 @@ fun BandalartItem(
       Box(modifier = Modifier.align(Alignment.CenterVertically)) {
         Icon(
           imageVector = Icons.Default.ArrowForwardIos,
-          contentDescription = "Arrow Foward Icon",
+          contentDescription = context.getString(R.string.arrow_forward_descrption_text),
           tint = Gray400,
           modifier = Modifier.size(16.dp),
         )

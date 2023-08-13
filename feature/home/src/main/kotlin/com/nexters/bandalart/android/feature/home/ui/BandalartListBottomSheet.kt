@@ -32,10 +32,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
@@ -58,6 +60,7 @@ fun BandalartListBottomSheet(
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
 ) {
+  val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -81,7 +84,7 @@ fun BandalartListBottomSheet(
           .padding(horizontal = 16.dp),
       ) {
         FixedSizeText(
-          text = "반다라트 목록",
+          text = context.getString(R.string.arrow_forward_descrption_text),
           modifier = modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
           color = Gray900,
@@ -101,7 +104,7 @@ fun BandalartListBottomSheet(
         ) {
           Icon(
             imageVector = Icons.Default.Clear,
-            contentDescription = "Clear Icon",
+            contentDescription = context.getString(R.string.clear_descrption_text),
             tint = Gray900,
           )
         }
@@ -144,13 +147,13 @@ fun BandalartListBottomSheet(
               Row {
                 Icon(
                   imageVector = Icons.Default.Add,
-                  contentDescription = "Add Icon",
+                  contentDescription = context.getString(R.string.add_descrption_text),
                   tint = Gray600,
                   modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.padding(start = 4.dp))
                 FixedSizeText(
-                  text = "반다라트 추가",
+                  text = context.getString(R.string.bandalart_list_add_text),
                   fontSize = 16.sp.nonScaleSp,
                   fontWeight = FontWeight.W600,
                   color = Gray800,

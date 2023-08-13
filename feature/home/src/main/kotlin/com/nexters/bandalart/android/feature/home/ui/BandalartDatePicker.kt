@@ -28,10 +28,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toFormatStringToLocalDateTime
 import com.nexters.bandalart.android.core.ui.theme.Gray100
@@ -175,6 +177,7 @@ fun DateSelectionSection(
   }
 }
 
+@SuppressLint("StringFormatInvalid")
 @Composable
 fun InfiniteItemsPicker(
   modifier: Modifier = Modifier,
@@ -186,6 +189,7 @@ fun InfiniteItemsPicker(
 ) {
   val listState = rememberLazyListState(firstIndex)
   val currentValue = remember { mutableStateOf("") }
+  val context = LocalContext.current
 
   LaunchedEffect(key1 = !listState.isScrollInProgress) {
     onItemSelected(currentValue.value)
@@ -205,9 +209,9 @@ fun InfiniteItemsPicker(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-              text = if (isYear) items[index].toString() + "년"
-              else if (isMonth) items[index].toString() + "월"
-              else items[index].toString() + "일",
+              text = if (isYear) context.getString(R.string.datepicker_year_text, items[index].toString())
+              else if (isMonth) context.getString(R.string.datepicker_month_text, items[index].toString())
+              else context.getString(R.string.datepicker_day_text, items[index].toString()),
               modifier = modifier
                 .fillMaxWidth()
                 .alpha(if (it == listState.firstVisibleItemIndex + 2) 1f else 0.6f),
