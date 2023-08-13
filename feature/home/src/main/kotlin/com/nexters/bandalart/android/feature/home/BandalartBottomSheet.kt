@@ -87,6 +87,7 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartColorPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun BandalartBottomSheet(
@@ -137,12 +138,13 @@ fun BandalartBottomSheet(
       }
     }
     LaunchedEffect(viewModel) {
-      viewModel.eventFlow.collect { event ->
-        when (event) {
-          is BottomSheetUiEvent.ShowSnackbar -> {
-            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-          }
-        }
+      viewModel.logMessage.collect { message ->
+        Timber.e(message.asString(context))
+      }
+    }
+    LaunchedEffect(viewModel) {
+      viewModel.toastMessage.collect { message ->
+        Toast.makeText(context, message.asString(context), Toast.LENGTH_SHORT).show()
       }
     }
     if (uiState.isDeleteCellDialogOpened) {

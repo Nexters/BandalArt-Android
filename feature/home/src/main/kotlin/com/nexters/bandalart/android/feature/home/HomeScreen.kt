@@ -90,6 +90,7 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
+import timber.log.Timber
 
 @Suppress("unused")
 @Composable
@@ -104,13 +105,18 @@ internal fun HomeRoute(
   val context = LocalContext.current
 
   LaunchedEffect(viewModel) {
-    viewModel.eventFlow.collect { event ->
-      when (event) {
-        is HomeUiEvent.ShowSnackbar -> {
-          // onShowSnackbar(event.message)
-          Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-        }
-      }
+    viewModel.snackbarMessage.collect { message ->
+      onShowSnackbar(message.asString(context))
+    }
+  }
+  LaunchedEffect(viewModel) {
+    viewModel.logMessage.collect { message ->
+      Timber.e(message.asString(context))
+    }
+  }
+  LaunchedEffect(viewModel) {
+    viewModel.toastMessage.collect { message ->
+      Toast.makeText(context, message.asString(context), Toast.LENGTH_SHORT).show()
     }
   }
 

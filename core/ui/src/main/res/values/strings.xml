@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="data_validation_text">Request succeeded but data validation failed</string>
+  <string name="create_bandalart_text">새로운 반다라트를 생성했어요.</string>
+  <string name="limit_create_bandalart_text">반다라트는 최대 5개 생성할 수 있어요.</string>
+  <string name="delete_bandalart_text">반다라트가 삭제되었어요.</string>
+</resources>
