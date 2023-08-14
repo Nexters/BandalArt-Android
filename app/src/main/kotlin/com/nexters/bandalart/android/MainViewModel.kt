@@ -60,7 +60,7 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  private fun createGuestLoginToken() {
+  fun createGuestLoginToken() {
     viewModelScope.launch {
       val result = createGuestLoginTokenUseCase()
       when {
@@ -79,7 +79,7 @@ class MainViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()
           _uiState.value = _uiState.value.copy(
-            isLoggedIn = false,
+            isNetworkErrorAlertDialogOpened = true,
             isLoading = false,
           )
           Timber.e(exception)

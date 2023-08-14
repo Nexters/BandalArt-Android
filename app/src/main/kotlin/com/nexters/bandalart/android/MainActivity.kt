@@ -36,17 +36,6 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background,
         ) {
-          // TODO 바로 온보딩 화면으로 가지 못하게, 네트워크 에러 처리로 토큰을 받고 이동하도록
-          if (uiState.isNetworkErrorAlertDialogOpened) {
-            NetworkErrorAlertDialog(
-              title = "네트워크 문제로 표를\n불러오지 못했어요",
-              message = "다시 시도해주시기 바랍니다.",
-              onConfirmClick = {
-                viewModel.openNetworkErrorAlertDialog(false)
-              },
-            )
-          }
-
           when {
             uiState.isLoading -> {
               LoadingScreen(
@@ -55,10 +44,21 @@ class MainActivity : ComponentActivity() {
                   .aspectRatio(1f),
               )
             }
-            else -> {
-              BandalartApp(
-                if (uiState.isLoggedIn) HOME_NAVIGATION_ROUTE else ONBOARDING_NAVIGATION_ROUTE,
+            uiState.isNetworkErrorAlertDialogOpened -> {
+              NetworkErrorAlertDialog(
+                title = "네트워크 문제로 표를\n불러오지 못했어요",
+                message = "다시 시도해주시기 바랍니다.",
+                onConfirmClick = {
+                  viewModel.openNetworkErrorAlertDialog(false)
+                  viewModel.createGuestLoginToken()
+                },
               )
+            }
+            !uiState.isLoggedIn -> {
+              BandalartApp(ONBOARDING_NAVIGATION_ROUTE)
+            }
+            uiState.isLoggedIn -> {
+              BandalartApp(HOME_NAVIGATION_ROUTE)
             }
           }
         }
