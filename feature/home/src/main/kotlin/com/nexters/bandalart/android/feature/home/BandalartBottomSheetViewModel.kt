@@ -35,6 +35,7 @@ import timber.log.Timber
  * @param isDatePickerOpened 데이트 피커가 열림
  * @param isEmojiPickerOpened 이모지 피커가 열림
  * @param isDeleteCellDialogOpened 셀 삭제 시, 경고 창이 열림
+ * @param isNetworking 중복 통신 호출 방지를 위해 통신 중임을 알림
  * @param error 서버와의 통신을 실패
  */
 
@@ -47,6 +48,7 @@ data class BottomSheetUiState(
   val isDatePickerOpened: Boolean = false,
   val isEmojiPickerOpened: Boolean = false,
   val isDeleteCellDialogOpened: Boolean = false,
+  val isNetworking: Boolean = false,
   val error: Throwable? = null,
 )
 
@@ -83,20 +85,26 @@ class BottomSheetViewModel @Inject constructor(
     cellKey: String,
     updateBandalartMainCellModel: UpdateBandalartMainCellModel,
   ) {
-    viewModelScope.launch {
-      val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_bottomSheetState.value.isNetworking) {
+      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _bottomSheetState.value = _bottomSheetState.value.copy(
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
@@ -107,20 +115,26 @@ class BottomSheetViewModel @Inject constructor(
     cellKey: String,
     updateBandalartSubCellModel: UpdateBandalartSubCellModel,
   ) {
-    viewModelScope.launch {
-      val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_bottomSheetState.value.isNetworking) {
+      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _bottomSheetState.value = _bottomSheetState.value.copy(
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
@@ -131,42 +145,52 @@ class BottomSheetViewModel @Inject constructor(
     cellKey: String,
     updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
   ) {
-    viewModelScope.launch {
-      val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_bottomSheetState.value.isNetworking) {
+      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _bottomSheetState.value = _bottomSheetState.value.copy(
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
   }
 
   fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    viewModelScope.launch {
-      val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> { }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _bottomSheetState.value = _bottomSheetState.value.copy(
-            isCellDeleted = false,
-            error = exception,
-          )
-          openDeleteCellDialog(false)
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_bottomSheetState.value.isNetworking) {
+      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
+        when {
+          result.isSuccess && result.getOrNull() != null -> { }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _bottomSheetState.value = _bottomSheetState.value.copy(
+              isCellDeleted = false,
+              error = exception,
+              isNetworking = false,
+            )
+            openDeleteCellDialog(false)
+            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }

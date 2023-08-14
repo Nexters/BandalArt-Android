@@ -50,6 +50,7 @@ import timber.log.Timber
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
  * @param shareUrl 공유 링크
+ * @param isNetworking 중복 통신 호출 방지를 위해 통신 중임을 알림
  * @param error 서버와의 통신을 실패
  */
 
@@ -70,6 +71,7 @@ data class HomeUiState(
   val isBandalartFirstCompleted: Boolean = false,
   val isShowSkeleton: Boolean = false,
   val isLoading: Boolean = false,
+  val isNetworking: Boolean = false,
   val error: Throwable? = null,
 )
 
@@ -204,6 +206,7 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             bandalartCellData = result.getOrNull()!!.toUiModel(),
             error = null,
+            isNetworking = false,
           )
           bottomSheetDataChanged(isBottomSheetDataChangedState = false)
           openNetworkErrorAlertDialog(false)
@@ -227,69 +230,77 @@ class HomeViewModel @Inject constructor(
   }
 
   fun createBandalart() {
-    viewModelScope.launch {
-      if (_uiState.value.bandalartList.size + 1 > 5) {
-        _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
-        return@launch
-      }
-      _uiState.value = _uiState.value.copy(isShowSkeleton = true)
-      val result = createBandalartUseCase()
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          val bandalart = result.getOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isBandalartListBottomSheetOpened = false,
-            error = null,
-          )
-          // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
-          getBandalartList(bandalart.key)
-          // TODO 표가 뒤집히는 애니메이션 구현
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
+    if (!_uiState.value.isNetworking) {
+      _uiState.value = _uiState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        if (_uiState.value.bandalartList.size + 1 > 5) {
+          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
+          return@launch
         }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            error = exception,
-          )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+        _uiState.value = _uiState.value.copy(isShowSkeleton = true)
+        val result = createBandalartUseCase()
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            val bandalart = result.getOrNull()!!
+            _uiState.value = _uiState.value.copy(
+              isBandalartListBottomSheetOpened = false,
+              error = null,
+            )
+            // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
+            getBandalartList(bandalart.key)
+            // TODO 표가 뒤집히는 애니메이션 구현
+            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _uiState.value = _uiState.value.copy(
+              isLoading = false,
+              isShowSkeleton = false,
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
   }
 
   fun deleteBandalart(bandalartKey: String) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isShowSkeleton = true)
-      val result = deleteBandalartUseCase(bandalartKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.value = _uiState.value.copy(
-            isBandalartDeleted = true,
-            error = null,
-          )
-          openBandalartDeleteAlertDialog(false)
-          getBandalartList()
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            isBandalartDeleted = false,
-            error = exception,
-          )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_uiState.value.isNetworking) {
+      _uiState.value = _uiState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        _uiState.value = _uiState.value.copy(isShowSkeleton = true)
+        val result = deleteBandalartUseCase(bandalartKey)
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            _uiState.value = _uiState.value.copy(
+              isBandalartDeleted = true,
+              error = null,
+            )
+            openBandalartDeleteAlertDialog(false)
+            getBandalartList()
+            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _uiState.value = _uiState.value.copy(
+              isLoading = false,
+              isShowSkeleton = false,
+              isBandalartDeleted = false,
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
@@ -300,48 +311,58 @@ class HomeViewModel @Inject constructor(
     cellKey: String,
     updateBandalartEmojiModel: UpdateBandalartEmojiModel,
   ) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(isLoading = true)
-      val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          getBandalartList(bandalartKey)
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            error = exception,
-          )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_uiState.value.isNetworking) {
+      _uiState.value = _uiState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            getBandalartList(bandalartKey)
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _uiState.value = _uiState.value.copy(
+              isLoading = false,
+              isShowSkeleton = false,
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
   }
 
   fun shareBandalart(bandalartKey: String) {
-    viewModelScope.launch {
-      val result = shareBandalartUseCase(bandalartKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.value = _uiState.value.copy(
-            shareUrl = result.getOrNull()!!.shareUrl,
-            error = null,
-          )
-        }
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(error = exception)
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
+    if (!_uiState.value.isNetworking) {
+      _uiState.value = _uiState.value.copy(isNetworking = true)
+      viewModelScope.launch {
+        val result = shareBandalartUseCase(bandalartKey)
+        when {
+          result.isSuccess && result.getOrNull() != null -> {
+            _uiState.value = _uiState.value.copy(
+              shareUrl = result.getOrNull()!!.shareUrl,
+              error = null,
+            )
+          }
+          result.isSuccess && result.getOrNull() == null -> {
+            Timber.e("Request succeeded but data validation failed")
+          }
+          result.isFailure -> {
+            val exception = result.exceptionOrNull()!!
+            _uiState.value = _uiState.value.copy(
+              error = exception,
+              isNetworking = false,
+            )
+            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            Timber.e(exception.message)
+          }
         }
       }
     }
