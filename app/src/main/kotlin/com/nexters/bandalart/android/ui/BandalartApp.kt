@@ -38,7 +38,6 @@ fun BandalartApp(
     snackbarHost = {
       SnackbarHost(
         modifier = Modifier
-          // TODO 위치가 확정 되면 조정 필요
           .padding(bottom = (height - 96).dp)
           .height(36.dp),
         hostState = snackbarHostState,
