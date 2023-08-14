@@ -8,9 +8,10 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartTaskCellUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
+import com.nexters.bandalart.android.feature.home.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,6 +28,8 @@ import timber.log.Timber
  * BottomSheetUiState
  *
  * @param cellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
+ * @param cellDataForCheck 반다라트 표의 데이터 롼료 버튼 활성화를 위한 copy 데이터
+ * @param isCellDataCopied 데이터 copy가 됐는지 판단함
  * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
  * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
  * @param isDatePickerOpened 데이트 피커가 열림
@@ -48,10 +51,9 @@ data class BottomSheetUiState(
 )
 
 sealed class BottomSheetUiEvent {
-  data class ShowSnackbar(val message: String) : BottomSheetUiEvent()
+  data class ShowToast(val message: UiText) : BottomSheetUiEvent()
 }
 
-@Suppress("unused")
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
@@ -93,8 +95,8 @@ class BottomSheetViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _eventFlow.emit(BottomSheetUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -117,8 +119,8 @@ class BottomSheetViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _eventFlow.emit(BottomSheetUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -141,8 +143,8 @@ class BottomSheetViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _eventFlow.emit(BottomSheetUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -163,8 +165,8 @@ class BottomSheetViewModel @Inject constructor(
             error = exception,
           )
           openDeleteCellDialog(false)
-          _eventFlow.emit(BottomSheetUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }

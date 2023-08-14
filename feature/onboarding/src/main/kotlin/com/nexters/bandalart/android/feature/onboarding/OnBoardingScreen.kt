@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavOptions
@@ -31,7 +32,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.ui.theme.Gray50
@@ -54,13 +55,15 @@ internal fun OnBoardingScreen(
   navigateToHome: (NavOptions) -> Unit,
 ) {
   val composition by rememberLottieComposition(
-    spec = LottieCompositionSpec.RawRes(R.raw.lottie_onboarding),
+    spec = LottieCompositionSpec.RawRes(
+      com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding,
+    ),
   )
   val progress by animateLottieCompositionAsState(
     composition = composition,
     iterations = LottieConstants.IterateForever,
   )
-
+  val context = LocalContext.current
   Surface(
     modifier = modifier
       .fillMaxSize()
@@ -89,7 +92,7 @@ internal fun OnBoardingScreen(
               horizontalAlignment = Alignment.CenterHorizontally,
             ) {
               Spacer(modifier = Modifier.height(50.dp))
-              TitleText(text = "복잡하고 막막한\n만다라트 계획표는 이제 안녕!")
+              TitleText(text = context.getString(R.string.onboarding_first_title))
               Spacer(modifier = Modifier.height(50.dp))
               Card(
                 shape = RoundedCornerShape(16.dp),
@@ -103,10 +106,12 @@ internal fun OnBoardingScreen(
                     .background(Gray50),
                   contentAlignment = Alignment.Center,
                 ) {
-                  val image = painterResource(id = R.drawable.ic_onboarding)
+                  val image = painterResource(
+                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding,
+                  )
                   Image(
                     painter = image,
-                    contentDescription = "Delete Icon",
+                    contentDescription = context.getString(R.string.delete_descrption),
                     modifier = Modifier.fillMaxSize(),
                   )
                 }
@@ -120,7 +125,7 @@ internal fun OnBoardingScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
               ) {
                 Spacer(modifier = Modifier.height(50.dp))
-                TitleText(text = "이제 반다라트와 함께\n부담 없이 계획을 세워봐요")
+                TitleText(text = context.getString(R.string.onboarding_second_title))
                 Spacer(modifier = Modifier.height(50.dp))
                 Card(
                   shape = RoundedCornerShape(16.dp),
@@ -148,7 +153,7 @@ internal fun OnBoardingScreen(
                     .build()
                   navigateToHome(options)
                 },
-                text = "시작하기",
+                text = context.getString(R.string.onboarding_start),
                 modifier = Modifier
                   .align(Alignment.BottomCenter)
                   .padding(bottom = 32.dp),

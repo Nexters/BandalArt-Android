@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
+import com.nexters.bandalart.android.core.ui.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,18 +45,21 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexters.bandalart.android.core.designsystem.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
@@ -69,8 +73,11 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTo
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.allColor
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
@@ -83,6 +90,7 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellM
 import com.nexters.bandalart.android.feature.home.ui.BandalartColorPicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 
 @Composable
@@ -99,12 +107,10 @@ fun BandalartBottomSheet(
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.bottomSheetState.collectAsStateWithLifecycle()
-  LaunchedEffect(key1 = Unit) {
-    viewModel.copyCellData(cellData = cellData)
-  }
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val focusRequester = remember { FocusRequester() }
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -118,6 +124,14 @@ fun BandalartBottomSheet(
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
+    LaunchedEffect(key1 = Unit) {
+      viewModel.copyCellData(cellData = cellData)
+    }
+    LaunchedEffect(key1 = uiState.isCellDataCopied) {
+      if (uiState.isCellDataCopied && uiState.cellData.title.isNullOrEmpty()) {
+        focusRequester.requestFocus()
+      }
+    }
     LaunchedEffect(key1 = uiState.isCellUpdated) {
       if (uiState.isCellUpdated) {
         scope.launch {
@@ -130,21 +144,21 @@ fun BandalartBottomSheet(
     LaunchedEffect(viewModel) {
       viewModel.eventFlow.collect { event ->
         when (event) {
-          is BottomSheetUiEvent.ShowSnackbar -> {
-            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+          is BottomSheetUiEvent.ShowToast -> {
+            Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
           }
         }
       }
     }
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
-        title = "해당 셀을 삭제하시겠어요?",
+        title = stringResource(R.string.delete_bandalart_cell_dialog_title),
         message = if (isMainCell) {
-          "메인 목표 삭제는 반다라트 전체가 삭제되고 \n다시 복구할 수 없어요."
+          stringResource(R.string.delete_bandalart_maincell_dialog_message)
         } else if (isSubCell) {
-          "서브 목표 삭제는 하위 태스크와 함께 삭제되고 \n 다시 복구할 수 없어요."
+          stringResource(R.string.delete_bandalart_subcell_dialog_message)
         } else {
-          "삭제된 내용은 다시 복구할 수 없어요."
+          stringResource(R.string.delete_bandalart_taskcell_dialog_message)
         },
         onDeleteClicked = {
           scope.launch {
@@ -193,7 +207,7 @@ fun BandalartBottomSheet(
             end = 20.dp,
           ),
       ) {
-        BottomSheetSubTitleText(text = "목표 이름 (필수)")
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
         Spacer(modifier = Modifier.height(11.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
           if (isMainCell) {
@@ -218,10 +232,12 @@ fun BandalartBottomSheet(
                   contentAlignment = Alignment.Center,
                 ) {
                   if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
-                    val image = painterResource(id = R.drawable.ic_empty_emoji)
+                    val image = painterResource(
+                      id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                    )
                     Image(
                       painter = image,
-                      contentDescription = "Empty Emoji Icon",
+                      contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   } else {
                     EmojiText(
@@ -231,10 +247,12 @@ fun BandalartBottomSheet(
                   }
                 }
               }
-              val image = painterResource(id = R.drawable.ic_edit)
+              val image = painterResource(
+                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+              )
               Image(
                 painter = image,
-                contentDescription = "Edit Icon",
+                contentDescription = stringResource(R.string.edit_descrption),
                 modifier = Modifier
                   .align(Alignment.BottomEnd)
                   .offset(x = 4.dp, y = 4.dp),
@@ -245,7 +263,8 @@ fun BandalartBottomSheet(
             BasicTextField(
               modifier = Modifier
                 .fillMaxWidth()
-                .height(18.dp),
+                .height(18.dp)
+                .focusRequester(focusRequester),
               value = uiState.cellData.title ?: "",
               onValueChange = {
                 viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
@@ -259,7 +278,11 @@ fun BandalartBottomSheet(
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (uiState.cellData.title.isNullOrEmpty()) BottomSheetContentPlaceholder(text = "15자 이내로 입력해주세요")
+                if (uiState.cellData.title.isNullOrEmpty()) {
+                  BottomSheetContentPlaceholder(
+                    text = stringResource(R.string.bottomsheet_title_placeholder),
+                  )
+                }
                 innerTextField()
               },
             )
@@ -292,11 +315,11 @@ fun BandalartBottomSheet(
         }
         if (isMainCell && uiState.isCellDataCopied) {
           Spacer(modifier = Modifier.height(22.dp))
-          BottomSheetSubTitleText(text = "색상 테마")
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
           BandalartColorPicker(
             initColor = ThemeColor(
-              mainColor = uiState.cellData.mainColor ?: "#3FFFBA",
-              subColor = uiState.cellData.subColor ?: "#3FFFBA",
+              mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
+              subColor = uiState.cellData.subColor ?: allColor[0].subColor,
             ),
             onResult = {
               viewModel.colorChanged(
@@ -308,7 +331,7 @@ fun BandalartBottomSheet(
           Spacer(modifier = Modifier.height(3.dp))
         }
         Spacer(modifier = Modifier.height(25.dp))
-        BottomSheetSubTitleText(text = "마감일 (선택)")
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_duedate))
         Spacer(modifier = Modifier.height(12.dp))
         Column {
           Box(
@@ -321,11 +344,10 @@ fun BandalartBottomSheet(
               },
           ) {
             if (uiState.cellData.dueDate.isNullOrEmpty()) {
-              BottomSheetContentPlaceholder(text = "마감일을 선택해주세요")
+              BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
             } else {
-              val dueDateText = uiState.cellData.dueDate!!.split("-")
               BottomSheetContentText(
-                text = dueDateText[0] + "년 " + dueDateText[1] + "월 " + dueDateText[2].split("T")[0].toInt() + "일",
+                text = uiState.cellData.dueDate!!.toStringLocalDateTime(),
               )
             }
             Icon(
@@ -334,7 +356,7 @@ fun BandalartBottomSheet(
                 .height(21.dp)
                 .aspectRatio(1f),
               imageVector = Icons.Default.ArrowForwardIos,
-              contentDescription = "Arrow Forward Icon",
+              contentDescription = stringResource(R.string.arrow_forward_descrption),
               tint = Gray400,
             )
           }
@@ -344,16 +366,16 @@ fun BandalartBottomSheet(
         AnimatedVisibility(visible = uiState.isDatePickerOpened) {
           BandalartDatePicker(
             onResult = { dueDateResult, openDatePickerPushResult ->
-              viewModel.dueDateChanged(dueDate = if (dueDateResult.isNullOrEmpty()) null else dueDateResult)
+              viewModel.dueDateChanged(dueDate = dueDateResult.toString())
               viewModel.openDatePicker(datePickerState = openDatePickerPushResult)
             },
             datePickerScope = rememberCoroutineScope(),
             datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            currentDueDate = uiState.cellData.dueDate,
+            currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
           )
         }
         Spacer(modifier = Modifier.height(28.dp))
-        BottomSheetSubTitleText(text = "메모 (선택)")
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_description))
         Spacer(modifier = Modifier.height(12.dp))
         Box {
           Column {
@@ -376,7 +398,11 @@ fun BandalartBottomSheet(
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
-                if (uiState.cellData.description.isNullOrEmpty()) BottomSheetContentPlaceholder(text = "메모를 입력해주세요")
+                if (uiState.cellData.description.isNullOrEmpty()) {
+                  BottomSheetContentPlaceholder(
+                    text = stringResource(R.string.bottomsheet_description_placeholder),
+                  )
+                }
                 innerTextField()
               },
             )
@@ -384,14 +410,15 @@ fun BandalartBottomSheet(
             BottomSheetDivider()
           }
         }
-        Spacer(modifier = Modifier.height(28.dp))
         if (!isSubCell && !isMainCell) {
-          BottomSheetSubTitleText(text = "달성 여부")
+          Spacer(modifier = Modifier.height(28.dp))
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
           Spacer(modifier = Modifier.height(12.dp))
           Box(modifier = Modifier.fillMaxWidth()) {
             BottomSheetContentText(
               modifier = Modifier.align(Alignment.CenterStart),
-              text = if (uiState.cellData.isCompleted) "달성" else "미달성",
+              text = if (uiState.cellData.isCompleted) stringResource(R.string.bottomsheet_completed)
+              else stringResource(R.string.bottomsheet_in_completed),
             )
             Switch(
               checked = uiState.cellData.isCompleted,
@@ -410,8 +437,9 @@ fun BandalartBottomSheet(
                 .height(28.dp),
             )
           }
+          Spacer(modifier = Modifier.height(4.dp))
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         Row(
           modifier = Modifier
             .fillMaxWidth()
@@ -439,8 +467,8 @@ fun BandalartBottomSheet(
                     description = uiState.cellData.description,
                     dueDate = uiState.cellData.dueDate?.ifEmpty { null },
                     profileEmoji = uiState.cellData.profileEmoji,
-                    mainColor = uiState.cellData.mainColor ?: "#3FFFBA",
-                    subColor = uiState.cellData.subColor ?: "#111827",
+                    mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
+                    subColor = uiState.cellData.subColor ?: allColor[0].subColor,
                   ),
                 )
               } else if (isSubCell) {

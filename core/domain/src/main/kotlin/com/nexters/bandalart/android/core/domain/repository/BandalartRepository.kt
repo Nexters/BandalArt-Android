@@ -4,6 +4,7 @@ import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -84,6 +85,18 @@ interface BandalartRepository {
     bandalartKey: String,
     cellKey: String,
     updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
+  )
+
+  /**
+   * 반다라트 이모지 수정
+   *
+   * @param bandalartKey 빈디라트 고유 키
+   * @param cellKey 테스크 셀 고유 키
+   */
+  suspend fun updateBandalartEmoji(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartEmojiEntity: UpdateBandalartEmojiEntity,
   )
 
   /**

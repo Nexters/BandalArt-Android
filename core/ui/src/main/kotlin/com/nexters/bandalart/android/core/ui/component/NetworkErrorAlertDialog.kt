@@ -16,13 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray900
@@ -35,6 +36,7 @@ fun NetworkErrorAlertDialog(
   message: String,
   onConfirmClick: () -> Unit,
 ) {
+  val context = LocalContext.current
   Dialog(onDismissRequest = {}) {
     Surface(
       shape = RoundedCornerShape(16.dp),
@@ -45,10 +47,12 @@ fun NetworkErrorAlertDialog(
           .fillMaxWidth()
           .padding(top = 24.dp),
       ) {
-        val image = painterResource(id = R.drawable.ic_circle_cross)
+        val image = painterResource(
+          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_circle_cross,
+        )
         Image(
           painter = image,
-          contentDescription = "Delete Icon",
+          contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -89,7 +93,7 @@ fun NetworkErrorAlertDialog(
             colors = ButtonDefaults.buttonColors(containerColor = Gray900),
           ) {
             Text(
-              text = "다시 시도하기",
+              text = context.getString(R.string.network_error_retry_message),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = White,

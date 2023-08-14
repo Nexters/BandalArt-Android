@@ -65,12 +65,12 @@ class MainViewModel @Inject constructor(
             Timber.e("Request succeeded but data validation failed")
           }
           result.isFailure -> {
-            val exception = result.exceptionOrNull()
+            val exception = result.exceptionOrNull()!!
             _uiState.value = _uiState.value.copy(
               isLoggedIn = false,
               isLoading = false,
             )
-            Timber.e(exception)
+            Timber.e(exception.message)
           }
         }
       } else {
