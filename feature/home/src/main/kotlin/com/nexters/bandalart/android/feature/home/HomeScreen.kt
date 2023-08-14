@@ -304,15 +304,6 @@ internal fun HomeScreen(
         HomeTopBar(
           bandalartCount = uiState.bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
-          onLogoClicked = {
-            if (uiState.bandalartDetailData?.title != null) {
-              navigateToComplete(
-                uiState.bandalartDetailData.key,
-                uiState.bandalartDetailData.title,
-                if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
-              )
-            }
-          },
         )
         HorizontalDivider(
           thickness = 1.dp,
