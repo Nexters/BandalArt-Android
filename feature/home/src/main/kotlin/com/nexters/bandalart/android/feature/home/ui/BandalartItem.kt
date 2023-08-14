@@ -27,8 +27,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +52,6 @@ fun BandalartItem(
   onClick: (String) -> Unit,
   onCancelClicked: () -> Unit,
 ) {
-  val context = LocalContext.current
   val scope = rememberCoroutineScope()
 
   Row(
@@ -91,7 +90,7 @@ fun BandalartItem(
             )
             Image(
               painter = image,
-              contentDescription = context.getString(R.string.empty_emoji_descrption_text),
+              contentDescription = stringResource(R.string.empty_emoji_descrption),
             )
           } else {
             EmojiText(
@@ -119,12 +118,12 @@ fun BandalartItem(
           ) {
             Icon(
               imageVector = Icons.Default.Check,
-              contentDescription = context.getString(R.string.check_descrption_text),
+              contentDescription = stringResource(R.string.check_descrption),
               tint = Gray900,
               modifier = Modifier.size(13.dp),
             )
             FixedSizeText(
-              text = context.getString(R.string.homescreen_complete_text),
+              text = stringResource(R.string.home_complete),
               color = Gray900,
               fontWeight = FontWeight.W600,
               fontSize = 10.sp,
@@ -144,8 +143,8 @@ fun BandalartItem(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-              text = context.getString(
-                R.string.homescreen_complete_ratio_text,
+              text = stringResource(
+                R.string.home_complete_ratio,
                 bandalartItem.completionRatio,
               ),
               color = Gray900,
@@ -168,7 +167,7 @@ fun BandalartItem(
       Box(modifier = Modifier.align(Alignment.CenterVertically)) {
         Icon(
           imageVector = Icons.Default.ArrowForwardIos,
-          contentDescription = context.getString(R.string.arrow_forward_descrption_text),
+          contentDescription = stringResource(R.string.arrow_forward_descrption),
           tint = Gray400,
           modifier = Modifier.size(16.dp),
         )

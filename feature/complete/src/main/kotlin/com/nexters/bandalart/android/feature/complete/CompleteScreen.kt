@@ -104,9 +104,9 @@ internal fun CompleteScreen(
         action = Intent.ACTION_SEND
         putExtra(
           Intent.EXTRA_TEXT,
-          context.getString(R.string.homescreen_share_url_text, uiState.shareUrl),
+          context.getString(R.string.home_share_url, uiState.shareUrl),
         )
-        type = context.getString(R.string.homescreen_share_type_text)
+        type = context.getString(R.string.home_share_type)
       }
       val shareIntent = Intent.createChooser(sendIntent, null)
       context.startActivity(shareIntent)
@@ -141,20 +141,20 @@ internal fun CompleteScreen(
           ) {
             Icon(
               imageVector = Icons.Default.ArrowBackIos,
-              contentDescription = context.getString(R.string.arrow_forward_descrption_text),
+              contentDescription = context.getString(R.string.arrow_forward_descrption),
               tint = Gray900,
             )
           }
         }
         Spacer(modifier = Modifier.height(40.dp))
-        TitleText(text = context.getString(R.string.complete_title_text))
+        TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {
           Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
           ) {
             FixedSizeText(
-              text = context.getString(R.string.complete_chart_text),
+              text = context.getString(R.string.complete_chart),
               color = Gray400,
               fontWeight = FontWeight.W600,
               fontSize = 14.sp,
@@ -189,13 +189,13 @@ internal fun CompleteScreen(
                         .background(Gray100),
                       contentAlignment = Alignment.Center,
                     ) {
-                      if (uiState.profileEmoji == context.getString(R.string.homescreen_default_emoji_text)) {
+                      if (uiState.profileEmoji == context.getString(R.string.home_default_emoji)) {
                         val image = painterResource(
                           id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
                         )
                         Image(
                           painter = image,
-                          contentDescription = context.getString(R.string.empty_emoji_descrption_text),
+                          contentDescription = context.getString(R.string.empty_emoji_descrption),
                         )
                       } else {
                         EmojiText(
@@ -253,7 +253,7 @@ internal fun CompleteScreen(
 //          }
           BandalartButton(
             onClick = shareBandalart,
-            text = context.getString(R.string.complete_share_text),
+            text = context.getString(R.string.complete_share),
             modifier = Modifier
               .align(Alignment.BottomCenter)
               .padding(bottom = 32.dp),

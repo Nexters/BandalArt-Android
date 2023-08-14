@@ -32,7 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,7 +60,6 @@ fun BandalartListBottomSheet(
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
 ) {
-  val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -84,7 +83,7 @@ fun BandalartListBottomSheet(
           .padding(horizontal = 16.dp),
       ) {
         FixedSizeText(
-          text = context.getString(R.string.arrow_forward_descrption_text),
+          text = stringResource(R.string.bandalart_list_title),
           modifier = modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
           color = Gray900,
@@ -104,7 +103,7 @@ fun BandalartListBottomSheet(
         ) {
           Icon(
             imageVector = Icons.Default.Clear,
-            contentDescription = context.getString(R.string.clear_descrption_text),
+            contentDescription = stringResource(R.string.clear_descrption),
             tint = Gray900,
           )
         }
@@ -147,13 +146,13 @@ fun BandalartListBottomSheet(
               Row {
                 Icon(
                   imageVector = Icons.Default.Add,
-                  contentDescription = context.getString(R.string.add_descrption_text),
+                  contentDescription = stringResource(R.string.add_descrption),
                   tint = Gray600,
                   modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.padding(start = 4.dp))
                 FixedSizeText(
-                  text = context.getString(R.string.bandalart_list_add_text),
+                  text = stringResource(R.string.bandalart_list_add),
                   fontSize = 16.sp.nonScaleSp,
                   fontWeight = FontWeight.W600,
                   color = Gray800,

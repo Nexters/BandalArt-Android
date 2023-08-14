@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -21,7 +20,6 @@ import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROU
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.ui.BandalartApp
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,11 +36,6 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background,
         ) {
-          LaunchedEffect(viewModel) {
-            viewModel.logMessage.collect { message ->
-              Timber.e(message.asString(this@MainActivity))
-            }
-          }
           if (uiState.isNetworkErrorAlertDialogOpened) {
             NetworkErrorAlertDialog(
               title = "네트워크 문제로 표를\n불러오지 못했어요",

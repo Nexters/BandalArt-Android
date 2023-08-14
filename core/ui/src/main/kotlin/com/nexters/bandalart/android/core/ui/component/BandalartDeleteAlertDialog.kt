@@ -55,7 +55,7 @@ fun BandalartDeleteAlertDialog(
         )
         Image(
           painter = image,
-          contentDescription = context.getString(R.string.delete_descrption_text),
+          contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier
             .height(28.dp)
             .align(Alignment.CenterHorizontally),
@@ -103,7 +103,7 @@ fun BandalartDeleteAlertDialog(
             ),
           ) {
             Text(
-              text = context.getString(R.string.delete_bandalart_cancle_text),
+              text = context.getString(R.string.delete_bandalart_cancle),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = Gray900,
@@ -123,7 +123,7 @@ fun BandalartDeleteAlertDialog(
             ),
           ) {
             Text(
-              text = context.getString(R.string.delete_bandalart_delete_text),
+              text = context.getString(R.string.delete_bandalart_delete),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = White,

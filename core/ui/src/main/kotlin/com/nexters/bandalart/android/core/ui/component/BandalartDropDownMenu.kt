@@ -92,7 +92,7 @@ fun BandalartDropDownMenu(
             )
             Image(
               painter = image,
-              contentDescription = context.getString(R.string.delete_descrption_text),
+              contentDescription = context.getString(R.string.delete_descrption),
               modifier = Modifier
                 .height(14.dp)
                 .align(CenterVertically),
@@ -103,7 +103,7 @@ fun BandalartDropDownMenu(
                 .fillMaxHeight()
                 .padding(start = 13.dp)
                 .align(CenterVertically),
-              text = context.getString(R.string.dropdown_delete_text),
+              text = context.getString(R.string.dropdown_delete),
               color = Error,
               fontSize = 14.sp.nonScaleSp,
               fontFamily = pretendard,

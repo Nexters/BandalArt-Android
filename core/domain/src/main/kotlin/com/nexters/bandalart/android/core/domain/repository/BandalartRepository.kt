@@ -88,7 +88,7 @@ interface BandalartRepository {
   )
 
   /**
-   * 반다라트 태스크 셀 수정
+   * 반다라트 이모지 수정
    *
    * @param bandalartKey 빈디라트 고유 키
    * @param cellKey 테스크 셀 고유 키

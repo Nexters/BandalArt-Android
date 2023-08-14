@@ -6,22 +6,23 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartSubCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartTaskCellUseCase
-import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
-import com.nexters.bandalart.android.feature.home.util.StringResource
+import com.nexters.bandalart.android.feature.home.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * BottomSheetUiState
@@ -49,6 +50,10 @@ data class BottomSheetUiState(
   val error: Throwable? = null,
 )
 
+sealed class BottomSheetUiEvent {
+  data class ShowToast(val message: UiText) : BottomSheetUiEvent()
+}
+
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
   private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
@@ -60,11 +65,8 @@ class BottomSheetViewModel @Inject constructor(
   private val _bottomSheetState = MutableStateFlow(BottomSheetUiState())
   val bottomSheetState: StateFlow<BottomSheetUiState> = this._bottomSheetState.asStateFlow()
 
-  private val _toastMessage = Channel<StringResource>()
-  val toastMessage = _toastMessage.receiveAsFlow()
-
-  private val _logMessage = Channel<StringResource>()
-  val logMessage = _logMessage.receiveAsFlow()
+  private val _eventFlow = MutableSharedFlow<BottomSheetUiEvent>()
+  val eventFlow: SharedFlow<BottomSheetUiEvent> = _eventFlow.asSharedFlow()
 
   fun copyCellData(cellData: BandalartCellUiModel) {
     _bottomSheetState.update {
@@ -88,13 +90,13 @@ class BottomSheetViewModel @Inject constructor(
           _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _toastMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -112,13 +114,13 @@ class BottomSheetViewModel @Inject constructor(
           _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _toastMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -136,13 +138,13 @@ class BottomSheetViewModel @Inject constructor(
           _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _bottomSheetState.value = _bottomSheetState.value.copy(error = exception)
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _toastMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -154,7 +156,7 @@ class BottomSheetViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> { }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -163,8 +165,8 @@ class BottomSheetViewModel @Inject constructor(
             error = exception,
           )
           openDeleteCellDialog(false)
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _toastMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }

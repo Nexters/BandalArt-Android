@@ -52,7 +52,7 @@ fun NetworkErrorAlertDialog(
         )
         Image(
           painter = image,
-          contentDescription = context.getString(R.string.delete_descrption_text),
+          contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -93,7 +93,7 @@ fun NetworkErrorAlertDialog(
             colors = ButtonDefaults.buttonColors(containerColor = Gray900),
           ) {
             Text(
-              text = context.getString(R.string.network_error_retry_message_text),
+              text = context.getString(R.string.network_error_retry_message),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = White,

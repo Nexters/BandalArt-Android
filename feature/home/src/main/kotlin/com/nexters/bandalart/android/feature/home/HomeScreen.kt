@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,7 +78,6 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
-import timber.log.Timber
 
 @Composable
 internal fun HomeRoute(
@@ -91,18 +91,15 @@ internal fun HomeRoute(
   val context = LocalContext.current
 
   LaunchedEffect(viewModel) {
-    viewModel.snackbarMessage.collect { message ->
-      onShowSnackbar(message.asString(context))
-    }
-  }
-  LaunchedEffect(viewModel) {
-    viewModel.logMessage.collect { message ->
-      Timber.e(message.asString(context))
-    }
-  }
-  LaunchedEffect(viewModel) {
-    viewModel.toastMessage.collect { message ->
-      Toast.makeText(context, message.asString(context), Toast.LENGTH_SHORT).show()
+    viewModel.eventFlow.collect { event ->
+      when (event) {
+        is HomeUiEvent.ShowSnackbar -> {
+          onShowSnackbar(event.message.asString(context))
+        }
+        is HomeUiEvent.ShowToast -> {
+          Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+        }
+      }
     }
   }
 
@@ -174,7 +171,7 @@ internal fun HomeScreen(
           uiState.bandalartDetailData.key,
           uiState.bandalartDetailData.title!!,
           if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
-            context.getString(R.string.homescreen_default_emoji_text)
+            context.getString(R.string.home_default_emoji)
           } else uiState.bandalartDetailData.profileEmoji,
         )
       }
@@ -194,9 +191,9 @@ internal fun HomeScreen(
         action = Intent.ACTION_SEND
         putExtra(
           Intent.EXTRA_TEXT,
-          context.getString(R.string.homescreen_share_url_text, uiState.shareUrl),
+          context.getString(R.string.home_share_url, uiState.shareUrl),
         )
-        type = context.getString(R.string.homescreen_share_type_text)
+        type = context.getString(R.string.home_share_type)
       }
       val shareIntent = Intent.createChooser(sendIntent, null)
       context.startActivity(shareIntent)
@@ -257,11 +254,11 @@ internal fun HomeScreen(
   if (uiState.isBandalartDeleteAlertDialogOpened) {
     BandalartDeleteAlertDialog(
       title = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) {
-        context.getString(R.string.delete_bandalart_dialog_empty_title_text)
+        stringResource(R.string.delete_bandalart_dialog_empty_title)
       } else {
-        context.getString(R.string.delete_bandalart_dialog_title_text, uiState.bandalartDetailData?.title)
+        stringResource(R.string.delete_bandalart_dialog_title, uiState.bandalartDetailData?.title ?: "")
       },
-      message = context.getString(R.string.delete_bandalart_dialog_message_text),
+      message = stringResource(R.string.delete_bandalart_dialog_message),
       onDeleteClicked = { uiState.bandalartDetailData?.let { deleteBandalart(it.key) } },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
     )
@@ -269,8 +266,8 @@ internal fun HomeScreen(
 
   if (uiState.isNetworkErrorAlertDialogOpened) {
     NetworkErrorAlertDialog(
-      title = context.getString(R.string.network_error_dialog_title_text),
-      message = context.getString(R.string.network_error_dialog_message_text),
+      title = stringResource(R.string.network_error_dialog_title),
+      message = stringResource(R.string.network_error_dialog_message),
       onConfirmClick = {
         openNetworkErrorDialog(false)
         loadingChanged(true)
@@ -299,7 +296,7 @@ internal fun HomeScreen(
                 uiState.bandalartDetailData.key,
                 uiState.bandalartDetailData.title,
                 if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
-                  context.getString(R.string.homescreen_default_emoji_text)
+                  context.getString(R.string.home_default_emoji)
                 } else uiState.bandalartDetailData.profileEmoji,
               )
             }
@@ -333,7 +330,7 @@ internal fun HomeScreen(
                     )
                     Image(
                       painter = image,
-                      contentDescription = context.getString(R.string.empty_emoji_descrption_text),
+                      contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   } else {
                     EmojiText(
@@ -349,7 +346,7 @@ internal fun HomeScreen(
                 )
                 Image(
                   painter = image,
-                  contentDescription = context.getString(R.string.edit_descrption_text),
+                  contentDescription = stringResource(R.string.edit_descrption),
                   modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .offset(x = 4.dp, y = 4.dp),
@@ -363,7 +360,7 @@ internal fun HomeScreen(
                 .wrapContentHeight(),
             ) {
               FixedSizeText(
-                text = uiState.bandalartDetailData?.title ?: context.getString(R.string.homescreen_empty_title_text),
+                text = uiState.bandalartDetailData?.title ?: stringResource(R.string.home_empty_title),
                 color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
                 fontWeight = FontWeight.W700,
                 fontSize = 20.sp,
@@ -377,7 +374,7 @@ internal fun HomeScreen(
               )
               Image(
                 painter = image,
-                contentDescription = context.getString(R.string.option_descrption_text),
+                contentDescription = stringResource(R.string.option_descrption),
                 modifier = Modifier
                   .align(Alignment.CenterEnd)
                   .clickable(onClick = { openDropDownMenu(true) }),
@@ -399,8 +396,8 @@ internal fun HomeScreen(
           ) {
             // TODO 온보딩 navigation 제거
             FixedSizeText(
-              text = context.getString(
-                R.string.homescreen_complete_ratio_text,
+              text = stringResource(
+                R.string.home_complete_ratio,
                 uiState.bandalartDetailData?.completionRatio ?: 0,
               ),
               color = Gray600,
@@ -439,12 +436,12 @@ internal fun HomeScreen(
                 ) {
                   Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = context.getString(R.string.check_descrption_text),
+                    contentDescription = stringResource(R.string.check_descrption),
                     tint = Gray900,
                     modifier = Modifier.size(13.dp),
                   )
                   FixedSizeText(
-                    text = context.getString(R.string.homescreen_complete_text),
+                    text = stringResource(R.string.home_complete),
                     color = Gray900,
                     fontWeight = FontWeight.W600,
                     fontSize = 10.sp,
@@ -495,10 +492,10 @@ internal fun HomeScreen(
             )
             Image(
               painter = image,
-              contentDescription = context.getString(R.string.share_descrption_text),
+              contentDescription = stringResource(R.string.share_descrption),
             )
             FixedSizeText(
-              text = context.getString(R.string.homescreen_share_text),
+              text = stringResource(R.string.home_share),
               modifier = Modifier.padding(start = 4.dp),
               color = Gray900,
               fontSize = 12.sp.nonScaleSp,
@@ -526,7 +523,7 @@ private fun updateBandalartListTitles(
   var counter = 1
   return list.map { item ->
     if (item.title.isNullOrEmpty()) {
-      val updatedTitle = context.getString(R.string.bandalart_list_empty_title_text, counter)
+      val updatedTitle = context.getString(R.string.bandalart_list_empty_title, counter)
       counter += 1
       item.copy(
         title = updatedTitle,

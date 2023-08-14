@@ -12,6 +12,7 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.R
@@ -51,7 +52,7 @@ fun BandalartChart(
       for (index in subCellList.indices) {
         Box(
           modifier
-            .layoutId(context.getString(R.string.homescreen_layout_id_text, index + 1))
+            .layoutId(stringResource(R.string.home_layout_id, index + 1))
             .clip(RoundedCornerShape(12.dp))
             .background(color = Gray100),
           content = {
@@ -68,7 +69,7 @@ fun BandalartChart(
       }
       Box(
         modifier
-          .layoutId(context.getString(R.string.homescreen_main_id_text))
+          .layoutId(stringResource(R.string.home_main_id))
           .clip(RoundedCornerShape(10.dp))
           .background(color = (uiState.bandalartCellData.mainColor?.toColor() ?: MainColor)),
         content = {
@@ -83,11 +84,11 @@ fun BandalartChart(
       )
     },
   ) { measurables, constraints ->
-    val sub1 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub1_id_text) }
-    val sub2 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub2_id_text) }
-    val sub3 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub3_id_text) }
-    val sub4 = measurables.first { it.layoutId == context.getString(R.string.homescreen_sub4_id_text) }
-    val main = measurables.first { it.layoutId == context.getString(R.string.homescreen_main_id_text) }
+    val sub1 = measurables.first { it.layoutId == context.getString(R.string.home_sub1_id) }
+    val sub2 = measurables.first { it.layoutId == context.getString(R.string.home_sub2_id) }
+    val sub3 = measurables.first { it.layoutId == context.getString(R.string.home_sub3_id) }
+    val sub4 = measurables.first { it.layoutId == context.getString(R.string.home_sub4_id) }
+    val main = measurables.first { it.layoutId == context.getString(R.string.home_main_id) }
 
     val chartWidth = paddedMaxWidth.roundToPx()
     val mainWidth = chartWidth / 5

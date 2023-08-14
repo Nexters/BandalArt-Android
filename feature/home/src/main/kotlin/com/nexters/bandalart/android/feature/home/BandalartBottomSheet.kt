@@ -54,6 +54,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,8 +76,8 @@ import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.allColor
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.extension.toFormatStringToLocalDateTime
-import com.nexters.bandalart.android.core.ui.extension.toFormatLocalDateTimeStringToString
+import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
@@ -91,7 +92,6 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
 import java.time.LocalDateTime
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun BandalartBottomSheet(
@@ -142,24 +142,23 @@ fun BandalartBottomSheet(
       }
     }
     LaunchedEffect(viewModel) {
-      viewModel.logMessage.collect { message ->
-        Timber.e(message.asString(context))
-      }
-    }
-    LaunchedEffect(viewModel) {
-      viewModel.toastMessage.collect { message ->
-        Toast.makeText(context, message.asString(context), Toast.LENGTH_SHORT).show()
+      viewModel.eventFlow.collect { event ->
+        when (event) {
+          is BottomSheetUiEvent.ShowToast -> {
+            Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+          }
+        }
       }
     }
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
-        title = context.getString(R.string.delete_bandalart_cell_dialog_title_text),
+        title = stringResource(R.string.delete_bandalart_cell_dialog_title),
         message = if (isMainCell) {
-          context.getString(R.string.delete_bandalart_maincell_dialog_message_text)
+          stringResource(R.string.delete_bandalart_maincell_dialog_message)
         } else if (isSubCell) {
-          context.getString(R.string.delete_bandalart_subcell_dialog_message_text)
+          stringResource(R.string.delete_bandalart_subcell_dialog_message)
         } else {
-          context.getString(R.string.delete_bandalart_taskcell_dialog_message_text)
+          stringResource(R.string.delete_bandalart_taskcell_dialog_message)
         },
         onDeleteClicked = {
           scope.launch {
@@ -208,7 +207,7 @@ fun BandalartBottomSheet(
             end = 20.dp,
           ),
       ) {
-        BottomSheetSubTitleText(text = context.getString(R.string.bottomsheet_title_text))
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
         Spacer(modifier = Modifier.height(11.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
           if (isMainCell) {
@@ -238,7 +237,7 @@ fun BandalartBottomSheet(
                     )
                     Image(
                       painter = image,
-                      contentDescription = context.getString(R.string.empty_emoji_descrption_text),
+                      contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   } else {
                     EmojiText(
@@ -253,7 +252,7 @@ fun BandalartBottomSheet(
               )
               Image(
                 painter = image,
-                contentDescription = context.getString(R.string.edit_descrption_text),
+                contentDescription = stringResource(R.string.edit_descrption),
                 modifier = Modifier
                   .align(Alignment.BottomEnd)
                   .offset(x = 4.dp, y = 4.dp),
@@ -281,7 +280,7 @@ fun BandalartBottomSheet(
               decorationBox = { innerTextField ->
                 if (uiState.cellData.title.isNullOrEmpty()) {
                   BottomSheetContentPlaceholder(
-                    text = context.getString(R.string.bottomsheet_title_placeholder_text),
+                    text = stringResource(R.string.bottomsheet_title_placeholder),
                   )
                 }
                 innerTextField()
@@ -316,7 +315,7 @@ fun BandalartBottomSheet(
         }
         if (isMainCell && uiState.isCellDataCopied) {
           Spacer(modifier = Modifier.height(22.dp))
-          BottomSheetSubTitleText(text = context.getString(R.string.bottomsheet_color_text))
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
           BandalartColorPicker(
             initColor = ThemeColor(
               mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
@@ -332,7 +331,7 @@ fun BandalartBottomSheet(
           Spacer(modifier = Modifier.height(3.dp))
         }
         Spacer(modifier = Modifier.height(25.dp))
-        BottomSheetSubTitleText(text = context.getString(R.string.bottomsheet_duedate_text))
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_duedate))
         Spacer(modifier = Modifier.height(12.dp))
         Column {
           Box(
@@ -345,10 +344,10 @@ fun BandalartBottomSheet(
               },
           ) {
             if (uiState.cellData.dueDate.isNullOrEmpty()) {
-              BottomSheetContentPlaceholder(text = context.getString(R.string.bottomsheet_duedate_placeholder_text))
+              BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
             } else {
               BottomSheetContentText(
-                text = uiState.cellData.dueDate!!.toFormatLocalDateTimeStringToString(),
+                text = uiState.cellData.dueDate!!.toStringLocalDateTime(),
               )
             }
             Icon(
@@ -357,7 +356,7 @@ fun BandalartBottomSheet(
                 .height(21.dp)
                 .aspectRatio(1f),
               imageVector = Icons.Default.ArrowForwardIos,
-              contentDescription = context.getString(R.string.arrow_forward_descrption_text),
+              contentDescription = stringResource(R.string.arrow_forward_descrption),
               tint = Gray400,
             )
           }
@@ -372,11 +371,11 @@ fun BandalartBottomSheet(
             },
             datePickerScope = rememberCoroutineScope(),
             datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            currentDueDate = uiState.cellData.dueDate?.toFormatStringToLocalDateTime() ?: LocalDateTime.now(),
+            currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
           )
         }
         Spacer(modifier = Modifier.height(28.dp))
-        BottomSheetSubTitleText(text = context.getString(R.string.bottomsheet_description_text))
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_description))
         Spacer(modifier = Modifier.height(12.dp))
         Box {
           Column {
@@ -401,7 +400,7 @@ fun BandalartBottomSheet(
               decorationBox = { innerTextField ->
                 if (uiState.cellData.description.isNullOrEmpty()) {
                   BottomSheetContentPlaceholder(
-                    text = context.getString(R.string.bottomsheet_description_placeholder_text),
+                    text = stringResource(R.string.bottomsheet_description_placeholder),
                   )
                 }
                 innerTextField()
@@ -413,13 +412,13 @@ fun BandalartBottomSheet(
         }
         if (!isSubCell && !isMainCell) {
           Spacer(modifier = Modifier.height(28.dp))
-          BottomSheetSubTitleText(text = context.getString(R.string.bottomsheet_isCompleted_text))
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
           Spacer(modifier = Modifier.height(12.dp))
           Box(modifier = Modifier.fillMaxWidth()) {
             BottomSheetContentText(
               modifier = Modifier.align(Alignment.CenterStart),
-              text = if (uiState.cellData.isCompleted) context.getString(R.string.bottomsheet_Completed_text)
-              else context.getString(R.string.bottomsheet_unCompleted_text),
+              text = if (uiState.cellData.isCompleted) stringResource(R.string.bottomsheet_completed)
+              else stringResource(R.string.bottomsheet_in_completed),
             )
             Switch(
               checked = uiState.cellData.isCompleted,

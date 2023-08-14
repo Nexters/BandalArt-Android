@@ -19,16 +19,18 @@ import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
-import com.nexters.bandalart.android.feature.home.util.StringResource
+import com.nexters.bandalart.android.feature.home.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.async
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * HomeUiState
@@ -71,6 +73,11 @@ data class HomeUiState(
   val error: Throwable? = null,
 )
 
+sealed class HomeUiEvent {
+  data class ShowSnackbar(val message: UiText) : HomeUiEvent()
+  data class ShowToast(val message: UiText) : HomeUiEvent()
+}
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getBandalartListUseCase: GetBandalartListUseCase,
@@ -89,14 +96,8 @@ class HomeViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(HomeUiState())
   val uiState: StateFlow<HomeUiState> = this._uiState.asStateFlow()
 
-  private val _snackbarMessage = Channel<StringResource>()
-  val snackbarMessage = _snackbarMessage.receiveAsFlow()
-
-  private val _toastMessage = Channel<StringResource>()
-  val toastMessage = _toastMessage.receiveAsFlow()
-
-  private val _logMessage = Channel<StringResource>()
-  val logMessage = _logMessage.receiveAsFlow()
+  private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
+  val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
   init {
     _uiState.value = _uiState.value.copy(
@@ -146,7 +147,7 @@ class HomeViewModel @Inject constructor(
         }
         // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -156,7 +157,7 @@ class HomeViewModel @Inject constructor(
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          Timber.e(exception.message)
         }
       }
     }
@@ -176,7 +177,7 @@ class HomeViewModel @Inject constructor(
           getBandalartMainCell(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -187,7 +188,7 @@ class HomeViewModel @Inject constructor(
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          Timber.e(exception.message)
         }
       }
     }
@@ -208,7 +209,7 @@ class HomeViewModel @Inject constructor(
           openNetworkErrorAlertDialog(false)
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -219,7 +220,7 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             error = exception,
           )
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          Timber.e(exception.message)
         }
       }
     }
@@ -228,7 +229,7 @@ class HomeViewModel @Inject constructor(
   fun createBandalart() {
     viewModelScope.launch {
       if (_uiState.value.bandalartList.size + 1 > 5) {
-        _toastMessage.send(StringResource.StringResourceText(R.string.limit_create_bandalart_text))
+        _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
         return@launch
       }
       _uiState.value = _uiState.value.copy(isShowSkeleton = true)
@@ -243,10 +244,10 @@ class HomeViewModel @Inject constructor(
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
           getBandalartList(bandalart.key)
           // TODO 표가 뒤집히는 애니메이션 구현
-          _snackbarMessage.send(StringResource.StringResourceText(R.string.create_bandalart_text))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -255,8 +256,8 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             error = exception,
           )
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _snackbarMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -274,10 +275,10 @@ class HomeViewModel @Inject constructor(
           )
           openBandalartDeleteAlertDialog(false)
           getBandalartList()
-          _snackbarMessage.send(StringResource.StringResourceText(R.string.delete_bandalart_text))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -287,8 +288,8 @@ class HomeViewModel @Inject constructor(
             isBandalartDeleted = false,
             error = exception,
           )
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _snackbarMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -307,7 +308,7 @@ class HomeViewModel @Inject constructor(
           getBandalartList(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
@@ -316,8 +317,8 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             error = exception,
           )
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _snackbarMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -334,13 +335,13 @@ class HomeViewModel @Inject constructor(
           )
         }
         result.isSuccess && result.getOrNull() == null -> {
-          _logMessage.send(StringResource.StringResourceText(R.string.data_validation_text))
+          Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(error = exception)
-          _logMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
-          _snackbarMessage.send(StringResource.ViewModelStringViewModel(exception.message.toString()))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }

@@ -19,13 +19,13 @@ fun String.toFormatDate(): String {
   return "~${dateTime.year - 2000}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
 }
 
-fun String.toFormatLocalDateTimeStringToString(): String {
+fun String.toStringLocalDateTime(): String {
   val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
   val dueDate = LocalDateTime.parse(this.substring(0, 16), formatter)
   return "${dueDate.year}년 ${dueDate.monthValue}월 ${dueDate.dayOfMonth}일"
 }
 
-fun String.toFormatStringToLocalDateTime(): LocalDateTime {
+fun String.toLocalDateTime(): LocalDateTime {
   val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
   return LocalDateTime.parse(this.substring(0, 16), formatter)
 }

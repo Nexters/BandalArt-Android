@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.feature.home.util.CellInfo
 import com.nexters.bandalart.android.feature.home.util.SubCell
 
 @Composable

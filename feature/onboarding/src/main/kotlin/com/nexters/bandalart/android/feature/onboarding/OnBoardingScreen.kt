@@ -92,7 +92,7 @@ internal fun OnBoardingScreen(
               horizontalAlignment = Alignment.CenterHorizontally,
             ) {
               Spacer(modifier = Modifier.height(50.dp))
-              TitleText(text = context.getString(R.string.onboarding_title1_text))
+              TitleText(text = context.getString(R.string.onboarding_first_title))
               Spacer(modifier = Modifier.height(50.dp))
               Card(
                 shape = RoundedCornerShape(16.dp),
@@ -111,7 +111,7 @@ internal fun OnBoardingScreen(
                   )
                   Image(
                     painter = image,
-                    contentDescription = context.getString(R.string.delete_descrption_text),
+                    contentDescription = context.getString(R.string.delete_descrption),
                     modifier = Modifier.fillMaxSize(),
                   )
                 }
@@ -125,7 +125,7 @@ internal fun OnBoardingScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
               ) {
                 Spacer(modifier = Modifier.height(50.dp))
-                TitleText(text = context.getString(R.string.onboarding_title2_text))
+                TitleText(text = context.getString(R.string.onboarding_second_title))
                 Spacer(modifier = Modifier.height(50.dp))
                 Card(
                   shape = RoundedCornerShape(16.dp),
@@ -153,7 +153,7 @@ internal fun OnBoardingScreen(
                     .build()
                   navigateToHome(options)
                 },
-                text = context.getString(R.string.onboarding_start_text),
+                text = context.getString(R.string.onboarding_start),
                 modifier = Modifier
                   .align(Alignment.BottomCenter)
                   .padding(bottom = 32.dp),

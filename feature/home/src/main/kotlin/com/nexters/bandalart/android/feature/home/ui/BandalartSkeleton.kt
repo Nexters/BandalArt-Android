@@ -9,18 +9,17 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray300
 import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray50
 import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BandalartSkeleton() {
-  val context = LocalContext.current
   val shimmerMainColors = listOf(
     Gray200,
     Gray300,
@@ -46,7 +45,7 @@ fun BandalartSkeleton() {
       ),
       repeatMode = RepeatMode.Reverse,
     ),
-    label = context.getString(R.string.skeleton_trans_animate_label_text),
+    label = stringResource(R.string.skeleton_trans_animate_label),
   )
   val mainBrush = Brush.linearGradient(
     colors = shimmerMainColors,

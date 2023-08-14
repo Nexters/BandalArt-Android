@@ -17,8 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,7 +36,6 @@ internal fun HomeTopBar(
   onShowBandalartList: () -> Unit,
   onLogoClicked: () -> Unit,
 ) {
-  val context = LocalContext.current
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -50,7 +49,7 @@ internal fun HomeTopBar(
       val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app)
       Image(
         painter = image,
-        contentDescription = context.getString(R.string.app_descrption_text),
+        contentDescription = stringResource(R.string.app_descrption),
         modifier = Modifier
           .align(Alignment.CenterVertically)
           .padding(start = 20.dp)
@@ -69,10 +68,10 @@ internal fun HomeTopBar(
             )
             Image(
               painter = image,
-              contentDescription = context.getString(R.string.hamburger_descrption_text),
+              contentDescription = stringResource(R.string.hamburger_descrption),
             )
             Text(
-              text = context.getString(R.string.hometopbar_list_text),
+              text = stringResource(R.string.home_list),
               fontFamily = pretendard,
               fontWeight = FontWeight.W700,
               color = Gray600,
@@ -81,12 +80,12 @@ internal fun HomeTopBar(
           } else {
             Icon(
               imageVector = Icons.Default.Add,
-              contentDescription = context.getString(R.string.add_descrption_text),
+              contentDescription = stringResource(R.string.add_descrption),
               tint = Gray600,
               modifier = Modifier.size(20.dp),
             )
             FixedSizeText(
-              text = context.getString(R.string.hometopbar_add_text),
+              text = stringResource(R.string.home_add),
               color = Gray600,
               fontWeight = FontWeight.W700,
               fontSize = 16.sp,

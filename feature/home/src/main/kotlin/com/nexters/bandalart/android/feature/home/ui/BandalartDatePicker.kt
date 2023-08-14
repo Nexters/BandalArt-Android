@@ -28,14 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.extension.toFormatStringToLocalDateTime
+import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.pretendard
@@ -189,7 +189,6 @@ fun InfiniteItemsPicker(
 ) {
   val listState = rememberLazyListState(firstIndex)
   val currentValue = remember { mutableStateOf("") }
-  val context = LocalContext.current
 
   LaunchedEffect(key1 = !listState.isScrollInProgress) {
     onItemSelected(currentValue.value)
@@ -209,9 +208,9 @@ fun InfiniteItemsPicker(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-              text = if (isYear) context.getString(R.string.datepicker_year_text, items[index].toString())
-              else if (isMonth) context.getString(R.string.datepicker_month_text, items[index].toString())
-              else context.getString(R.string.datepicker_day_text, items[index].toString()),
+              text = if (isYear) stringResource(R.string.datepicker_year, items[index].toString())
+              else if (isMonth) stringResource(R.string.datepicker_month, items[index].toString())
+              else stringResource(R.string.datepicker_day, items[index].toString()),
               modifier = modifier
                 .fillMaxWidth()
                 .alpha(if (it == listState.firstVisibleItemIndex + 2) 1f else 0.6f),
@@ -248,5 +247,5 @@ fun selectedDateWithValidate(year: String, month: String, day: String): LocalDat
       if (day == "31") "30"
       else day.padStart(2, '0')
     else day.padStart(2, '0')
-  }T00:00".toFormatStringToLocalDateTime()
+  }T00:00".toLocalDateTime()
 }

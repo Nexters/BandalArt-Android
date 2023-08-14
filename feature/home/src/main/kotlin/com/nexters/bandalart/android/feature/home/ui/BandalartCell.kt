@@ -23,8 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -39,7 +39,14 @@ import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.feature.home.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.android.feature.home.util.CellInfo
+
+data class CellInfo(
+  val isSubCell: Boolean = false,
+  val colIndex: Int = 2,
+  val rowIndex: Int = 2,
+  val colCnt: Int = 1,
+  val rowCnt: Int = 1,
+)
 
 @Composable
 fun BandalartCell(
@@ -54,7 +61,6 @@ fun BandalartCell(
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,
 ) {
-  val context = LocalContext.current
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   val backgroundColor = when {
     isMainCell -> themeColor.mainColor.toColor()
@@ -85,13 +91,13 @@ fun BandalartCell(
         Box(contentAlignment = Alignment.Center) {
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
-              cellText = context.getString(R.string.homescreen_main_cell_text),
+              cellText = stringResource(R.string.home_main_cell),
               cellTextColor = cellTextColor,
               fontWeight = FontWeight.W700,
             )
             Icon(
               imageVector = Icons.Default.Add,
-              contentDescription = context.getString(R.string.add_descrption_text),
+              contentDescription = stringResource(R.string.add_descrption),
               tint = cellTextColor,
               modifier = Modifier
                 .size(20.dp)
@@ -117,13 +123,13 @@ fun BandalartCell(
           verticalArrangement = Arrangement.Center,
         ) {
           CellText(
-            cellText = context.getString(R.string.homescreen_sub_cell_text),
+            cellText = stringResource(R.string.home_sub_cell),
             cellTextColor = cellTextColor,
             fontWeight = fontWeight,
           )
           Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = context.getString(R.string.add_descrption_text),
+            contentDescription = stringResource(R.string.add_descrption),
             tint = cellTextColor,
             modifier = Modifier
               .size(20.dp)
@@ -148,7 +154,7 @@ fun BandalartCell(
       if (cellData.title.isNullOrEmpty()) {
         Icon(
           imageVector = Icons.Default.Add,
-          contentDescription = context.getString(R.string.add_descrption_text),
+          contentDescription = stringResource(R.string.add_descrption),
           tint = Gray500,
           modifier = Modifier.size(20.dp),
         )
@@ -169,7 +175,7 @@ fun BandalartCell(
             )
             Image(
               painter = image,
-              contentDescription = context.getString(R.string.complete_descrption_text),
+              contentDescription = stringResource(R.string.complete_descrption),
               modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = (-4).dp, y = (-4).dp),
