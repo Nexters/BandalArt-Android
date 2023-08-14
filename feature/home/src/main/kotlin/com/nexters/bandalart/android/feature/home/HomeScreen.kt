@@ -406,6 +406,7 @@ internal fun HomeScreen(
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
               letterSpacing = (-0.24).sp,
+              modifier = Modifier.clickable { throw Exception("Test Crash") }
             )
             if (!uiState.bandalartDetailData?.dueDate.isNullOrEmpty()) {
               VerticalDivider(

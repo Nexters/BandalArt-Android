@@ -142,7 +142,6 @@ class HomeViewModel @Inject constructor(
             }
           }
         }
-        // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
