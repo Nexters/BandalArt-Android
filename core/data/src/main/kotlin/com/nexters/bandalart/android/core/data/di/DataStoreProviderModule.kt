@@ -12,8 +12,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
- private const val BANDALART_DATASTORE = "bandalart_datastore"
- private val Context.bandalartDataStore: DataStore<Preferences> by preferencesDataStore(name = BANDALART_DATASTORE)
+private const val BANDALART_DATASTORE = "bandalart_datastore"
+private val Context.bandalartDataStore: DataStore<Preferences> by preferencesDataStore(name = BANDALART_DATASTORE)
 
 @Module
 @InstallIn(SingletonComponent::class)

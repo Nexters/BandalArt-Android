@@ -50,11 +50,12 @@ internal class DataStoreProvider @Inject constructor(
       else throw exception
     }.first()[prefKeyRecentBandalartKey] ?: ""
 
-  suspend fun getPrevBandalartList() = stringToList(dataStore.data
-    .catch { exception ->
-      if (exception is IOException) emit(emptyPreferences())
-      else throw exception
-    }.first()[prefKeyCompletedBandalartList] ?: ""
+  suspend fun getPrevBandalartList() = stringToList(
+    dataStore.data
+      .catch { exception ->
+        if (exception is IOException) emit(emptyPreferences())
+        else throw exception
+      }.first()[prefKeyCompletedBandalartList] ?: "",
   )
 
   // 키가 존재하면 값을 갱신, 없으면 추가
@@ -62,8 +63,8 @@ internal class DataStoreProvider @Inject constructor(
     dataStore.edit { preferences ->
       val currentListAsString = preferences[prefKeyCompletedBandalartList] ?: ""
       val currentList = stringToList(currentListAsString)
-      val keyExists = currentList.any { it.first == bandalartKey }
-      val updatedList = if (keyExists) {
+      val isKeyExists = currentList.any { it.first == bandalartKey }
+      val updatedList = if (isKeyExists) {
         currentList.map {
           if (it.first == bandalartKey) Pair(bandalartKey, isCompleted)
           else it
