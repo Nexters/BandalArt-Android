@@ -12,7 +12,8 @@ build
 release
 local.properties
 secrets.properties
-Keystore files
+
+# Keystore files
 *.jks
 *.keystore
 
