@@ -6,11 +6,13 @@ import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetPrevBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.InsertCompletedBandalartKeyUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
@@ -47,6 +49,7 @@ import timber.log.Timber
  * @param isEmojiBottomSheetOpened 반다라트 이모지 바텀시트가 열림
  * @param isBottomSheetDataChanged 바텀시트의 데이터가 변경됨
  * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
+ * @param isBandalartCompleted 반다라트 목표를 달성함
  * @param isLoading 서버와의 통신 중 로딩 상태
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
  * @param shareUrl 공유 링크
@@ -68,7 +71,7 @@ data class HomeUiState(
   val isBottomSheetDataChanged: Boolean = false,
   val isBottomSheetMainCellChanged: Boolean = false,
   val shareUrl: String = "",
-  val isBandalartFirstCompleted: Boolean = false,
+  val isBandalartCompleted: Boolean = false,
   val isShowSkeleton: Boolean = false,
   val isLoading: Boolean = false,
   val isNetworking: Boolean = false,
@@ -91,8 +94,10 @@ class HomeViewModel @Inject constructor(
   private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
   private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
   private val shareBandalartUseCase: ShareBandalartUseCase,
-  private val insertCompletedBandalartKeyUseCase: InsertCompletedBandalartKeyUseCase,
+  private val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase,
   private val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase,
+  private val deleteBandalartKeyUseCase: DeleteBandalartKeyUseCase,
+  private val getPrevBandalartListUseCase: GetPrevBandalartListUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -117,6 +122,26 @@ class HomeViewModel @Inject constructor(
             bandalartList = bandalartList,
             error = null,
           )
+          // 이전 반다라트 목록 상태 조회
+          val prevBandalartList = getPrevBandalartListUseCase()
+
+          // 새로 업데이트 된 상태와 이전 상태를 비교
+          val completedKeys = bandalartList.filter { bandalart ->
+            val prevBandalart = prevBandalartList.find { it.first == bandalart.key }
+            prevBandalart != null && !prevBandalart.second && bandalart.isCompleted
+          }.map { it.key }
+
+          // 이번에 목표를 달성한 반다라트가 존재하는 경우
+          if (completedKeys.isNotEmpty()) {
+            getBandalartDetail(completedKeys[0], isBandalartCompleted = true)
+            return@launch
+          }
+
+          // 서버의 데이터와 로컬의 데이터를 동기화
+          bandalartList.forEach { bandalart ->
+            upsertBandalartKeyUseCase(bandalart.key, bandalart.isCompleted)
+          }
+
           // 생성한 반다라트 표를 화면에 띄우는 경우
           if (bandalartKey != null) {
             _uiState.value = _uiState.value.copy(isShowSkeleton = true)
@@ -142,12 +167,8 @@ class HomeViewModel @Inject constructor(
               // 목록에 가장 첫번째 표를 화면에 띄움
               getBandalartDetail(bandalartList[0].key)
             }
-            bandalartList.filter { it.isCompleted }.forEach {
-              insertCompletedBandalartKey(it.key)
-            }
           }
         }
-        // TODO 해당 케이스의 대한 처리 유무 결정
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
@@ -165,7 +186,7 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun getBandalartDetail(bandalartKey: String) {
+  fun getBandalartDetail(bandalartKey: String, isBandalartCompleted: Boolean = false) {
     viewModelScope.launch {
       val result = getBandalartDetailUseCase(bandalartKey)
       when {
@@ -174,6 +195,7 @@ class HomeViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             bandalartDetailData = bandalartDetailData,
             isBandalartListBottomSheetOpened = false,
+            isBandalartCompleted = isBandalartCompleted,
             error = null,
           )
           getBandalartMainCell(bandalartKey)
@@ -248,6 +270,10 @@ class HomeViewModel @Inject constructor(
             )
             // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
             getBandalartList(bandalart.key)
+            // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
+            setRecentBandalartKey(bandalart.key)
+            // 새로운 반다라트를 로컬에 저장
+            upsertBandalartKey(bandalart.key)
             // TODO 표가 뒤집히는 애니메이션 구현
             _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
           }
@@ -284,6 +310,7 @@ class HomeViewModel @Inject constructor(
             )
             openBandalartDeleteAlertDialog(false)
             getBandalartList()
+            deleteBandalartKey(bandalartKey)
             _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
           }
           result.isSuccess && result.getOrNull() == null -> {
@@ -440,9 +467,9 @@ class HomeViewModel @Inject constructor(
     )
   }
 
-  fun insertCompletedBandalartKey(bandalartKey: String) {
+  private fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean = false) {
     viewModelScope.launch {
-      insertCompletedBandalartKeyUseCase(bandalartKey)
+      upsertBandalartKeyUseCase(bandalartKey, isCompleted)
     }
   }
 
@@ -450,5 +477,11 @@ class HomeViewModel @Inject constructor(
     return viewModelScope.async {
       checkCompletedBandalartKeyUseCase(bandalartKey)
     }.await()
+  }
+
+  suspend fun deleteBandalartKey(bandalartKey: String) {
+    viewModelScope.launch {
+      deleteBandalartKeyUseCase(bandalartKey)
+    }
   }
 }

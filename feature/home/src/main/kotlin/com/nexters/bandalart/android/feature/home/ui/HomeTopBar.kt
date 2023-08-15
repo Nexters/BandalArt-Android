@@ -29,12 +29,10 @@ import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.White
 import com.nexters.bandalart.android.core.ui.theme.pretendard
 
-// TODO 목표 달성화면 로띠 연동 후에 onLogoClicked 제거
 @Composable
 internal fun HomeTopBar(
   bandalartCount: Int,
   onShowBandalartList: () -> Unit,
-  onLogoClicked: () -> Unit,
 ) {
   Box(
     modifier = Modifier
@@ -52,8 +50,7 @@ internal fun HomeTopBar(
         contentDescription = stringResource(R.string.app_descrption),
         modifier = Modifier
           .align(Alignment.CenterVertically)
-          .padding(start = 20.dp)
-          .clickable { onLogoClicked() },
+          .padding(start = 20.dp),
       )
       Spacer(modifier = Modifier.weight(1f))
       Box(

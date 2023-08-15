@@ -12,7 +12,6 @@ import com.nexters.bandalart.android.core.ui.theme.Gray400
 import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 
-// TODO 각각이 비어 있는 경우 수정이 아닌 입력이 되어야
 @Composable
 fun BottomSheetTitleText(
   modifier: Modifier = Modifier,

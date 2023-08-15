@@ -8,7 +8,6 @@ import com.nexters.bandalart.android.feature.complete.navigation.navigateToCompl
 import com.nexters.bandalart.android.feature.home.navigation.HOME_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.feature.home.navigation.homeScreen
 import com.nexters.bandalart.android.feature.home.navigation.navigateToHome
-import com.nexters.bandalart.android.feature.onboarding.navigation.navigateToOnBoarding
 import com.nexters.bandalart.android.feature.onboarding.navigation.onBoardingScreen
 import com.nexters.bandalart.android.ui.BandalartAppState
 
@@ -36,7 +35,6 @@ fun BandalartNavHost(
           bandalartProfileEmoji = emoji,
         )
       },
-      navigateToOnBoarding = navController::navigateToOnBoarding,
       onShowSnackbar = onShowSnackbar,
     )
     completeScreen(

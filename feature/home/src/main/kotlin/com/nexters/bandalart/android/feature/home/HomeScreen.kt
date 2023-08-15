@@ -83,7 +83,6 @@ import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 internal fun HomeRoute(
   modifier: Modifier = Modifier,
   navigateToComplete: (String, String, String) -> Unit,
-  navigateToOnBoarding: () -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -123,7 +122,6 @@ internal fun HomeRoute(
     setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
     shareBandalart = { key -> viewModel.shareBandalart(key) },
     initShareUrl = viewModel::initShareUrl,
-    navigateToOnBoarding = navigateToOnBoarding,
     checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
     openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
   )
@@ -150,7 +148,6 @@ internal fun HomeScreen(
   setRecentBandalartKey: (String) -> Unit,
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
-  navigateToOnBoarding: () -> Unit,
   checkCompletedBandalartKey: suspend (String) -> Boolean,
   openNetworkErrorDialog: (Boolean) -> Unit,
 ) {
@@ -161,15 +158,15 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  // TODO 매번 목표 달성 화면으로 이동하지 않도록
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
     // 목표를 달성했을 경우
-    if (uiState.bandalartDetailData?.isCompleted == true) {
+    if (uiState.bandalartDetailData?.isCompleted == true && !uiState.bandalartDetailData.title.isNullOrEmpty()) {
       // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
-      if (uiState.bandalartDetailData.key.let { checkCompletedBandalartKey(it) }) {
+      val isBandalartCompleted = checkCompletedBandalartKey(uiState.bandalartDetailData.key)
+      if (isBandalartCompleted) {
         navigateToComplete(
           uiState.bandalartDetailData.key,
-          uiState.bandalartDetailData.title!!,
+          uiState.bandalartDetailData.title,
           if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
             context.getString(R.string.home_default_emoji)
           } else uiState.bandalartDetailData.profileEmoji,
@@ -290,17 +287,6 @@ internal fun HomeScreen(
         HomeTopBar(
           bandalartCount = uiState.bandalartList.size,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
-          onLogoClicked = {
-            if (uiState.bandalartDetailData?.title != null) {
-              navigateToComplete(
-                uiState.bandalartDetailData.key,
-                uiState.bandalartDetailData.title,
-                if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
-                  context.getString(R.string.home_default_emoji)
-                } else uiState.bandalartDetailData.profileEmoji,
-              )
-            }
-          },
         )
         HorizontalDivider(
           thickness = 1.dp,
@@ -394,7 +380,6 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            // TODO 온보딩 navigation 제거
             FixedSizeText(
               text = stringResource(
                 R.string.home_complete_ratio,
@@ -404,7 +389,6 @@ internal fun HomeScreen(
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
               letterSpacing = (-0.24).sp,
-              modifier = Modifier.clickable { navigateToOnBoarding() },
             )
             if (!uiState.bandalartDetailData?.dueDate.isNullOrEmpty()) {
               VerticalDivider(
