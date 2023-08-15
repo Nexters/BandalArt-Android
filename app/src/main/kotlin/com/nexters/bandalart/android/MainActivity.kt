@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
@@ -38,11 +36,7 @@ class MainActivity : ComponentActivity() {
         ) {
           when {
             uiState.isLoading -> {
-              LoadingScreen(
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .aspectRatio(1f),
-              )
+              LoadingScreen(modifier = Modifier.fillMaxSize())
             }
             uiState.isNetworkErrorAlertDialogOpened -> {
               NetworkErrorAlertDialog(
