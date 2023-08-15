@@ -5,10 +5,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DeleteCompletedBandalartKeyUseCase @Inject constructor(
+class DeleteBandalartKeyUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
   suspend operator fun invoke(bandalartKey: String) {
-    repository.deleteCompletedBandalartKey(bandalartKey)
+    repository.deleteBandalartKey(bandalartKey)
   }
 }

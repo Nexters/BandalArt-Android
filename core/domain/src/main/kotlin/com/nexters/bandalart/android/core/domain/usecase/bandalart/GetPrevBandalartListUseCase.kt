@@ -5,10 +5,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InsertCompletedBandalartKeyUseCase @Inject constructor(
+class GetPrevBandalartListUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
-  suspend operator fun invoke(bandalartKey: String) {
-    repository.insertCompletedBandalartKey(bandalartKey)
-  }
+  suspend operator fun invoke(): List<Pair<String, Boolean>> =
+    repository.getPrevBandalartList()
 }

@@ -170,15 +170,15 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  // TODO 매번 목표 달성 화면으로 이동하지 않도록
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
     // 목표를 달성했을 경우
-    if (uiState.bandalartDetailData?.isCompleted == true) {
+    if (uiState.bandalartDetailData?.isCompleted == true && !uiState.bandalartDetailData.title.isNullOrEmpty()) {
       // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
-      if (uiState.bandalartDetailData.key.let { checkCompletedBandalartKey(it) }) {
+      val isBandalartCompleted = checkCompletedBandalartKey(uiState.bandalartDetailData.key)
+      if (isBandalartCompleted) {
         navigateToComplete(
           uiState.bandalartDetailData.key,
-          uiState.bandalartDetailData.title!!,
+          uiState.bandalartDetailData.title,
           if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) "default emoji" else uiState.bandalartDetailData.profileEmoji,
         )
       }

@@ -50,46 +50,57 @@ internal class DataStoreProvider @Inject constructor(
       else throw exception
     }.first()[prefKeyRecentBandalartKey] ?: ""
 
-  suspend fun insertCompletedBandalartKey(bandalartKey: String) {
+  suspend fun getPrevBandalartList() = stringToList(dataStore.data
+    .catch { exception ->
+      if (exception is IOException) emit(emptyPreferences())
+      else throw exception
+    }.first()[prefKeyCompletedBandalartList] ?: ""
+  )
+
+  // 키가 존재하면 값을 갱신, 없으면 추가
+  suspend fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean) {
     dataStore.edit { preferences ->
       val currentListAsString = preferences[prefKeyCompletedBandalartList] ?: ""
       val currentList = stringToList(currentListAsString)
-
-      // 키가 이미 존재하지 않는 경우에만 추가
-      if (!currentList.contains(bandalartKey)) {
-        val updatedList = currentList + bandalartKey
-        preferences[prefKeyCompletedBandalartList] = listToString(updatedList)
+      val keyExists = currentList.any { it.first == bandalartKey }
+      val updatedList = if (keyExists) {
+        currentList.map {
+          if (it.first == bandalartKey) Pair(bandalartKey, isCompleted)
+          else it
+        }
+      } else {
+        currentList + Pair(bandalartKey, isCompleted)
       }
+      preferences[prefKeyCompletedBandalartList] = listToString(updatedList)
     }
   }
 
-  suspend fun checkCompletedBandalartKey(bandalartKey: String) = dataStore.data
+  // 목표를 달성하지 못했었는데 이번에 달성한 경우를 검사
+  suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean = dataStore.data
     .catch { exception ->
       if (exception is IOException) emit(emptyPreferences())
       else throw exception
     }.first()[prefKeyCompletedBandalartList]?.let { currentListAsString ->
     val currentList = stringToList(currentListAsString)
-    currentList.contains(bandalartKey)
+    // 이전에 목표를 달성하지 않았었는지 확인
+    val wasCompleted = currentList.find { it.first == bandalartKey }?.second ?: false
+    !wasCompleted
   } ?: false
 
-  suspend fun deleteCompletedBandalartKey(bandalartKey: String) {
+  suspend fun deleteBandalartKey(bandalartKey: String) {
     dataStore.edit { preferences ->
       val currentListAsString = preferences[prefKeyCompletedBandalartList] ?: ""
       val currentList = stringToList(currentListAsString)
-
-      // 키가 존재하는 경우에만 제거
-      if (currentList.contains(bandalartKey)) {
-        val updatedList = currentList - bandalartKey
-        preferences[prefKeyCompletedBandalartList] = listToString(updatedList)
-      }
+      val updatedList = currentList.filter { it.first != bandalartKey }
+      preferences[prefKeyCompletedBandalartList] = listToString(updatedList)
     }
   }
 
-  private fun listToString(list: List<String>): String {
+  private fun listToString(list: List<Pair<String, Boolean>>): String {
     return Json.encodeToString(list)
   }
 
-  private fun stringToList(data: String): List<String> {
+  private fun stringToList(data: String): List<Pair<String, Boolean>> {
     if (data.isEmpty()) return emptyList()
     return Json.decodeFromString(data)
   }

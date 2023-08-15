@@ -7,15 +7,19 @@ import javax.inject.Inject
 internal class CompletedBandalartKeyDataStoreImpl @Inject constructor(
   private val datastoreProvider: DataStoreProvider,
 ) : CompletedBandalartKeyDataSource {
-  override suspend fun insertCompletedBandalartKey(bandalartKey: String) {
-    datastoreProvider.insertCompletedBandalartKey(bandalartKey)
+  override suspend fun getPrevBandalartList(): List<Pair<String, Boolean>> {
+    return datastoreProvider.getPrevBandalartList()
+  }
+
+  override suspend fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean) {
+    datastoreProvider.upsertBandalartKey(bandalartKey, isCompleted)
   }
 
   override suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
     return datastoreProvider.checkCompletedBandalartKey(bandalartKey)
   }
 
-  override suspend fun deleteCompletedBandalartKey(bandalartKey: String) {
-    datastoreProvider.deleteCompletedBandalartKey(bandalartKey)
+  override suspend fun deleteBandalartKey(bandalartKey: String) {
+    datastoreProvider.deleteBandalartKey(bandalartKey)
   }
 }

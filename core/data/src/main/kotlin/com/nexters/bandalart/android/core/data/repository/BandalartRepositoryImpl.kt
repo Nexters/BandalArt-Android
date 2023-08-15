@@ -83,15 +83,19 @@ internal class BandalartRepositoryImpl @Inject constructor(
     return bandalartRemoteDataSource.shareBandalart(bandalartKey)?.toEntity()
   }
 
-  override suspend fun insertCompletedBandalartKey(bandalartKey: String) {
-    completedBandalartKeyDataSource.insertCompletedBandalartKey(bandalartKey)
+  override suspend fun getPrevBandalartList(): List<Pair<String, Boolean>> {
+    return completedBandalartKeyDataSource.getPrevBandalartList()
+  }
+
+  override suspend fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean) {
+    completedBandalartKeyDataSource.upsertBandalartKey(bandalartKey, isCompleted)
   }
 
   override suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
     return completedBandalartKeyDataSource.checkCompletedBandalartKey(bandalartKey)
   }
 
-  override suspend fun deleteCompletedBandalartKey(bandalartKey: String) {
-    completedBandalartKeyDataSource.deleteCompletedBandalartKey(bandalartKey)
+  override suspend fun deleteBandalartKey(bandalartKey: String) {
+    completedBandalartKeyDataSource.deleteBandalartKey(bandalartKey)
   }
 }
