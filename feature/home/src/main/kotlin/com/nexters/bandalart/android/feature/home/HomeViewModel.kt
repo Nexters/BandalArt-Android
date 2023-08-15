@@ -263,9 +263,12 @@ class HomeViewModel @Inject constructor(
             isBandalartListBottomSheetOpened = false,
             error = null,
           )
-          upsertBandalartKey(bandalart.key)
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
           getBandalartList(bandalart.key)
+          // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
+          setRecentBandalartKey(bandalart.key)
+          // 새로운 반다라트를 로컬에 저장
+          upsertBandalartKey(bandalart.key)
           // TODO 표가 뒤집히는 애니메이션 구현
           _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
         }
