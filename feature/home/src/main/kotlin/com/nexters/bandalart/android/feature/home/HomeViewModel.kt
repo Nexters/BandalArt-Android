@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
@@ -14,12 +15,13 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBand
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
+import com.nexters.bandalart.android.feature.home.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.async
@@ -75,7 +77,8 @@ data class HomeUiState(
 )
 
 sealed class HomeUiEvent {
-  data class ShowSnackbar(val message: String) : HomeUiEvent()
+  data class ShowSnackbar(val message: UiText) : HomeUiEvent()
+  data class ShowToast(val message: UiText) : HomeUiEvent()
 }
 
 @HiltViewModel
@@ -85,7 +88,7 @@ class HomeViewModel @Inject constructor(
   private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val deleteBandalartUseCase: DeleteBandalartUseCase,
-  private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
+  private val updateBandalartEmojiUseCase: UpdateBandalartEmojiUseCase,
   private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
   private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
   private val shareBandalartUseCase: ShareBandalartUseCase,
@@ -175,7 +178,7 @@ class HomeViewModel @Inject constructor(
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
-          Timber.e(exception)
+          Timber.e(exception.message)
         }
       }
     }
@@ -207,7 +210,7 @@ class HomeViewModel @Inject constructor(
             isNetworkErrorAlertDialogOpened = true,
             error = exception,
           )
-          Timber.e(exception)
+          Timber.e(exception.message)
         }
       }
     }
@@ -239,7 +242,7 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             error = exception,
           )
-          Timber.e(exception)
+          Timber.e(exception.message)
         }
       }
     }
@@ -248,7 +251,7 @@ class HomeViewModel @Inject constructor(
   fun createBandalart() {
     viewModelScope.launch {
       if (_uiState.value.bandalartList.size + 1 > 5) {
-        _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트는 최대 5개 생성할 수 있어요."))
+        _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
         return@launch
       }
       _uiState.value = _uiState.value.copy(isShowSkeleton = true)
@@ -264,7 +267,7 @@ class HomeViewModel @Inject constructor(
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
           getBandalartList(bandalart.key)
           // TODO 표가 뒤집히는 애니메이션 구현
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("새로운 반다라트를 생성했어요."))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -276,8 +279,8 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             error = exception,
           )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -296,7 +299,7 @@ class HomeViewModel @Inject constructor(
           openBandalartDeleteAlertDialog(false)
           deleteBandalartKey(bandalartKey)
           getBandalartList()
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("반다라트가 삭제되었어요."))
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -309,21 +312,21 @@ class HomeViewModel @Inject constructor(
             isBandalartDeleted = false,
             error = exception,
           )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
   }
 
-  fun updateBandalartMainCell(
+  fun updateBandalartEmoji(
     bandalartKey: String,
     cellKey: String,
-    updateBandalartMainCellModel: UpdateBandalartMainCellModel,
+    updateBandalartEmojiModel: UpdateBandalartEmojiModel,
   ) {
     viewModelScope.launch {
       _uiState.value = _uiState.value.copy(isLoading = true)
-      val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
+      val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
           getBandalartList(bandalartKey)
@@ -338,8 +341,8 @@ class HomeViewModel @Inject constructor(
             isShowSkeleton = false,
             error = exception,
           )
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }
@@ -361,8 +364,8 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(error = exception)
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar("${exception.message}"))
-          Timber.e(exception)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
     }

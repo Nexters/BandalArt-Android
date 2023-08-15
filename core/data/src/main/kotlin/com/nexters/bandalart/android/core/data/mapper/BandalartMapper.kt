@@ -4,6 +4,7 @@ import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailRe
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartShareResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartEmojiRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
@@ -11,6 +12,7 @@ import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -78,6 +80,9 @@ internal fun UpdateBandalartTaskCellEntity.toModel() =
     dueDate = dueDate,
     isCompleted = isCompleted,
   )
+
+internal fun UpdateBandalartEmojiEntity.toModel() =
+  UpdateBandalartEmojiRequest(profileEmoji = profileEmoji)
 
 internal fun BandalartShareResponse.toEntity() =
   BandalartShareEntity(

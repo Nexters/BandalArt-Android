@@ -30,13 +30,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.theme.Gray100
@@ -72,10 +74,12 @@ fun BandalartSkeletonScreen(
           contentAlignment = Alignment.CenterStart,
         ) {
           Row(modifier = Modifier.fillMaxWidth()) {
-            val image = painterResource(id = R.drawable.ic_app)
+            val image = painterResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app,
+            )
             Image(
               painter = image,
-              contentDescription = "App Icon",
+              contentDescription = stringResource(R.string.app_descrption),
               modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 20.dp),
@@ -102,17 +106,21 @@ fun BandalartSkeletonScreen(
                       .background(Gray100),
                     contentAlignment = Alignment.Center,
                   ) {
-                    val image = painterResource(id = R.drawable.ic_empty_emoji)
+                    val image = painterResource(
+                      id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                    )
                     Image(
                       painter = image,
-                      contentDescription = "Empty Emoji Icon",
+                      contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   }
                 }
-                val image = painterResource(id = R.drawable.ic_edit)
+                val image = painterResource(
+                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+                )
                 Image(
                   painter = image,
-                  contentDescription = "Edit Icon",
+                  contentDescription = stringResource(R.string.edit_descrption),
                   modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .offset(x = 4.dp, y = 4.dp),
@@ -125,7 +133,7 @@ fun BandalartSkeletonScreen(
                   .wrapContentHeight(),
               ) {
                 FixedSizeText(
-                  text = "                      ",
+                  text = stringResource(R.string.skeleton_title),
                   color = Gray900,
                   fontWeight = FontWeight.W700,
                   fontSize = 20.sp,
@@ -134,10 +142,12 @@ fun BandalartSkeletonScreen(
                     .align(Alignment.Center)
                     .background(subBrush),
                 )
-                val image = painterResource(id = R.drawable.ic_option)
+                val image = painterResource(
+                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
+                )
                 Image(
                   painter = image,
-                  contentDescription = "Option Icon",
+                  contentDescription = stringResource(R.string.option_descrption),
                   modifier = Modifier.align(Alignment.CenterEnd),
                 )
               }
@@ -149,7 +159,7 @@ fun BandalartSkeletonScreen(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             FixedSizeText(
-              text = "달성률 (-%)",
+              text = stringResource(R.string.skeleton_complete_ratio),
               color = Gray600,
               fontWeight = FontWeight.W500,
               fontSize = 12.sp,
@@ -184,13 +194,15 @@ fun BandalartSkeletonScreen(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            val image = painterResource(id = R.drawable.ic_share)
+            val image = painterResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_share,
+            )
             Image(
               painter = image,
-              contentDescription = "Share Icon",
+              contentDescription = stringResource(R.string.share_descrption),
             )
             FixedSizeText(
-              text = "공유하기",
+              text = stringResource(R.string.home_share),
               modifier = Modifier.padding(start = 4.dp),
               color = Gray900,
               fontSize = 12.sp.nonScaleSp,
@@ -217,6 +229,7 @@ fun BandalartSkeletonChart(
   subBrush: Brush,
   mainBrush: Brush,
 ) {
+  val context = LocalContext.current
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
   val paddedMaxWidth = remember(screenWidthDp) {
     screenWidthDp - (15.dp * 2)
@@ -237,7 +250,7 @@ fun BandalartSkeletonChart(
       for (index in subCellList.indices) {
         Box(
           modifier
-            .layoutId("Sub ${index + 1}")
+            .layoutId(stringResource(R.string.home_layout_id, index + 1))
             .clip(RoundedCornerShape(12.dp))
             .background(color = Gray200),
           content = {
@@ -254,7 +267,7 @@ fun BandalartSkeletonChart(
       }
       Box(
         modifier
-          .layoutId("Main")
+          .layoutId(stringResource(R.string.home_main_id))
           .clip(RoundedCornerShape(10.dp))
           .background(brush = taskBrush),
         content = {
@@ -268,11 +281,11 @@ fun BandalartSkeletonChart(
       )
     },
   ) { measurables, constraints ->
-    val sub1 = measurables.first { it.layoutId == "Sub 1" }
-    val sub2 = measurables.first { it.layoutId == "Sub 2" }
-    val sub3 = measurables.first { it.layoutId == "Sub 3" }
-    val sub4 = measurables.first { it.layoutId == "Sub 4" }
-    val main = measurables.first { it.layoutId == "Main" }
+    val sub1 = measurables.first { it.layoutId == context.getString(R.string.home_sub1_id) }
+    val sub2 = measurables.first { it.layoutId == context.getString(R.string.home_sub2_id) }
+    val sub3 = measurables.first { it.layoutId == context.getString(R.string.home_sub3_id) }
+    val sub4 = measurables.first { it.layoutId == context.getString(R.string.home_sub4_id) }
+    val main = measurables.first { it.layoutId == context.getString(R.string.home_main_id) }
 
     val chartWidth = paddedMaxWidth.roundToPx()
     val mainWidth = chartWidth / 5

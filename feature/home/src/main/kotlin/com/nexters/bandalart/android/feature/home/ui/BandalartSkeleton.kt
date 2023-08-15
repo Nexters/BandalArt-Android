@@ -9,6 +9,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.Gray200
 import com.nexters.bandalart.android.core.ui.theme.Gray300
@@ -43,7 +45,7 @@ fun BandalartSkeleton() {
       ),
       repeatMode = RepeatMode.Reverse,
     ),
-    label = "Skeleton translateAnim",
+    label = stringResource(R.string.skeleton_trans_animate_label),
   )
   val mainBrush = Brush.linearGradient(
     colors = shimmerMainColors,

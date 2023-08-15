@@ -9,6 +9,7 @@ import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
+import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -66,6 +67,14 @@ internal class BandalartRepositoryImpl @Inject constructor(
     updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
   ) {
     bandalartRemoteDataSource.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellEntity.toModel())
+  }
+
+  override suspend fun updateBandalartEmoji(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartEmojiEntity: UpdateBandalartEmojiEntity,
+  ) {
+    bandalartRemoteDataSource.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiEntity.toModel())
   }
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
     bandalartRemoteDataSource.deleteBandalartCell(bandalartKey, cellKey)

@@ -40,3 +40,9 @@ data class UpdateBandalartTaskCellRequest(
   @SerialName("isCompleted")
   val isCompleted: Boolean? = null,
 )
+
+@Serializable
+data class UpdateBandalartEmojiRequest(
+  @SerialName("profileEmoji")
+  val profileEmoji: String?,
+)

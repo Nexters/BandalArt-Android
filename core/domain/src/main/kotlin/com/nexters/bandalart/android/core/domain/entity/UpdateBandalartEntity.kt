@@ -46,3 +46,12 @@ data class UpdateBandalartTaskCellEntity(
   val dueDate: String?,
   val isCompleted: Boolean? = null,
 )
+
+/**
+ * 반다라트 이모지 수정
+ *
+ * @param profileEmoji 반다라트 프로필 이모지
+ */
+data class UpdateBandalartEmojiEntity(
+  val profileEmoji: String?,
+)

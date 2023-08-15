@@ -40,7 +40,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
@@ -89,7 +89,9 @@ internal fun CompleteScreen(
 ) {
   val context = LocalContext.current
   val composition by rememberLottieComposition(
-    spec = LottieCompositionSpec.RawRes(R.raw.lottie_finish),
+    spec = LottieCompositionSpec.RawRes(
+      com.nexters.bandalart.android.core.designsystem.R.raw.lottie_finish,
+    ),
   )
   val progress by animateLottieCompositionAsState(
     composition = composition,
@@ -102,9 +104,9 @@ internal fun CompleteScreen(
         action = Intent.ACTION_SEND
         putExtra(
           Intent.EXTRA_TEXT,
-          "제가 만든 반다라트를 구경하러오세요! \n ${uiState.shareUrl}",
+          context.getString(R.string.home_share_url, uiState.shareUrl),
         )
-        type = "text/plain"
+        type = context.getString(R.string.home_share_type)
       }
       val shareIntent = Intent.createChooser(sendIntent, null)
       context.startActivity(shareIntent)
@@ -139,20 +141,20 @@ internal fun CompleteScreen(
           ) {
             Icon(
               imageVector = Icons.Default.ArrowBackIos,
-              contentDescription = "Arrow Back Icon",
+              contentDescription = context.getString(R.string.arrow_forward_descrption),
               tint = Gray900,
             )
           }
         }
         Spacer(modifier = Modifier.height(40.dp))
-        TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
+        TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {
           Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
           ) {
             FixedSizeText(
-              text = "달성 완료 반다라트",
+              text = context.getString(R.string.complete_chart),
               color = Gray400,
               fontWeight = FontWeight.W600,
               fontSize = 14.sp,
@@ -187,11 +189,13 @@ internal fun CompleteScreen(
                         .background(Gray100),
                       contentAlignment = Alignment.Center,
                     ) {
-                      if (uiState.profileEmoji == "default emoji") {
-                        val image = painterResource(id = R.drawable.ic_empty_emoji)
+                      if (uiState.profileEmoji == context.getString(R.string.home_default_emoji)) {
+                        val image = painterResource(
+                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                        )
                         Image(
                           painter = image,
-                          contentDescription = "Empty Emoji Icon",
+                          contentDescription = context.getString(R.string.empty_emoji_descrption),
                         )
                       } else {
                         EmojiText(
@@ -249,7 +253,7 @@ internal fun CompleteScreen(
 //          }
           BandalartButton(
             onClick = shareBandalart,
-            text = "링크 공유하기",
+            text = context.getString(R.string.complete_share),
             modifier = Modifier
               .align(Alignment.BottomCenter)
               .padding(bottom = 32.dp),

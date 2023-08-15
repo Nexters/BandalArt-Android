@@ -7,6 +7,7 @@ import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResp
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartShareResponse
+import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartEmojiRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
@@ -92,6 +93,18 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
     client.safeRequest {
       patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
         setBody(updateBandalartTaskCellRequest)
+      }
+    }
+  }
+
+  override suspend fun updateBandalartEmoji(
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
+  ) {
+    client.safeRequest {
+      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+        setBody(updateBandalartEmojiRequest)
       }
     }
   }
