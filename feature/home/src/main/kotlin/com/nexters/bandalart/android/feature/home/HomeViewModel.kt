@@ -262,7 +262,7 @@ class HomeViewModel @Inject constructor(
               error = exception,
               isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
             Timber.e(exception.message)
           }
         }
@@ -298,7 +298,7 @@ class HomeViewModel @Inject constructor(
               error = exception,
               isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
             Timber.e(exception.message)
           }
         }
@@ -331,7 +331,7 @@ class HomeViewModel @Inject constructor(
               error = exception,
               isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
             Timber.e(exception.message)
           }
         }
@@ -360,7 +360,7 @@ class HomeViewModel @Inject constructor(
               error = exception,
               isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.DirectString(exception.message.toString())))
+            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
             Timber.e(exception.message)
           }
         }
