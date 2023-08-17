@@ -101,7 +101,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
-  val uiState: StateFlow<HomeUiState> = this._uiState.asStateFlow()
+  val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
@@ -274,7 +274,6 @@ class HomeViewModel @Inject constructor(
             setRecentBandalartKey(bandalart.key)
             // 새로운 반다라트를 로컬에 저장
             upsertBandalartKey(bandalart.key)
-            // TODO 표가 뒤집히는 애니메이션 구현
             _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
           }
           result.isSuccess && result.getOrNull() == null -> {
@@ -479,7 +478,7 @@ class HomeViewModel @Inject constructor(
     }.await()
   }
 
-  suspend fun deleteBandalartKey(bandalartKey: String) {
+  private suspend fun deleteBandalartKey(bandalartKey: String) {
     viewModelScope.launch {
       deleteBandalartKeyUseCase(bandalartKey)
     }
