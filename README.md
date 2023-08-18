@@ -11,6 +11,7 @@
 ![반다라트 그래픽이미지 2](https://github.com/Nexters/BandalArt-Android/assets/51016231/a357f7aa-d086-47de-bbac-d423cdaffdbe)
 
 <br/>
+
 ## Development
 
 ### Required
