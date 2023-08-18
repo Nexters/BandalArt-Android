@@ -13,7 +13,8 @@ release
 local.properties
 secrets.properties
 
+# Key Information file
+keystore.properties
+
 # Keystore files
 *.jks
-*.keystore
-
