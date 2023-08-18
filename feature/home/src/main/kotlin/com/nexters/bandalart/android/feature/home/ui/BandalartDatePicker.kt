@@ -75,7 +75,7 @@ fun BandalartDatePicker(
               .invokeOnCompletion {
                 if (!datePickerState.isVisible) {
                   onResult(
-                    null,
+                    LocalDateTime.now(),
                     false,
                   )
                 }
