@@ -12,6 +12,33 @@
 
 <br/>
 
+## Feature
+
+온보딩, 메인 목표 입력
+
+
+https://github.com/Nexters/BandalArt-Android/assets/51016231/dafd3d98-bf9d-4bcf-a659-f7c5aee4f579
+
+
+
+반다라트 목표 달성
+
+
+https://github.com/Nexters/BandalArt-Android/assets/51016231/acabf0e8-052c-4d25-aa7b-4a6117e7285a
+
+
+
+반다라트 링크 공유(웹 페이지 연동)
+
+
+https://github.com/Nexters/BandalArt-Android/assets/51016231/f8c44a9f-19b7-40aa-a283-d388e776ebf6
+
+
+반다라트 목록 조회, 추가, 삭제
+
+
+https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-ba80-db0ffa96afcf
+
 ## Development
 
 ### Required
