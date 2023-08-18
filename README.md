@@ -12,7 +12,7 @@
 
 <br/>
 
-## Feature
+## Features
 
 온보딩, 메인 목표 입력
 
@@ -82,6 +82,9 @@ https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-
 #### Gradle Dependency
 
 - Gradle Version Catalog
+
+## Architecture
+[Google App Architecture](https://developer.android.com/topic/architecture)
 
 ## Developer
 
