@@ -31,7 +31,6 @@ dependencies {
     projects.feature.onboarding,
     libs.androidx.splash,
     libs.androidx.startup,
-    libs.androidx.appcompat,
     libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
     libs.androidx.splash,
