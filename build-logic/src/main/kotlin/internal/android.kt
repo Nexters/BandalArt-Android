@@ -20,7 +20,6 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *>) {
       minSdk = ApplicationConstants.MinSdk
     }
 
-
     sourceSets {
       getByName("main").java.srcDir("src/main/kotlin")
       getByName("test").java.srcDir("src/test/kotlin")
@@ -42,25 +41,6 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *>) {
     }
 
     dependencies.add("detektPlugins", libs.findLibrary("detekt-plugin-formatting").get())
-
-    buildTypes {
-      getByName("debug") {
-        isMinifyEnabled = true
-        proguardFiles(
-          getDefaultProguardFile("proguard-android.txt"),
-          "proguard-rules.pro",
-          "proguard-debug.pro"
-        )
-      }
-
-      getByName("release") {
-        isMinifyEnabled =  true
-        proguardFiles(
-          getDefaultProguardFile("proguard-android.txt"),
-          "proguard-rules.pro"
-        )
-      }
-    }
   }
 }
 
