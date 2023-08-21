@@ -25,6 +25,13 @@ android {
   }
 
   buildTypes {
+    getByName("debug") {
+      applicationIdSuffix = ".dev"
+      manifestPlaceholders += mapOf(
+        "appName" to "@string/app_name_dev"
+      )
+    }
+
     getByName("release") {
       isDebuggable = false
       isMinifyEnabled = true
@@ -33,6 +40,9 @@ android {
         "proguard-rules.pro"
       )
       signingConfig = signingConfigs.getByName("release")
+      manifestPlaceholders += mapOf(
+        "appName" to "@string/app_name"
+      )
     }
   }
 
