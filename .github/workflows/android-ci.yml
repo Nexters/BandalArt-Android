@@ -38,6 +38,13 @@ jobs:
         run: |
           echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
+      - name: Generate keystore.properties
+        run: |
+          echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
+          echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
+
       - name: Code style checks
         run: ./gradlew ktlintCheck detekt
 
