@@ -1,6 +1,7 @@
 package com.nexters.bandalart.android.feature.complete
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -55,16 +56,16 @@ import com.nexters.bandalart.android.core.ui.theme.Gray900
 internal fun CompleteRoute(
   modifier: Modifier = Modifier,
   onNavigateBack: () -> Unit,
-  onShowSnackbar: suspend (String) -> Boolean,
   viewModel: CompleteViewModel = hiltViewModel(),
 ) {
+  val context = LocalContext.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
       when (event) {
-        is CompleteUiEvent.ShowSnackbar -> {
-          onShowSnackbar(event.message)
+        is CompleteUiEvent.ShowToast -> {
+          Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
         }
       }
     }

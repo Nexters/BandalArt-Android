@@ -39,7 +39,6 @@ fun BandalartNavHost(
     )
     completeScreen(
       onNavigateBack = navController::popBackStack,
-      onShowSnackbar = onShowSnackbar,
     )
   }
 }
