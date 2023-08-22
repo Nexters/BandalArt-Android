@@ -1,5 +1,3 @@
-@file:OptIn(InternalAPI::class)
-
 package com.nexters.bandalart.android.core.data.remote.datasource
 
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
@@ -19,7 +17,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.util.InternalAPI
 import javax.inject.Inject
 
 internal class BandalartRemoteDataSourceImpl @Inject constructor(
