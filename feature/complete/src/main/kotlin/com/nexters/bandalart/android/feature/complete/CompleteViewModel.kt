@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
+import com.nexters.bandalart.android.core.ui.extension.UiText
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_KEY
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_PROFILE_EMOJI
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_TITLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -38,7 +40,7 @@ data class CompleteUiState(
 )
 
 sealed class CompleteUiEvent {
-  data class ShowSnackbar(val message: String) : CompleteUiEvent()
+  data class ShowToast(val message: UiText) : CompleteUiEvent()
 }
 
 @HiltViewModel
@@ -47,6 +49,7 @@ class CompleteViewModel @Inject constructor(
   private val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+  private var shareBandalartJob: Job? = null
 
   private val key = savedStateHandle[BANDALART_KEY] ?: ""
   private val title = savedStateHandle[BANDALART_TITLE] ?: ""
@@ -74,7 +77,10 @@ class CompleteViewModel @Inject constructor(
   }
 
   fun shareBandalart() {
-    viewModelScope.launch {
+    if (shareBandalartJob?.isActive == true && _uiState.value.shareUrl.isNotEmpty()) {
+      return
+    }
+    shareBandalartJob = viewModelScope.launch {
       val result = shareBandalartUseCase(key)
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -91,9 +97,11 @@ class CompleteViewModel @Inject constructor(
           _uiState.value = _uiState.value.copy(
             error = exception,
           )
+          _eventFlow.emit(CompleteUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception)
         }
       }
+      shareBandalartJob = null
     }
   }
 
