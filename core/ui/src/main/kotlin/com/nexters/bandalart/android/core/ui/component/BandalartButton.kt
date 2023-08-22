@@ -35,7 +35,7 @@ fun BandalartButton(
       .clickableSingle(onClick = onClick)
       .background(color = Gray900)
       .padding(16.dp),
-    contentAlignment = Alignment.Center
+    contentAlignment = Alignment.Center,
   ) {
     Text(
       text = text,
