@@ -122,6 +122,7 @@ class HomeViewModel @Inject constructor(
             bandalartList = bandalartList,
             error = null,
           )
+
           // 이전 반다라트 목록 상태 조회
           val prevBandalartList = getPrevBandalartListUseCase()
 
@@ -148,9 +149,9 @@ class HomeViewModel @Inject constructor(
             getBandalartDetail(bandalartKey)
             return@launch
           }
-
           // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
           if (bandalartList.isEmpty()) {
+            _uiState.value = _uiState.value.copy(isNetworking = false)
             createBandalart()
           }
           // 반다라트 목록이 존재할 경우
