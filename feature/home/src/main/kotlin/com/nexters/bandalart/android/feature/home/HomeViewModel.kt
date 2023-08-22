@@ -21,7 +21,7 @@ import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
-import com.nexters.bandalart.android.feature.home.util.UiText
+import com.nexters.bandalart.android.core.ui.extension.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.async
@@ -367,31 +367,32 @@ class HomeViewModel @Inject constructor(
   }
 
   fun shareBandalart(bandalartKey: String) {
-    if (!_uiState.value.isNetworking) {
-      _uiState.value = _uiState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        val result = shareBandalartUseCase(bandalartKey)
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            _uiState.value = _uiState.value.copy(
-              shareUrl = result.getOrNull()!!.shareUrl,
-              error = null,
-            )
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _uiState.value = _uiState.value.copy(
-              error = exception,
-              isNetworking = false,
-            )
-            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
-          }
+    if (uiState.value.isNetworking || _uiState.value.shareUrl.isNotEmpty())
+      return
+
+    _uiState.value = _uiState.value.copy(isNetworking = true)
+    viewModelScope.launch {
+      val result = shareBandalartUseCase(bandalartKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.value = _uiState.value.copy(
+            shareUrl = result.getOrNull()!!.shareUrl,
+            error = null,
+          )
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.value = _uiState.value.copy(isNetworking = false)
     }
   }
 

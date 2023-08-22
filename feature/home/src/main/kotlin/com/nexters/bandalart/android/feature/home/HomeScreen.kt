@@ -61,6 +61,7 @@ import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.clickableSingle
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.extension.toFormatDate
@@ -471,7 +472,7 @@ internal fun HomeScreen(
             .wrapContentSize()
             .clip(RoundedCornerShape(18.dp))
             .background(Gray100)
-            .clickable { uiState.bandalartDetailData?.let { shareBandalart(it.key) } }
+            .clickableSingle { uiState.bandalartDetailData?.let { shareBandalart(it.key) } }
             .align(Alignment.CenterHorizontally),
           contentAlignment = Alignment.Center,
         ) {

@@ -24,7 +24,6 @@ fun NavController.navigateToComplete(
 
 fun NavGraphBuilder.completeScreen(
   onNavigateBack: () -> Unit,
-  onShowSnackbar: suspend (String) -> Boolean,
 ) {
   composable(
     route = COMPLETE_NAVIGATION_ROUTE,
@@ -42,7 +41,6 @@ fun NavGraphBuilder.completeScreen(
   ) {
     CompleteRoute(
       onNavigateBack = onNavigateBack,
-      onShowSnackbar = onShowSnackbar,
     )
   }
 }
