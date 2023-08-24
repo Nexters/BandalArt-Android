@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":feature:splash")
+
+
 rootProject.name = "bandalart-android"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
