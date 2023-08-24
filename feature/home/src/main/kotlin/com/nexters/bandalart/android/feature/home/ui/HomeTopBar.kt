@@ -44,7 +44,7 @@ internal fun HomeTopBar(
     Row(
       modifier = Modifier.fillMaxWidth(),
     ) {
-      val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app)
+      val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title)
       Image(
         painter = image,
         contentDescription = stringResource(R.string.app_descrption),

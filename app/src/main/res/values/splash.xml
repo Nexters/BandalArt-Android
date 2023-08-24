@@ -3,7 +3,7 @@
 
   <style name="Theme.Bandalart.Splash" parent="Theme.SplashScreen">
     <item name="windowSplashScreenBackground">#FFF9FAFB</item>
-    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_icon</item>
+    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
     <item name="windowSplashScreenAnimationDuration">200</item>
     <item name="postSplashScreenTheme">@style/Theme.Bandalart</item>
   </style>
