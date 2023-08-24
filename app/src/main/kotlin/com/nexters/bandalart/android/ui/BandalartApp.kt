@@ -28,7 +28,6 @@ import com.nexters.bandalart.android.navigation.BandalartNavHost
 
 @Composable
 fun BandalartApp(
-  startDestination: String,
   appState: BandalartAppState = rememberBandalartAppState(),
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
@@ -74,7 +73,6 @@ fun BandalartApp(
           duration = SnackbarDuration.Short,
         ) == SnackbarResult.ActionPerformed
       },
-      startDestination = startDestination,
     )
   }
 }

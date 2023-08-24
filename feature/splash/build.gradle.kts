@@ -2,6 +2,7 @@
 
 plugins {
   bandalart("android-library")
+  bandalart("android-hilt")
 }
 
 android {
@@ -19,11 +20,13 @@ android {
 dependencies {
   implementations(
     projects.core.designsystem,
+    projects.core.domain,
     projects.core.ui,
     libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
     libs.lottie.compose,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle,
+    libs.timber,
   )
 }
