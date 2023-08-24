@@ -14,7 +14,7 @@ fun NavController.navigateToSplash(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.splashScreen(
   navigateToOnBoarding: (NavOptions) -> Unit,
-  navigateToHome: (NavOptions) -> Unit
+  navigateToHome: (NavOptions) -> Unit,
 ) {
   composable(route = SPLASH_NAVIGATION_ROUTE) {
     SplashRoute(
