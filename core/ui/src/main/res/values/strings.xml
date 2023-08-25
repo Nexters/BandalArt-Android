@@ -100,6 +100,7 @@
   <string name="hamburger_descrption">Hamburger Icon</string>
   <string name="clear_descrption">Clear Icon</string>
   <string name="delete_descrption">Delete Icon</string>
+  <string name="splash_description">Splash Icon</string>
 
 <!--  label -->
   <string name="skeleton_trans_animate_label">Hamburger Icon</string>
