@@ -11,7 +11,7 @@ import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
-import com.nexters.bandalart.android.feature.home.util.UiText
+import com.nexters.bandalart.android.core.ui.extension.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow

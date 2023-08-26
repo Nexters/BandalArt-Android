@@ -21,7 +21,7 @@ import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
-import com.nexters.bandalart.android.feature.home.util.UiText
+import com.nexters.bandalart.android.core.ui.extension.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.async
@@ -101,7 +101,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(HomeUiState())
-  val uiState: StateFlow<HomeUiState> = this._uiState.asStateFlow()
+  val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
   private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
@@ -122,6 +122,7 @@ class HomeViewModel @Inject constructor(
             bandalartList = bandalartList,
             error = null,
           )
+
           // 이전 반다라트 목록 상태 조회
           val prevBandalartList = getPrevBandalartListUseCase()
 
@@ -148,9 +149,9 @@ class HomeViewModel @Inject constructor(
             getBandalartDetail(bandalartKey)
             return@launch
           }
-
           // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
           if (bandalartList.isEmpty()) {
+            _uiState.value = _uiState.value.copy(isNetworking = false)
             createBandalart()
           }
           // 반다라트 목록이 존재할 경우
@@ -274,7 +275,6 @@ class HomeViewModel @Inject constructor(
             setRecentBandalartKey(bandalart.key)
             // 새로운 반다라트를 로컬에 저장
             upsertBandalartKey(bandalart.key)
-            // TODO 표가 뒤집히는 애니메이션 구현
             _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
           }
           result.isSuccess && result.getOrNull() == null -> {
@@ -367,31 +367,32 @@ class HomeViewModel @Inject constructor(
   }
 
   fun shareBandalart(bandalartKey: String) {
-    if (!_uiState.value.isNetworking) {
-      _uiState.value = _uiState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        val result = shareBandalartUseCase(bandalartKey)
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            _uiState.value = _uiState.value.copy(
-              shareUrl = result.getOrNull()!!.shareUrl,
-              error = null,
-            )
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _uiState.value = _uiState.value.copy(
-              error = exception,
-              isNetworking = false,
-            )
-            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
-          }
+    if (uiState.value.isNetworking || _uiState.value.shareUrl.isNotEmpty())
+      return
+
+    _uiState.value = _uiState.value.copy(isNetworking = true)
+    viewModelScope.launch {
+      val result = shareBandalartUseCase(bandalartKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.value = _uiState.value.copy(
+            shareUrl = result.getOrNull()!!.shareUrl,
+            error = null,
+          )
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.value = _uiState.value.copy(
+            error = exception,
+          )
+          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.value = _uiState.value.copy(isNetworking = false)
     }
   }
 
@@ -479,7 +480,7 @@ class HomeViewModel @Inject constructor(
     }.await()
   }
 
-  suspend fun deleteBandalartKey(bandalartKey: String) {
+  private suspend fun deleteBandalartKey(bandalartKey: String) {
     viewModelScope.launch {
       deleteBandalartKeyUseCase(bandalartKey)
     }

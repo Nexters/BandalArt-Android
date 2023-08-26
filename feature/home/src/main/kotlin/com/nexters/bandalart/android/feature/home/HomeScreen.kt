@@ -61,6 +61,7 @@ import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.clickableSingle
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.extension.toFormatDate
@@ -78,6 +79,10 @@ import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+private const val SnackbarDuration = 1000L
 
 @Composable
 internal fun HomeRoute(
@@ -93,7 +98,11 @@ internal fun HomeRoute(
     viewModel.eventFlow.collect { event ->
       when (event) {
         is HomeUiEvent.ShowSnackbar -> {
-          onShowSnackbar(event.message.asString(context))
+          val job = launch {
+            onShowSnackbar(event.message.asString(context))
+          }
+          delay(SnackbarDuration)
+          job.cancel()
         }
         is HomeUiEvent.ShowToast -> {
           Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
@@ -463,7 +472,7 @@ internal fun HomeScreen(
             .wrapContentSize()
             .clip(RoundedCornerShape(18.dp))
             .background(Gray100)
-            .clickable { uiState.bandalartDetailData?.let { shareBandalart(it.key) } }
+            .clickableSingle { uiState.bandalartDetailData?.let { shareBandalart(it.key) } }
             .align(Alignment.CenterHorizontally),
           contentAlignment = Alignment.Center,
         ) {

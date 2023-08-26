@@ -21,7 +21,6 @@ dependencies {
     projects.core.designsystem,
     libs.kotlinx.datetime,
     libs.androidx.core,
-    libs.androidx.appcompat,
     libs.lottie.compose,
     libs.bundles.androidx.compose,
   )

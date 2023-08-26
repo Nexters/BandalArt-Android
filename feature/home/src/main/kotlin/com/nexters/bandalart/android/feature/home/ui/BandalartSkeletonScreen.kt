@@ -75,7 +75,7 @@ fun BandalartSkeletonScreen(
         ) {
           Row(modifier = Modifier.fillMaxWidth()) {
             val image = painterResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app,
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title,
             )
             Image(
               painter = image,

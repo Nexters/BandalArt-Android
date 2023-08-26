@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.engine.cio.endpoint
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -23,6 +23,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
+private const val MaxTimeoutMillis = 3000L
+private const val MaxRetryCount = 3
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
@@ -30,7 +33,13 @@ internal object NetworkModule {
   @Singleton
   @Provides
   fun provideKtorHttpClient(dataStoreProvider: DataStoreProvider): HttpClient {
-    return HttpClient(CIO) {
+    return HttpClient(engineFactory = CIO) {
+      engine {
+        endpoint {
+          connectTimeout = MaxTimeoutMillis
+          connectAttempts = MaxRetryCount
+        }
+      }
       defaultRequest {
         val guestLoginToken = runBlocking {
           dataStoreProvider.getGuestLoginToken()
@@ -54,11 +63,6 @@ internal object NetworkModule {
           }
         }
         level = LogLevel.ALL
-      }
-      install(HttpTimeout) {
-        socketTimeoutMillis = 15_000
-        requestTimeoutMillis = 15_000
-        connectTimeoutMillis = 15_000
       }
     }
   }

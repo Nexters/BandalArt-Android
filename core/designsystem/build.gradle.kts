@@ -19,7 +19,6 @@ android {
 dependencies {
   implementations(
     libs.androidx.core,
-    libs.androidx.appcompat,
     libs.bundles.androidx.compose
   )
 }

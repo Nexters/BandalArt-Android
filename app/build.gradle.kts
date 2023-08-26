@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
 
+import java.util.Properties
+
 plugins {
   bandalart("android-application")
   bandalart("android-hilt")
@@ -9,6 +11,40 @@ plugins {
 
 android {
   namespace = "com.nexters.bandalart.android"
+
+  signingConfigs {
+    create("release") {
+      val propertiesFile = rootProject.file("keystore.properties")
+      val properties = Properties()
+      properties.load(propertiesFile.inputStream())
+      storeFile = file(properties["STORE_FILE"] as String)
+      storePassword = properties["STORE_PASSWORD"] as String
+      keyAlias = properties["KEY_ALIAS"] as String
+      keyPassword = properties["KEY_PASSWORD"] as String
+    }
+  }
+
+  buildTypes {
+    getByName("debug") {
+      applicationIdSuffix = ".dev"
+      manifestPlaceholders += mapOf(
+        "appName" to "@string/app_name_dev"
+      )
+    }
+
+    getByName("release") {
+      isDebuggable = false
+      isMinifyEnabled = true
+      proguardFiles(
+        getDefaultProguardFile("proguard-android.txt"),
+        "proguard-rules.pro"
+      )
+      signingConfig = signingConfigs.getByName("release")
+      manifestPlaceholders += mapOf(
+        "appName" to "@string/app_name"
+      )
+    }
+  }
 
   buildFeatures {
     compose = true
@@ -29,15 +65,13 @@ dependencies {
     projects.feature.complete,
     projects.feature.home,
     projects.feature.onboarding,
+    projects.feature.splash,
     libs.androidx.splash,
     libs.androidx.startup,
-    libs.androidx.appcompat,
     libs.androidx.core,
-    libs.androidx.hilt.compose.navigation,
     libs.androidx.splash,
     libs.timber,
     libs.bundles.androidx.compose,
-    libs.bundles.androidx.lifecycle,
     platform(libs.firebase.bom),
     libs.firebase.analytics,
     libs.firebase.crashlytics

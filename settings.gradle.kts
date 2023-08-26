@@ -29,4 +29,5 @@ include(
   ":feature:complete",
   ":feature:home",
   ":feature:onboarding",
+  ":feature:splash",
 )
