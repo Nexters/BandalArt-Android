@@ -1,0 +1,72 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  desc "Lane for distribution"
+    lane :stagingDeploy do
+
+    gradle(task: "clean assembleDebug")
+
+    firebase_app_distribution(
+      app: "1:197590766195:android:61e8f68629de40aa179006",
+      groups: "bandalart-android",
+      release_notes_file: "fastlane/release-notes.txt",
+      firebase_cli_token: "1//0eV3oUhnwn9XXCgYIARAAGA4SNwF-L9IruXeQwoAxHUkWvTnm2Jye7iYRU2HMCVDxZ1ZXrH__kmW9_UrWnRke28rDL7FFT3m-Nvg",
+      debug: false
+    )
+  end
+
+  desc "Deploy a new version to the Google Play (ProductionType)"
+  lane :productionDeploy do
+    gradle(task: "release")
+
+    # 특정 폴더에 .aab 파일 찾고 나서 앞에 .. -> . 치환 처리
+    filePath = Dir['../app/build/outputs/bundle/release/*.aab'].last
+    artifactPath = filePath.sub("..",".")
+    puts artifactPath
+
+    upload_to_play_store(
+        track: "production",
+        aab: artifactPath,
+        skip_upload_metadata: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+        skip_upload_apk: true,
+        release_status: "completed"
+    )
+  end
+end
