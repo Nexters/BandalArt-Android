@@ -33,7 +33,6 @@ jobs:
         run: |
           echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
-      # 아래 cd 부분에 추가하고 싶지만, jks 파일을 디코딩 해줘야 아래 run 빌드가 잘 작동할 것이라 생각해서 여기에 추가함
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
@@ -56,8 +55,30 @@ jobs:
 
       # 이 위까지는 만일 핫픽스로 급한 경우에 바로 main에 push 할 경우가 생길 수 있으므로 ci 보존
 
+
+  publish_aab:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v2
+  
+      # JDK 설정
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          check-latest: true
+
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: '/app/bandalart.jks'
+          encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
+          
       # Fastlane 위한 Ruby Setting
-      - uses: ruby/setup-ruby@v1      
+      - uses: ruby/setup-ruby@v1
         with:
           bundler: "Gemfile.lock"
           ruby-version: 2.7.2
@@ -71,4 +92,4 @@ jobs:
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}    
