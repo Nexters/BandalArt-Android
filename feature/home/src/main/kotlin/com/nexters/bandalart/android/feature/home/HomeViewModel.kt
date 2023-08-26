@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -107,9 +108,7 @@ class HomeViewModel @Inject constructor(
   val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
 
   init {
-    _uiState.value = _uiState.value.copy(
-      isShowSkeleton = true,
-    )
+    _uiState.update { it.copy(isShowSkeleton = true) }
   }
 
   fun getBandalartList(bandalartKey: String? = null) {
@@ -118,11 +117,12 @@ class HomeViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
-          _uiState.value = _uiState.value.copy(
-            bandalartList = bandalartList,
-            error = null,
-          )
-
+          _uiState.update {
+            it.copy(
+              bandalartList = bandalartList,
+              error = null,
+            )
+          }
           // 이전 반다라트 목록 상태 조회
           val prevBandalartList = getPrevBandalartListUseCase()
 
@@ -145,26 +145,27 @@ class HomeViewModel @Inject constructor(
 
           // 생성한 반다라트 표를 화면에 띄우는 경우
           if (bandalartKey != null) {
-            _uiState.value = _uiState.value.copy(isShowSkeleton = true)
+            _uiState.update { it.copy(isShowSkeleton = true) }
             getBandalartDetail(bandalartKey)
             return@launch
           }
           // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
           if (bandalartList.isEmpty()) {
-            _uiState.value = _uiState.value.copy(isNetworking = false)
+            _uiState.update { it.copy(isNetworking = false) }
             createBandalart()
+            return@launch
           }
           // 반다라트 목록이 존재할 경우
           else {
             // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
             val recentBandalartkey = getRecentBandalartKey()
-            // 가장 최근에 확인한 반다라트 표가 존재하는 경우
+            // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
             if (bandalartList.any { it.key == recentBandalartkey }) {
               getBandalartDetail(recentBandalartkey)
             }
-            // 가장 최근에 확인한 반다라트 표가 존재하지 않을 경우
+            // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
             else {
-              _uiState.value = _uiState.value.copy(isShowSkeleton = true)
+              _uiState.update { it.copy(isShowSkeleton = true) }
               // 목록에 가장 첫번째 표를 화면에 띄움
               getBandalartDetail(bandalartList[0].key)
             }
@@ -175,15 +176,18 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            isNetworkErrorAlertDialogOpened = true,
-            error = exception,
-          )
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              isShowSkeleton = false,
+              isNetworkErrorAlertDialogOpened = true,
+              error = exception,
+            )
+          }
           Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
@@ -193,12 +197,14 @@ class HomeViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalartDetailData = result.getOrNull()!!.toUiModel()
-          _uiState.value = _uiState.value.copy(
-            bandalartDetailData = bandalartDetailData,
-            isBandalartListBottomSheetOpened = false,
-            isBandalartCompleted = isBandalartCompleted,
-            error = null,
-          )
+          _uiState.update {
+            it.copy(
+              bandalartDetailData = bandalartDetailData,
+              isBandalartListBottomSheetOpened = false,
+              isBandalartCompleted = isBandalartCompleted,
+              error = null,
+            )
+          }
           getBandalartMainCell(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -206,16 +212,19 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            bandalartCellData = null,
-            isNetworkErrorAlertDialogOpened = true,
-            error = exception,
-          )
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              isShowSkeleton = false,
+              bandalartCellData = null,
+              isNetworkErrorAlertDialogOpened = true,
+              error = exception,
+            )
+          }
           Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
@@ -224,14 +233,15 @@ class HomeViewModel @Inject constructor(
       val result = getBandalartMainCellUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          _uiState.value = _uiState.value.copy(
-            isLoading = false,
-            isShowSkeleton = false,
-            bandalartCellData = result.getOrNull()!!.toUiModel(),
-            error = null,
-            isNetworking = false,
-          )
-          bottomSheetDataChanged(isBottomSheetDataChangedState = false)
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              isShowSkeleton = false,
+              bandalartCellData = result.getOrNull()!!.toUiModel(),
+              error = null,
+            )
+          }
+          bottomSheetDataChanged(flag = false)
           openNetworkErrorAlertDialog(false)
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -239,97 +249,110 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            bandalartCellData = null,
-            isNetworkErrorAlertDialogOpened = true,
-            isLoading = false,
-            isShowSkeleton = false,
-            error = exception,
-          )
+          _uiState.update {
+            it.copy(
+              bandalartCellData = null,
+              isNetworkErrorAlertDialogOpened = true,
+              isLoading = false,
+              isShowSkeleton = false,
+              error = exception,
+            )
+          }
           Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
   fun createBandalart() {
-    if (!_uiState.value.isNetworking) {
-      _uiState.value = _uiState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        if (_uiState.value.bandalartList.size + 1 > 5) {
-          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
-          return@launch
-        }
-        _uiState.value = _uiState.value.copy(isShowSkeleton = true)
-        val result = createBandalartUseCase()
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            val bandalart = result.getOrNull()!!
-            _uiState.value = _uiState.value.copy(
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      if (_uiState.value.bandalartList.size + 1 > 5) {
+        _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
+        return@launch
+      }
+      _uiState.update { it.copy(isShowSkeleton = true) }
+      val result = createBandalartUseCase()
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          val bandalart = result.getOrNull()!!
+          _uiState.update {
+            it.copy(
               isBandalartListBottomSheetOpened = false,
               error = null,
             )
-            // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
-            getBandalartList(bandalart.key)
-            // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
-            setRecentBandalartKey(bandalart.key)
-            // 새로운 반다라트를 로컬에 저장
-            upsertBandalartKey(bandalart.key)
-            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
           }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _uiState.value = _uiState.value.copy(
+          // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
+          getBandalartList(bandalart.key)
+          // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
+          setRecentBandalartKey(bandalart.key)
+          // 새로운 반다라트를 로컬에 저장
+          upsertBandalartKey(bandalart.key)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update {
+            it.copy(
               isLoading = false,
               isShowSkeleton = false,
               error = exception,
-              isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
           }
+          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
   fun deleteBandalart(bandalartKey: String) {
-    if (!_uiState.value.isNetworking) {
-      _uiState.value = _uiState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        _uiState.value = _uiState.value.copy(isShowSkeleton = true)
-        val result = deleteBandalartUseCase(bandalartKey)
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            _uiState.value = _uiState.value.copy(
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      _uiState.update { it.copy(isShowSkeleton = true) }
+      val result = deleteBandalartUseCase(bandalartKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.update {
+            it.copy(
               isBandalartDeleted = true,
               error = null,
             )
-            openBandalartDeleteAlertDialog(false)
-            getBandalartList()
-            deleteBandalartKey(bandalartKey)
-            _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
           }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _uiState.value = _uiState.value.copy(
+          openBandalartDeleteAlertDialog(false)
+          getBandalartList()
+          deleteBandalartKey(bandalartKey)
+          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update {
+            it.copy(
               isLoading = false,
               isShowSkeleton = false,
               isBandalartDeleted = false,
               error = exception,
-              isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
           }
+          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
@@ -338,31 +361,34 @@ class HomeViewModel @Inject constructor(
     cellKey: String,
     updateBandalartEmojiModel: UpdateBandalartEmojiModel,
   ) {
-    if (!_uiState.value.isNetworking) {
-      _uiState.value = _uiState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        _uiState.value = _uiState.value.copy(isLoading = true)
-        val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            getBandalartList(bandalartKey)
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _uiState.value = _uiState.value.copy(
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      _uiState.update { it.copy(isLoading = true) }
+      val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          getBandalartList(bandalartKey)
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update {
+            it.copy(
               isLoading = false,
               isShowSkeleton = false,
               error = exception,
-              isNetworking = false,
             )
-            _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
           }
+          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
@@ -370,84 +396,70 @@ class HomeViewModel @Inject constructor(
     if (uiState.value.isNetworking || _uiState.value.shareUrl.isNotEmpty())
       return
 
-    _uiState.value = _uiState.value.copy(isNetworking = true)
+    _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
       val result = shareBandalartUseCase(bandalartKey)
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          _uiState.value = _uiState.value.copy(
-            shareUrl = result.getOrNull()!!.shareUrl,
-            error = null,
-          )
+          _uiState.update {
+            it.copy(
+              shareUrl = result.getOrNull()!!.shareUrl,
+              error = null,
+            )
+          }
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            error = exception,
-          )
+          _uiState.update {
+            it.copy(
+              error = exception,
+            )
+          }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
       }
-      _uiState.value = _uiState.value.copy(isNetworking = false)
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
-  fun openDropDownMenu(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isDropDownMenuOpened = state,
-    )
+  fun openDropDownMenu(flag: Boolean) {
+    _uiState.update { it.copy(isDropDownMenuOpened = flag) }
   }
 
-  fun openBandalartDeleteAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isBandalartDeleteAlertDialogOpened = state,
-    )
+  fun openBandalartDeleteAlertDialog(flag: Boolean) {
+    _uiState.update { it.copy(isBandalartDeleteAlertDialogOpened = flag) }
   }
 
-  fun openEmojiBottomSheet(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isEmojiBottomSheetOpened = state,
-    )
+  fun openEmojiBottomSheet(flag: Boolean) {
+    _uiState.update { it.copy(isEmojiBottomSheetOpened = flag) }
   }
 
-  fun openCellBottomSheet(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isCellBottomSheetOpened = state,
-    )
+  fun openCellBottomSheet(flag: Boolean) {
+    _uiState.update { it.copy(isCellBottomSheetOpened = flag) }
   }
 
-  fun bottomSheetDataChanged(isBottomSheetDataChangedState: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isBottomSheetDataChanged = isBottomSheetDataChangedState,
-    )
+  fun bottomSheetDataChanged(flag: Boolean) {
+    _uiState.update { it.copy(isBottomSheetDataChanged = flag) }
   }
 
-  fun loadingChanged(isLoadingChanged: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isLoading = isLoadingChanged,
-    )
+  fun loadingChanged(flag: Boolean) {
+    _uiState.update { it.copy(isLoading = flag) }
   }
 
-  fun showSkeletonChanged(isShowSkeletonChanged: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isShowSkeleton = isShowSkeletonChanged,
-    )
+  fun showSkeletonChanged(flag: Boolean) {
+    _uiState.update { it.copy(isShowSkeleton = flag) }
   }
 
-  fun openNetworkErrorAlertDialog(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isNetworkErrorAlertDialogOpened = state,
-    )
+  fun openNetworkErrorAlertDialog(flag: Boolean) {
+    _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = flag) }
   }
 
-  fun openBandalartListBottomSheet(state: Boolean) {
-    _uiState.value = _uiState.value.copy(
-      isBandalartListBottomSheetOpened = state,
-    )
+  fun openBandalartListBottomSheet(flag: Boolean) {
+    _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
   }
 
   private suspend fun getRecentBandalartKey(): String {
@@ -463,9 +475,7 @@ class HomeViewModel @Inject constructor(
   }
 
   fun initShareUrl() {
-    _uiState.value = _uiState.value.copy(
-      shareUrl = "",
-    )
+    _uiState.update { it.copy(shareUrl = "") }
   }
 
   private fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean = false) {

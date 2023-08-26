@@ -106,7 +106,7 @@ fun BandalartBottomSheet(
   ) -> Unit,
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
-  val uiState by viewModel.bottomSheetState.collectAsStateWithLifecycle()
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -166,7 +166,7 @@ fun BandalartBottomSheet(
               bandalartKey = bandalartKey,
               cellKey = uiState.cellData.key,
             )
-            viewModel.openDeleteCellDialog(deleteCellDialogState = false)
+            viewModel.openDeleteCellDialog(flag = false)
             bottomSheetState.hide()
           }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
@@ -175,7 +175,7 @@ fun BandalartBottomSheet(
             }
           }
         },
-        onCancelClicked = { viewModel.openDeleteCellDialog(deleteCellDialogState = false) },
+        onCancelClicked = { viewModel.openDeleteCellDialog(flag = false) },
       )
     }
 
@@ -226,8 +226,8 @@ fun BandalartBottomSheet(
                     .aspectRatio(1f)
                     .background(Gray100)
                     .clickable {
-                      viewModel.openEmojiPicker(emojiPickerState = !uiState.isEmojiPickerOpened)
-                      if (uiState.isDatePickerOpened) viewModel.openDatePicker(datePickerState = false)
+                      viewModel.openEmojiPicker(flag = !uiState.isEmojiPickerOpened)
+                      if (uiState.isDatePickerOpened) viewModel.openDatePicker(flag = false)
                     },
                   contentAlignment = Alignment.Center,
                 ) {
@@ -306,7 +306,7 @@ fun BandalartBottomSheet(
               isBottomSheet = false,
               onResult = { currentEmojiResult, openEmojiPushResult ->
                 viewModel.emojiSelected(profileEmoji = currentEmojiResult)
-                viewModel.openEmojiPicker(emojiPickerState = openEmojiPushResult)
+                viewModel.openEmojiPicker(flag = openEmojiPushResult)
               },
               emojiPickerScope = rememberCoroutineScope(),
               emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -339,8 +339,8 @@ fun BandalartBottomSheet(
               .fillMaxWidth()
               .height(18.dp)
               .clickable {
-                viewModel.openDatePicker(datePickerState = !uiState.isDatePickerOpened)
-                if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(emojiPickerState = false)
+                viewModel.openDatePicker(flag = !uiState.isDatePickerOpened)
+                if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(flag = false)
               },
           ) {
             if (uiState.cellData.dueDate.isNullOrEmpty()) {
@@ -367,7 +367,7 @@ fun BandalartBottomSheet(
           BandalartDatePicker(
             onResult = { dueDateResult, openDatePickerPushResult ->
               viewModel.dueDateChanged(dueDate = dueDateResult.toString())
-              viewModel.openDatePicker(datePickerState = openDatePickerPushResult)
+              viewModel.openDatePicker(flag = openDatePickerPushResult)
             },
             datePickerScope = rememberCoroutineScope(),
             datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -422,7 +422,7 @@ fun BandalartBottomSheet(
             )
             Switch(
               checked = uiState.cellData.isCompleted,
-              onCheckedChange = { switchOn -> viewModel.isCompletedChanged(isCompleted = switchOn) },
+              onCheckedChange = { switchOn -> viewModel.isCompletedChanged(flag = switchOn) },
               colors = SwitchDefaults.colors(
                 uncheckedThumbColor = White,
                 uncheckedTrackColor = Gray300,
@@ -450,7 +450,7 @@ fun BandalartBottomSheet(
           if (!isBlankCell) {
             BottomSheetDeleteButton(
               modifier = Modifier.weight(1f),
-              onClick = { viewModel.openDeleteCellDialog(deleteCellDialogState = !uiState.isDeleteCellDialogOpened) },
+              onClick = { viewModel.openDeleteCellDialog(flag = !uiState.isDeleteCellDialogOpened) },
             )
             Spacer(modifier = Modifier.width(9.dp))
           }

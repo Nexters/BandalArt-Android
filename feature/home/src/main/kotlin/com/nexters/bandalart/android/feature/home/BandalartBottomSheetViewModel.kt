@@ -64,14 +64,14 @@ class BottomSheetViewModel @Inject constructor(
   private val deleteBandalartCellUseCase: DeleteBandalartCellUseCase,
 ) : ViewModel() {
 
-  private val _bottomSheetState = MutableStateFlow(BottomSheetUiState())
-  val bottomSheetState: StateFlow<BottomSheetUiState> = this._bottomSheetState.asStateFlow()
+  private val _uiState = MutableStateFlow(BottomSheetUiState())
+  val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
 
   private val _eventFlow = MutableSharedFlow<BottomSheetUiEvent>()
   val eventFlow: SharedFlow<BottomSheetUiEvent> = _eventFlow.asSharedFlow()
 
   fun copyCellData(cellData: BandalartCellUiModel) {
-    _bottomSheetState.update {
+    _uiState.update {
       it.copy(
         cellData = cellData,
         cellDataForCheck = cellData.copy(),
@@ -85,28 +85,29 @@ class BottomSheetViewModel @Inject constructor(
     cellKey: String,
     updateBandalartMainCellModel: UpdateBandalartMainCellModel,
   ) {
-    if (!_bottomSheetState.value.isNetworking) {
-      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _bottomSheetState.value = _bottomSheetState.value.copy(
-              error = exception,
-              isNetworking = false,
-            )
-            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.update {
+            it.copy(isCellUpdated = true)
           }
         }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update { it.copy(error = exception) }
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
+        }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
@@ -115,28 +116,27 @@ class BottomSheetViewModel @Inject constructor(
     cellKey: String,
     updateBandalartSubCellModel: UpdateBandalartSubCellModel,
   ) {
-    if (!_bottomSheetState.value.isNetworking) {
-      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _bottomSheetState.value = _bottomSheetState.value.copy(
-              error = exception,
-              isNetworking = false,
-            )
-            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
-          }
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.update { it.copy(isCellUpdated = true) }
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update { it.copy(error = exception) }
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
@@ -145,99 +145,93 @@ class BottomSheetViewModel @Inject constructor(
     cellKey: String,
     updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
   ) {
-    if (!_bottomSheetState.value.isNetworking) {
-      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
-        when {
-          result.isSuccess && result.getOrNull() != null -> {
-            _bottomSheetState.value = _bottomSheetState.value.copy(isCellUpdated = true)
-          }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _bottomSheetState.value = _bottomSheetState.value.copy(
-              error = exception,
-              isNetworking = false,
-            )
-            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
-          }
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
+      when {
+        result.isSuccess && result.getOrNull() != null -> {
+          _uiState.update { it.copy(isCellUpdated = true) }
+        }
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update { it.copy(error = exception) }
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
   fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    if (!_bottomSheetState.value.isNetworking) {
-      _bottomSheetState.value = _bottomSheetState.value.copy(isNetworking = true)
-      viewModelScope.launch {
-        val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
-        when {
-          result.isSuccess && result.getOrNull() != null -> { }
-          result.isSuccess && result.getOrNull() == null -> {
-            Timber.e("Request succeeded but data validation failed")
-          }
-          result.isFailure -> {
-            val exception = result.exceptionOrNull()!!
-            _bottomSheetState.value = _bottomSheetState.value.copy(
+    if (_uiState.value.isNetworking)
+      return
+
+    _uiState.update { it.copy(isNetworking = true) }
+    viewModelScope.launch {
+      val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
+      when {
+        result.isSuccess && result.getOrNull() != null -> {}
+        result.isSuccess && result.getOrNull() == null -> {
+          Timber.e("Request succeeded but data validation failed")
+        }
+        result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          _uiState.update {
+            it.copy(
               isCellDeleted = false,
               error = exception,
-              isNetworking = false,
             )
-            openDeleteCellDialog(false)
-            _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-            Timber.e(exception.message)
           }
+          openDeleteCellDialog(false)
+          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          Timber.e(exception.message)
         }
       }
+      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
-  fun openDeleteCellDialog(deleteCellDialogState: Boolean) {
-    viewModelScope.launch {
-      _bottomSheetState.update {
-        it.copy(isDeleteCellDialogOpened = deleteCellDialogState)
-      }
-    }
+  fun openDeleteCellDialog(flag: Boolean) {
+    _uiState.update { it.copy(isDeleteCellDialogOpened = flag) }
   }
 
-  fun openDatePicker(datePickerState: Boolean) {
-    _bottomSheetState.update {
-      it.copy(isDatePickerOpened = datePickerState)
-    }
+  fun openDatePicker(flag: Boolean) {
+    _uiState.update { it.copy(isDatePickerOpened = flag) }
   }
 
-  fun openEmojiPicker(emojiPickerState: Boolean) {
-    _bottomSheetState.update {
-      it.copy(isEmojiPickerOpened = emojiPickerState)
-    }
+  fun openEmojiPicker(flag: Boolean) {
+    _uiState.update { it.copy(isEmojiPickerOpened = flag) }
   }
 
   fun emojiSelected(profileEmoji: String?) {
-    _bottomSheetState.update {
+    _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          profileEmoji = profileEmoji,
-        ),
+          profileEmoji = profileEmoji
+        )
       )
     }
   }
 
   fun titleChanged(title: String) {
-    _bottomSheetState.update {
+    _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          title = title,
-        ),
+          title = title
+        )
       )
     }
   }
 
   fun colorChanged(mainColor: String, subColor: String) {
-    _bottomSheetState.update {
+    _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
           mainColor = mainColor,
@@ -248,38 +242,36 @@ class BottomSheetViewModel @Inject constructor(
   }
 
   fun dueDateChanged(dueDate: String?) {
-    _bottomSheetState.update {
+    _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          dueDate = dueDate,
-        ),
+          dueDate = dueDate
+        )
       )
     }
   }
 
   fun descriptionChanged(description: String?) {
-    _bottomSheetState.update {
+    _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          description = description,
-        ),
+          description = description
+        )
       )
     }
   }
 
-  fun isCompletedChanged(isCompleted: Boolean) {
-    _bottomSheetState.update {
+  fun isCompletedChanged(flag: Boolean) {
+    _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          isCompleted = isCompleted,
-        ),
+          isCompleted = flag
+        )
       )
     }
   }
 
   fun bottomSheetClosed() {
-    _bottomSheetState.update {
-      BottomSheetUiState()
-    }
+    _uiState.update { BottomSheetUiState() }
   }
 }
