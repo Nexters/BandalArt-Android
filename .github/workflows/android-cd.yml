@@ -8,18 +8,9 @@ on:
   push:
     branches: [ main ]
 
-# 병렬로 실행시키지 않을 것이기에 주석
-# 만일 우연으로 같이 푸시할 경우 이전의 cd를 멈추는 것은 곤란하기에 주석
-#concurrency:
-#  group: build-${{ github.ref }}
-#  cancel-in-progress: true
-
 jobs:
   cd-build:
     runs-on: macos-latest
-
-#    cd는 ci-skip 같은건 몰라
-#    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-ci') }}
 
     steps:
       - uses: actions/checkout@v3
@@ -65,7 +56,7 @@ jobs:
 
       # 이 위까지는 만일 핫픽스로 급한 경우에 바로 main에 push 할 경우가 생길 수 있으므로 ci 보존
 
-      # fastlane을 위한 Ruby Setting
+      # Fastlane 위한 Ruby Setting
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.2
