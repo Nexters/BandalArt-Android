@@ -68,8 +68,13 @@ tasks.register("cleanAll", type = Delete::class) {
   allprojects.map(Project::getBuildDir).forEach(::delete)
 }
 
+tasks.register("clean", type = Delete::class) {
+  rootProject.buildDir.delete()
+}
+
+
 tasks.register("release") {
   dependsOn(tasks["clean"])
-  dependsOn(tasks["bundleRelease"])
+  dependsOn(tasks.getByName("release"))
   mustRunAfter(tasks["clean"])
 }
