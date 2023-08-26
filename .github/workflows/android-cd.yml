@@ -57,10 +57,12 @@ jobs:
       # 이 위까지는 만일 핫픽스로 급한 경우에 바로 main에 push 할 경우가 생길 수 있으므로 ci 보존
 
       # Fastlane 위한 Ruby Setting
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1      
         with:
-          ruby-version: 2.7.2
+          bundler: Gemfile.lock
           bundler-cache: true
+          ruby-version: default
+          working-directory: .Using 2.7.2 as input from file .ruby-version
 
       # Fastlane Setting
       - name: Set Up fastlane And Publish Google Play
