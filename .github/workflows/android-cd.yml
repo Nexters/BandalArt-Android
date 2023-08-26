@@ -75,6 +75,13 @@ jobs:
         with:
           fileName: '/app/bandalart.jks'
           encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
+
+      - name: Generate keystore.properties
+        run: |
+          echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
+          echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
           
       # Fastlane 위한 Ruby Setting
       - uses: ruby/setup-ruby@v1
