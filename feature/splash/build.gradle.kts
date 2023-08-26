@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+
   namespace = "com.nexters.bandalart.android.feature.splash"
 
   buildFeatures {
