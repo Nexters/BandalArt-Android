@@ -61,6 +61,7 @@ jobs:
       # Fastlane 위한 Ruby Setting
       - uses: ruby/setup-ruby@v1      
         with:
+          ruby-version: 2.7.2
           bundler: "Gemfile.lock"
           bundler-cache: true
 
