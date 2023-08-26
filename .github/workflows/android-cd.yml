@@ -61,8 +61,6 @@ jobs:
         with:
           bundler: Gemfile.lock
           bundler-cache: true
-          ruby-version: default
-          working-directory: .Using 2.7.2 as input from file .ruby-version
 
       # Fastlane Setting
       - name: Set Up fastlane And Publish Google Play
