@@ -1,5 +1,3 @@
-
-
 name: Android CD
 
 env:
@@ -61,8 +59,8 @@ jobs:
       # Fastlane 위한 Ruby Setting
       - uses: ruby/setup-ruby@v1      
         with:
+          bundler: Gemfile.lock
           ruby-version: 2.7.2
-	        bundler: "Gemfile.lock"
           bundler-cache: true
 
       # Fastlane Setting
