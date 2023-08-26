@@ -1,3 +1,5 @@
+
+
 name: Android CD
 
 env:
@@ -56,30 +58,19 @@ jobs:
 
       # 이 위까지는 만일 핫픽스로 급한 경우에 바로 main에 push 할 경우가 생길 수 있으므로 ci 보존
 
-  publish_aab:
-      runs-on: ubuntu-latest
+      # Fastlane 위한 Ruby Setting
+      - uses: ruby/setup-ruby@v1      
+        with:
+          ruby-version: 2.7.2
+	        bundler: "Gemfile.lock"
+          bundler-cache: true
 
-      steps:
-        - uses: actions/checkout@v3
-
-        - name: Setup JDK 17
-          uses: actions/setup-java@v3
-          with:
-            distribution: zulu
-            java-version: 17
-        # Fastlane 위한 Ruby Setting
-        - uses: ruby/setup-ruby@v1
-          with:
-            ruby-version: 2.7.2
-            bundler: "Gemfile.lock"
-            bundler-cache: true
-
-        # Fastlane Setting
-        - name: Set Up fastlane And Publish Google Play
-          uses: maierj/fastlane-action@v2.2.0
-          with:
-            lane: 'productionDeploy'
-          env:
-           SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-           SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-           SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      # Fastlane Setting
+      - name: Set Up fastlane And Publish Google Play
+        uses: maierj/fastlane-action@v2.2.0
+        with:
+          lane: 'productionDeploy'
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
