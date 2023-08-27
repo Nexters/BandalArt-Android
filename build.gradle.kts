@@ -73,7 +73,7 @@ tasks.register("clean", type = Delete::class) {
 }
 
 tasks.register("bundleRelease", type = Exec::class) {
-  commandLine("./gradlew release") // 릴리스용 AAB 생성을 위한 Gradle 태스크
+  commandLine("./gradlew", "bundle")
   workingDir = project.rootDir
 }
 
