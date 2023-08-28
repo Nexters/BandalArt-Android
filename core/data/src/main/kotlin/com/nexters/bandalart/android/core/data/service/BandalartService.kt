@@ -1,6 +1,5 @@
 package com.nexters.bandalart.android.core.data.service
 
-import com.nexters.bandalart.android.core.data.model.GuestLoginTokenResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
@@ -82,7 +81,4 @@ interface BandalartService {
   suspend fun shareBandalart(
     @Path("bandalartKey") bandalartKey: String,
   ): Response<BandalartShareResponse>
-
-  @POST("v1/users/guests")
-  suspend fun createGuestLoginToken(): Response<GuestLoginTokenResponse>
 }
