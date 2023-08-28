@@ -81,7 +81,7 @@ internal object NetworkModule {
       .addInterceptor(
         HttpLoggingInterceptor { message ->
           Timber.tag("HttpClient").d(message)
-        }.setLevel(HttpLoggingInterceptor.Level.BODY)
+        }.setLevel(HttpLoggingInterceptor.Level.BODY),
       )
       .build()
 

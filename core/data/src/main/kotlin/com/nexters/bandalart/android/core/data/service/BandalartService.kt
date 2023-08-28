@@ -25,22 +25,23 @@ interface BandalartService {
 
   @GET("v1/bandalarts/{bandalartKey}")
   suspend fun getBandalartDetail(
-    @Path("bandalartKey") bandalartKey: String
+    @Path("bandalartKey") bandalartKey: String,
   ): Response<BandalartDetailResponse>
 
   @DELETE("v1/bandalarts/{bandalartKey}")
   suspend fun deleteBandalart(
-    @Path("bandalartKey") bandalartKey: String
+    @Path("bandalartKey") bandalartKey: String,
   ): Response<Unit>
+
   @GET("v1/bandalarts/{bandalartKey}/cells")
   suspend fun getBandalartMainCell(
-    @Path("bandalartKey") bandalartKey: String
+    @Path("bandalartKey") bandalartKey: String,
   ): Response<BandalartCellResponse>
 
   @GET("v1/bandalarts/{bandalartKey}/cells/{cellKey}")
   suspend fun getBandalartCell(
     @Path("bandalartKey") bandalartKey: String,
-    @Path("cellKey") cellKey: String
+    @Path("cellKey") cellKey: String,
   ): Response<BandalartCellResponse>
 
   @PATCH("v1/bandalarts/{bandalartKey}/cells/{cellKey}")

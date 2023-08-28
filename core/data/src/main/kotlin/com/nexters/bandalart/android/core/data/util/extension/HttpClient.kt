@@ -5,25 +5,26 @@ import java.net.UnknownHostException
 import retrofit2.HttpException
 import retrofit2.Response
 
-//@Suppress("TooGenericExceptionCaught")
-//internal suspend fun <T> HttpClient.safeRequest(
-//  request: suspend HttpClient.() -> T,
-//): T {
-//  return try {
-//    this.request()
-//  } catch (exception: UnresolvedAddressException) {
-//    throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)
-//  } catch (exception: ResponseException) {
-//    throw ExceptionWrapper(
-//      statusCode = exception.response.status.value,
-//      message = exception.toAlertMessage(),
-//      cause = exception,
-//    )
-//  } catch (exception: Exception) {
-//    throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)
-//  }
-//}
+// @Suppress("TooGenericExceptionCaught")
+// internal suspend fun <T> HttpClient.safeRequest(
+//   request: suspend HttpClient.() -> T,
+// ): T {
+//   return try {
+//     this.request()
+//   } catch (exception: UnresolvedAddressException) {
+//     throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)
+//   } catch (exception: ResponseException) {
+//     throw ExceptionWrapper(
+//       statusCode = exception.response.status.value,
+//       message = exception.toAlertMessage(),
+//       cause = exception,
+//     )
+//   } catch (exception: Exception) {
+//     throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)
+//   }
+// }
 
+@Suppress("TooGenericExceptionCaught")
 internal suspend fun <T> safeRequest(call: suspend () -> Response<T>): T? {
   try {
     val response = call()
@@ -34,14 +35,14 @@ internal suspend fun <T> safeRequest(call: suspend () -> Response<T>): T? {
       throw ExceptionWrapper(
         statusCode = response.code(),
         message = Exception(errorBody).toAlertMessage(),
-        cause = Exception(errorBody)
+        cause = Exception(errorBody),
       )
     }
   } catch (exception: HttpException) {
     throw ExceptionWrapper(
       statusCode = exception.code(),
       message = exception.response()?.errorBody()?.string() ?: exception.message(),
-      cause = exception
+      cause = exception,
     )
   } catch (exception: UnknownHostException) {
     throw ExceptionWrapper(message = exception.toAlertMessage(), cause = exception)

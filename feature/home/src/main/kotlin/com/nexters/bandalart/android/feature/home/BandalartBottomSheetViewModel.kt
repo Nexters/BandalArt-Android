@@ -214,8 +214,8 @@ class BottomSheetViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          profileEmoji = profileEmoji
-        )
+          profileEmoji = profileEmoji,
+        ),
       )
     }
   }
@@ -224,8 +224,8 @@ class BottomSheetViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          title = title
-        )
+          title = title,
+        ),
       )
     }
   }
@@ -245,8 +245,8 @@ class BottomSheetViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          dueDate = dueDate
-        )
+          dueDate = dueDate,
+        ),
       )
     }
   }
@@ -255,8 +255,8 @@ class BottomSheetViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          description = description
-        )
+          description = description,
+        ),
       )
     }
   }
@@ -265,8 +265,8 @@ class BottomSheetViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         cellData = it.cellData.copy(
-          isCompleted = flag
-        )
+          isCompleted = flag,
+        ),
       )
     }
   }
