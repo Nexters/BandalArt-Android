@@ -72,13 +72,13 @@ tasks.register("clean", type = Delete::class) {
   rootProject.buildDir.delete()
 }
 
-tasks.register("bundleAABRelease", type = Exec::class) {
-  commandLine("./gradlew bundle")
-  workingDir = project.rootDir
+tasks.register("bundleRelease", type = Exec::class) {
+    commandLine(project.rootDir.resolve("gradlew"), "bundle")
+    workingDir = project.rootDir
 }
 
 tasks.register("release") {
   dependsOn(tasks["clean"])
-  dependsOn(tasks["bundleAABRelease"])
+  dependsOn(tasks["bundleRelease"])
   mustRunAfter(tasks["clean"])
 }
