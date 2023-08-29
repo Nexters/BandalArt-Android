@@ -73,8 +73,8 @@ tasks.register("clean", type = Delete::class) {
 }
 
 tasks.register("bundleRelease", type = Exec::class) {
-    commandLine(project.rootDir.resolve("gradlew"), "bundle")
-    workingDir = project.rootDir
+  commandLine(project.rootDir.resolve("gradlew"), "bundle")
+  workingDir = project.rootDir
 }
 
 tasks.register("release") {
