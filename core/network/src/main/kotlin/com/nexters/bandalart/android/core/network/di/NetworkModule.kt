@@ -33,6 +33,15 @@ import timber.log.Timber
 private const val MaxTimeoutMillis = 3000L
 private const val MaxRetryCount = 3
 
+private val json = Json {
+  encodeDefaults = true
+  ignoreUnknownKeys = true
+  prettyPrint = true
+  isLenient = true
+}
+
+private val jsonRule = Json { json }
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
@@ -56,12 +65,7 @@ internal object NetworkModule {
         header("X-GUEST-KEY", guestLoginToken)
       }
       install(ContentNegotiation) {
-        json(Json {
-          encodeDefaults = true
-          ignoreUnknownKeys = true
-          prettyPrint = true
-          isLenient = true
-        })
+        json(jsonRule)
       }
       install(Logging) {
         logger = object : Logger {
@@ -97,7 +101,7 @@ internal object NetworkModule {
     return Retrofit.Builder()
       .baseUrl(BuildConfig.SERVER_BASE_URL)
       .client(httpClient)
-      .addConverterFactory(Json.asConverterFactory(contentType))
+      .addConverterFactory(jsonRule.asConverterFactory(contentType))
       .build()
   }
 }
