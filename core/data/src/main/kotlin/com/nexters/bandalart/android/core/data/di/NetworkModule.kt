@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.nexters.bandalart.android.core.data.BuildConfig
 import com.nexters.bandalart.android.core.data.local.DataStoreProvider
 import com.nexters.bandalart.android.core.data.service.BandalartService
+import com.nexters.bandalart.android.core.data.service.GuestLoginService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -96,5 +97,11 @@ internal object NetworkModule {
   @Provides
   internal fun provideBandalartService(retrofit: Retrofit): BandalartService {
     return retrofit.create(BandalartService::class.java)
+  }
+
+  @Singleton
+  @Provides
+  internal fun provideGuestLoginService(retrofit: Retrofit): GuestLoginService {
+    return retrofit.create(GuestLoginService::class.java)
   }
 }
