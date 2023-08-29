@@ -184,7 +184,6 @@ class HomeViewModel @Inject constructor(
               error = exception,
             )
           }
-          Timber.e(exception.message)
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -221,7 +220,6 @@ class HomeViewModel @Inject constructor(
               error = exception,
             )
           }
-          Timber.e(exception.message)
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -235,7 +233,6 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update {
             it.copy(
-              isLoading = false,
               isShowSkeleton = false,
               bandalartCellData = result.getOrNull()!!.toUiModel(),
               error = null,
@@ -253,15 +250,18 @@ class HomeViewModel @Inject constructor(
             it.copy(
               bandalartCellData = null,
               isNetworkErrorAlertDialogOpened = true,
-              isLoading = false,
               isShowSkeleton = false,
               error = exception,
             )
           }
-          Timber.e(exception.message)
         }
       }
-      _uiState.update { it.copy(isNetworking = false) }
+      _uiState.update {
+        it.copy(
+          isNetworking = false,
+          isLoading = false,
+        )
+      }
     }
   }
 
@@ -307,7 +307,6 @@ class HomeViewModel @Inject constructor(
             )
           }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -349,7 +348,6 @@ class HomeViewModel @Inject constructor(
             )
           }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -385,7 +383,6 @@ class HomeViewModel @Inject constructor(
             )
           }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -413,13 +410,8 @@ class HomeViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.update {
-            it.copy(
-              error = exception,
-            )
-          }
+          _uiState.update { it.copy(error = exception) }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
