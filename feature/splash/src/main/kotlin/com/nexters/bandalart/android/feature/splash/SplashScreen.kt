@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
@@ -57,8 +58,8 @@ fun SplashScreen(
     }
     uiState.isNetworkErrorAlertDialogOpened -> {
       NetworkErrorAlertDialog(
-        title = "네트워크 문제로 표를\n불러오지 못했어요",
-        message = "다시 시도해주시기 바랍니다.",
+        title = stringResource(R.string.network_error_dialog_title),
+        message = stringResource(R.string.network_error_dialog_message),
         onConfirmClick = {
           openNetworkErrorAlertDialog(false)
           createGuestLoginToken()
