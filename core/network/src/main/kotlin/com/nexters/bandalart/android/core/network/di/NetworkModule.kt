@@ -1,7 +1,8 @@
-package com.nexters.bandalart.android.core.data.di
+package com.nexters.bandalart.android.core.network.di
 
-import com.nexters.bandalart.android.core.data.BuildConfig
-import com.nexters.bandalart.android.core.data.local.DataStoreProvider
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.nexters.bandalart.android.core.datastore.DataStoreProvider
+import com.nexters.bandalart.android.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +19,28 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
 import timber.log.Timber
 
 private const val MaxTimeoutMillis = 3000L
 private const val MaxRetryCount = 3
+
+private val json = Json {
+  encodeDefaults = true
+  ignoreUnknownKeys = true
+  prettyPrint = true
+  isLenient = true
+}
+
+private val jsonRule = Json { json }
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -49,12 +65,7 @@ internal object NetworkModule {
         header("X-GUEST-KEY", guestLoginToken)
       }
       install(ContentNegotiation) {
-        json(Json {
-          encodeDefaults = true
-          ignoreUnknownKeys = true
-          prettyPrint = true
-          isLenient = true
-        })
+        json(jsonRule)
       }
       install(Logging) {
         logger = object : Logger {
@@ -65,5 +76,32 @@ internal object NetworkModule {
         level = LogLevel.ALL
       }
     }
+  }
+
+  @Singleton
+  @Provides
+  fun provideRetrofitHttpClient(dataStoreProvider: DataStoreProvider): Retrofit {
+    val contentType = "application/json".toMediaType()
+    val httpClient = OkHttpClient.Builder()
+      .connectTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
+      .addInterceptor { chain: Interceptor.Chain ->
+        val request = chain.request().newBuilder()
+          .addHeader("Content-Type", "application/json")
+          .addHeader("X-GUEST-KEY", runBlocking { dataStoreProvider.getGuestLoginToken() })
+          .build()
+        chain.proceed(request)
+      }
+      .addInterceptor(
+        HttpLoggingInterceptor { message ->
+          Timber.tag("HttpClient").d(message)
+        }.setLevel(HttpLoggingInterceptor.Level.BODY),
+      )
+      .build()
+
+    return Retrofit.Builder()
+      .baseUrl(BuildConfig.SERVER_BASE_URL)
+      .client(httpClient)
+      .addConverterFactory(jsonRule.asConverterFactory(contentType))
+      .build()
   }
 }

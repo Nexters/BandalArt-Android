@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.data.local
+package com.nexters.bandalart.android.core.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-internal class DataStoreProvider @Inject constructor(
+class DataStoreProvider @Inject constructor(
   private val dataStore: DataStore<Preferences>,
 ) {
 
