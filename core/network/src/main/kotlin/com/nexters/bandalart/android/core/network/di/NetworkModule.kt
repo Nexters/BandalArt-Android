@@ -33,7 +33,6 @@ import timber.log.Timber
 private const val MaxTimeoutMillis = 3000L
 private const val MaxRetryCount = 3
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
