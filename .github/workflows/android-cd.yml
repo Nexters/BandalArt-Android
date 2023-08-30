@@ -103,7 +103,6 @@ jobs:
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
           pwd
 
-
       - name: Run build
         run: ./gradlew buildRelease --stacktrace
        

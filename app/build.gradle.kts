@@ -14,7 +14,7 @@ android {
 
   signingConfigs {
     create("release") {
-      val propertiesFile = rootProject.file("keystore.properties")
+      val propertiesFile = project.file("keystore.properties")
       val properties = Properties()
       properties.load(propertiesFile.inputStream())
       storeFile = file(properties["STORE_FILE"] as String)
