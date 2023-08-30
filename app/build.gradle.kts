@@ -14,14 +14,7 @@ android {
 
   signingConfigs {
     create("release") {
-      val propertiesFilePath = if (System.getenv("GITHUB_ACTIONS") == "true") {
-        // GitHub Actions 워크스페이스 경로
-        "/home/runner/work/BandalArt-Android/BandalArt-Android/keystore.properties"
-      } else {
-        // 로컬 빌드 시의 경로
-        "keystore.properties"
-      }
-      val propertiesFile = File(propertiesFilePath)
+      val propertiesFile = rootProject.file("keystore.properties")
       val properties = Properties()
       properties.load(propertiesFile.inputStream())
       storeFile = file(properties["STORE_FILE"] as String)
