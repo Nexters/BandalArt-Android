@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-  namespace = "com.nexters.bandalart.android.core.data"
+  namespace = "com.nexters.bandalart.android.core.datastore"
 
   buildFeatures {
     buildConfig = true
@@ -18,15 +18,8 @@ android {
 
 dependencies {
   implementations(
-    projects.core.domain,
-    projects.core.datastore,
-    projects.core.network,
     libs.kotlinx.serialization.json,
     libs.androidx.datastore.preferences,
-    libs.bundles.ktor.client,
-    libs.bundles.retrofit,
-    libs.bundles.okhttp,
-    libs.timber,
   )
 }
 

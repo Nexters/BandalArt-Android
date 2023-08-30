@@ -9,52 +9,65 @@ import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartEm
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
+import com.nexters.bandalart.android.core.data.service.BandalartService
 import com.nexters.bandalart.android.core.data.util.extension.safeRequest
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.delete
-import io.ktor.client.request.get
-import io.ktor.client.request.patch
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
 import javax.inject.Inject
 
 internal class BandalartRemoteDataSourceImpl @Inject constructor(
-  private val client: HttpClient,
+  // private val client: HttpClient,
+  private val service: BandalartService,
 ) : BandalartRemoteDataSource {
   override suspend fun createBandalart(): BandalartResponse? {
-    return client.safeRequest {
-      post("v1/bandalarts").body()
+//    return client.safeRequest {
+//      post("v1/bandalarts").body()
+//    }
+    return safeRequest {
+      service.createBandalart()
     }
   }
 
   override suspend fun getBandalartList(): List<BandalartDetailResponse>? {
-    return client.safeRequest {
-      get("v1/bandalarts").body()
+//    return client.safeRequest {
+//      get("v1/bandalarts").body()
+//    }
+    return safeRequest {
+      service.getBandalartList()
     }
   }
 
   override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse? {
-    return client.safeRequest {
-      get("v1/bandalarts/$bandalartKey").body()
+//    return client.safeRequest {
+//      get("v1/bandalarts/$bandalartKey").body()
+//    }
+    return safeRequest {
+      service.getBandalartDetail(bandalartKey)
     }
   }
 
   override suspend fun deleteBandalart(bandalartKey: String) {
-    client.safeRequest {
-      delete("v1/bandalarts/$bandalartKey")
+//    client.safeRequest {
+//      delete("v1/bandalarts/$bandalartKey")
+//    }
+    safeRequest {
+      service.deleteBandalart(bandalartKey)
     }
   }
 
   override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse? {
-    return client.safeRequest {
-      get("v1/bandalarts/$bandalartKey/cells").body()
+//    return client.safeRequest {
+//      get("v1/bandalarts/$bandalartKey/cells").body()
+//    }
+    return safeRequest {
+      service.getBandalartMainCell(bandalartKey)
     }
   }
 
   override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse? {
-    return client.safeRequest {
-      get("v1/bandalarts/$bandalartKey/cells/$cellKey").body()
+//    return client.safeRequest {
+//      get("v1/bandalarts/$bandalartKey/cells/$cellKey").body()
+//    }
+    return safeRequest {
+      service.getBandalartCell(bandalartKey, cellKey)
     }
   }
 
@@ -63,10 +76,13 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
     cellKey: String,
     updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
   ) {
-    client.safeRequest {
-      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartMainCellRequest)
-      }
+//    client.safeRequest {
+//      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+//        setBody(updateBandalartMainCellRequest)
+//      }
+//    }
+    safeRequest {
+      service.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellRequest)
     }
   }
 
@@ -75,10 +91,13 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
     cellKey: String,
     updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
   ) {
-    client.safeRequest {
-      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartSubCellRequest)
-      }
+//    client.safeRequest {
+//      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+//        setBody(updateBandalartSubCellRequest)
+//      }
+//    }
+    safeRequest {
+      service.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellRequest)
     }
   }
 
@@ -87,10 +106,13 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
     cellKey: String,
     updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
   ) {
-    client.safeRequest {
-      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartTaskCellRequest)
-      }
+//    client.safeRequest {
+//      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+//        setBody(updateBandalartTaskCellRequest)
+//      }
+//    }
+    safeRequest {
+      service.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellRequest)
     }
   }
 
@@ -99,22 +121,31 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
     cellKey: String,
     updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
   ) {
-    client.safeRequest {
-      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
-        setBody(updateBandalartEmojiRequest)
-      }
+//    client.safeRequest {
+//      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
+//        setBody(updateBandalartEmojiRequest)
+//      }
+//    }
+    safeRequest {
+      service.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiRequest)
     }
   }
 
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    client.safeRequest {
-      delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
+//    client.safeRequest {
+//      delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
+//    }
+    safeRequest {
+      service.deleteBandalartCell(bandalartKey, cellKey)
     }
   }
 
   override suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse? {
-    return client.safeRequest {
-      post("v1/bandalarts/$bandalartKey/shares").body()
+//    return client.safeRequest {
+//      post("v1/bandalarts/$bandalartKey/shares").body()
+//    }
+    return safeRequest {
+      service.shareBandalart(bandalartKey)
     }
   }
 }

@@ -162,7 +162,6 @@ internal fun HomeScreen(
 ) {
   val context = LocalContext.current
 
-  // TODO null 를 파라미터로 넣어줘야 하는 이유 학습
   LaunchedEffect(key1 = Unit) {
     getBandalartList(null)
   }

@@ -1,7 +1,7 @@
 package com.nexters.bandalart.android.core.data.local.datasource
 
 import com.nexters.bandalart.android.core.data.datasource.RecentBandalartKeyDataSource
-import com.nexters.bandalart.android.core.data.local.DataStoreProvider
+import com.nexters.bandalart.android.core.datastore.DataStoreProvider
 import javax.inject.Inject
 
 internal class RecentBandalartKeyDataSourceImpl @Inject constructor(

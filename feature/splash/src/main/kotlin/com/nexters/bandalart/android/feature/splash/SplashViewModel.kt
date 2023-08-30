@@ -12,6 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -66,37 +67,31 @@ class SplashViewModel @Inject constructor(
 
   fun createGuestLoginToken() {
     viewModelScope.launch {
+      val delayJob = launch {
+        delay(500)
+        _uiState.update { it.copy(isLoading = true) }
+      }
       val result = createGuestLoginTokenUseCase()
+      delayJob.cancel()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val newGuestLoginToken = result.getOrNull()!!
           setGuestLoginTokenUseCase(newGuestLoginToken.key)
-          _uiState.value = _uiState.value.copy(
-            isLoggedIn = false,
-            isLoading = false,
-          )
+          _uiState.update { it.copy(isLoggedIn = false) }
           createBandalartUseCase()
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
         result.isFailure -> {
-          val exception = result.exceptionOrNull()
-          _uiState.value = _uiState.value.copy(
-            isNetworkErrorAlertDialogOpened = true,
-            isLoading = false,
-          )
-          Timber.e(exception)
+          _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = true) }
         }
       }
+      _uiState.update { it.copy(isLoading = false) }
     }
   }
 
-  fun openNetworkErrorAlertDialog(state: Boolean) {
-    viewModelScope.launch {
-      _uiState.value = _uiState.value.copy(
-        isNetworkErrorAlertDialogOpened = state,
-      )
-    }
+  fun openNetworkErrorAlertDialog(flag: Boolean) {
+    _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = flag) }
   }
 }
