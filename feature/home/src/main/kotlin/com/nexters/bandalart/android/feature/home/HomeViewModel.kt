@@ -364,7 +364,7 @@ class HomeViewModel @Inject constructor(
 
     _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
-      _uiState.update { it.copy(isLoading = true) }
+      // _uiState.update { it.copy(isLoading = true) }
       val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
       when {
         result.isSuccess && result.getOrNull() != null -> {
@@ -438,9 +438,9 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isBottomSheetDataChanged = flag) }
   }
 
-  fun loadingChanged(flag: Boolean) {
-    _uiState.update { it.copy(isLoading = flag) }
-  }
+//  fun loadingChanged(flag: Boolean) {
+//    _uiState.update { it.copy(isLoading = flag) }
+//  }
 
   fun showSkeletonChanged(flag: Boolean) {
     _uiState.update { it.copy(isShowSkeleton = flag) }
