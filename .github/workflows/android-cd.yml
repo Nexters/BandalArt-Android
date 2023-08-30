@@ -81,13 +81,20 @@ jobs:
         run: |
           echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
           
-      - name: Decode Keystore
-        id: decode_keystore
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: '/app/bandalart.jks'
-          encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
+      # - name: Decode Keystore
+      #   id: decode_keystore
+      #   uses: timheuer/base64-to-file@v1
+      #   with:
+      #     fileName: '/app/bandalart.jks'
+      #     encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
 
+      - name: Generate Keystore file from Github Secrets
+        run: |
+          echo "$KEYSTORE" > ./app/bandalart.b64
+          base64 -d -i ./app/bandalart.b64 > ./app/bandalart.jks
+        env:
+          KEYSTORE: ${{ secrets.APP_RELEASE_KEY_STORE_BASE_64 }}
+    
       - name: Generate keystore.properties
         run: |
           echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
