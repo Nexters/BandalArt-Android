@@ -101,7 +101,10 @@ jobs:
           echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
           echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
-          
+
+      - name: Run build
+        run: ./gradlew buildRelease --stacktrace
+       
       # Fastlane 위한 Ruby Setting
       - uses: ruby/setup-ruby@v1
         with:
