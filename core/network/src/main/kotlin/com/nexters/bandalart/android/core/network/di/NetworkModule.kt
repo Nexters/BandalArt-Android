@@ -48,7 +48,7 @@ internal object NetworkModule {
 
   @Singleton
   @Provides
-  fun provideKtorHttpClient(dataStoreProvider: DataStoreProvider): HttpClient {
+  internal fun provideKtorHttpClient(dataStoreProvider: DataStoreProvider): HttpClient {
     return HttpClient(engineFactory = CIO) {
       engine {
         endpoint {
@@ -80,7 +80,24 @@ internal object NetworkModule {
 
   @Singleton
   @Provides
-  fun provideRetrofitHttpClient(dataStoreProvider: DataStoreProvider): Retrofit {
+  internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+    return HttpLoggingInterceptor { message ->
+      Timber.tag("OkHttp").d(message)
+    }.apply {
+      level = if (BuildConfig.DEBUG) {
+        HttpLoggingInterceptor.Level.BODY
+      } else {
+        HttpLoggingInterceptor.Level.NONE
+      }
+    }
+  }
+
+  @Singleton
+  @Provides
+  internal fun provideRetrofitHttpClient(
+    dataStoreProvider: DataStoreProvider,
+    httpLoggingInterceptor: HttpLoggingInterceptor,
+  ): Retrofit {
     val contentType = "application/json".toMediaType()
     val httpClient = OkHttpClient.Builder()
       .connectTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
@@ -91,11 +108,7 @@ internal object NetworkModule {
           .build()
         chain.proceed(request)
       }
-      .addInterceptor(
-        HttpLoggingInterceptor { message ->
-          Timber.tag("HttpClient").d(message)
-        }.setLevel(HttpLoggingInterceptor.Level.BODY),
-      )
+      .addInterceptor(httpLoggingInterceptor)
       .build()
 
     return Retrofit.Builder()

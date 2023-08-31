@@ -120,7 +120,7 @@ internal fun HomeRoute(
     updateBandalartEmoji = viewModel::updateBandalartEmoji,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
-    loadingChanged = { state -> viewModel.loadingChanged(state) },
+    // loadingChanged = { state -> viewModel.loadingChanged(state) },
     showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
     openEmojiBottomSheet = { state -> viewModel.openEmojiBottomSheet(state) },
@@ -146,7 +146,7 @@ internal fun HomeScreen(
   updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
-  loadingChanged: (Boolean) -> Unit,
+  // loadingChanged: (Boolean) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openEmojiBottomSheet: (Boolean) -> Unit,
@@ -185,7 +185,7 @@ internal fun HomeScreen(
 
   LaunchedEffect(key1 = uiState.isBottomSheetDataChanged) {
     if (uiState.isBottomSheetDataChanged) {
-      loadingChanged(true)
+      // loadingChanged(true)
       getBandalartList(null)
     }
   }
@@ -275,7 +275,7 @@ internal fun HomeScreen(
       message = stringResource(R.string.network_error_dialog_message),
       onConfirmClick = {
         openNetworkErrorDialog(false)
-        loadingChanged(true)
+        // loadingChanged(true)
         getBandalartList(null)
       },
     )
