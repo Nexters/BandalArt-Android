@@ -367,9 +367,7 @@ class HomeViewModel @Inject constructor(
       // _uiState.update { it.copy(isLoading = true) }
       val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
       when {
-        result.isSuccess && result.getOrNull() != null -> {
-          getBandalartList(bandalartKey)
-        }
+        result.isSuccess && result.getOrNull() != null -> { }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }

@@ -34,14 +34,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,9 +69,8 @@ import com.nexters.bandalart.android.core.ui.theme.Gray600
 import com.nexters.bandalart.android.core.ui.theme.Gray900
 import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartChart
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
@@ -117,7 +113,6 @@ internal fun HomeRoute(
     navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
     getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
-    updateBandalartEmoji = viewModel::updateBandalartEmoji,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
     // loadingChanged = { state -> viewModel.loadingChanged(state) },
@@ -143,7 +138,6 @@ internal fun HomeScreen(
   navigateToComplete: (String, String, String) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
-  updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
   // loadingChanged: (Boolean) -> Unit,
@@ -219,26 +213,14 @@ internal fun HomeScreen(
   }
 
   if (uiState.isEmojiBottomSheetOpened) {
-    val emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    ModalBottomSheet(
-      onDismissRequest = { openEmojiBottomSheet(false) },
-      modifier = Modifier.wrapContentSize(),
-      sheetState = emojiPickerState,
-      content = BandalartEmojiPicker(
-        currentEmoji = uiState.bandalartCellData?.profileEmoji,
-        isBottomSheet = true,
-        onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
-          openEmojiBottomSheet(openEmojiBottomSheetResult)
-          updateBandalartEmoji(
-            uiState.bandalartDetailData!!.key,
-            uiState.bandalartCellData!!.key,
-            UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
-          )
-        },
-        emojiPickerScope = rememberCoroutineScope(),
-        emojiPickerState = emojiPickerState,
-      ),
-      dragHandle = null,
+    BandalartEmojiBottomSheet(
+      bandalartKey = uiState.bandalartDetailData!!.key,
+      cellKey = uiState.bandalartCellData!!.key,
+      currentEmoji = uiState.bandalartCellData.profileEmoji,
+      onResult = { bottomSheetState, bottomSheetDataChangedState ->
+        openEmojiBottomSheet(bottomSheetState)
+        bottomSheetDataChanged(bottomSheetDataChangedState)
+      },
     )
   }
 
