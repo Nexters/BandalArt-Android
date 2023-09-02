@@ -215,13 +215,6 @@ fun BandalartSkeletonScreen(
   }
 }
 
-data class SubCell(
-  val rowCnt: Int,
-  val colCnt: Int,
-  val subCellRowIndex: Int,
-  val subCellColIndex: Int,
-)
-
 @Composable
 fun BandalartSkeletonChart(
   modifier: Modifier = Modifier,
@@ -236,10 +229,10 @@ fun BandalartSkeletonChart(
   }
 
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1),
-    SubCell(3, 2, 1, 0),
-    SubCell(3, 2, 1, 1),
-    SubCell(2, 3, 0, 1),
+    SubCell(2, 3, 1, 1, null),
+    SubCell(3, 2, 1, 0, null),
+    SubCell(3, 2, 1, 1, null),
+    SubCell(2, 3, 0, 1, null),
   )
 
   Layout(
