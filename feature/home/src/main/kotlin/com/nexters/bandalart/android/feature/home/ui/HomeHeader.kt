@@ -45,7 +45,7 @@ import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable
 fun HomeHeader(
-  modifier:Modifier = Modifier,
+  modifier: Modifier = Modifier,
   uiState: HomeUiState,
   openDropDownMenu: (Boolean) -> Unit,
   openEmojiBottomSheet: (Boolean) -> Unit,
@@ -106,7 +106,8 @@ fun HomeHeader(
           .wrapContentHeight(),
       ) {
         FixedSizeText(
-          text = uiState.bandalartDetailData?.title ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
+          text = uiState.bandalartDetailData?.title
+            ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
           color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
           fontWeight = FontWeight.W700,
           fontSize = 20.sp,
