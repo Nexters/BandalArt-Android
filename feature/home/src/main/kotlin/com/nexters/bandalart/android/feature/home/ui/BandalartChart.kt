@@ -21,7 +21,6 @@ import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.ui.theme.Gray100
 import com.nexters.bandalart.android.core.ui.theme.MainColor
 import com.nexters.bandalart.android.feature.home.HomeUiState
-import com.nexters.bandalart.android.feature.home.util.SubCell
 
 @Composable
 fun BandalartChart(

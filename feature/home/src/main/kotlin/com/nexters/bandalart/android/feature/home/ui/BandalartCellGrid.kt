@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.feature.home.util.SubCell
 
 @Composable
 fun BandalartCellGrid(
@@ -46,8 +45,8 @@ fun BandalartCellGrid(
               colCnt = cols,
               rowCnt = rows,
             ),
-            cellData = if (isSubCell) subCell.bandalartChartData
-            else subCell.bandalartChartData.children[taskIndex++],
+            cellData = if (isSubCell) subCell.bandalartChartData!!
+            else subCell.bandalartChartData!!.children[taskIndex++],
             bottomSheetDataChanged = bottomSheetDataChanged,
           )
         }

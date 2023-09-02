@@ -24,6 +24,9 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiMode
 import com.nexters.bandalart.android.core.ui.extension.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +62,7 @@ import timber.log.Timber
  */
 
 data class HomeUiState(
-  val bandalartList: List<BandalartDetailUiModel> = emptyList(),
+  val bandalartList: PersistentList<BandalartDetailUiModel> = persistentListOf(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
   val isBandalartDeleted: Boolean = false,
@@ -119,7 +122,7 @@ class HomeViewModel @Inject constructor(
           val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
           _uiState.update {
             it.copy(
-              bandalartList = bandalartList,
+              bandalartList = bandalartList.toPersistentList(),
               error = null,
             )
           }

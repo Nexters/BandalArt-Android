@@ -48,6 +48,14 @@ data class CellInfo(
   val rowCnt: Int = 1,
 )
 
+data class SubCell(
+  val rowCnt: Int,
+  val colCnt: Int,
+  val subCellRowIndex: Int,
+  val subCellColIndex: Int,
+  val bandalartChartData: BandalartCellUiModel?,
+)
+
 @Composable
 fun BandalartCell(
   modifier: Modifier = Modifier,
