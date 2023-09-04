@@ -117,7 +117,6 @@ google-service = { id = "com.google.gms.google-services", version.ref = "google-
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-core" }
 kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "kotlin-detekt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-core" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-core" }
 kotlin-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "kotlin-ktlint-gradle" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-core" }
 
