@@ -11,7 +11,6 @@ android {
 
   buildFeatures {
     compose = true
-    buildConfig = true
   }
   composeOptions {
     kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
@@ -24,7 +23,7 @@ dependencies {
     projects.core.domain,
     projects.core.ui,
     libs.androidx.core,
-    libs.androidx.hilt.compose.navigation,
+    libs.androidx.hilt.compose.navigation음,
     libs.lottie.compose,
     libs.bundles.androidx.compose,
     libs.bundles.androidx.lifecycle,
