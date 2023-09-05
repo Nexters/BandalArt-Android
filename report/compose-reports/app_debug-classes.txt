@@ -1,0 +1,31 @@
+stable class BandalartApplication {
+  <runtime stability> = Stable
+}
+stable class MainActivity {
+  <runtime stability> = Stable
+}
+unstable class MainUiState {
+  stable val isLoggedIn: Boolean
+  stable val isNetworkErrorAlertDialogOpened: Boolean
+  stable val isLoading: Boolean
+  unstable val error: Throwable?
+  <runtime stability> = Unstable
+}
+unstable class MainViewModel {
+  unstable val getGuestLoginTokenUseCase: GetGuestLoginTokenUseCase
+  unstable val createGuestLoginTokenUseCase: CreateGuestLoginTokenUseCase
+  unstable val setGuestLoginTokenUseCase: SetGuestLoginTokenUseCase
+  unstable val createBandalartUseCase: CreateBandalartUseCase
+  unstable val _uiState: MutableStateFlow<MainUiState>
+  unstable val uiState: StateFlow<MainUiState>
+  <runtime stability> = Unstable
+}
+stable class FirebaseCrashlyticsInitializer {
+  <runtime stability> = Stable
+}
+stable class TimberInitializer {
+  <runtime stability> = Stable
+}
+stable class BandalartAppState {
+  unstable val navController: NavHostController
+}
