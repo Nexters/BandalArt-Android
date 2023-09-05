@@ -55,8 +55,19 @@ internal class AndroidHiltPlugin : BuildLogicPlugin({
     libs.findPlugin("android-hilt").get().get().pluginId,
     Plugins.KotlinKapt,
   )
+
   dependencies.add("kapt", libs.findLibrary("android-hilt-compile").get())
   dependencies.add("implementation", libs.findLibrary("android-hilt-runtime").get())
+})
+
+internal class AndroidComposePlugin : BuildLogicPlugin({
+  extensions.configure<com.android.build.gradle.BaseExtension> {
+    buildFeatures.compose = true
+
+    composeOptions {
+      kotlinCompilerExtensionVersion = libs.findVersion("androidx-compose-compiler").get().toString()
+    }
+  }
 })
 
 internal class JvmKotlinPlugin : BuildLogicPlugin({

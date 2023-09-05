@@ -2,18 +2,12 @@
 
 plugins {
   bandalart("android-library")
+  bandalart("android-compose")
   bandalart("android-hilt")
 }
 
 android {
   namespace = "com.nexters.bandalart.android.feature.complete"
-
-  buildFeatures {
-    compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
-  }
 }
 
 dependencies {
