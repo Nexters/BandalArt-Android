@@ -56,7 +56,7 @@ internal class AndroidHiltPlugin : BuildLogicPlugin({
     Plugins.Ksp,
   )
 
-  dependencies.add("kapt", libs.findLibrary("android-hilt-compile").get())
+  dependencies.add("ksp", libs.findLibrary("android-hilt-compile").get())
   dependencies.add("implementation", libs.findLibrary("android-hilt-runtime").get())
 })
 
