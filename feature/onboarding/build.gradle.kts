@@ -7,6 +7,10 @@ plugins {
 
 android {
   namespace = "com.nexters.bandalart.android.feature.onboarding"
+
+  buildFeatures {
+    buildConfig = true
+  }
 }
 
 dependencies {
