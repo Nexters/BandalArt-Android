@@ -2,17 +2,14 @@
 
 plugins {
   bandalart("android-library")
+  bandalart("android-compose")
 }
 
 android {
   namespace = "com.nexters.bandalart.android.feature.onboarding"
 
   buildFeatures {
-    compose = true
     buildConfig = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
   }
 }
 

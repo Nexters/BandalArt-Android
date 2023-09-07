@@ -1,0 +1,5 @@
+restartable skippable scheme("[0, [0]]") fun BandalartTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable dynamicColor: Boolean = @dynamic LiveLiterals$ThemeKt.Boolean$param-dynamicColor$fun-BandalartTheme()
+  stable content: Function2<Composer, Int, Unit>
+)

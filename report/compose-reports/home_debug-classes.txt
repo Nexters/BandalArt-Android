@@ -1,0 +1,160 @@
+unstable class BottomSheetUiState {
+  unstable val cellData: BandalartCellUiModel
+  unstable val cellDataForCheck: BandalartCellUiModel
+  stable val isCellDataCopied: Boolean
+  stable val isCellUpdated: Boolean
+  stable val isCellDeleted: Boolean
+  stable val isDatePickerOpened: Boolean
+  stable val isEmojiPickerOpened: Boolean
+  stable val isDeleteCellDialogOpened: Boolean
+  stable val isNetworking: Boolean
+  unstable val error: Throwable?
+  <runtime stability> = Unstable
+}
+runtime class ShowToast {
+  runtime val message: UiText
+  <runtime stability> = Runtime(UiText)
+}
+stable class BottomSheetUiEvent {
+  <runtime stability> = Stable
+}
+unstable class BottomSheetViewModel {
+  unstable val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase
+  unstable val updateBandalartSubCellUseCase: UpdateBandalartSubCellUseCase
+  unstable val updateBandalartTaskCellUseCase: UpdateBandalartTaskCellUseCase
+  unstable val deleteBandalartCellUseCase: DeleteBandalartCellUseCase
+  unstable val _uiState: MutableStateFlow<BottomSheetUiState>
+  unstable val uiState: StateFlow<BottomSheetUiState>
+  unstable val _eventFlow: MutableSharedFlow<BottomSheetUiEvent>
+  unstable val eventFlow: SharedFlow<BottomSheetUiEvent>
+  <runtime stability> = Unstable
+}
+unstable class HomeUiState {
+  stable val bandalartList: PersistentList<BandalartDetailUiModel>
+  stable val bandalartDetailData: BandalartDetailUiModel?
+  unstable val bandalartCellData: BandalartCellUiModel?
+  stable val isBandalartDeleted: Boolean
+  stable val isDropDownMenuOpened: Boolean
+  stable val isBandalartDeleteAlertDialogOpened: Boolean
+  stable val isNetworkErrorAlertDialogOpened: Boolean
+  stable val isBandalartListBottomSheetOpened: Boolean
+  stable val isCellBottomSheetOpened: Boolean
+  stable val isEmojiBottomSheetOpened: Boolean
+  stable val isBottomSheetDataChanged: Boolean
+  stable val isBottomSheetMainCellChanged: Boolean
+  stable val shareUrl: String
+  stable val isBandalartCompleted: Boolean
+  stable val isShowSkeleton: Boolean
+  stable val isLoading: Boolean
+  stable val isNetworking: Boolean
+  unstable val error: Throwable?
+  <runtime stability> = Unstable
+}
+runtime class ShowSnackbar {
+  runtime val message: UiText
+  <runtime stability> = Runtime(UiText)
+}
+runtime class ShowToast {
+  runtime val message: UiText
+  <runtime stability> = Runtime(UiText)
+}
+stable class HomeUiEvent {
+  <runtime stability> = Stable
+}
+unstable class HomeViewModel {
+  unstable val getBandalartListUseCase: GetBandalartListUseCase
+  unstable val getBandalartDetailUseCase: GetBandalartDetailUseCase
+  unstable val getBandalartMainCellUseCase: GetBandalartMainCellUseCase
+  unstable val createBandalartUseCase: CreateBandalartUseCase
+  unstable val deleteBandalartUseCase: DeleteBandalartUseCase
+  unstable val updateBandalartEmojiUseCase: UpdateBandalartEmojiUseCase
+  unstable val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase
+  unstable val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase
+  unstable val shareBandalartUseCase: ShareBandalartUseCase
+  unstable val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase
+  unstable val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase
+  unstable val deleteBandalartKeyUseCase: DeleteBandalartKeyUseCase
+  unstable val getPrevBandalartListUseCase: GetPrevBandalartListUseCase
+  unstable val _uiState: MutableStateFlow<HomeUiState>
+  unstable val uiState: StateFlow<HomeUiState>
+  unstable val _eventFlow: MutableSharedFlow<HomeUiEvent>
+  unstable val eventFlow: SharedFlow<HomeUiEvent>
+  <runtime stability> = Unstable
+}
+unstable class BandalartCellUiModel {
+  stable val key: String
+  stable val title: String?
+  stable val description: String?
+  stable val dueDate: String?
+  stable val isCompleted: Boolean
+  stable val completionRatio: Int
+  stable val profileEmoji: String?
+  stable val mainColor: String?
+  stable val subColor: String?
+  stable val parentKey: String?
+  unstable val children: List<BandalartCellUiModel>
+  <runtime stability> = Unstable
+}
+stable class BandalartDetailUiModel {
+  stable val key: String
+  stable val mainColor: String
+  stable val subColor: String
+  stable val profileEmoji: String?
+  stable val title: String?
+  stable val cellKey: String
+  stable val dueDate: String?
+  stable val isCompleted: Boolean
+  stable val completionRatio: Int
+  stable val isGeneratedTitle: Boolean
+  <runtime stability> = Stable
+}
+stable class UpdateBandalartEmojiModel {
+  stable val profileEmoji: String?
+  <runtime stability> = Stable
+}
+stable class UpdateBandalartMainCellModel {
+  stable val title: String?
+  stable val description: String?
+  stable val dueDate: String?
+  stable val profileEmoji: String?
+  stable val mainColor: String
+  stable val subColor: String
+  <runtime stability> = Stable
+}
+stable class UpdateBandalartSubCellModel {
+  stable val title: String?
+  stable val description: String?
+  stable val dueDate: String?
+  <runtime stability> = Stable
+}
+stable class UpdateBandalartTaskCellModel {
+  stable val title: String?
+  stable val description: String?
+  stable val dueDate: String?
+  stable val isCompleted: Boolean?
+  <runtime stability> = Stable
+}
+stable class CellInfo {
+  stable val isSubCell: Boolean
+  stable val colIndex: Int
+  stable val rowIndex: Int
+  stable val colCnt: Int
+  stable val rowCnt: Int
+  <runtime stability> = Stable
+}
+unstable class SubCell {
+  stable val rowCnt: Int
+  stable val colCnt: Int
+  stable val subCellRowIndex: Int
+  stable val subCellColIndex: Int
+  unstable val bandalartChartData: BandalartCellUiModel?
+  <runtime stability> = Unstable
+}
+stable class SkeletonCellInfo {
+  stable val isSubCell: Boolean
+  stable val colIndex: Int
+  stable val rowIndex: Int
+  stable val colCnt: Int
+  stable val rowCnt: Int
+  <runtime stability> = Stable
+}

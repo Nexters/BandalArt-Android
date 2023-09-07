@@ -1,0 +1,16 @@
+stable class ThemeColor {
+  stable val mainColor: String
+  stable val subColor: String
+  <runtime stability> = Stable
+}
+stable class StringResource {
+  stable val resId: Int
+  <runtime stability> = Stable
+}
+stable class DirectString {
+  stable val value: String
+  <runtime stability> = Stable
+}
+stable class UiText {
+  <runtime stability> = Stable
+}
