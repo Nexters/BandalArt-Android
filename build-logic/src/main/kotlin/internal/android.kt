@@ -53,7 +53,6 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *>) {
 
       getByName("release") {
         isMinifyEnabled = true
-        isShrinkResources = true
         proguardFiles(
           getDefaultProguardFile("proguard-android.txt"),
           "proguard-rules.pro"
