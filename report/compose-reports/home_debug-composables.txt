@@ -16,6 +16,7 @@ restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeRoute(
 restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeScreen(
   stable modifier: Modifier? = @static Companion
   unstable uiState: HomeUiState
+  stable bandalartCount: Int
   stable navigateToComplete: Function3<String, String, String, Unit>
   stable getBandalartList: Function1<String?, Unit>
   stable getBandalartDetail: Function1<String, Unit>
