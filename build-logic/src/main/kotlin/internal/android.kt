@@ -45,16 +45,15 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *>) {
 
     buildTypes {
       getByName("debug") {
-        isMinifyEnabled = true
         proguardFiles(
           getDefaultProguardFile("proguard-android.txt"),
-          "proguard-rules.pro",
           "proguard-debug.pro"
         )
       }
 
       getByName("release") {
-        isMinifyEnabled =  true
+        isMinifyEnabled = true
+        isShrinkResources = true
         proguardFiles(
           getDefaultProguardFile("proguard-android.txt"),
           "proguard-rules.pro"
