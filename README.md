@@ -86,6 +86,34 @@ https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-
 ## Architecture
 [Google App Architecture](https://developer.android.com/topic/architecture)
 
+## Package Structure
+```
+├── app
+│   └── src
+├── build-logic
+│   └── src
+├── buildSrc
+├── core
+│   ├── data
+│   ├── datastore
+│   ├── designsystem
+│   ├── domain
+│   ├── network
+│   └── ui
+├── fastlane
+├── feature
+│   ├── complete
+│   ├── home
+│   ├── onboarding
+│   └── splash
+├── gradle
+│   └── libs.versions.toml
+└── report
+    ├── compose-metrics
+    └── compose-reports
+```
+
+
 ## Developer
 
 |이지훈|이석규|
