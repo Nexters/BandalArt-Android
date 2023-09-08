@@ -4,6 +4,7 @@ import java.util.Properties
 
 plugins {
   bandalart("android-application")
+  bandalart("android-compose")
   bandalart("android-hilt")
   alias(libs.plugins.google.service)
   alias(libs.plugins.firebase.crashlytics)
@@ -26,10 +27,7 @@ android {
 
   buildTypes {
     getByName("debug") {
-      proguardFiles(
-        getDefaultProguardFile("proguard-android.txt"),
-        "proguard-debug.pro"
-      )
+      isDebuggable = true
       applicationIdSuffix = ".dev"
       manifestPlaceholders += mapOf(
         "appName" to "@string/app_name_dev"
@@ -38,12 +36,6 @@ android {
 
     getByName("release") {
       isDebuggable = false
-      isMinifyEnabled = true
-      isShrinkResources = true
-      proguardFiles(
-        getDefaultProguardFile("proguard-android.txt"),
-        "proguard-rules.pro"
-      )
       signingConfig = signingConfigs.getByName("release")
       manifestPlaceholders += mapOf(
         "appName" to "@string/app_name"
@@ -52,11 +44,7 @@ android {
   }
 
   buildFeatures {
-    compose = true
     buildConfig = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
   }
 }
 

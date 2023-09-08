@@ -20,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +58,7 @@ internal fun HomeRoute(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
+  val bandalartCount by derivedStateOf { uiState.bandalartList.size }
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -78,6 +80,7 @@ internal fun HomeRoute(
   HomeScreen(
     modifier = modifier,
     uiState = uiState,
+    bandalartCount = bandalartCount,
     navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
     getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
@@ -103,6 +106,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
+  bandalartCount: Int,
   navigateToComplete: (String, String, String) -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
@@ -243,7 +247,7 @@ internal fun HomeScreen(
           .padding(bottom = 32.dp),
       ) {
         HomeTopBar(
-          bandalartCount = uiState.bandalartList.size,
+          bandalartCount = bandalartCount,
           onShowBandalartList = { openBandalartListBottomSheet(true) },
         )
         HorizontalDivider(
