@@ -89,9 +89,9 @@ https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-
 ## Package Structure
 ```
 ├── app
-│   └── src
+│   ├── navigation
+│   └── MainActivity
 ├── build-logic
-│   └── src
 ├── buildSrc
 ├── core
 │   ├── data
