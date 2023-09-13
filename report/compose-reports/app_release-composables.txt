@@ -1,0 +1,14 @@
+restartable scheme("[androidx.compose.ui.UiComposable]") fun BandalartNavHost(
+  stable modifier: Modifier? = @static Companion
+  stable appState: BandalartAppState
+  unstable onShowSnackbar: SuspendFunction1<String, Boolean>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartApp(
+  stable appState: BandalartAppState? = @dynamic rememberBandalartAppState(null, $composer, 0, 0b0001)
+)
+fun rememberBandalartAppState(
+  unstable navController: NavHostController? = @dynamic rememberNavController(
+  $composer   =   $composer  , 
+  $changed   =   8
+)
+): BandalartAppState

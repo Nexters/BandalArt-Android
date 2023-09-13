@@ -1,0 +1,28 @@
+unstable class CompleteUiState {
+  stable val key: String
+  stable val title: String
+  stable val profileEmoji: String?
+  stable val shareUrl: String
+  unstable val error: Throwable?
+  <runtime stability> = Unstable
+}
+runtime class ShowToast {
+  runtime val message: UiText
+  <runtime stability> = Runtime(UiText)
+}
+stable class CompleteUiEvent {
+  <runtime stability> = Stable
+}
+unstable class CompleteViewModel {
+  unstable val shareBandalartUseCase: ShareBandalartUseCase
+  unstable val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase
+  unstable var shareBandalartJob: Job?
+  stable val key: String
+  stable val title: String
+  stable val profileEmoji: String
+  unstable val _uiState: MutableStateFlow<CompleteUiState>
+  unstable val uiState: StateFlow<CompleteUiState>
+  unstable val _eventFlow: MutableSharedFlow<CompleteUiEvent>
+  unstable val eventFlow: SharedFlow<CompleteUiEvent>
+  <runtime stability> = Unstable
+}
