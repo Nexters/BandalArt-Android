@@ -74,6 +74,7 @@ https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-
 
 - Dagger Hilt
 - Ktor
+- Retrofit
 - Timber
 - Lottie
 - Facebook Shimmer
