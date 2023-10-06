@@ -9,35 +9,23 @@
 부담 없는 만다라트 계획표로 당신의 목표를 더욱 선명하게, 반다라트 [PlayStore](https://play.google.com/store/apps/details?id=com.nexters.bandalart.android&hl=en-KR)
 <br/>
 ![반다라트 그래픽이미지 2](https://github.com/Nexters/BandalArt-Android/assets/51016231/a357f7aa-d086-47de-bbac-d423cdaffdbe)
-
 <br/>
+
+<p align="center">
+<img src="https://github.com/Nexters/BandalArt-Android/assets/51016231/541f9309-bb9a-4131-be46-ac7df5f74fc1" width="30%"/>
+<img src="https://github.com/Nexters/BandalArt-Android/assets/51016231/3af26254-8c48-4e53-b79a-9f9764427a60" width="30%"/>
+<img src="https://github.com/Nexters/BandalArt-Android/assets/51016231/c772cc49-75df-4e2a-94f7-9d6c1f3e1aa3" width="30%"/>
+</p>
 
 ## Features
 
-온보딩, 메인 목표 입력
+|온보딩|메인 목표 입력|메인목표달성|
+|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/Nexters/BandalArt-Android/assets/51016231/e00aec2e-d9ca-4057-9a8e-af14b8da89bf.gif">|<img width="240" src="https://github.com/Nexters/BandalArt-Android/assets/51016231/e402dfcb-b490-43fa-9dca-ee843920c187.gif">|<img width="240" src="https://github.com/Nexters/BandalArt-Android/assets/51016231/d554c9bd-0067-429f-acee-10d9bf018f6a.gif">|
 
-
-https://github.com/Nexters/BandalArt-Android/assets/51016231/dafd3d98-bf9d-4bcf-a659-f7c5aee4f579
-
-
-
-반다라트 목표 달성
-
-
-https://github.com/Nexters/BandalArt-Android/assets/51016231/acabf0e8-052c-4d25-aa7b-4a6117e7285a
-
-
-
-반다라트 링크 공유(웹 페이지 연동)
-
-
-https://github.com/Nexters/BandalArt-Android/assets/51016231/f8c44a9f-19b7-40aa-a283-d388e776ebf6
-
-
-반다라트 목록 조회, 추가, 삭제
-
-
-https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-ba80-db0ffa96afcf
+|반다라트 추가|반다라트 삭제|반다라트 공유|
+|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/Nexters/BandalArt-Android/assets/51016231/b85bbed8-7c2e-4fa5-9a27-f5e327ae71f6.gif">|<img width="240" src="https://github.com/Nexters/BandalArt-Android/assets/51016231/addaf2a8-31f8-4c1c-8cad-c49c5fd24a48.gif">|<img width="240" src="https://github.com/Nexters/BandalArt-Android/assets/51016231/cd9776e0-0be0-46e3-87ea-7ef88e215054.gif">
 
 ## Development
 
@@ -69,6 +57,7 @@ https://github.com/Nexters/BandalArt-Android/assets/51016231/00e649dc-5623-44ce-
 
 - Dagger Hilt
 - Ktor
+- Retrofit
 - Timber
 - Lottie
 - Facebook Shimmer
