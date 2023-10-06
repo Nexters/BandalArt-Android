@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Gray600
-import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
+import com.nexters.bandalart.android.core.designsystem.theme.Gray600
+import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 
 @Composable
 internal fun HomeTopBar(

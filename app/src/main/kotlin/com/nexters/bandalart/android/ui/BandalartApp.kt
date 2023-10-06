@@ -22,8 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.theme.Gray700
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.Gray700
+import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.navigation.BandalartNavHost
 
 @Composable

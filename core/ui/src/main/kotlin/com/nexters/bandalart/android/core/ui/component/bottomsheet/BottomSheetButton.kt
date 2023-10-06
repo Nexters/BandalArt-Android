@@ -6,10 +6,10 @@ import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nexters.bandalart.android.core.ui.theme.Gray200
-import com.nexters.bandalart.android.core.ui.theme.Gray400
-import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.Gray200
+import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
 fun BottomSheetDeleteButton(

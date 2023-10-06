@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.nexters.bandalart.android.core.ui.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 
 @Composable
 fun CompletionRatioProgressBar(

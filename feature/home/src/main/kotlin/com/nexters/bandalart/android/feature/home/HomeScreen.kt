@@ -34,8 +34,8 @@ import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialo
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Gray50
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.ui.BandalartChart
 import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiBottomSheet

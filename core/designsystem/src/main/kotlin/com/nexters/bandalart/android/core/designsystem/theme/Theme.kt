@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.theme
+package com.nexters.bandalart.android.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build

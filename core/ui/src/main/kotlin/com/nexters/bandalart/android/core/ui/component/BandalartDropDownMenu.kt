@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Error
-import com.nexters.bandalart.android.core.ui.theme.White
-import com.nexters.bandalart.android.core.ui.theme.pretendard
+import com.nexters.bandalart.android.core.designsystem.theme.Error
+import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 
 @Composable
 fun BandalartDropDownMenu(

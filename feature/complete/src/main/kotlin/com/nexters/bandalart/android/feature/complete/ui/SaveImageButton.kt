@@ -22,8 +22,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Gray400
-import com.nexters.bandalart.android.core.ui.theme.pretendard
+import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.designsystem.R
 
 @Composable

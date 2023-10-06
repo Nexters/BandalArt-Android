@@ -41,11 +41,11 @@ import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Gray200
-import com.nexters.bandalart.android.core.ui.theme.Gray600
-import com.nexters.bandalart.android.core.ui.theme.Gray800
-import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.Gray200
+import com.nexters.bandalart.android.core.designsystem.theme.Gray600
+import com.nexters.bandalart.android.core.designsystem.theme.Gray800
+import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import kotlinx.coroutines.launch
 

@@ -78,11 +78,11 @@ import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
-import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Gray300
-import com.nexters.bandalart.android.core.ui.theme.Gray400
-import com.nexters.bandalart.android.core.ui.theme.Gray700
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray300
+import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.designsystem.theme.Gray700
+import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel

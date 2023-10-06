@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
-import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.pretendard
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import java.time.LocalDateTime
 import java.util.*
 import kotlinx.coroutines.CoroutineScope

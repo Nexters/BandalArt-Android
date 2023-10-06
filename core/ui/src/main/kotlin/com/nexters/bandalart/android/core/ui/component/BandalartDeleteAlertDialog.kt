@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Gray200
-import com.nexters.bandalart.android.core.ui.theme.Gray400
-import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.Gray200
+import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
 fun BandalartDeleteAlertDialog(

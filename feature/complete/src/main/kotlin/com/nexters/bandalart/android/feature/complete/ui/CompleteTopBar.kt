@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.theme.Gray900
+import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 
 @Composable
 fun CompleteTopBar(

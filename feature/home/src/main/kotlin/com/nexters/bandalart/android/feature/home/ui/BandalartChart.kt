@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.toColor
-import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.MainColor
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.MainColor
 import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable

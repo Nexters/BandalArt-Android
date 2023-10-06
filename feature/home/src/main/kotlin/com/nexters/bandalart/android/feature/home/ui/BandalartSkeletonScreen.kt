@@ -41,13 +41,13 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.theme.Gray100
-import com.nexters.bandalart.android.core.ui.theme.Gray200
-import com.nexters.bandalart.android.core.ui.theme.Gray300
-import com.nexters.bandalart.android.core.ui.theme.Gray50
-import com.nexters.bandalart.android.core.ui.theme.Gray600
-import com.nexters.bandalart.android.core.ui.theme.Gray900
-import com.nexters.bandalart.android.core.ui.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray200
+import com.nexters.bandalart.android.core.designsystem.theme.Gray300
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.designsystem.theme.Gray600
+import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
 fun BandalartSkeletonScreen(

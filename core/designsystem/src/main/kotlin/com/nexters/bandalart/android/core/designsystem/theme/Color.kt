@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.theme
+package com.nexters.bandalart.android.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

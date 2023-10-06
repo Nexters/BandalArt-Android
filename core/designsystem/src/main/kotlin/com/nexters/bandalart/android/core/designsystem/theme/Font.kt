@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.theme
+package com.nexters.bandalart.android.core.designsystem.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily

@@ -35,7 +35,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
-import com.nexters.bandalart.android.core.ui.theme.Gray50
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 
 @Composable

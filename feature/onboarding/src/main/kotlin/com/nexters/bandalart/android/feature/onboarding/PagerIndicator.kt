@@ -18,8 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.nexters.bandalart.android.core.ui.theme.Gray300
-import com.nexters.bandalart.android.core.ui.theme.Gray700
+import com.nexters.bandalart.android.core.designsystem.theme.Gray300
+import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 
 @Composable
 fun PagerIndicator(

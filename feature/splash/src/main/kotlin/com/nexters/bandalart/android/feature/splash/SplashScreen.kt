@@ -18,7 +18,7 @@ import androidx.navigation.NavOptions
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
-import com.nexters.bandalart.android.core.ui.theme.Gray50
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 
 @Composable
