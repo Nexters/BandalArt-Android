@@ -45,6 +45,12 @@
   <string name="dropdown_delete">Delete</string>
 
   <!--  BandalartBottomSheet.kt -->
+  <string name="bottomsheet_header_maincell_enter_title">Enter Main Goal</string>
+  <string name="bottomsheet_header_maincell_edit_title">Edit Main Goal</string>
+  <string name="bottomsheet_header_subcell_enter_title">Enter Sub Goal</string>
+  <string name="bottomsheet_header_subcell_edit_title">Edit Sub Goal</string>
+  <string name="bottomsheet_header_taskcell_enter_title">Enter Task</string>
+  <string name="bottomsheet_header_taskcell_edit_title">Edit Task</string>
   <string name="bottomsheet_title">Goal Name (Required)</string>
   <string name="bottomsheet_title_placeholder">Enter within 15 characters</string>
   <string name="bottomsheet_color">Color Theme</string>
@@ -55,6 +61,8 @@
   <string name="bottomsheet_is_completed">Achievement Status</string>
   <string name="bottomsheet_completed">Achieved</string>
   <string name="bottomsheet_in_completed">Not Achieved</string>
+  <string name="bottomsheet_delete">Delete</string>
+  <string name="bottomsheet_done">Done</string>
 
   <!-- BandalartDatePicker.kt -->
   <string name="datepicker_year">%1$s year</string>
