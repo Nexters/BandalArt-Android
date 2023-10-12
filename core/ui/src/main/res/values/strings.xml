@@ -62,15 +62,23 @@
   <string name="datepicker_day">%1$s일</string>
 
 <!-- BandalartDeleteAlertDialog -->
-  <string name="delete_bandalart_dialog_empty_title">지금 작성중인\n반다라트를 삭제하시겠어요?</string>
-  <string name="delete_bandalart_dialog_title">%1$s\n반다라트를 삭제하시겠어요?</string>
-  <string name="delete_bandalart_dialog_message">삭제된 반다라트는 다시 복구할 수 없어요.</string>
-  <string name="delete_bandalart_cell_dialog_title">해당 셀을 삭제하시겠어요?</string>
-  <string name="delete_bandalart_maincell_dialog_message">메인 목표 삭제는 반다라트 전체가 삭제되고\n다시 복구할 수 없어요.</string>
-  <string name="delete_bandalart_subcell_dialog_message">서브 목표 삭제는 하위 태스크와 함께 삭제되고\n다시 복구할 수 없어요.</string>
+  <string name="delete_bandalart_dialog_empty_title">반다라트를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_dialog_title">\&apos;%1$s\&apos;\n반다라트를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_dialog_message">삭제 반다라트는 다시 복구할 수 없어요.</string>
+
+  <string name="delete_bandalart_maincelll_dialog_empty_title">메인목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_maincell_dialog_title">\&apos;%1$s\&apos;\n메인목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_maincell_dialog_message">서브목표와 태스크들이 모두 삭제돼요</string>
+
+  <string name="delete_bandalart_subcell_dialog_empty_title">서브목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_subcell_dialog_title">\&apos;%1$s\&apos;\n서브목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_subcell_dialog_message">속해있는 하위 태스크들이 모두 삭제돼요</string>
+
+  <string name="delete_bandalart_taskcell_dialog_title">\&apos;%1$s\&apos;\n태스크를 삭제하시겠어요?</string>
   <string name="delete_bandalart_taskcell_dialog_message">삭제된 내용은 다시 복구할 수 없어요.</string>
+
   <string name="delete_bandalart_delete">삭제하기</string>
-  <string name="delete_bandalart_cancle">취소</string>
+  <string name="delete_bandalart_cancel">취소</string>
 
 <!-- NetworkErrorAlertDialog -->
   <string name="network_error_dialog_title">네트워크 문제로 표를\n불러오지 못했어요</string>
