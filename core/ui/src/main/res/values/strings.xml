@@ -55,6 +55,8 @@
   <string name="bottomsheet_is_completed">달성 여부</string>
   <string name="bottomsheet_completed">달성</string>
   <string name="bottomsheet_in_completed">미달성</string>
+  <string name="bottomsheet_delete">삭제</string>
+  <string name="bottomsheet_done">완료</string>
 
 <!-- BandalartDatePicker.kt -->
   <string name="datepicker_year">%1$s년</string>

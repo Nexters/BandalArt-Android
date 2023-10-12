@@ -5,11 +5,13 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BottomSheetDeleteButton(
@@ -22,7 +24,7 @@ fun BottomSheetDeleteButton(
     modifier = modifier.height(56.dp),
   ) {
     BottomSheetButtonText(
-      text = "삭제",
+      text = stringResource(R.string.bottomsheet_delete),
       color = Gray900,
     )
   }
@@ -41,7 +43,7 @@ fun BottomSheetCompleteButton(
     enabled = !isBlankCell,
   ) {
     BottomSheetButtonText(
-      text = "완료",
+      text = stringResource(R.string.bottomsheet_done),
       color = if (isBlankCell) Gray400 else White,
     )
   }

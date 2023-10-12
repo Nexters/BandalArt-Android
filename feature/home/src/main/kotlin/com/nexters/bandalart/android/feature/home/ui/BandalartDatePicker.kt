@@ -102,7 +102,7 @@ fun BandalartDatePicker(
                 }
               }
           },
-        text = "완료",
+        text = stringResource(id = R.string.bottomsheet_done),
         color = Gray900,
         fontFamily = pretendard,
         fontWeight = FontWeight.W700,
