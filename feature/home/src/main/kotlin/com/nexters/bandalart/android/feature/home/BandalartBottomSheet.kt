@@ -127,11 +127,13 @@ fun BandalartBottomSheet(
     LaunchedEffect(key1 = Unit) {
       viewModel.copyCellData(cellData = cellData)
     }
+
     LaunchedEffect(key1 = uiState.isCellDataCopied) {
       if (uiState.isCellDataCopied && uiState.cellData.title.isNullOrEmpty()) {
         focusRequester.requestFocus()
       }
     }
+
     LaunchedEffect(key1 = uiState.isCellUpdated) {
       if (uiState.isCellUpdated) {
         scope.launch {
@@ -141,6 +143,7 @@ fun BandalartBottomSheet(
         }
       }
     }
+
     LaunchedEffect(viewModel) {
       viewModel.eventFlow.collect { event ->
         when (event) {
@@ -150,9 +153,16 @@ fun BandalartBottomSheet(
         }
       }
     }
+
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
-        title = stringResource(R.string.delete_bandalart_cell_dialog_title),
+        title = if (isMainCell) {
+          stringResource(R.string.delete_bandalart_maincelll_dialog_empty_title)
+        } else if (isSubCell) {
+          stringResource(R.string.delete_bandalart_subcell_dialog_empty_title)
+        } else {
+          stringResource(R.string.delete_bandalart_taskcell_dialog_title)
+        },
         message = if (isMainCell) {
           stringResource(R.string.delete_bandalart_maincell_dialog_message)
         } else if (isSubCell) {
