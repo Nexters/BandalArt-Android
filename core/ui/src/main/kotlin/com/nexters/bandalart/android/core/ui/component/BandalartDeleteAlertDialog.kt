@@ -103,7 +103,7 @@ fun BandalartDeleteAlertDialog(
             ),
           ) {
             Text(
-              text = context.getString(R.string.delete_bandalart_cancle),
+              text = context.getString(R.string.delete_bandalart_cancel),
               fontSize = 16.sp.nonScaleSp,
               fontWeight = FontWeight.W600,
               color = Gray900,

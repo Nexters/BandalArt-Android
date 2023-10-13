@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -11,6 +12,7 @@ import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BottomSheetTitleText(
@@ -22,12 +24,12 @@ fun BottomSheetTitleText(
   FixedSizeText(
     text =
     if (isBlankCell)
-      if (isMainCell) "메인목표 입력"
-      else if (isSubCell) "서브목표 입력"
-      else "태스크 입력"
-    else if (isMainCell) "메인목표 수정"
-    else if (isSubCell) "서브목표 수정"
-    else "태스크 수정",
+      if (isMainCell) stringResource(id = R.string.bottomsheet_header_maincell_enter_title)
+      else if (isSubCell) stringResource(id = R.string.bottomsheet_header_subcell_enter_title)
+      else stringResource(id = R.string.bottomsheet_header_taskcell_enter_title)
+    else if (isMainCell) stringResource(id = R.string.bottomsheet_header_maincell_edit_title)
+    else if (isSubCell) stringResource(id = R.string.bottomsheet_header_subcell_edit_title)
+    else stringResource(id = R.string.bottomsheet_header_taskcell_edit_title),
     modifier = modifier.fillMaxWidth(),
     textAlign = TextAlign.Center,
     color = Gray900,
