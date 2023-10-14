@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.feature.home.ui.bandalart
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

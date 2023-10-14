@@ -36,10 +36,10 @@ import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartChart
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartChart
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartListBottomSheet
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.ShareButton

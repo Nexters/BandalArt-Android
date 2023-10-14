@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.feature.home.ui.bandalart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

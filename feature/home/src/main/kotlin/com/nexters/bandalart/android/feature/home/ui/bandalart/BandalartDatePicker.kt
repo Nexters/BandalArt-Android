@@ -1,7 +1,7 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 @file:SuppressLint("FrequentlyChangedStateReadInComposition")
 
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.feature.home.ui.bandalart
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
