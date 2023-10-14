@@ -4,8 +4,8 @@
  "readonlyComposables": 0,
  "totalComposables": 131,
  "restartGroups": 130,
- "totalGroups": 189,
- "staticArguments": 237,
+ "totalGroups": 192,
+ "staticArguments": 236,
  "certainArguments": 79,
  "knownStableArguments": 1377,
  "knownUnstableArguments": 58,
@@ -17,9 +17,9 @@
  "inferredUncertainClasses": 3,
  "effectivelyStableClasses": 9,
  "totalClasses": 18,
- "memoizedLambdas": 48,
+ "memoizedLambdas": 46,
  "singletonLambdas": 1,
  "singletonComposableLambdas": 6,
  "composableLambdas": 24,
- "totalLambdas": 94
+ "totalLambdas": 80
 }
