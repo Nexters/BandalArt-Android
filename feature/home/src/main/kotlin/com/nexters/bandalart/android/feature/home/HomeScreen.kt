@@ -1,4 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
 @file:SuppressLint("StringFormatInvalid")
 
 package com.nexters.bandalart.android.feature.home
@@ -15,13 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -58,7 +57,9 @@ internal fun HomeRoute(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
-  val bandalartCount by derivedStateOf { uiState.bandalartList.size }
+  val bandalartCount by remember {
+    derivedStateOf { uiState.bandalartList.size }
+  }
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
