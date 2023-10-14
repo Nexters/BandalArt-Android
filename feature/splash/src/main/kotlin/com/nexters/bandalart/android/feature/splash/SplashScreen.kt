@@ -31,12 +31,8 @@ internal fun SplashRoute(
 
   SplashScreen(
     uiState = uiState,
-    navigateToOnBoarding = { options ->
-      navigateToOnBoarding(options)
-    },
-    navigateToHome = { options ->
-      navigateToHome(options)
-    },
+    navigateToOnBoarding = navigateToOnBoarding,
+    navigateToHome = navigateToHome,
     openNetworkErrorAlertDialog = viewModel::openNetworkErrorAlertDialog,
     createGuestLoginToken = viewModel::createGuestLoginToken,
   )
