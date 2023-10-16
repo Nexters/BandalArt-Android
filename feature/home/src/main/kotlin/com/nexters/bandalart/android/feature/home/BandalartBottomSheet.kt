@@ -87,9 +87,9 @@ import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartColorPicker
-import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartColorPicker
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartDatePicker
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker
 import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 

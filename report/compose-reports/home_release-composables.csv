@@ -1,6 +1,6 @@
 package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
 com.nexters.bandalart.android.feature.home.BandalartBottomSheet,BandalartBottomSheet,1,0,1,0,0,0,0,0,1,7,
-com.nexters.bandalart.android.feature.home.HomeRoute,HomeRoute,1,0,1,0,0,0,0,0,1,7,
+com.nexters.bandalart.android.feature.home.HomeRoute,HomeRoute,1,0,1,0,0,0,0,0,1,6,
 com.nexters.bandalart.android.feature.home.HomeScreen,HomeScreen,1,0,1,0,0,0,0,0,8,22,
 com.nexters.bandalart.android.feature.home.ui.BandalartCell,BandalartCell,1,0,1,0,0,0,0,0,1,3,
 com.nexters.bandalart.android.feature.home.ui.BandalartCellGrid,BandalartCellGrid,1,0,1,0,0,0,0,0,1,1,

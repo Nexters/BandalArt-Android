@@ -42,11 +42,7 @@ import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NA
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
 ) {
-  OnBoardingScreen(
-    navigateToHome = { options ->
-      navigateToHome(options)
-    },
-  )
+  OnBoardingScreen(navigateToHome = navigateToHome)
 }
 
 @Composable

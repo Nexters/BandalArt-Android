@@ -1,4 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
 @file:SuppressLint("StringFormatInvalid")
 
 package com.nexters.bandalart.android.feature.home
@@ -15,13 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,18 +28,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.designsystem.theme.Gray100
-import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartChart
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartChart
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartListBottomSheet
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.ShareButton
@@ -58,7 +57,9 @@ internal fun HomeRoute(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
-  val bandalartCount by derivedStateOf { uiState.bandalartList.size }
+  val bandalartCount by remember {
+    derivedStateOf { uiState.bandalartList.size }
+  }
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -81,24 +82,24 @@ internal fun HomeRoute(
     modifier = modifier,
     uiState = uiState,
     bandalartCount = bandalartCount,
-    navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
-    getBandalartList = { key -> viewModel.getBandalartList(key) },
+    navigateToComplete = navigateToComplete,
+    getBandalartList = viewModel::getBandalartList,
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
     // loadingChanged = { state -> viewModel.loadingChanged(state) },
-    showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
-    openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
-    openEmojiBottomSheet = { state -> viewModel.openEmojiBottomSheet(state) },
-    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
-    openCellBottomSheet = { state -> viewModel.openCellBottomSheet(state) },
-    bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
-    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
-    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
-    shareBandalart = { key -> viewModel.shareBandalart(key) },
+    showSkeletonChanged = viewModel::showSkeletonChanged,
+    openDropDownMenu = viewModel::openDropDownMenu,
+    openEmojiBottomSheet = viewModel::openEmojiBottomSheet,
+    openBandalartDeleteAlertDialog = viewModel::openBandalartDeleteAlertDialog,
+    openCellBottomSheet = viewModel::openCellBottomSheet,
+    bottomSheetDataChanged = viewModel::bottomSheetDataChanged,
+    openBandalartListBottomSheet = viewModel::openBandalartListBottomSheet,
+    setRecentBandalartKey = viewModel::setRecentBandalartKey,
+    shareBandalart = viewModel::shareBandalart,
     initShareUrl = viewModel::initShareUrl,
-    checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
-    openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
+    checkCompletedBandalartKey = viewModel::checkCompletedBandalartKey,
+    openNetworkErrorDialog = viewModel::openNetworkErrorAlertDialog,
   )
 }
 

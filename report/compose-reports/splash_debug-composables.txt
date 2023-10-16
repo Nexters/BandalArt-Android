@@ -1,11 +1,11 @@
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SplashRoute(
   stable navigateToOnBoarding: Function1<NavOptions, Unit>
   stable navigateToHome: Function1<NavOptions, Unit>
-  unstable viewModel: SplashViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
+  viewModel: SplashViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
 )
-restartable scheme("[androidx.compose.ui.UiComposable]") fun SplashScreen(
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SplashScreen(
   stable modifier: Modifier? = @static Companion
-  unstable uiState: SplashUiState
+  uiState: SplashUiState
   stable navigateToOnBoarding: Function1<NavOptions, Unit>
   stable navigateToHome: Function1<NavOptions, Unit>
   stable openNetworkErrorAlertDialog: Function1<Boolean, Unit>

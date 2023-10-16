@@ -7,19 +7,19 @@
  "totalGroups": 19,
  "staticArguments": 27,
  "certainArguments": 2,
- "knownStableArguments": 129,
+ "knownStableArguments": 127,
  "knownUnstableArguments": 3,
  "unknownStableArguments": 0,
- "totalArguments": 132,
+ "totalArguments": 130,
  "markedStableClasses": 0,
  "inferredStableClasses": 0,
  "inferredUnstableClasses": 0,
  "inferredUncertainClasses": 0,
  "effectivelyStableClasses": 0,
  "totalClasses": 0,
- "memoizedLambdas": 9,
+ "memoizedLambdas": 8,
  "singletonLambdas": 0,
  "singletonComposableLambdas": 0,
  "composableLambdas": 5,
- "totalLambdas": 9
+ "totalLambdas": 8
 }

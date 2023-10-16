@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.feature.home.ui.bandalart
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,6 +48,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 
 @Composable
 fun BandalartSkeletonScreen(
