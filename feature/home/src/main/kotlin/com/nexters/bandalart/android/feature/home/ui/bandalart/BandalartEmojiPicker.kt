@@ -23,19 +23,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.component.EmojiText
+import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import java.util.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -44,10 +44,10 @@ fun BandalartEmojiPicker(
   currentEmoji: String?,
   isBottomSheet: Boolean,
   onResult: (String?, Boolean) -> Unit,
-  emojiPickerScope: CoroutineScope,
   emojiPickerState: SheetState,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
+    val scope = rememberCoroutineScope()
     var selectedEmoji by remember { mutableStateOf(currentEmoji) }
     var prevSelectedEmoji by remember { mutableStateOf(currentEmoji) }
     val emojiList = listOf(
@@ -120,7 +120,7 @@ fun BandalartEmojiPicker(
                         prevSelectedEmoji = selectedEmoji
                         selectedEmoji = emojiItem
                       }
-                      emojiPickerScope
+                      scope
                         .launch { emojiPickerState.hide() }
                         .invokeOnCompletion {
                           if (!emojiPickerState.isVisible) onResult(selectedEmoji, false)
