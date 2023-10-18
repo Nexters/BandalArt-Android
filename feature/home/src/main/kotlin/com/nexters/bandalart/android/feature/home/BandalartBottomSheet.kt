@@ -202,7 +202,6 @@ fun BandalartBottomSheet(
         isMainCell = isMainCell,
         isSubCell = isSubCell,
         isBlankCell = isBlankCell,
-        scope = scope,
         bottomSheetState = bottomSheetState,
         onResult = onResult,
         bottomSheetClosed = viewModel::bottomSheetClosed,
