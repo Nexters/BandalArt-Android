@@ -312,7 +312,6 @@ fun BandalartBottomSheet(
                 viewModel.emojiSelected(profileEmoji = currentEmojiResult)
                 viewModel.openEmojiPicker(flag = openEmojiPushResult)
               },
-              emojiPickerScope = rememberCoroutineScope(),
               emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             ),
           )
