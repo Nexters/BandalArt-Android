@@ -1,24 +1,7 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CompleteRoute(
-  stable modifier: Modifier? = @static Companion
-  stable onNavigateBack: Function0<Unit>
-  unstable viewModel: CompleteViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
-)
-restartable scheme("[androidx.compose.ui.UiComposable]") fun CompleteScreen(
-  stable modifier: Modifier? = @static Companion
-  unstable uiState: CompleteUiState
-  stable onNavigateBack: Function0<Unit>
-  stable shareBandalart: Function0<Unit>
-  stable initShareUrl: Function0<Unit>
-)
 restartable scheme("[androidx.compose.ui.UiComposable]") fun CompleteBandalart(
   stable modifier: Modifier? = @static Companion
   unstable context: Context
-  unstable uiState: CompleteUiState
-)
-restartable scheme("[androidx.compose.ui.UiComposable]") fun CompleteTopBar(
-  stable modifier: Modifier? = @static Companion
-  unstable context: Context
-  stable onNavigateBack: Function0<Unit>
+  uiState: CompleteUiState
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SaveImageButton(
   stable modifier: Modifier? = @static Companion
