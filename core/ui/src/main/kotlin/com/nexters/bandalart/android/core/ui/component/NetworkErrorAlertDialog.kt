@@ -47,11 +47,8 @@ fun NetworkErrorAlertDialog(
           .fillMaxWidth()
           .padding(top = 24.dp),
       ) {
-        val image = painterResource(
-          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_circle_cross,
-        )
         Image(
-          painter = image,
+          painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_circle_cross),
           contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier.align(Alignment.CenterHorizontally),
         )

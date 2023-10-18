@@ -75,11 +75,8 @@ fun BandalartSkeletonScreen(
           contentAlignment = Alignment.CenterStart,
         ) {
           Row(modifier = Modifier.fillMaxWidth()) {
-            val image = painterResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title,
-            )
             Image(
-              painter = image,
+              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title),
               contentDescription = stringResource(R.string.app_descrption),
               modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -107,20 +104,14 @@ fun BandalartSkeletonScreen(
                       .background(Gray100),
                     contentAlignment = Alignment.Center,
                   ) {
-                    val image = painterResource(
-                      id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-                    )
                     Image(
-                      painter = image,
+                      painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
                       contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   }
                 }
-                val image = painterResource(
-                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
-                )
                 Image(
-                  painter = image,
+                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
                   contentDescription = stringResource(R.string.edit_descrption),
                   modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -143,11 +134,8 @@ fun BandalartSkeletonScreen(
                     .align(Alignment.Center)
                     .background(subBrush),
                 )
-                val image = painterResource(
-                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
-                )
                 Image(
-                  painter = image,
+                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option),
                   contentDescription = stringResource(R.string.option_descrption),
                   modifier = Modifier.align(Alignment.CenterEnd),
                 )
@@ -195,11 +183,8 @@ fun BandalartSkeletonScreen(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            val image = painterResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_share,
-            )
             Image(
-              painter = image,
+              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_share),
               contentDescription = stringResource(R.string.share_descrption),
             )
             FixedSizeText(

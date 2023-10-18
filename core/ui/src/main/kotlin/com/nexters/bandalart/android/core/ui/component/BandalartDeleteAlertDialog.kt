@@ -50,11 +50,8 @@ fun BandalartDeleteAlertDialog(
           .fillMaxWidth()
           .padding(top = 24.dp),
       ) {
-        val image = painterResource(
-          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
-        )
         Image(
-          painter = image,
+          painter = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete),
           contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier
             .height(28.dp)

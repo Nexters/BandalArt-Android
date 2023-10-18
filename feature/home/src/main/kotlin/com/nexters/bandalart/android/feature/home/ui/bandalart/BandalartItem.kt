@@ -85,11 +85,8 @@ fun BandalartItem(
           contentAlignment = Alignment.Center,
         ) {
           if (bandalartItem.profileEmoji.isNullOrEmpty()) {
-            val image = painterResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-            )
             Image(
-              painter = image,
+              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
               contentDescription = stringResource(R.string.empty_emoji_descrption),
             )
           } else {

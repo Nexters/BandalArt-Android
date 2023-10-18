@@ -37,9 +37,8 @@ fun SaveImageButton(
   ) {
     Column {
       Row(verticalAlignment = Alignment.CenterVertically) {
-        val image = painterResource(id = R.drawable.ic_gallery)
         Image(
-          painter = image,
+          painter = painterResource(R.drawable.ic_gallery),
           contentDescription = "Option Icon",
         )
         Text(
