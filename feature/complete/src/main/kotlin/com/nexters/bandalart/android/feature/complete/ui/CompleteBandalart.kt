@@ -1,6 +1,5 @@
 package com.nexters.bandalart.android.feature.complete.ui
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,25 +18,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.designsystem.theme.Black
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.EmojiText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.feature.complete.CompleteUiState
 
 @Composable
 fun CompleteBandalart(
   modifier: Modifier = Modifier,
-  context: Context,
   uiState: CompleteUiState,
 ) {
+  val context = LocalContext.current
+
   Column(
     modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,

@@ -115,7 +115,6 @@ internal fun CompleteScreen(
         Box(modifier = Modifier.fillMaxSize()) {
           CompleteBandalart(
             modifier = Modifier.align(Alignment.Center),
-            context = context,
             uiState = uiState,
           )
           // MVP 제외
