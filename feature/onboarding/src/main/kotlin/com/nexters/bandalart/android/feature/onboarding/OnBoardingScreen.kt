@@ -102,11 +102,8 @@ internal fun OnBoardingScreen(
                     .background(Gray50),
                   contentAlignment = Alignment.Center,
                 ) {
-                  val image = painterResource(
-                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding,
-                  )
                   Image(
-                    painter = image,
+                    painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding),
                     contentDescription = context.getString(R.string.delete_descrption),
                     modifier = Modifier.fillMaxSize(),
                   )

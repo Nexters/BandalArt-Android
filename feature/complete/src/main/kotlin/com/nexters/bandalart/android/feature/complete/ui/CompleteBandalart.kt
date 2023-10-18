@@ -79,11 +79,8 @@ fun CompleteBandalart(
               contentAlignment = Alignment.Center,
             ) {
               if (uiState.profileEmoji == context.getString(R.string.home_default_emoji)) {
-                val image = painterResource(
-                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-                )
                 Image(
-                  painter = image,
+                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
                   contentDescription = context.getString(R.string.empty_emoji_descrption),
                 )
               } else {
