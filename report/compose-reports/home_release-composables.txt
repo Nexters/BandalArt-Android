@@ -1,21 +1,21 @@
-restartable scheme("[androidx.compose.ui.UiComposable]") fun BandalartBottomSheet(
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartBottomSheet(
   stable bandalartKey: String
   stable isSubCell: Boolean
   stable isMainCell: Boolean
   stable isBlankCell: Boolean
-  unstable cellData: BandalartCellUiModel
+  cellData: BandalartCellUiModel
   stable onResult: Function2<@[ParameterName(name = 'bottomSheetState')] Boolean, @[ParameterName(name = 'bottomSheetDataChangedState')] Boolean, Unit>
-  unstable viewModel: BottomSheetViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
+  viewModel: BottomSheetViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
 )
 restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeRoute(
   stable modifier: Modifier? = @static Companion
   stable navigateToComplete: Function3<String, String, String, Unit>
   unstable onShowSnackbar: SuspendFunction1<String, Boolean>
-  unstable viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
+  viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
 )
 restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeScreen(
   stable modifier: Modifier? = @static Companion
-  unstable uiState: HomeUiState
+  uiState: HomeUiState
   stable bandalartCount: Int
   stable navigateToComplete: Function3<String, String, String, Unit>
   stable getBandalartList: Function1<String?, Unit>
@@ -35,30 +35,47 @@ restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeScreen(
   unstable checkCompletedBandalartKey: SuspendFunction1<String, Boolean>
   stable openNetworkErrorDialog: Function1<Boolean, Unit>
 )
-restartable scheme("[androidx.compose.ui.UiComposable]") fun BandalartCell(
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun HomeHeader(
+  stable modifier: Modifier? = @static Companion
+  uiState: HomeUiState
+  stable openDropDownMenu: Function1<Boolean, Unit>
+  stable openEmojiBottomSheet: Function1<Boolean, Unit>
+  stable openBandalartDeleteAlertDialog: Function1<Boolean, Unit>
+  stable openCellBottomSheet: Function1<Boolean, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun HomeTopBar(
+  stable bandalartCount: Int
+  stable onShowBandalartList: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ShareButton(
+  stable modifier: Modifier? = @static Companion
+  uiState: HomeUiState
+  stable shareBandalart: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartCell(
   stable modifier: Modifier? = @static Companion
   stable bandalartKey: String
   themeColor: ThemeColor
   stable isMainCell: Boolean
   stable cellInfo: CellInfo? = @dynamic CellInfo()
-  unstable cellData: BandalartCellUiModel
+  cellData: BandalartCellUiModel
   stable bottomSheetDataChanged: Function1<Boolean, Unit>
   stable outerPadding: Dp = @static 3.dp
   stable innerPadding: Dp = @static 2.dp
   stable mainCellPadding: Dp = @static 1.dp
 )
-restartable scheme("[androidx.compose.ui.UiComposable]") fun BandalartCellGrid(
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartCellGrid(
   stable bandalartKey: String
   themeColor: ThemeColor
-  unstable subCell: SubCell
+  subCell: SubCell
   stable rows: Int
   stable cols: Int
   stable bottomSheetDataChanged: Function1<Boolean, Unit>
 )
-restartable scheme("[androidx.compose.ui.UiComposable]") fun BandalartChart(
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartChart(
   stable modifier: Modifier? = @static Companion
   stable bandalartKey: String
-  unstable uiState: HomeUiState
+  uiState: HomeUiState
   themeColor: ThemeColor
   stable bottomSheetDataChanged: Function1<Boolean, Unit>
 )
@@ -93,7 +110,7 @@ restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Bandalart
   stable cellKey: String
   stable currentEmoji: String?
   stable onResult: Function2<@[ParameterName(name = 'bottomSheetState')] Boolean, @[ParameterName(name = 'bottomSheetDataChangedState')] Boolean, Unit>
-  unstable viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
+  viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
 )
 fun BandalartEmojiPicker(
   stable modifier: Modifier? = @static Companion
@@ -106,7 +123,7 @@ fun BandalartEmojiPicker(
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartItem(
   stable modifier: Modifier? = @static Companion
   stable bottomSheetState: SheetState
-  stable bandalartItem: BandalartDetailUiModel
+  bandalartItem: BandalartDetailUiModel
   stable currentBandalartKey: String
   stable onClick: Function1<String, Unit>
   stable onCancelClicked: Function0<Unit>
@@ -134,10 +151,10 @@ restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Bandalart
   stable subBrush: Brush
   stable mainBrush: Brush
 )
-restartable scheme("[androidx.compose.ui.UiComposable]") fun SkeletonCellGrid(
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SkeletonCellGrid(
   stable rows: Int
   stable cols: Int
-  unstable subCell: SubCell
+  subCell: SubCell
   stable taskBrush: Brush
   stable subBrush: Brush
   stable mainBrush: Brush
@@ -152,25 +169,4 @@ restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SkeletonC
   stable outerPadding: Dp = @static 3.dp
   stable innerPadding: Dp = @static 2.dp
   stable mainCellPadding: Dp = @static 1.dp
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CompletionRatioProgressBar(
-  stable completionRatio: Int
-  stable progressColor: Color
-)
-restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeHeader(
-  stable modifier: Modifier? = @static Companion
-  unstable uiState: HomeUiState
-  stable openDropDownMenu: Function1<Boolean, Unit>
-  stable openEmojiBottomSheet: Function1<Boolean, Unit>
-  stable openBandalartDeleteAlertDialog: Function1<Boolean, Unit>
-  stable openCellBottomSheet: Function1<Boolean, Unit>
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun HomeTopBar(
-  stable bandalartCount: Int
-  stable onShowBandalartList: Function0<Unit>
-)
-restartable scheme("[androidx.compose.ui.UiComposable]") fun ShareButton(
-  stable modifier: Modifier? = @static Companion
-  unstable uiState: HomeUiState
-  stable shareBandalart: Function1<String, Unit>
 )

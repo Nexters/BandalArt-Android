@@ -1,6 +1,28 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartDeleteAlertDialog(
+  stable modifier: Modifier? = @static Companion
+  stable title: String
+  stable message: String
+  stable onDeleteClicked: Function0<Unit>
+  stable onCancelClicked: Function0<Unit>
+)
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartDropDownMenu(
   stable modifier: Modifier? = @static Companion
   stable openDropDownMenu: Function1<Boolean, Unit>
   stable isDropDownMenuOpened: Boolean
   stable onDeleteClicked: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun NetworkErrorAlertDialog(
+  stable modifier: Modifier? = @static Companion
+  stable title: String
+  stable message: String
+  stable onConfirmClick: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetTopBar(
+  stable isMainCell: Boolean
+  stable isSubCell: Boolean
+  stable isBlankCell: Boolean
+  unstable scope: CoroutineScope
+  stable bottomSheetState: SheetState
+  stable onResult: Function2<Boolean, Boolean, Unit>
+  stable bottomSheetClosed: Function0<Unit>
 )
