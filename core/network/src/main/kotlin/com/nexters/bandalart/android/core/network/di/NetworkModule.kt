@@ -33,14 +33,12 @@ import timber.log.Timber
 private const val MaxTimeoutMillis = 3000L
 private const val MaxRetryCount = 3
 
-private val json = Json {
+private val jsonRule = Json {
   encodeDefaults = true
   ignoreUnknownKeys = true
   prettyPrint = true
   isLenient = true
 }
-
-private val jsonRule = Json { json }
 
 @Module
 @InstallIn(SingletonComponent::class)
