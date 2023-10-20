@@ -33,7 +33,7 @@
 
 - IDE : Android Studio Giraffe
 - JDK : Java 17을 실행할 수 있는 JDK
-- Kotlin Language : 1.8.22
+- Kotlin Language : 1.9
 
 ### Language
 
@@ -79,7 +79,8 @@
 ```
 ├── app
 │   ├── navigation
-│   └── MainActivity
+│   ├── MainActivity
+│   └── Application
 ├── build-logic
 ├── buildSrc
 ├── core
