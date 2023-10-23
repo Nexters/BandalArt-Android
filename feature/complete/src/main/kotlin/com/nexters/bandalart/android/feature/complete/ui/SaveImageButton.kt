@@ -37,10 +37,9 @@ fun SaveImageButton(
   ) {
     Column {
       Row(verticalAlignment = Alignment.CenterVertically) {
-        val image = painterResource(id = R.drawable.ic_gallery)
         Image(
-          painter = image,
-          contentDescription = "Option Icon",
+          painter = painterResource(R.drawable.ic_gallery),
+          contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.clear_descrption),
         )
         Text(
           text = buildAnnotatedString {

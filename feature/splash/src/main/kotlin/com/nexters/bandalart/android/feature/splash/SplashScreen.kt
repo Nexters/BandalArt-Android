@@ -82,11 +82,8 @@ fun SplashScreen(
       .background(Gray50),
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
-      val image = painterResource(
-        id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_splash,
-      )
       Image(
-        painter = image,
+        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_splash),
         contentDescription = context.getString(R.string.splash_description),
         modifier = Modifier.align(Alignment.Center),
       )

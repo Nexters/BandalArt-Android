@@ -1,23 +1,8 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetTitleText(
-  stable modifier: Modifier? = @static Companion
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetTopBar(
   stable isMainCell: Boolean
   stable isSubCell: Boolean
   stable isBlankCell: Boolean
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetSubTitleText(
-  stable modifier: Modifier? = @static Companion
-  stable text: String
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetContentPlaceholder(
-  stable modifier: Modifier? = @static Companion
-  stable text: String
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetContentText(
-  stable modifier: Modifier? = @static Companion
-  stable text: String
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetButtonText(
-  stable modifier: Modifier? = @static Companion
-  stable text: String
-  stable color: Color
+  stable bottomSheetState: SheetState
+  stable onResult: Function2<Boolean, Boolean, Unit>
+  stable bottomSheetClosed: Function0<Unit>
 )

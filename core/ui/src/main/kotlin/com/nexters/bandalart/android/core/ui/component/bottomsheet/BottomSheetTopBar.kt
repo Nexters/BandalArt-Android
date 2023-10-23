@@ -14,11 +14,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
-import kotlinx.coroutines.CoroutineScope
+import com.nexters.bandalart.android.core.ui.R
 import kotlinx.coroutines.launch
 
 @Composable
@@ -26,11 +28,12 @@ fun BottomSheetTopBar(
   isMainCell: Boolean,
   isSubCell: Boolean,
   isBlankCell: Boolean,
-  scope: CoroutineScope,
   bottomSheetState: SheetState,
   onResult: (Boolean, Boolean) -> Unit,
   bottomSheetClosed: () -> Unit,
 ) {
+  val scope = rememberCoroutineScope()
+
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -53,7 +56,7 @@ fun BottomSheetTopBar(
     ) {
       Icon(
         imageVector = Icons.Default.Clear,
-        contentDescription = "Clear Icon",
+        contentDescription = stringResource(R.string.clear_descrption),
         tint = Gray900,
       )
     }

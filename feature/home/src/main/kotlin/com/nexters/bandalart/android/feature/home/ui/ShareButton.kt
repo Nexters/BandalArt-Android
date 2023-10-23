@@ -42,11 +42,8 @@ fun ShareButton(
       modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      val image = painterResource(
-        id = R.drawable.ic_share,
-      )
       Image(
-        painter = image,
+        painter = painterResource(R.drawable.ic_share),
         contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.share_descrption),
       )
       FixedSizeText(

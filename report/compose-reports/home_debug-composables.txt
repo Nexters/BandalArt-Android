@@ -1,28 +1,23 @@
-restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeRoute(
-  stable modifier: Modifier? = @static Companion
-  stable navigateToComplete: Function3<String, String, String, Unit>
-  unstable onShowSnackbar: SuspendFunction1<String, Boolean>
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartBottomSheet(
+  stable bandalartKey: String
+  stable isSubCell: Boolean
+  stable isMainCell: Boolean
+  stable isBlankCell: Boolean
+  cellData: BandalartCellUiModel
+  stable onResult: Function2<@[ParameterName(name = 'bottomSheetState')] Boolean, @[ParameterName(name = 'bottomSheetDataChangedState')] Boolean, Unit>
+  viewModel: BottomSheetViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartEmojiBottomSheet(
+  stable bandalartKey: String
+  stable cellKey: String
+  stable currentEmoji: String?
+  stable onResult: Function2<@[ParameterName(name = 'bottomSheetState')] Boolean, @[ParameterName(name = 'bottomSheetDataChangedState')] Boolean, Unit>
   viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
 )
-restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeScreen(
+fun BandalartEmojiPicker(
   stable modifier: Modifier? = @static Companion
-  uiState: HomeUiState
-  stable bandalartCount: Int
-  stable navigateToComplete: Function3<String, String, String, Unit>
-  stable getBandalartList: Function1<String?, Unit>
-  stable getBandalartDetail: Function1<String, Unit>
-  stable createBandalart: Function0<Unit>
-  stable deleteBandalart: Function1<String, Unit>
-  stable showSkeletonChanged: Function1<Boolean, Unit>
-  stable openDropDownMenu: Function1<Boolean, Unit>
-  stable openEmojiBottomSheet: Function1<Boolean, Unit>
-  stable openBandalartDeleteAlertDialog: Function1<Boolean, Unit>
-  stable openCellBottomSheet: Function1<Boolean, Unit>
-  stable bottomSheetDataChanged: Function1<Boolean, Unit>
-  stable openBandalartListBottomSheet: Function1<Boolean, Unit>
-  stable setRecentBandalartKey: Function1<String, Unit>
-  stable shareBandalart: Function1<String, Unit>
-  stable initShareUrl: Function0<Unit>
-  unstable checkCompletedBandalartKey: SuspendFunction1<String, Boolean>
-  stable openNetworkErrorDialog: Function1<Boolean, Unit>
-)
+  stable currentEmoji: String?
+  stable isBottomSheet: Boolean
+  stable onResult: Function2<String?, Boolean, Unit>
+  stable emojiPickerState: SheetState
+): @[ExtensionFunctionType] Function3<ColumnScope, Composer, Int, Unit>

@@ -71,11 +71,8 @@ fun HomeHeader(
             contentAlignment = Alignment.Center,
           ) {
             if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
-              val image = painterResource(
-                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-              )
               Image(
-                painter = image,
+                painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
                 contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.empty_emoji_descrption),
               )
             } else {
@@ -87,11 +84,8 @@ fun HomeHeader(
           }
         }
         if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
-          val image = painterResource(
-            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
-          )
           Image(
-            painter = image,
+            painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
             contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.edit_descrption),
             modifier = Modifier
               .align(Alignment.BottomEnd)
@@ -116,11 +110,8 @@ fun HomeHeader(
             .align(Alignment.Center)
             .clickable { openCellBottomSheet(true) },
         )
-        val image = painterResource(
-          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
-        )
         Image(
-          painter = image,
+          painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option),
           contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.option_descrption),
           modifier = Modifier
             .align(Alignment.CenterEnd)

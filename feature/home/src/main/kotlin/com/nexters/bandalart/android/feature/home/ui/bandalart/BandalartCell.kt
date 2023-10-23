@@ -178,11 +178,8 @@ fun BandalartCell(
               cellTextColor = cellTextColor,
               fontWeight = fontWeight,
             )
-            val image = painterResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_cell_check,
-            )
             Image(
-              painter = image,
+              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_cell_check),
               contentDescription = stringResource(R.string.complete_descrption),
               modifier = Modifier
                 .align(Alignment.BottomEnd)

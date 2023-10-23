@@ -202,7 +202,6 @@ fun BandalartBottomSheet(
         isMainCell = isMainCell,
         isSubCell = isSubCell,
         isBlankCell = isBlankCell,
-        scope = scope,
         bottomSheetState = bottomSheetState,
         onResult = onResult,
         bottomSheetClosed = viewModel::bottomSheetClosed,
@@ -242,11 +241,8 @@ fun BandalartBottomSheet(
                   contentAlignment = Alignment.Center,
                 ) {
                   if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
-                    val image = painterResource(
-                      id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-                    )
                     Image(
-                      painter = image,
+                      painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
                       contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   } else {
@@ -257,11 +253,8 @@ fun BandalartBottomSheet(
                   }
                 }
               }
-              val image = painterResource(
-                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
-              )
               Image(
-                painter = image,
+                painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
                 contentDescription = stringResource(R.string.edit_descrption),
                 modifier = Modifier
                   .align(Alignment.BottomEnd)
@@ -318,7 +311,6 @@ fun BandalartBottomSheet(
                 viewModel.emojiSelected(profileEmoji = currentEmojiResult)
                 viewModel.openEmojiPicker(flag = openEmojiPushResult)
               },
-              emojiPickerScope = rememberCoroutineScope(),
               emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             ),
           )
@@ -466,7 +458,8 @@ fun BandalartBottomSheet(
           }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
-            isBlankCell = uiState.cellData.title?.trim().isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
+            isBlankCell = uiState.cellData.title?.trim()
+              .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
             onClick = {
               if (isMainCell) {
                 viewModel.updateBandalartMainCell(

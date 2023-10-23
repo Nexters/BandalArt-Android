@@ -41,12 +41,9 @@ internal fun HomeTopBar(
       .background(White),
     contentAlignment = Alignment.CenterStart,
   ) {
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-    ) {
-      val image = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title)
+    Row(modifier = Modifier.fillMaxWidth()) {
       Image(
-        painter = image,
+        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title),
         contentDescription = stringResource(R.string.app_descrption),
         modifier = Modifier
           .align(Alignment.CenterVertically)
@@ -60,11 +57,8 @@ internal fun HomeTopBar(
       ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
           if (bandalartCount > 1) {
-            val image = painterResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_hamburger,
-            )
             Image(
-              painter = image,
+              painter = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_hamburger),
               contentDescription = stringResource(R.string.hamburger_descrption),
             )
             Text(
