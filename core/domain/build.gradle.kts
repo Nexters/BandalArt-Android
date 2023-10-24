@@ -1,10 +1,8 @@
 plugins {
   bandalart("jvm-kotlin")
+  bandalart("test-kotest")
 }
 
 dependencies {
-  implementations(
-    libs.javax.inject,
-    libs.kotlinx.coroutines.core,
-  )
+  implementation(libs.javax.inject)
 }

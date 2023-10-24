@@ -20,7 +20,6 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *>) {
       minSdk = ApplicationConstants.MinSdk
     }
 
-
     sourceSets {
       getByName("main").java.srcDir("src/main/kotlin")
       getByName("test").java.srcDir("src/test/kotlin")

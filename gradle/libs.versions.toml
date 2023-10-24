@@ -45,6 +45,8 @@ firebase-bom = "32.4.0"
 firebase-crashlytics = "2.9.2"
 ksp = "1.9.0-1.0.13"
 
+test-kotest = "5.7.2"
+
 [libraries]
 
 gradle-android = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
@@ -106,6 +108,9 @@ facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.r
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+
+test-kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "test-kotest" }
+test-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "test-kotest" }
 
 [plugins]
 
