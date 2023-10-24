@@ -1,4 +1,0 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CompleteBandalart(
-  stable modifier: Modifier? = @static Companion
-  uiState: CompleteUiState
-)

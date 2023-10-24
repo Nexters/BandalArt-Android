@@ -1,7 +1,0 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OnBoardingRoute(
-  stable navigateToHome: Function1<NavOptions, Unit>
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OnBoardingScreen(
-  stable modifier: Modifier? = @static Companion
-  stable navigateToHome: Function1<NavOptions, Unit>
-)
