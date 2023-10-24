@@ -1,8 +1,0 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetTopBar(
-  stable isMainCell: Boolean
-  stable isSubCell: Boolean
-  stable isBlankCell: Boolean
-  stable bottomSheetState: SheetState
-  stable onResult: Function2<Boolean, Boolean, Unit>
-  stable bottomSheetClosed: Function0<Unit>
-)

@@ -1,4 +1,0 @@
-package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
-com.nexters.bandalart.android.feature.home.BandalartBottomSheet,BandalartBottomSheet,1,1,1,0,0,0,1,0,2,7,
-com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet,BandalartEmojiBottomSheet,1,1,1,0,0,0,1,0,2,4,
-com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker,BandalartEmojiPicker,1,0,0,0,0,0,0,0,1,0,
