@@ -23,10 +23,6 @@ restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CellText(
   stable fontWeight: FontWeight
   stable textAlpha: Float = @dynamic LiveLiterals$CellTextKt.Float$param-textAlpha$fun-CellText()
 )
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun EmojiText(
-  stable emojiText: String?
-  stable fontSize: TextUnit
-)
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FixedSizeText(
   stable text: String
   stable modifier: Modifier? = @static Companion
@@ -92,9 +88,3 @@ restartable scheme("[androidx.compose.ui.UiComposable]") fun BottomSheetTopBar(
   stable onResult: Function2<Boolean, Boolean, Unit>
   stable bottomSheetClosed: Function0<Unit>
 )
-fun <get-nonScaleSp>(
-  stable <this>: TextUnit
-): TextUnit
-fun <get-NavigationBarHeightDp>()
-fun <get-StatusBarAndActionBarHeightDp>()
-fun <get-StatusBarHeightDp>()
