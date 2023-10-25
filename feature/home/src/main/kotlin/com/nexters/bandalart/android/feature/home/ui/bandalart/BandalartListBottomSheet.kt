@@ -47,12 +47,13 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray800
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartListBottomSheet(
   modifier: Modifier = Modifier,
-  bandalartList: List<BandalartDetailUiModel>,
+  bandalartList: ImmutableList<BandalartDetailUiModel>,
   currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
