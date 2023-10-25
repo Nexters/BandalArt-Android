@@ -106,10 +106,7 @@ internal fun CompleteScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Spacer(modifier = Modifier.height(16.dp))
-        CompleteTopBar(
-          context = context,
-          onNavigateBack = onNavigateBack,
-        )
+        CompleteTopBar(onNavigateBack = onNavigateBack)
         Spacer(modifier = Modifier.height(40.dp))
         TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {
