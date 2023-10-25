@@ -56,6 +56,7 @@ fun BandalartListBottomSheet(
   currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
   setRecentBandalartKey: (String) -> Unit,
+  moveSelectedBandalart: (String?) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
@@ -128,6 +129,7 @@ fun BandalartListBottomSheet(
               setRecentBandalartKey(key)
               showSkeletonChanged(true)
               getBandalartDetail(key)
+              moveSelectedBandalart(key)
             },
             onCancelClicked = onCancelClicked,
           )
@@ -140,7 +142,10 @@ fun BandalartListBottomSheet(
                 .weight(1f)
                 .height(56.dp)
                 .padding(horizontal = 24.dp),
-              onClick = createBandalart,
+              onClick = {
+                createBandalart()
+                moveSelectedBandalart(null)
+              },
               colors = ButtonDefaults.buttonColors(containerColor = Gray200),
             ) {
               Row {

@@ -6,14 +6,23 @@ package com.nexters.bandalart.android.feature.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -22,8 +31,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -82,10 +95,13 @@ internal fun HomeRoute(
     uiState = uiState,
     bandalartCount = bandalartCount,
     navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
+    initComplete = viewModel::initComplete,
     getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
+    findBandalartIdx = viewModel::findBandalartIdx,
+    setBandalartIdx = viewModel::setBandalartIdx,
     // loadingChanged = { state -> viewModel.loadingChanged(state) },
     showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
     openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
@@ -102,16 +118,20 @@ internal fun HomeRoute(
   )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
   bandalartCount: Int,
   navigateToComplete: (String, String, String) -> Unit,
+  initComplete: () -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
   deleteBandalart: (String) -> Unit,
+  findBandalartIdx: (String?) -> Int,
+  setBandalartIdx: (Int) -> Unit,
   // loadingChanged: (Boolean) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
@@ -127,9 +147,16 @@ internal fun HomeScreen(
   openNetworkErrorDialog: (Boolean) -> Unit,
 ) {
   val context = LocalContext.current
+  val animationScope = rememberCoroutineScope()
+  val pagerState = rememberPagerState(initialPage = 0, pageCount = { uiState.bandalartList.size })
 
   LaunchedEffect(key1 = Unit) {
     getBandalartList(null)
+//    if(uiState.bandalartList.size != 0) {
+//      animationScope.launch {
+//        pagerState.animateScrollToPage(bandalartIdx)
+//      }
+//    }
   }
 
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
@@ -172,12 +199,45 @@ internal fun HomeScreen(
     }
   }
 
+  LaunchedEffect(uiState.bandalartIdx) {
+    if (uiState.bandalartIdx != -1) {
+      animationScope.launch {
+        pagerState.animateScrollToPage(uiState.bandalartIdx)
+      }
+    }
+  }
+
+  LaunchedEffect(pagerState, uiState.bandalartList) {
+    snapshotFlow { pagerState.currentPage }.collect { page ->
+      if (uiState.bandalartList.size != 0) {
+        if (uiState.recentBandalartKey != "over") {
+          getBandalartDetail(uiState.bandalartList[page].key)
+          Log.d("ddddddd", "1")
+        } else if (uiState.recentBandalartKey == uiState.bandalartList[page].key) {
+          initComplete()
+          getBandalartDetail(uiState.bandalartList[page].key)
+        }
+      }
+    }
+  }
+
+  LaunchedEffect(uiState.recentBandalartKey, uiState.bandalartList) {
+    if (uiState.recentBandalartKey != null && uiState.bandalartList.size != 0) {
+      setBandalartIdx(findBandalartIdx(uiState.recentBandalartKey))
+    }
+  }
+
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
       bandalartList = updateBandalartListTitles(uiState.bandalartList, context),
       currentBandalartKey = uiState.bandalartDetailData!!.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
+      moveSelectedBandalart = {
+        animationScope.launch {
+          pagerState.animateScrollToPage(findBandalartIdx(it))
+        }
+      },
       showSkeletonChanged = showSkeletonChanged,
       onCancelClicked = { openBandalartListBottomSheet(false) },
       createBandalart = createBandalart,
@@ -254,26 +314,50 @@ internal fun HomeScreen(
           thickness = 1.dp,
           color = Gray100,
         )
-        HomeHeader(
-          uiState = uiState,
-          openDropDownMenu = openDropDownMenu,
-          openEmojiBottomSheet = openEmojiBottomSheet,
-          openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
-          openCellBottomSheet = openCellBottomSheet,
-        )
-        when {
-          uiState.bandalartCellData != null && uiState.bandalartDetailData != null -> {
-            BandalartChart(
-              bandalartKey = uiState.bandalartDetailData.key,
+
+        HorizontalPager(state = pagerState) { page ->
+          Column(modifier = Modifier.fillMaxSize()) {
+            HomeHeader(
               uiState = uiState,
-              themeColor = ThemeColor(
-                mainColor = uiState.bandalartDetailData.mainColor,
-                subColor = uiState.bandalartDetailData.subColor,
-              ),
-              bottomSheetDataChanged = bottomSheetDataChanged,
+              openDropDownMenu = openDropDownMenu,
+              openEmojiBottomSheet = openEmojiBottomSheet,
+              openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
+              openCellBottomSheet = openCellBottomSheet,
+            )
+            when {
+              uiState.bandalartCellData != null && uiState.bandalartDetailData != null -> {
+                BandalartChart(
+                  bandalartKey = uiState.bandalartDetailData.key,
+                  uiState = uiState,
+                  themeColor = ThemeColor(
+                    mainColor = uiState.bandalartDetailData.mainColor,
+                    subColor = uiState.bandalartDetailData.subColor,
+                  ),
+                  bottomSheetDataChanged = bottomSheetDataChanged,
+                )
+              }
+            }
+          }
+        }
+        Spacer(modifier = Modifier.height(14.dp))
+        Row(
+          modifier = Modifier
+            .height(50.dp)
+            .align(Alignment.CenterHorizontally),
+          horizontalArrangement = Arrangement.Center,
+        ) {
+          repeat(uiState.bandalartList.size) { iteration ->
+            val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+            Box(
+              modifier = Modifier
+                .padding(2.dp)
+                .clip(CircleShape)
+                .background(color)
+                .size(5.dp),
             )
           }
         }
+
         Spacer(modifier = Modifier.height(64.dp))
         Spacer(modifier = Modifier.weight(1f))
         ShareButton(

@@ -1,5 +1,6 @@
 package com.nexters.bandalart.android.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.ui.R
@@ -43,7 +44,8 @@ import timber.log.Timber
  *
  * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
- * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
+ * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null    \
+ * @param bandalartIdx horizontalpager의 idx를 감지하기 위한 값
  * @param isBandalartDeleted 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
@@ -65,6 +67,8 @@ data class HomeUiState(
   val bandalartList: PersistentList<BandalartDetailUiModel> = persistentListOf(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
+  val bandalartIdx: Int = -1,
+  val recentBandalartKey: String? = null,
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
@@ -112,6 +116,12 @@ class HomeViewModel @Inject constructor(
 
   init {
     _uiState.update { it.copy(isShowSkeleton = true) }
+    Log.d("dddddd", "viewmodel init?????")
+    viewModelScope.launch {
+      val recentBandalartkey = getRecentBandalartKey()
+      _uiState.update { it.copy(recentBandalartKey = recentBandalartkey) }
+      Log.d("dddddd", "viewmodel init!!!!!!")
+    }
   }
 
   fun getBandalartList(bandalartKey: String? = null) {
@@ -207,6 +217,15 @@ class HomeViewModel @Inject constructor(
               error = null,
             )
           }
+          if (_uiState.value.recentBandalartKey == "over") {
+            val recentBandalartkey = getRecentBandalartKey()
+            for (i in _uiState.value.bandalartList.indices) {
+              if (_uiState.value.bandalartList[i].key == recentBandalartkey) {
+                _uiState.update { it.copy(bandalartIdx = i) }
+              }
+            }
+          }
+          setRecentBandalartKey(bandalartKey)
           getBandalartMainCell(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -455,6 +474,14 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
   }
 
+  fun initComplete() {
+    _uiState.update { it.copy(recentBandalartKey = "over") }
+  }
+
+  fun setBandalartIdx(idx: Int) {
+    _uiState.update { it.copy(bandalartIdx = idx) }
+  }
+
   private suspend fun getRecentBandalartKey(): String {
     return viewModelScope.async {
       getRecentBandalartKeyUseCase()
@@ -487,5 +514,13 @@ class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       deleteBandalartKeyUseCase(bandalartKey)
     }
+  }
+
+  fun findBandalartIdx(key: String?): Int {
+    var idx = 0
+    for (i in _uiState.value.bandalartList.indices) {
+      if (_uiState.value.bandalartList[i].key == key) idx = i
+    }
+    return idx
   }
 }
