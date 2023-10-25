@@ -48,10 +48,12 @@ fun SplashScreen(
   createGuestLoginToken: () -> Unit,
 ) {
   val context = LocalContext.current
+
   when {
     uiState.isLoading -> {
       LoadingScreen(modifier = Modifier.fillMaxSize())
     }
+
     uiState.isNetworkErrorAlertDialogOpened -> {
       NetworkErrorAlertDialog(
         title = stringResource(R.string.network_error_dialog_title),
@@ -62,12 +64,14 @@ fun SplashScreen(
         },
       )
     }
+
     !uiState.isLoggedIn -> {
       val options = NavOptions.Builder()
         .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
         .build()
       navigateToOnBoarding(options)
     }
+
     uiState.isLoggedIn -> {
       val options = NavOptions.Builder()
         .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)

@@ -60,6 +60,7 @@ internal fun OnBoardingScreen(
     iterations = LottieConstants.IterateForever,
   )
   val context = LocalContext.current
+
   Surface(
     modifier = modifier
       .fillMaxSize()
@@ -111,6 +112,7 @@ internal fun OnBoardingScreen(
               }
             }
           }
+
           1 -> {
             Box {
               Column(
