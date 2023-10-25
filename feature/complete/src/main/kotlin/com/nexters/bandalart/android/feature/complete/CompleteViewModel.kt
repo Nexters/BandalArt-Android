@@ -66,7 +66,8 @@ class CompleteViewModel @Inject constructor(
     viewModelScope.launch {
       upsertBandalartKeyUseCase(
         bandalartKey = key,
-        isCompleted = true)
+        isCompleted = true,
+      )
     }
   }
 
@@ -91,9 +92,11 @@ class CompleteViewModel @Inject constructor(
             error = null,
           )
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.value = _uiState.value.copy(error = exception)
