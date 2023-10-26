@@ -392,18 +392,12 @@ fun BandalartBottomSheet(
                 )
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-              keyboardActions = KeyboardActions(
-                onDone = {
-                  focusManager.clearFocus()
-                },
-              ),
+              keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
                 if (uiState.cellData.description.isNullOrEmpty()) {
-                  BottomSheetContentPlaceholder(
-                    text = stringResource(R.string.bottomsheet_description_placeholder),
-                  )
+                  BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
                 }
                 innerTextField()
               },

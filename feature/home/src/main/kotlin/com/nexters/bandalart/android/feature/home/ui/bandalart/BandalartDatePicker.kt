@@ -39,6 +39,8 @@ import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDateTime
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -151,7 +153,7 @@ fun DateSelectionSection(
     ) {
       InfiniteItemsPicker(
         modifier = Modifier.weight(1f),
-        items = years,
+        items = years.toImmutableList(),
         isYear = true,
         isMonth = true,
         firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1963),
@@ -159,7 +161,7 @@ fun DateSelectionSection(
       )
       InfiniteItemsPicker(
         modifier = Modifier.weight(1f),
-        items = monthsNumber,
+        items = monthsNumber.toImmutableList(),
         isYear = false,
         isMonth = true,
         firstIndex = Int.MAX_VALUE / 2 - 6 + currentMonth,
@@ -167,7 +169,7 @@ fun DateSelectionSection(
       )
       InfiniteItemsPicker(
         modifier = Modifier.weight(1f),
-        items = days,
+        items = days.toImmutableList(),
         isYear = false,
         isMonth = false,
         firstIndex = Int.MAX_VALUE / 2 + (currentDay - 3),
@@ -181,7 +183,7 @@ fun DateSelectionSection(
 @Composable
 fun InfiniteItemsPicker(
   modifier: Modifier = Modifier,
-  items: List<Int>,
+  items: ImmutableList<Int>,
   isYear: Boolean,
   isMonth: Boolean,
   firstIndex: Int,

@@ -14,6 +14,6 @@ fun NavController.navigateToOnBoarding(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.onBoardingScreen(navigateToHome: (NavOptions) -> Unit) {
   composable(route = ONBOARDING_NAVIGATION_ROUTE) {
-    OnBoardingRoute(navigateToHome)
+    OnBoardingRoute(navigateToHome = navigateToHome)
   }
 }

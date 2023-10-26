@@ -43,6 +43,7 @@ import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.ShareButton
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -71,6 +72,7 @@ internal fun HomeRoute(
           delay(SnackbarDuration)
           job.cancel()
         }
+
         is HomeUiEvent.ShowToast -> {
           Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
         }
@@ -175,7 +177,7 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
-      bandalartList = updateBandalartListTitles(uiState.bandalartList, context),
+      bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
       currentBandalartKey = uiState.bandalartDetailData!!.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
@@ -287,6 +289,7 @@ internal fun HomeScreen(
         uiState.isLoading -> {
           LoadingScreen()
         }
+
         uiState.isShowSkeleton -> {
           BandalartSkeleton()
         }
