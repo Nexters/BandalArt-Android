@@ -29,17 +29,19 @@ android {
     getByName("debug") {
       isDebuggable = true
       applicationIdSuffix = ".dev"
-      manifestPlaceholders += mapOf(
-        "appName" to "@string/app_name_dev"
-      )
+      manifestPlaceholders += mapOf("appName" to "@string/app_name_dev")
+    }
+
+    create("benchmark") {
+      isDebuggable = false
+      initWith(buildTypes.getByName("release"))
+      matchingFallbacks += listOf("release")
     }
 
     getByName("release") {
       isDebuggable = false
       signingConfig = signingConfigs.getByName("release")
-      manifestPlaceholders += mapOf(
-        "appName" to "@string/app_name"
-      )
+      manifestPlaceholders += mapOf("appName" to "@string/app_name")
     }
   }
 
@@ -69,6 +71,6 @@ dependencies {
     libs.bundles.androidx.compose,
     platform(libs.firebase.bom),
     libs.firebase.analytics,
-    libs.firebase.crashlytics
+    libs.firebase.crashlytics,
   )
 }

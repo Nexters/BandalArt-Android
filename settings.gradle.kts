@@ -32,4 +32,5 @@ include(
   ":feature:home",
   ":feature:onboarding",
   ":feature:splash",
+  ":macrobenchmark",
 )
