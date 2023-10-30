@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import retrofit2.Retrofit
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -15,13 +16,19 @@ internal object ServiceModule {
 
   @Singleton
   @Provides
-  internal fun provideBandalartService(retrofit: Retrofit): BandalartService {
+  internal fun provideBandalartService(
+    @Named("HttpClient")
+    retrofit: Retrofit
+  ): BandalartService {
     return retrofit.create(BandalartService::class.java)
   }
 
   @Singleton
   @Provides
-  internal fun provideGuestLoginService(retrofit: Retrofit): GuestLoginService {
+  internal fun provideGuestLoginService(
+    @Named("AuthHttpClient")
+    retrofit: Retrofit
+  ): GuestLoginService {
     return retrofit.create(GuestLoginService::class.java)
   }
 }
