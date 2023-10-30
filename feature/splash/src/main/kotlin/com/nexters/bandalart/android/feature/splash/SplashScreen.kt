@@ -1,7 +1,6 @@
 package com.nexters.bandalart.android.feature.splash
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -15,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
-import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 
 @Composable
@@ -81,9 +80,8 @@ fun SplashScreen(
   }
 
   Surface(
-    modifier = modifier
-      .fillMaxSize()
-      .background(Gray50),
+    modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
       Image(
