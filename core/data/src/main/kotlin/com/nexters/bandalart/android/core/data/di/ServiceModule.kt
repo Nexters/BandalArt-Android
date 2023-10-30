@@ -18,7 +18,7 @@ internal object ServiceModule {
   @Provides
   internal fun provideBandalartService(
     @Named("HttpClient")
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): BandalartService {
     return retrofit.create(BandalartService::class.java)
   }
@@ -27,7 +27,7 @@ internal object ServiceModule {
   @Provides
   internal fun provideGuestLoginService(
     @Named("AuthHttpClient")
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): GuestLoginService {
     return retrofit.create(GuestLoginService::class.java)
   }
