@@ -62,9 +62,8 @@ internal fun OnBoardingScreen(
   val context = LocalContext.current
 
   Surface(
-    modifier = modifier
-      .fillMaxSize()
-      .background(Gray50),
+    modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
