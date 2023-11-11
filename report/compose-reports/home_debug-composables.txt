@@ -2,14 +2,14 @@ restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeRoute(
   stable modifier: Modifier? = @static Companion
   stable navigateToComplete: Function3<String, String, String, Unit>
   unstable onShowSnackbar: SuspendFunction1<String, Boolean>
-  unstable viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
+  viewModel: HomeViewModel? = @dynamic hiltViewModel(null, $composer, 0, 0b0001)
 )
 restartable scheme("[androidx.compose.ui.UiComposable]") fun HomeScreen(
   stable modifier: Modifier? = @static Companion
-  unstable uiState: HomeUiState
+  uiState: HomeUiState
   stable bandalartCount: Int
   stable navigateToComplete: Function3<String, String, String, Unit>
-  stable initComplete: Function0<Unit>
+  stable settingDestination: Function1<String, Unit>
   stable getBandalartList: Function1<String?, Unit>
   stable getBandalartDetail: Function1<String, Unit>
   stable createBandalart: Function0<Unit>

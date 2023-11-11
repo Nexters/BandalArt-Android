@@ -46,7 +46,7 @@ fun BandalartDropDownMenu(
       expanded = isDropDownMenuOpened,
       onDismissRequest = { openDropDownMenu(false) },
       offset = DpOffset(
-        x = (-50).dp,
+        x = (-25).dp,
         y = 0.dp,
       ),
     ) {

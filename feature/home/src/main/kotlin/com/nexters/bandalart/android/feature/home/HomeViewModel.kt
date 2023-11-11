@@ -1,6 +1,5 @@
 package com.nexters.bandalart.android.feature.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.ui.R
@@ -44,8 +43,9 @@ import timber.log.Timber
  *
  * @param bandalartList 반다라트 목록
  * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
- * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null    \
- * @param bandalartIdx horizontalpager의 idx를 감지하기 위한 값
+ * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
+ * @param pagerIdx horizontalpager의 idx를 감지하기 위한 값
+ * @param destinationKey swipe 중 최근 반다라트가 바뀌지 않도록 설정하는 목적지 변수/값이 over 인 경우, 현재 반다라트를 최근 표로 저장해도 됨
  * @param isBandalartDeleted 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
@@ -67,8 +67,8 @@ data class HomeUiState(
   val bandalartList: PersistentList<BandalartDetailUiModel> = persistentListOf(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
-  val bandalartIdx: Int = -1,
-  val recentBandalartKey: String? = null,
+  val pagerIdx: Int = -1,
+  val destinationKey: String? = null,
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
@@ -116,11 +116,9 @@ class HomeViewModel @Inject constructor(
 
   init {
     _uiState.update { it.copy(isShowSkeleton = true) }
-    Log.d("dddddd", "viewmodel init?????")
     viewModelScope.launch {
       val recentBandalartkey = getRecentBandalartKey()
-      _uiState.update { it.copy(recentBandalartKey = recentBandalartkey) }
-      Log.d("dddddd", "viewmodel init!!!!!!")
+      _uiState.update { it.copy(destinationKey = recentBandalartkey) }
     }
   }
 
@@ -169,20 +167,20 @@ class HomeViewModel @Inject constructor(
             return@launch
           }
           // 반다라트 목록이 존재할 경우
-          else {
-            // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
-            val recentBandalartkey = getRecentBandalartKey()
-            // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
-            if (bandalartList.any { it.key == recentBandalartkey }) {
-              getBandalartDetail(recentBandalartkey)
-            }
-            // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
-            else {
-              _uiState.update { it.copy(isShowSkeleton = true) }
-              // 목록에 가장 첫번째 표를 화면에 띄움
-              getBandalartDetail(bandalartList[0].key)
-            }
-          }
+//          else {
+//            // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
+//            val recentBandalartkey = getRecentBandalartKey()
+//            // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
+//            if (bandalartList.any { it.key == recentBandalartkey }) {
+//              getBandalartDetail(recentBandalartkey)
+//            }
+//            // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
+//            else {
+//              _uiState.update { it.copy(isShowSkeleton = true) }
+//              // 목록에 가장 첫번째 표를 화면에 띄움
+//              getBandalartDetail(bandalartList[0].key)
+//            }
+//          }
         }
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
@@ -217,15 +215,18 @@ class HomeViewModel @Inject constructor(
               error = null,
             )
           }
-          if (_uiState.value.recentBandalartKey == "over") {
+
+          if (_uiState.value.destinationKey == "over") {
             val recentBandalartkey = getRecentBandalartKey()
             for (i in _uiState.value.bandalartList.indices) {
               if (_uiState.value.bandalartList[i].key == recentBandalartkey) {
-                _uiState.update { it.copy(bandalartIdx = i) }
+                _uiState.update { it.copy(pagerIdx = i) }
+                break
               }
             }
+            setRecentBandalartKey(bandalartKey)
           }
-          setRecentBandalartKey(bandalartKey)
+
           getBandalartMainCell(bandalartKey)
         }
         result.isSuccess && result.getOrNull() == null -> {
@@ -308,6 +309,7 @@ class HomeViewModel @Inject constructor(
               error = null,
             )
           }
+          setDestinationKeyAndIdx(bandalart.key, 0)
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
           getBandalartList(bandalart.key)
           // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
@@ -352,7 +354,7 @@ class HomeViewModel @Inject constructor(
             )
           }
           openBandalartDeleteAlertDialog(false)
-          getBandalartList()
+          getBandalartList(deleteAndSetDestinationKeyAndIdx(bandalartKey))
           deleteBandalartKey(bandalartKey)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
@@ -474,12 +476,16 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
   }
 
-  fun initComplete() {
-    _uiState.update { it.copy(recentBandalartKey = "over") }
+  fun setDestinationKey(des: String) {
+    _uiState.update { it.copy(destinationKey = des) }
+  }
+
+  fun setDestinationKeyAndIdx(key: String, idx: Int) {
+    _uiState.update { it.copy(destinationKey = key, pagerIdx = idx) }
   }
 
   fun setBandalartIdx(idx: Int) {
-    _uiState.update { it.copy(bandalartIdx = idx) }
+    _uiState.update { it.copy(pagerIdx = idx) }
   }
 
   private suspend fun getRecentBandalartKey(): String {
@@ -516,11 +522,25 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun findBandalartIdx(key: String?): Int {
+  fun findPagerIdx(key: String?): Int {
     var idx = 0
     for (i in _uiState.value.bandalartList.indices) {
       if (_uiState.value.bandalartList[i].key == key) idx = i
     }
     return idx
+  }
+
+  fun deleteAndSetDestinationKeyAndIdx(key: String): String? {
+    var idx = 0
+    for (i in _uiState.value.bandalartList.indices) {
+      if (_uiState.value.bandalartList[i].key == key) idx = i
+    }
+    return if (idx == 0) {
+      setDestinationKeyAndIdx("", 0)
+      null
+    } else {
+      setDestinationKeyAndIdx(_uiState.value.bandalartList[idx - 1].key, idx - 1)
+      _uiState.value.bandalartList[idx - 1].key
+    }
   }
 }
