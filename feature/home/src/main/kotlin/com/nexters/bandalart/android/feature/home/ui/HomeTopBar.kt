@@ -22,14 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.Gray600
+import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.designsystem.theme.Gray600
-import com.nexters.bandalart.android.core.designsystem.theme.Gray900
-import com.nexters.bandalart.android.core.designsystem.theme.White
-import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
-import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 
 @Composable
 internal fun HomeTopBar(
@@ -44,17 +42,10 @@ internal fun HomeTopBar(
     contentAlignment = Alignment.CenterStart,
   ) {
     Row(modifier = Modifier.fillMaxWidth()) {
-      FixedSizeText(
+      HomeAppTitle(
         modifier = Modifier
           .align(Alignment.CenterVertically)
           .padding(start = 20.dp, top = 2.dp),
-        text = stringResource(R.string.bandalart),
-        color = Gray900,
-        fontSize = 28.sp,
-        fontWeight = FontWeight.W400,
-        fontFamily = neurimboGothicRegular,
-        lineHeight = 20.sp,
-        letterSpacing = (-0.56).sp,
       )
       Spacer(modifier = Modifier.weight(1f))
       Box(
@@ -94,3 +85,5 @@ internal fun HomeTopBar(
     }
   }
 }
+
+

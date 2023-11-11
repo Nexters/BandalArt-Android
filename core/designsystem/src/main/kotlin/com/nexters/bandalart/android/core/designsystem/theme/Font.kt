@@ -21,3 +21,7 @@ val pretendard = FontFamily(
 val neurimboGothicRegular = FontFamily(
   Font(R.font.neurimbo_gothic_regular, FontWeight.Normal, FontStyle.Normal),
 )
+
+val koronaOneRegular = FontFamily(
+  Font(R.font.krona_one_regular, FontWeight.Normal, FontStyle.Normal),
+)
