@@ -85,5 +85,3 @@ internal fun HomeTopBar(
     }
   }
 }
-
-

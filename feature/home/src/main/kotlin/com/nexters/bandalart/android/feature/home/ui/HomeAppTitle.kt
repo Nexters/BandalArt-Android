@@ -72,4 +72,3 @@ fun HomeAppEnglishTitle(
 fun Context.getCurrentLocale(): Locale {
   return this.resources.configuration.locales.get(0)
 }
-
