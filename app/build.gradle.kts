@@ -57,6 +57,7 @@ dependencies {
     projects.core.domain,
     projects.core.network,
     projects.core.ui,
+    projects.core.util,
     projects.feature.complete,
     projects.feature.home,
     projects.feature.onboarding,

@@ -34,13 +34,13 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.toColor
-import com.nexters.bandalart.android.core.ui.extension.toFormatDate
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.MainColor
+import com.nexters.bandalart.android.core.ui.extension.toColor
+import com.nexters.bandalart.android.core.util.extension.toFormatDate
 import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable
