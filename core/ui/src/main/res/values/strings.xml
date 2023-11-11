@@ -33,6 +33,7 @@
   <string name="home_sub_cell">서브목표</string>
 
 <!-- HomeTopbar.kt -->
+  <string name="bandalart">반다라트</string>
   <string name="home_list">목록</string>
   <string name="home_add">추가</string>
 
@@ -45,6 +46,12 @@
   <string name="dropdown_delete">삭제하기</string>
 
 <!--  BandalartBottomSheet.kt -->
+  <string name="bottomsheet_header_maincell_enter_title">메인목표 입력</string>
+  <string name="bottomsheet_header_maincell_edit_title">메인목표 수정</string>
+  <string name="bottomsheet_header_subcell_enter_title">서브목표 입력</string>
+  <string name="bottomsheet_header_subcell_edit_title">서브목표 수정</string>
+  <string name="bottomsheet_header_taskcell_enter_title">태스크 입력</string>
+  <string name="bottomsheet_header_taskcell_edit_title">태스크 수정</string>
   <string name="bottomsheet_title">목표 이름 (필수)</string>
   <string name="bottomsheet_title_placeholder">15자 이내로 입력해주세요</string>
   <string name="bottomsheet_color">색상 테마</string>
@@ -55,6 +62,8 @@
   <string name="bottomsheet_is_completed">달성 여부</string>
   <string name="bottomsheet_completed">달성</string>
   <string name="bottomsheet_in_completed">미달성</string>
+  <string name="bottomsheet_delete">삭제</string>
+  <string name="bottomsheet_done">완료</string>
 
 <!-- BandalartDatePicker.kt -->
   <string name="datepicker_year">%1$s년</string>
@@ -62,15 +71,24 @@
   <string name="datepicker_day">%1$s일</string>
 
 <!-- BandalartDeleteAlertDialog -->
-  <string name="delete_bandalart_dialog_empty_title">지금 작성중인\n반다라트를 삭제하시겠어요?</string>
-  <string name="delete_bandalart_dialog_title">%1$s\n반다라트를 삭제하시겠어요?</string>
-  <string name="delete_bandalart_dialog_message">삭제된 반다라트는 다시 복구할 수 없어요.</string>
-  <string name="delete_bandalart_cell_dialog_title">해당 셀을 삭제하시겠어요?</string>
-  <string name="delete_bandalart_maincell_dialog_message">메인 목표 삭제는 반다라트 전체가 삭제되고\n다시 복구할 수 없어요.</string>
-  <string name="delete_bandalart_subcell_dialog_message">서브 목표 삭제는 하위 태스크와 함께 삭제되고\n다시 복구할 수 없어요.</string>
+  <string name="delete_bandalart_dialog_empty_title">반다라트를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_dialog_title">\&apos;%1$s\&apos;\n반다라트를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_dialog_message">삭제 반다라트는 다시 복구할 수 없어요.</string>
+
+  <string name="delete_bandalart_maincelll_dialog_empty_title">메인목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_maincell_dialog_title">\&apos;%1$s\&apos;\n메인목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_maincell_dialog_message">서브목표와 태스크들이 모두 삭제돼요</string>
+
+  <string name="delete_bandalart_subcell_dialog_empty_title">서브목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_subcell_dialog_title">\&apos;%1$s\&apos;\n서브목표를 삭제하시겠어요?</string>
+  <string name="delete_bandalart_subcell_dialog_message">속해있는 하위 태스크들이 모두 삭제돼요</string>
+
+  <string name="delete_bandalart_taskcell_dialog_title">태스크를 삭제하시겠어요?</string>
+<!--  <string name="delete_bandalart_taskcell_dialog_title">\&apos;%1$s\&apos;\n태스크를 삭제하시겠어요?</string>-->
   <string name="delete_bandalart_taskcell_dialog_message">삭제된 내용은 다시 복구할 수 없어요.</string>
+
   <string name="delete_bandalart_delete">삭제하기</string>
-  <string name="delete_bandalart_cancle">취소</string>
+  <string name="delete_bandalart_cancel">취소</string>
 
 <!-- NetworkErrorAlertDialog -->
   <string name="network_error_dialog_title">네트워크 문제로 표를\n불러오지 못했어요</string>
@@ -97,11 +115,11 @@
   <string name="share_descrption">Share Icon</string>
   <string name="add_descrption">Add Icon</string>
   <string name="complete_descrption">Complete Icon</string>
-  <string name="app_descrption">App Title</string>
   <string name="hamburger_descrption">Hamburger Icon</string>
   <string name="clear_descrption">Clear Icon</string>
   <string name="delete_descrption">Delete Icon</string>
   <string name="splash_description">Splash Icon</string>
+  <string name="gallery_icon">Gallery Icon</string>
 
 <!--  label -->
   <string name="skeleton_trans_animate_label">Hamburger Icon</string>

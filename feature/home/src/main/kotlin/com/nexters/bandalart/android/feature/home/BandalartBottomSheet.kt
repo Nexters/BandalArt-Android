@@ -87,9 +87,9 @@ import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartColorPicker
-import com.nexters.bandalart.android.feature.home.ui.BandalartDatePicker
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiPicker
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartColorPicker
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartDatePicker
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker
 import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 
@@ -127,11 +127,13 @@ fun BandalartBottomSheet(
     LaunchedEffect(key1 = Unit) {
       viewModel.copyCellData(cellData = cellData)
     }
+
     LaunchedEffect(key1 = uiState.isCellDataCopied) {
       if (uiState.isCellDataCopied && uiState.cellData.title.isNullOrEmpty()) {
         focusRequester.requestFocus()
       }
     }
+
     LaunchedEffect(key1 = uiState.isCellUpdated) {
       if (uiState.isCellUpdated) {
         scope.launch {
@@ -141,6 +143,7 @@ fun BandalartBottomSheet(
         }
       }
     }
+
     LaunchedEffect(viewModel) {
       viewModel.eventFlow.collect { event ->
         when (event) {
@@ -150,9 +153,16 @@ fun BandalartBottomSheet(
         }
       }
     }
+
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
-        title = stringResource(R.string.delete_bandalart_cell_dialog_title),
+        title = if (isMainCell) {
+          stringResource(R.string.delete_bandalart_maincelll_dialog_empty_title)
+        } else if (isSubCell) {
+          stringResource(R.string.delete_bandalart_subcell_dialog_empty_title)
+        } else {
+          stringResource(R.string.delete_bandalart_taskcell_dialog_title)
+        },
         message = if (isMainCell) {
           stringResource(R.string.delete_bandalart_maincell_dialog_message)
         } else if (isSubCell) {
@@ -192,7 +202,6 @@ fun BandalartBottomSheet(
         isMainCell = isMainCell,
         isSubCell = isSubCell,
         isBlankCell = isBlankCell,
-        scope = scope,
         bottomSheetState = bottomSheetState,
         onResult = onResult,
         bottomSheetClosed = viewModel::bottomSheetClosed,
@@ -232,11 +241,8 @@ fun BandalartBottomSheet(
                   contentAlignment = Alignment.Center,
                 ) {
                   if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
-                    val image = painterResource(
-                      id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-                    )
                     Image(
-                      painter = image,
+                      painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
                       contentDescription = stringResource(R.string.empty_emoji_descrption),
                     )
                   } else {
@@ -247,11 +253,8 @@ fun BandalartBottomSheet(
                   }
                 }
               }
-              val image = painterResource(
-                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
-              )
               Image(
-                painter = image,
+                painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
                 contentDescription = stringResource(R.string.edit_descrption),
                 modifier = Modifier
                   .align(Alignment.BottomEnd)
@@ -308,7 +311,6 @@ fun BandalartBottomSheet(
                 viewModel.emojiSelected(profileEmoji = currentEmojiResult)
                 viewModel.openEmojiPicker(flag = openEmojiPushResult)
               },
-              emojiPickerScope = rememberCoroutineScope(),
               emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             ),
           )
@@ -390,18 +392,12 @@ fun BandalartBottomSheet(
                 )
               },
               keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-              keyboardActions = KeyboardActions(
-                onDone = {
-                  focusManager.clearFocus()
-                },
-              ),
+              keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
               maxLines = 1,
               textStyle = BottomSheetTextStyle(),
               decorationBox = { innerTextField ->
                 if (uiState.cellData.description.isNullOrEmpty()) {
-                  BottomSheetContentPlaceholder(
-                    text = stringResource(R.string.bottomsheet_description_placeholder),
-                  )
+                  BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
                 }
                 innerTextField()
               },
@@ -456,7 +452,8 @@ fun BandalartBottomSheet(
           }
           BottomSheetCompleteButton(
             modifier = Modifier.weight(1f),
-            isBlankCell = uiState.cellData.title?.trim().isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
+            isBlankCell = uiState.cellData.title?.trim()
+              .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
             onClick = {
               if (isMainCell) {
                 viewModel.updateBandalartMainCell(

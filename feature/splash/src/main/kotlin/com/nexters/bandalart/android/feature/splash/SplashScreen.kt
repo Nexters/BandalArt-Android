@@ -1,7 +1,6 @@
 package com.nexters.bandalart.android.feature.splash
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -15,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
-import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 
 @Composable
@@ -31,12 +30,8 @@ internal fun SplashRoute(
 
   SplashScreen(
     uiState = uiState,
-    navigateToOnBoarding = { options ->
-      navigateToOnBoarding(options)
-    },
-    navigateToHome = { options ->
-      navigateToHome(options)
-    },
+    navigateToOnBoarding = navigateToOnBoarding,
+    navigateToHome = navigateToHome,
     openNetworkErrorAlertDialog = viewModel::openNetworkErrorAlertDialog,
     createGuestLoginToken = viewModel::createGuestLoginToken,
   )
@@ -52,10 +47,12 @@ fun SplashScreen(
   createGuestLoginToken: () -> Unit,
 ) {
   val context = LocalContext.current
+
   when {
     uiState.isLoading -> {
       LoadingScreen(modifier = Modifier.fillMaxSize())
     }
+
     uiState.isNetworkErrorAlertDialogOpened -> {
       NetworkErrorAlertDialog(
         title = stringResource(R.string.network_error_dialog_title),
@@ -66,12 +63,14 @@ fun SplashScreen(
         },
       )
     }
+
     !uiState.isLoggedIn -> {
       val options = NavOptions.Builder()
         .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
         .build()
       navigateToOnBoarding(options)
     }
+
     uiState.isLoggedIn -> {
       val options = NavOptions.Builder()
         .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
@@ -81,16 +80,12 @@ fun SplashScreen(
   }
 
   Surface(
-    modifier = modifier
-      .fillMaxSize()
-      .background(Gray50),
+    modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
-      val image = painterResource(
-        id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_splash,
-      )
       Image(
-        painter = image,
+        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_splash),
         contentDescription = context.getString(R.string.splash_description),
         modifier = Modifier.align(Alignment.Center),
       )

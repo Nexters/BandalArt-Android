@@ -14,6 +14,7 @@ gradlePlugin {
     "AndroidHiltPlugin" to "android-hilt",
     "JvmKotlinPlugin" to "jvm-kotlin",
     "KotlinExplicitApiPlugin" to "kotlin-explicit-api",
+    "TestKotestPlugin" to "test-kotest",
   )
 
   plugins {

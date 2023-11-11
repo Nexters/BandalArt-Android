@@ -1,6 +1,0 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BandalartDropDownMenu(
-  stable modifier: Modifier? = @static Companion
-  stable openDropDownMenu: Function1<Boolean, Unit>
-  stable isDropDownMenuOpened: Boolean
-  stable onDeleteClicked: Function0<Unit>
-)

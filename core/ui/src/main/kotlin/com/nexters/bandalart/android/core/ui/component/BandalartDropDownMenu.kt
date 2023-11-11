@@ -46,7 +46,7 @@ fun BandalartDropDownMenu(
       expanded = isDropDownMenuOpened,
       onDismissRequest = { openDropDownMenu(false) },
       offset = DpOffset(
-        x = (-25).dp,
+        x = (-18).dp,
         y = 0.dp,
       ),
     ) {
@@ -59,7 +59,7 @@ fun BandalartDropDownMenu(
 //          Row {
 //            val image = painterResource(id = R.drawable.ic_image)
 //            Image(
-//              painter = image,
+//              painter = painterResource(id = R.drawable.ic_image),
 //              contentDescription = "Image Icon",
 //              modifier = Modifier
 //                .height(14.dp)
@@ -91,7 +91,7 @@ fun BandalartDropDownMenu(
               id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
             )
             Image(
-              painter = image,
+              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete),
               contentDescription = context.getString(R.string.delete_descrption),
               modifier = Modifier
                 .height(14.dp)

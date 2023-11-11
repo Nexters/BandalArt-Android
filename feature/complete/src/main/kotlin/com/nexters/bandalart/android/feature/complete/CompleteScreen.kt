@@ -23,6 +23,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
@@ -94,6 +95,7 @@ internal fun CompleteScreen(
 
   Surface(
     modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
     Box {
       LottieAnimation(
@@ -106,16 +108,12 @@ internal fun CompleteScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Spacer(modifier = Modifier.height(16.dp))
-        CompleteTopBar(
-          context = context,
-          onNavigateBack = onNavigateBack,
-        )
+        CompleteTopBar(onNavigateBack = onNavigateBack)
         Spacer(modifier = Modifier.height(40.dp))
         TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {
           CompleteBandalart(
             modifier = Modifier.align(Alignment.Center),
-            context = context,
             uiState = uiState,
           )
           // MVP 제외

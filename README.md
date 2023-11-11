@@ -33,7 +33,7 @@
 
 - IDE : Android Studio Giraffe
 - JDK : Java 17을 실행할 수 있는 JDK
-- Kotlin Language : 1.8.22
+- Kotlin Language : 1.9
 
 ### Language
 
@@ -63,23 +63,29 @@
 - Facebook Shimmer
 - Firebase(Analytics, Crashlytics)
 
-#### Code analysis
+#### Test & Code analysis
 
 - Ktlint
 - Detekt
+- Kotest
 
 #### Gradle Dependency
 
 - Gradle Version Catalog
 
 ## Architecture
-[Google App Architecture](https://developer.android.com/topic/architecture)
+Based on [Google App Architecture](https://developer.android.com/topic/architecture) similar to Clean Architecture
+
+<img width="760" alt="image" src="https://github.com/easyhooon/watcha-assignment/assets/51016231/2837a3b6-32f8-46aa-a102-3fb5b3e3826a">
+
+<img width="760" alt="image" src="https://github.com/easyhooon/watcha-assignment/assets/51016231/b29020a1-69aa-482b-8af4-ddb27122a440">
 
 ## Package Structure
 ```
 ├── app
 │   ├── navigation
-│   └── MainActivity
+│   ├── MainActivity
+│   └── Application
 ├── build-logic
 ├── buildSrc
 ├── core

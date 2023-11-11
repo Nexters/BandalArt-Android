@@ -7,7 +7,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -41,21 +41,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.designsystem.theme.Gray100
-import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.ui.BandalartChart
-import com.nexters.bandalart.android.feature.home.ui.BandalartEmojiBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartListBottomSheet
-import com.nexters.bandalart.android.feature.home.ui.BandalartSkeleton
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.ShareButton
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartChart
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartListBottomSheet
+import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartSkeleton
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,7 +71,9 @@ internal fun HomeRoute(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
-  val bandalartCount by derivedStateOf { uiState.bandalartList.size }
+  val bandalartCount by remember {
+    derivedStateOf { uiState.bandalartList.size }
+  }
 
   LaunchedEffect(viewModel) {
     viewModel.eventFlow.collect { event ->
@@ -82,6 +85,7 @@ internal fun HomeRoute(
           delay(SnackbarDuration)
           job.cancel()
         }
+
         is HomeUiEvent.ShowToast -> {
           Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
         }
@@ -93,6 +97,8 @@ internal fun HomeRoute(
     modifier = modifier,
     uiState = uiState,
     bandalartCount = bandalartCount,
+    navigateToComplete = navigateToComplete,
+    getBandalartList = viewModel::getBandalartList,
     navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
     settingDestination = viewModel::setDestinationKey,
     getBandalartList = { key -> viewModel.getBandalartList(key) },
@@ -102,22 +108,21 @@ internal fun HomeRoute(
     findBandalartIdx = viewModel::findPagerIdx,
     setBandalartIdx = viewModel::setBandalartIdx,
     // loadingChanged = { state -> viewModel.loadingChanged(state) },
-    showSkeletonChanged = { state -> viewModel.showSkeletonChanged(state) },
-    openDropDownMenu = { state -> viewModel.openDropDownMenu(state) },
-    openEmojiBottomSheet = { state -> viewModel.openEmojiBottomSheet(state) },
-    openBandalartDeleteAlertDialog = { state -> viewModel.openBandalartDeleteAlertDialog(state) },
-    openCellBottomSheet = { state -> viewModel.openCellBottomSheet(state) },
-    bottomSheetDataChanged = { state -> viewModel.bottomSheetDataChanged(state) },
-    openBandalartListBottomSheet = { state -> viewModel.openBandalartListBottomSheet(state) },
-    setRecentBandalartKey = { key -> viewModel.setRecentBandalartKey(key) },
-    shareBandalart = { key -> viewModel.shareBandalart(key) },
+    showSkeletonChanged = viewModel::showSkeletonChanged,
+    openDropDownMenu = viewModel::openDropDownMenu,
+    openEmojiBottomSheet = viewModel::openEmojiBottomSheet,
+    openBandalartDeleteAlertDialog = viewModel::openBandalartDeleteAlertDialog,
+    openCellBottomSheet = viewModel::openCellBottomSheet,
+    bottomSheetDataChanged = viewModel::bottomSheetDataChanged,
+    openBandalartListBottomSheet = viewModel::openBandalartListBottomSheet,
+    setRecentBandalartKey = viewModel::setRecentBandalartKey,
+    shareBandalart = viewModel::shareBandalart,
     initShareUrl = viewModel::initShareUrl,
-    checkCompletedBandalartKey = { key -> viewModel.checkCompletedBandalartKey(key) },
-    openNetworkErrorDialog = { state -> viewModel.openNetworkErrorAlertDialog(state) },
+    checkCompletedBandalartKey = viewModel::checkCompletedBandalartKey,
+    openNetworkErrorDialog = viewModel::openNetworkErrorAlertDialog,
   )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
@@ -220,7 +225,7 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
-      bandalartList = updateBandalartListTitles(uiState.bandalartList, context),
+      bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
       currentBandalartKey = uiState.bandalartDetailData!!.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
@@ -360,6 +365,7 @@ internal fun HomeScreen(
         uiState.isLoading -> {
           LoadingScreen()
         }
+
         uiState.isShowSkeleton -> {
           BandalartSkeleton()
         }

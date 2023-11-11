@@ -1,4 +1,0 @@
-package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
-com.nexters.bandalart.android.feature.complete.ui.CompleteBandalart,CompleteBandalart,1,0,1,0,0,0,0,0,1,1,
-com.nexters.bandalart.android.feature.complete.ui.CompleteTopBar,CompleteTopBar,1,0,1,0,0,0,0,0,1,1,
-com.nexters.bandalart.android.feature.complete.ui.SaveImageButton,SaveImageButton,1,1,1,0,0,0,0,0,1,1,

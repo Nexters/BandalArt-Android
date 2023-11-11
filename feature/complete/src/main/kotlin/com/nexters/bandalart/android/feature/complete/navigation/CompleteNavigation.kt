@@ -39,8 +39,6 @@ fun NavGraphBuilder.completeScreen(
       },
     ),
   ) {
-    CompleteRoute(
-      onNavigateBack = onNavigateBack,
-    )
+    CompleteRoute(onNavigateBack = onNavigateBack)
   }
 }

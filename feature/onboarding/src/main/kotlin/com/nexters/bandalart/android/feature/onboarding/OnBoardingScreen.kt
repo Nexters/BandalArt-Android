@@ -42,11 +42,7 @@ import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NA
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
 ) {
-  OnBoardingScreen(
-    navigateToHome = { options ->
-      navigateToHome(options)
-    },
-  )
+  OnBoardingScreen(navigateToHome = navigateToHome)
 }
 
 @Composable
@@ -64,10 +60,10 @@ internal fun OnBoardingScreen(
     iterations = LottieConstants.IterateForever,
   )
   val context = LocalContext.current
+
   Surface(
-    modifier = modifier
-      .fillMaxSize()
-      .background(Gray50),
+    modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -106,11 +102,8 @@ internal fun OnBoardingScreen(
                     .background(Gray50),
                   contentAlignment = Alignment.Center,
                 ) {
-                  val image = painterResource(
-                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding,
-                  )
                   Image(
-                    painter = image,
+                    painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding),
                     contentDescription = context.getString(R.string.delete_descrption),
                     modifier = Modifier.fillMaxSize(),
                   )
@@ -118,6 +111,7 @@ internal fun OnBoardingScreen(
               }
             }
           }
+
           1 -> {
             Box {
               Column(

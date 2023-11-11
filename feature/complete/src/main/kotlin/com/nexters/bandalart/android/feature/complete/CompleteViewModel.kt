@@ -64,7 +64,10 @@ class CompleteViewModel @Inject constructor(
   init {
     initComplete()
     viewModelScope.launch {
-      upsertBandalartKeyUseCase(key, true)
+      upsertBandalartKeyUseCase(
+        bandalartKey = key,
+        isCompleted = true,
+      )
     }
   }
 
@@ -89,14 +92,14 @@ class CompleteViewModel @Inject constructor(
             error = null,
           )
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(
-            error = exception,
-          )
+          _uiState.value = _uiState.value.copy(error = exception)
           _eventFlow.emit(CompleteUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception)
         }
@@ -106,8 +109,6 @@ class CompleteViewModel @Inject constructor(
   }
 
   fun initShareUrl() {
-    _uiState.value = _uiState.value.copy(
-      shareUrl = "",
-    )
+    _uiState.value = _uiState.value.copy(shareUrl = "")
   }
 }

@@ -2,31 +2,30 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartKeyUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetPrevBandalartListUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.extension.UiText
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
-import com.nexters.bandalart.android.core.ui.extension.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +36,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * HomeUiState
@@ -64,7 +64,7 @@ import timber.log.Timber
  */
 
 data class HomeUiState(
-  val bandalartList: PersistentList<BandalartDetailUiModel> = persistentListOf(),
+  val bandalartList: ImmutableList<BandalartDetailUiModel> = persistentListOf(),
   val bandalartDetailData: BandalartDetailUiModel? = null,
   val bandalartCellData: BandalartCellUiModel? = null,
   val pagerIdx: Int = -1,
@@ -130,7 +130,7 @@ class HomeViewModel @Inject constructor(
           val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
           _uiState.update {
             it.copy(
-              bandalartList = bandalartList.toPersistentList(),
+              bandalartList = bandalartList.toImmutableList(),
               error = null,
             )
           }
@@ -182,9 +182,11 @@ class HomeViewModel @Inject constructor(
 //            }
 //          }
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -229,9 +231,11 @@ class HomeViewModel @Inject constructor(
 
           getBandalartMainCell(bandalartKey)
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -264,9 +268,11 @@ class HomeViewModel @Inject constructor(
           bottomSheetDataChanged(flag = false)
           openNetworkErrorAlertDialog(false)
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -318,9 +324,11 @@ class HomeViewModel @Inject constructor(
           upsertBandalartKey(bandalart.key)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -358,9 +366,11 @@ class HomeViewModel @Inject constructor(
           deleteBandalartKey(bandalartKey)
           _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -391,10 +401,11 @@ class HomeViewModel @Inject constructor(
       // _uiState.update { it.copy(isLoading = true) }
       val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
       when {
-        result.isSuccess && result.getOrNull() != null -> { }
+        result.isSuccess && result.getOrNull() != null -> {}
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -427,9 +438,11 @@ class HomeViewModel @Inject constructor(
             )
           }
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update { it.copy(error = exception) }
