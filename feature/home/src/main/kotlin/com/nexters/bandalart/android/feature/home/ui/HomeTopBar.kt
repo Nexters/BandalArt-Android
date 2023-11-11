@@ -22,12 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 
 @Composable
 internal fun HomeTopBar(
@@ -42,12 +42,10 @@ internal fun HomeTopBar(
     contentAlignment = Alignment.CenterStart,
   ) {
     Row(modifier = Modifier.fillMaxWidth()) {
-      Image(
-        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title),
-        contentDescription = stringResource(R.string.app_descrption),
+      HomeAppTitle(
         modifier = Modifier
           .align(Alignment.CenterVertically)
-          .padding(start = 20.dp),
+          .padding(start = 20.dp, top = 2.dp),
       )
       Spacer(modifier = Modifier.weight(1f))
       Box(

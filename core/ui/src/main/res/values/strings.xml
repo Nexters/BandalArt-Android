@@ -33,6 +33,7 @@
   <string name="home_sub_cell">서브목표</string>
 
 <!-- HomeTopbar.kt -->
+  <string name="bandalart">반다라트</string>
   <string name="home_list">목록</string>
   <string name="home_add">추가</string>
 
@@ -114,7 +115,6 @@
   <string name="share_descrption">Share Icon</string>
   <string name="add_descrption">Add Icon</string>
   <string name="complete_descrption">Complete Icon</string>
-  <string name="app_descrption">App Title</string>
   <string name="hamburger_descrption">Hamburger Icon</string>
   <string name="clear_descrption">Clear Icon</string>
   <string name="delete_descrption">Delete Icon</string>
