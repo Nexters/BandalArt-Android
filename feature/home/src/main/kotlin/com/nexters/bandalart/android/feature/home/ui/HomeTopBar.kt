@@ -54,7 +54,7 @@ internal fun HomeTopBar(
         fontWeight = FontWeight.W400,
         fontFamily = neurimboGothicRegular,
         lineHeight = 20.sp,
-        letterSpacing = (-0.56).sp
+        letterSpacing = (-0.56).sp,
       )
       Spacer(modifier = Modifier.weight(1f))
       Box(
