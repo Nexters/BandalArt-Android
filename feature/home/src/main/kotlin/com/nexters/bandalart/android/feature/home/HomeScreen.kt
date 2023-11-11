@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalFoundationApi::class)
 @file:SuppressLint("StringFormatInvalid")
 
 package com.nexters.bandalart.android.feature.home
@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +23,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -99,9 +99,7 @@ internal fun HomeRoute(
     bandalartCount = bandalartCount,
     navigateToComplete = navigateToComplete,
     getBandalartList = viewModel::getBandalartList,
-    navigateToComplete = { key, title, emoji -> navigateToComplete(key, title, emoji) },
     settingDestination = viewModel::setDestinationKey,
-    getBandalartList = { key -> viewModel.getBandalartList(key) },
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
