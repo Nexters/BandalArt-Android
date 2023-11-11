@@ -48,6 +48,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 
 @Composable
@@ -75,12 +76,17 @@ fun BandalartSkeletonScreen(
           contentAlignment = Alignment.CenterStart,
         ) {
           Row(modifier = Modifier.fillMaxWidth()) {
-            Image(
-              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app_title),
-              contentDescription = stringResource(R.string.app_descrption),
+            FixedSizeText(
               modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(start = 20.dp),
+                .padding(start = 20.dp, top = 2.dp),
+              text = stringResource(R.string.bandalart),
+              color = Gray900,
+              fontSize = 28.sp,
+              fontWeight = FontWeight.W400,
+              fontFamily = neurimboGothicRegular,
+              lineHeight = 20.sp,
+              letterSpacing = (-0.56).sp
             )
           }
         }

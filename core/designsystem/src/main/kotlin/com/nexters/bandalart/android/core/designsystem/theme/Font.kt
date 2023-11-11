@@ -17,3 +17,7 @@ val pretendard = FontFamily(
   Font(R.font.pretendard_semi_bold, FontWeight.SemiBold, FontStyle.Normal),
   Font(R.font.pretendard_thin, FontWeight.Thin, FontStyle.Normal),
 )
+
+val neurimboGothicRegular = FontFamily(
+  Font(R.font.neurimbo_gothic_regular, FontWeight.Normal, FontStyle.Normal)
+)
