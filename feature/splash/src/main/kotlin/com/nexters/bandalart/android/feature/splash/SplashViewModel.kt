@@ -7,14 +7,17 @@ import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginT
 import com.nexters.bandalart.android.core.domain.usecase.login.GetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.SetGuestLoginTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * SplashUiState
@@ -32,6 +35,11 @@ data class SplashUiState(
   val error: Throwable? = null,
 )
 
+sealed interface SplashUiEvent {
+  data object NavigateToOnBoarding : SplashUiEvent
+  data object NavigateToHome : SplashUiEvent
+}
+
 @HiltViewModel
 class SplashViewModel @Inject constructor(
   private val getGuestLoginTokenUseCase: GetGuestLoginTokenUseCase,
@@ -42,6 +50,9 @@ class SplashViewModel @Inject constructor(
 
   private val _uiState = MutableStateFlow(SplashUiState())
   val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
+
+  private val _eventFlow = MutableSharedFlow<SplashUiEvent>()
+  val eventFlow: SharedFlow<SplashUiEvent> = _eventFlow.asSharedFlow()
 
   init {
     viewModelScope.launch {
@@ -80,9 +91,11 @@ class SplashViewModel @Inject constructor(
           _uiState.update { it.copy(isLoggedIn = false) }
           createBandalartUseCase()
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = true) }
         }
@@ -93,5 +106,17 @@ class SplashViewModel @Inject constructor(
 
   fun openNetworkErrorAlertDialog(flag: Boolean) {
     _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = flag) }
+  }
+
+  fun navigateToOnBoarding() {
+    viewModelScope.launch {
+      _eventFlow.emit(SplashUiEvent.NavigateToOnBoarding)
+    }
+  }
+
+  fun navigateToHome() {
+    viewModelScope.launch {
+      _eventFlow.emit(SplashUiEvent.NavigateToHome)
+    }
   }
 }

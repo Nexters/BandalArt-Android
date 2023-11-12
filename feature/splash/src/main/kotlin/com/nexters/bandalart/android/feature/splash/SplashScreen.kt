@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
@@ -28,10 +29,28 @@ internal fun SplashRoute(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+    when (event) {
+      is SplashUiEvent.NavigateToOnBoarding -> {
+        val options = NavOptions.Builder()
+          .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
+          .build()
+        navigateToOnBoarding(options)
+      }
+
+      is SplashUiEvent.NavigateToHome -> {
+        val options = NavOptions.Builder()
+          .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
+          .build()
+        navigateToHome(options)
+      }
+    }
+  }
+
   SplashScreen(
     uiState = uiState,
-    navigateToOnBoarding = navigateToOnBoarding,
-    navigateToHome = navigateToHome,
+    navigateToOnBoarding = viewModel::navigateToOnBoarding,
+    navigateToHome = viewModel::navigateToHome,
     openNetworkErrorAlertDialog = viewModel::openNetworkErrorAlertDialog,
     createGuestLoginToken = viewModel::createGuestLoginToken,
   )
@@ -41,8 +60,8 @@ internal fun SplashRoute(
 fun SplashScreen(
   modifier: Modifier = Modifier,
   uiState: SplashUiState,
-  navigateToOnBoarding: (NavOptions) -> Unit,
-  navigateToHome: (NavOptions) -> Unit,
+  navigateToOnBoarding: () -> Unit,
+  navigateToHome: () -> Unit,
   openNetworkErrorAlertDialog: (Boolean) -> Unit,
   createGuestLoginToken: () -> Unit,
 ) {
@@ -65,17 +84,11 @@ fun SplashScreen(
     }
 
     !uiState.isLoggedIn -> {
-      val options = NavOptions.Builder()
-        .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
-        .build()
-      navigateToOnBoarding(options)
+      navigateToOnBoarding()
     }
 
     uiState.isLoggedIn -> {
-      val options = NavOptions.Builder()
-        .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
-        .build()
-      navigateToHome(options)
+      navigateToHome()
     }
   }
 

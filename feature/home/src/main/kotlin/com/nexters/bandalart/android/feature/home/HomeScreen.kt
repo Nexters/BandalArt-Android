@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,19 +31,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.ui.HomeHeader
+import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
+import com.nexters.bandalart.android.feature.home.ui.ShareButton
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartChart
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartSkeleton
-import com.nexters.bandalart.android.feature.home.ui.HomeHeader
-import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
-import com.nexters.bandalart.android.feature.home.ui.ShareButton
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,24 +60,35 @@ internal fun HomeRoute(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
+  val scope = rememberCoroutineScope()
   val bandalartCount by remember {
     derivedStateOf { uiState.bandalartList.size }
   }
 
-  LaunchedEffect(viewModel) {
-    viewModel.eventFlow.collect { event ->
-      when (event) {
-        is HomeUiEvent.ShowSnackbar -> {
+  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+    when (event) {
+      is HomeUiEvent.NavigateToComplete -> {
+        navigateToComplete(
+          event.key,
+          event.title,
+          event.profileEmoji.ifEmpty {
+            context.getString(R.string.home_default_emoji)
+          },
+        )
+      }
+
+      is HomeUiEvent.ShowSnackbar -> {
+        scope.launch {
           val job = launch {
             onShowSnackbar(event.message.asString(context))
           }
           delay(SnackbarDuration)
           job.cancel()
         }
+      }
 
-        is HomeUiEvent.ShowToast -> {
-          Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-        }
+      is HomeUiEvent.ShowToast -> {
+        Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
       }
     }
   }
@@ -84,7 +97,7 @@ internal fun HomeRoute(
     modifier = modifier,
     uiState = uiState,
     bandalartCount = bandalartCount,
-    navigateToComplete = navigateToComplete,
+    navigateToComplete = viewModel::navigateToComplete,
     getBandalartList = viewModel::getBandalartList,
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
@@ -110,7 +123,7 @@ internal fun HomeScreen(
   modifier: Modifier = Modifier,
   uiState: HomeUiState,
   bandalartCount: Int,
-  navigateToComplete: (String, String, String) -> Unit,
+  navigateToComplete: () -> Unit,
   getBandalartList: (String?) -> Unit,
   getBandalartDetail: (String) -> Unit,
   createBandalart: () -> Unit,
@@ -136,18 +149,13 @@ internal fun HomeScreen(
   }
 
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
+    val bandalartDetailData = uiState.bandalartDetailData ?: return@LaunchedEffect
     // 목표를 달성했을 경우
-    if (uiState.bandalartDetailData?.isCompleted == true && !uiState.bandalartDetailData.title.isNullOrEmpty()) {
+    if (bandalartDetailData.isCompleted && !bandalartDetailData.title.isNullOrEmpty()) {
       // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
-      val isBandalartCompleted = checkCompletedBandalartKey(uiState.bandalartDetailData.key)
+      val isBandalartCompleted = checkCompletedBandalartKey(bandalartDetailData.key)
       if (isBandalartCompleted) {
-        navigateToComplete(
-          uiState.bandalartDetailData.key,
-          uiState.bandalartDetailData.title,
-          if (uiState.bandalartDetailData.profileEmoji.isNullOrEmpty()) {
-            context.getString(R.string.home_default_emoji)
-          } else uiState.bandalartDetailData.profileEmoji,
-        )
+        navigateToComplete()
       }
     }
   }

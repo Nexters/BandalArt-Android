@@ -39,8 +39,9 @@ data class CompleteUiState(
   val error: Throwable? = null,
 )
 
-sealed class CompleteUiEvent {
-  data class ShowToast(val message: UiText) : CompleteUiEvent()
+sealed interface CompleteUiEvent {
+  data object NavigateToHome : CompleteUiEvent
+  data class ShowToast(val message: UiText) : CompleteUiEvent
 }
 
 @HiltViewModel
@@ -110,5 +111,11 @@ class CompleteViewModel @Inject constructor(
 
   fun initShareUrl() {
     _uiState.value = _uiState.value.copy(shareUrl = "")
+  }
+
+  fun navigateToHome() {
+    viewModelScope.launch {
+      _eventFlow.emit(CompleteUiEvent.NavigateToHome)
+    }
   }
 }

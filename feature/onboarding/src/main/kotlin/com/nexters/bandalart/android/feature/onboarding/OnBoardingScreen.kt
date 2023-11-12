@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -36,19 +37,32 @@ import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 
 @Composable
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
+  viewModel: SplashViewModel = hiltViewModel(),
 ) {
-  OnBoardingScreen(navigateToHome = navigateToHome)
+  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+    when (event) {
+      is OnBoardingUiEvent.NavigateToHome -> {
+        val options = NavOptions.Builder()
+          .setPopUpTo(ONBOARDING_NAVIGATION_ROUTE, inclusive = true)
+          .build()
+        navigateToHome(options)
+      }
+    }
+  }
+
+  OnBoardingScreen(navigateToHome = viewModel::navigateToHome)
 }
 
 @Composable
 internal fun OnBoardingScreen(
   modifier: Modifier = Modifier,
-  navigateToHome: (NavOptions) -> Unit,
+  navigateToHome: () -> Unit,
 ) {
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
@@ -141,12 +155,7 @@ internal fun OnBoardingScreen(
                 }
               }
               BandalartButton(
-                onClick = {
-                  val options = NavOptions.Builder()
-                    .setPopUpTo(ONBOARDING_NAVIGATION_ROUTE, inclusive = true)
-                    .build()
-                  navigateToHome(options)
-                },
+                onClick = navigateToHome,
                 text = context.getString(R.string.onboarding_start),
                 modifier = Modifier
                   .align(Alignment.BottomCenter)
