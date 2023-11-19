@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.nexters.bandalart.android.feature.complete.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

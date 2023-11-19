@@ -54,8 +54,8 @@ fun NetworkErrorAlertDialog(
         )
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           text = title,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray900,
           fontSize = 20.sp,
           fontWeight = FontWeight.W700,
@@ -65,8 +65,8 @@ fun NetworkErrorAlertDialog(
         )
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           text = message,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray400,
           fontSize = 14.sp,
           fontWeight = FontWeight.W500,

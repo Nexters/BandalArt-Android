@@ -39,7 +39,7 @@ import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
-import com.nexters.bandalart.android.feature.onboarding.ui.PagerIndicator
+import com.nexters.bandalart.android.core.ui.component.PagerIndicator
 
 @Composable
 internal fun OnBoardingRoute(

@@ -49,7 +49,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
-import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
+import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBar
 
 @Composable
 fun BandalartSkeletonScreen(

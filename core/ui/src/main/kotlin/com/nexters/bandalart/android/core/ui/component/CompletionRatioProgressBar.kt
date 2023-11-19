@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing

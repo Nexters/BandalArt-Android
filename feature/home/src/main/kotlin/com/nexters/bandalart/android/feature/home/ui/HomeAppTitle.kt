@@ -41,8 +41,8 @@ fun HomeAppKoreanTitle(
   modifier: Modifier = Modifier,
 ) {
   FixedSizeText(
-    modifier = modifier,
     text = stringResource(R.string.bandalart),
+    modifier = modifier,
     color = Gray900,
     fontSize = 28.sp,
     fontWeight = FontWeight.W400,
