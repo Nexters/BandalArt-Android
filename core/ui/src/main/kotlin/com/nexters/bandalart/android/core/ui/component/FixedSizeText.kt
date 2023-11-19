@@ -14,10 +14,10 @@ import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 @Composable
 fun FixedSizeText(
   text: String,
-  modifier: Modifier = Modifier,
   color: Color,
   fontSize: TextUnit,
   fontWeight: FontWeight,
+  modifier: Modifier = Modifier,
   fontFamily: FontFamily = pretendard,
   letterSpacing: TextUnit = TextUnit.Unspecified,
   textAlign: TextAlign? = null,

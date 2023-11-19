@@ -45,12 +45,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartItem(
-  modifier: Modifier = Modifier,
   bottomSheetState: SheetState,
   bandalartItem: BandalartDetailUiModel,
   currentBandalartKey: String,
   onClick: (String) -> Unit,
   onCancelClicked: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val scope = rememberCoroutineScope()
 

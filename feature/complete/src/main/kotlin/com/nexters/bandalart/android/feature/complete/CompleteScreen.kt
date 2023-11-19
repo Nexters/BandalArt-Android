@@ -33,8 +33,8 @@ import com.nexters.bandalart.android.feature.complete.ui.CompleteTopBar
 
 @Composable
 internal fun CompleteRoute(
-  modifier: Modifier = Modifier,
   onNavigateBack: () -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: CompleteViewModel = hiltViewModel(),
 ) {
   val context = LocalContext.current
@@ -53,21 +53,21 @@ internal fun CompleteRoute(
   }
 
   CompleteScreen(
-    modifier = modifier,
     uiState = uiState,
     navigateToHome = viewModel::navigateToHome,
     shareBandalart = viewModel::shareBandalart,
     initShareUrl = viewModel::initShareUrl,
+    modifier = modifier,
   )
 }
 
 @Composable
 internal fun CompleteScreen(
-  modifier: Modifier = Modifier,
   uiState: CompleteUiState,
   navigateToHome: () -> Unit,
   shareBandalart: () -> Unit,
   initShareUrl: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   val composition by rememberLottieComposition(

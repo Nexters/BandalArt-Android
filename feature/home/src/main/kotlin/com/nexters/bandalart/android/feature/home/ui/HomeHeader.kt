@@ -45,16 +45,14 @@ import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable
 fun HomeHeader(
-  modifier: Modifier = Modifier,
   uiState: HomeUiState,
   openDropDownMenu: (Boolean) -> Unit,
   openEmojiBottomSheet: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   openCellBottomSheet: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-  Column(
-    modifier.padding(horizontal = 16.dp),
-  ) {
+  Column(modifier.padding(horizontal = 16.dp)) {
     Spacer(modifier = Modifier.height(24.dp))
     Column {
       Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {

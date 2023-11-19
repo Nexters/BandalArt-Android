@@ -53,10 +53,10 @@ import com.nexters.bandalart.android.feature.home.ui.CompletionRatioProgressBar
 
 @Composable
 fun BandalartSkeletonScreen(
-  modifier: Modifier = Modifier,
   taskBrush: Brush,
   subBrush: Brush,
   mainBrush: Brush,
+  modifier: Modifier = Modifier,
 ) {
   Surface(
     modifier = modifier.fillMaxSize(),

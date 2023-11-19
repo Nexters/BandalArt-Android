@@ -58,13 +58,13 @@ data class SubCell(
 
 @Composable
 fun BandalartCell(
-  modifier: Modifier = Modifier,
   bandalartKey: String,
   themeColor: ThemeColor,
   isMainCell: Boolean,
-  cellInfo: CellInfo = CellInfo(),
   cellData: BandalartCellUiModel,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
+  cellInfo: CellInfo = CellInfo(),
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,
   mainCellPadding: Dp = 1.dp,

@@ -24,11 +24,11 @@ import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable
 fun BandalartChart(
-  modifier: Modifier = Modifier,
   bandalartKey: String,
   uiState: HomeUiState,
   themeColor: ThemeColor,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp

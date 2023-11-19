@@ -39,10 +39,12 @@ import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
+import com.nexters.bandalart.android.feature.onboarding.ui.PagerIndicator
 
 @Composable
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: SplashViewModel = hiltViewModel(),
 ) {
   ObserveAsEvents(flow = viewModel.eventFlow) { event ->
@@ -56,13 +58,16 @@ internal fun OnBoardingRoute(
     }
   }
 
-  OnBoardingScreen(navigateToHome = viewModel::navigateToHome)
+  OnBoardingScreen(
+    navigateToHome = viewModel::navigateToHome,
+    modifier = modifier,
+  )
 }
 
 @Composable
 internal fun OnBoardingScreen(
-  modifier: Modifier = Modifier,
   navigateToHome: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(

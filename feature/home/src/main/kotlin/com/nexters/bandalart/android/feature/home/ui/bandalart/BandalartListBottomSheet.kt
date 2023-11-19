@@ -52,7 +52,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartListBottomSheet(
-  modifier: Modifier = Modifier,
   bandalartList: ImmutableList<BandalartDetailUiModel>,
   currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
@@ -60,6 +59,7 @@ fun BandalartListBottomSheet(
   showSkeletonChanged: (Boolean) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

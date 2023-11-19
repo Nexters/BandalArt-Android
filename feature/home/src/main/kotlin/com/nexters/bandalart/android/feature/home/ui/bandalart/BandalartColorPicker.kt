@@ -29,9 +29,10 @@ import com.nexters.bandalart.android.core.ui.extension.toColor
 fun BandalartColorPicker(
   initColor: ThemeColor,
   onResult: (ThemeColor) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Row(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .height(45.dp),
     verticalAlignment = Alignment.CenterVertically,

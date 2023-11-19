@@ -25,6 +25,7 @@ import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION
 internal fun SplashRoute(
   navigateToOnBoarding: (NavOptions) -> Unit,
   navigateToHome: (NavOptions) -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: SplashViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -53,17 +54,18 @@ internal fun SplashRoute(
     navigateToHome = viewModel::navigateToHome,
     openNetworkErrorAlertDialog = viewModel::openNetworkErrorAlertDialog,
     createGuestLoginToken = viewModel::createGuestLoginToken,
+    modifier = modifier,
   )
 }
 
 @Composable
 fun SplashScreen(
-  modifier: Modifier = Modifier,
   uiState: SplashUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToHome: () -> Unit,
   openNetworkErrorAlertDialog: (Boolean) -> Unit,
   createGuestLoginToken: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
 

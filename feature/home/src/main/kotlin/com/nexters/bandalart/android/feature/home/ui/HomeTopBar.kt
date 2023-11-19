@@ -33,9 +33,10 @@ import com.nexters.bandalart.android.core.ui.nonScaleSp
 internal fun HomeTopBar(
   bandalartCount: Int,
   onShowBandalartList: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Box(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .height(62.dp)
       .background(White),

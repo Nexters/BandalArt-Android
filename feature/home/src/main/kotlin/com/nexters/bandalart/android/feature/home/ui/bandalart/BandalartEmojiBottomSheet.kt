@@ -22,6 +22,7 @@ fun BandalartEmojiBottomSheet(
     bottomSheetState: Boolean,
     bottomSheetDataChangedState: Boolean,
   ) -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -30,8 +31,7 @@ fun BandalartEmojiBottomSheet(
     onDismissRequest = {
       onResult(false, false)
     },
-    modifier = Modifier
-      .wrapContentSize(),
+    modifier = modifier.wrapContentSize(),
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {

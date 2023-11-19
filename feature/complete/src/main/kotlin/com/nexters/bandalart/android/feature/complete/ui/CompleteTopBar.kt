@@ -18,12 +18,12 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun CompleteTopBar(
-  modifier: Modifier = Modifier,
   onNavigateBack: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   Row(
-    modifier
+    modifier = modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp),
   ) {

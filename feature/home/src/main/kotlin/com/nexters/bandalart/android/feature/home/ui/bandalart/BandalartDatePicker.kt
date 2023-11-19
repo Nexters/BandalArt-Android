@@ -52,10 +52,11 @@ fun BandalartDatePicker(
   datePickerScope: CoroutineScope,
   datePickerState: SheetState,
   currentDueDate: LocalDateTime,
+  modifier: Modifier = Modifier,
 ) {
   Column(
+    modifier = modifier.fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally,
-    modifier = Modifier.fillMaxWidth(),
   ) {
     val chosenYear = remember { mutableStateOf(currentDueDate.year.toString()) }
     val chosenMonth = remember { mutableStateOf(currentDueDate.monthValue.toString()) }

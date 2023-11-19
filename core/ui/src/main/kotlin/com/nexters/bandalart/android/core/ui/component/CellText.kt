@@ -23,10 +23,10 @@ val cellLineBreak = LineBreak(
 
 @Composable
 fun CellText(
-  modifier: Modifier = Modifier,
   cellText: String,
   cellTextColor: Color,
   fontWeight: FontWeight,
+  modifier: Modifier = Modifier,
   textAlpha: Float = 1f,
 ) {
   Text(

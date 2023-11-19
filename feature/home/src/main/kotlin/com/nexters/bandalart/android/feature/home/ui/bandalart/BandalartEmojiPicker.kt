@@ -40,11 +40,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartEmojiPicker(
-  modifier: Modifier = Modifier,
   currentEmoji: String?,
   isBottomSheet: Boolean,
   onResult: (String?, Boolean) -> Unit,
   emojiPickerState: SheetState,
+  modifier: Modifier = Modifier,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     val scope = rememberCoroutineScope()

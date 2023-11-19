@@ -26,9 +26,9 @@ import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable
 fun ShareButton(
-  modifier: Modifier = Modifier,
   uiState: HomeUiState,
   shareBandalart: (String) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Box(
     modifier = modifier

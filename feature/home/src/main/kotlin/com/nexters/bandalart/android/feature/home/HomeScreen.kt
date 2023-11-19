@@ -53,9 +53,9 @@ private const val SnackbarDuration = 1000L
 
 @Composable
 internal fun HomeRoute(
-  modifier: Modifier = Modifier,
   navigateToComplete: (String, String, String) -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
+  modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -94,7 +94,6 @@ internal fun HomeRoute(
   }
 
   HomeScreen(
-    modifier = modifier,
     uiState = uiState,
     bandalartCount = bandalartCount,
     navigateToComplete = viewModel::navigateToComplete,
@@ -115,12 +114,12 @@ internal fun HomeRoute(
     initShareUrl = viewModel::initShareUrl,
     checkCompletedBandalartKey = viewModel::checkCompletedBandalartKey,
     openNetworkErrorDialog = viewModel::openNetworkErrorAlertDialog,
+    modifier = modifier,
   )
 }
 
 @Composable
 internal fun HomeScreen(
-  modifier: Modifier = Modifier,
   uiState: HomeUiState,
   bandalartCount: Int,
   navigateToComplete: () -> Unit,
@@ -141,6 +140,7 @@ internal fun HomeScreen(
   initShareUrl: () -> Unit,
   checkCompletedBandalartKey: suspend (String) -> Boolean,
   openNetworkErrorDialog: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
 

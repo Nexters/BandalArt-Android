@@ -31,10 +31,10 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
 fun NetworkErrorAlertDialog(
-  modifier: Modifier = Modifier,
   title: String,
   message: String,
   onConfirmClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   Dialog(onDismissRequest = {}) {

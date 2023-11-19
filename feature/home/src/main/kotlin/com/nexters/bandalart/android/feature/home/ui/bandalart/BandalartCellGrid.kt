@@ -18,9 +18,10 @@ fun BandalartCellGrid(
   rows: Int,
   cols: Int,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier = Modifier.fillMaxSize(),
+    modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.SpaceEvenly,
   ) {

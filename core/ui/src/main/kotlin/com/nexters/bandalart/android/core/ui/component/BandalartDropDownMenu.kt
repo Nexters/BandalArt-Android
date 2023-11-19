@@ -30,10 +30,10 @@ import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 
 @Composable
 fun BandalartDropDownMenu(
-  modifier: Modifier = Modifier,
   openDropDownMenu: (Boolean) -> Unit,
   isDropDownMenuOpened: Boolean,
   onDeleteClicked: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   MaterialTheme(

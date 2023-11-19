@@ -104,6 +104,7 @@ fun BandalartBottomSheet(
     bottomSheetState: Boolean,
     bottomSheetDataChangedState: Boolean,
   ) -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -117,7 +118,7 @@ fun BandalartBottomSheet(
       viewModel.bottomSheetClosed()
       onResult(false, false)
     },
-    modifier = Modifier
+    modifier = modifier
       .wrapContentSize()
       .statusBarsPadding()
       .noRippleClickable { },

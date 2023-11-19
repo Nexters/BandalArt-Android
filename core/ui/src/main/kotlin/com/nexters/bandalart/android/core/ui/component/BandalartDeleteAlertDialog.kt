@@ -33,11 +33,11 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
 fun BandalartDeleteAlertDialog(
-  modifier: Modifier = Modifier,
   title: String,
   message: String,
   onDeleteClicked: () -> Unit,
   onCancelClicked: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   Dialog(onDismissRequest = { onCancelClicked() }) {
