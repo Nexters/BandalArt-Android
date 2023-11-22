@@ -493,8 +493,13 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(destinationKey = des) }
   }
 
-  fun setDestinationKeyAndIdx(key: String, idx: Int) {
-    _uiState.update { it.copy(destinationKey = key, pagerIdx = idx) }
+  private fun setDestinationKeyAndIdx(key: String, idx: Int) {
+    _uiState.update {
+      it.copy(
+        destinationKey = key,
+        pagerIdx = idx,
+      )
+    }
   }
 
   fun setBandalartIdx(idx: Int) {
@@ -538,15 +543,21 @@ class HomeViewModel @Inject constructor(
   fun findPagerIdx(key: String?): Int {
     var idx = 0
     for (i in _uiState.value.bandalartList.indices) {
-      if (_uiState.value.bandalartList[i].key == key) idx = i
+      if (_uiState.value.bandalartList[i].key == key) {
+        idx = i
+        break
+      }
     }
     return idx
   }
 
-  fun deleteAndSetDestinationKeyAndIdx(key: String): String? {
+  private fun deleteAndSetDestinationKeyAndIdx(key: String): String? {
     var idx = 0
     for (i in _uiState.value.bandalartList.indices) {
-      if (_uiState.value.bandalartList[i].key == key) idx = i
+      if (_uiState.value.bandalartList[i].key == key) {
+        idx = i
+        break
+      }
     }
     return if (idx == 0) {
       setDestinationKeyAndIdx("", 0)

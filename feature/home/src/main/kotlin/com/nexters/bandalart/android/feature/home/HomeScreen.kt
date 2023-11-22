@@ -308,27 +308,25 @@ internal fun HomeScreen(
           thickness = 1.dp,
           color = Gray100,
         )
-        when {
-          uiState.bandalartDetailData != null && uiState.bandalartCellData != null -> {
-            HorizontalPager(state = pagerState) { page ->
-              Column(modifier = Modifier.fillMaxSize()) {
-                HomeHeader(
-                  uiState = uiState,
-                  openDropDownMenu = openDropDownMenu,
-                  openEmojiBottomSheet = openEmojiBottomSheet,
-                  openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
-                  openCellBottomSheet = openCellBottomSheet,
-                )
-                BandalartChart(
-                  bandalartKey = uiState.bandalartDetailData.key,
-                  uiState = uiState,
-                  themeColor = ThemeColor(
-                    mainColor = uiState.bandalartDetailData.mainColor,
-                    subColor = uiState.bandalartDetailData.subColor,
-                  ),
-                  bottomSheetDataChanged = bottomSheetDataChanged,
-                )
-              }
+        if (uiState.bandalartDetailData != null && uiState.bandalartCellData != null) {
+          HorizontalPager(state = pagerState) { page ->
+            Column(modifier = Modifier.fillMaxSize()) {
+              HomeHeader(
+                uiState = uiState,
+                openDropDownMenu = openDropDownMenu,
+                openEmojiBottomSheet = openEmojiBottomSheet,
+                openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
+                openCellBottomSheet = openCellBottomSheet,
+              )
+              BandalartChart(
+                bandalartKey = uiState.bandalartDetailData.key,
+                uiState = uiState,
+                themeColor = ThemeColor(
+                  mainColor = uiState.bandalartDetailData.mainColor,
+                  subColor = uiState.bandalartDetailData.subColor,
+                ),
+                bottomSheetDataChanged = bottomSheetDataChanged,
+              )
             }
           }
         }

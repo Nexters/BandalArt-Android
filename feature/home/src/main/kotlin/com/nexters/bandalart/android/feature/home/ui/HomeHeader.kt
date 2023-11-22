@@ -53,7 +53,7 @@ fun HomeHeader(
   openCellBottomSheet: (Boolean) -> Unit,
 ) {
   Column(
-    modifier.padding(horizontal = 16.dp),
+    modifier = modifier.padding(horizontal = 16.dp),
   ) {
     Spacer(modifier = Modifier.height(24.dp))
     Column {
@@ -162,7 +162,7 @@ fun HomeHeader(
       Spacer(modifier = Modifier.weight(1f))
       if (uiState.bandalartDetailData != null && uiState.bandalartDetailData.isCompleted) {
         Box(
-          modifier
+          modifier = Modifier
             .clip(RoundedCornerShape(24.dp))
             .background(color = uiState.bandalartDetailData.mainColor.toColor()),
         ) {
