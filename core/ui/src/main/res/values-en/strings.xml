@@ -117,7 +117,7 @@
   <string name="hamburger_descrption">Hamburger Icon</string>
   <string name="clear_descrption">Clear Icon</string>
   <string name="delete_descrption">Delete Icon</string>
-  <string name="splash_description">Splash Icon</string>
+  <string name="app_icon_description">App Icon</string>
   <string name="gallery_icon">Gallery Icon</string>
 
   <!--  label -->

@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -11,11 +11,10 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import java.util.Locale
 
 @Composable
-fun HomeAppTitle(
+fun AppTitle(
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -23,21 +22,21 @@ fun HomeAppTitle(
 
   when (currentLocale.language) {
     Locale.KOREAN.language -> {
-      HomeAppKoreanTitle(modifier = modifier)
+      AppKoreanTitle(modifier = modifier)
     }
 
     Locale.ENGLISH.language -> {
-      HomeAppEnglishTitle(modifier = modifier)
+      AppEnglishTitle(modifier = modifier)
     }
 
     else -> {
-      HomeAppEnglishTitle(modifier = modifier)
+      AppEnglishTitle(modifier = modifier)
     }
   }
 }
 
 @Composable
-fun HomeAppKoreanTitle(
+fun AppKoreanTitle(
   modifier: Modifier = Modifier,
 ) {
   FixedSizeText(
@@ -53,7 +52,7 @@ fun HomeAppKoreanTitle(
 }
 
 @Composable
-fun HomeAppEnglishTitle(
+fun AppEnglishTitle(
   modifier: Modifier = Modifier,
 ) {
   FixedSizeText(

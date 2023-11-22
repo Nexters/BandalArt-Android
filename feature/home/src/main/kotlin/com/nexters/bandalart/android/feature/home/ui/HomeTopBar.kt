@@ -26,6 +26,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 
@@ -42,7 +43,7 @@ internal fun HomeTopBar(
     contentAlignment = Alignment.CenterStart,
   ) {
     Row(modifier = Modifier.fillMaxWidth()) {
-      HomeAppTitle(
+      AppTitle(
         modifier = Modifier
           .align(Alignment.CenterVertically)
           .padding(start = 20.dp, top = 2.dp),

@@ -2,7 +2,10 @@ package com.nexters.bandalart.android.feature.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.LoadingScreen
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
@@ -84,11 +89,17 @@ fun SplashScreen(
     color = Gray50,
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
-      Image(
-        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_splash),
-        contentDescription = context.getString(R.string.splash_description),
+      Row(
         modifier = Modifier.align(Alignment.Center),
-      )
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        Image(
+          painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app),
+          contentDescription = context.getString(R.string.app_icon_description),
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        AppTitle()
+      }
     }
   }
 }
