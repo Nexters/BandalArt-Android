@@ -114,6 +114,8 @@ fun BandalartBottomSheet(
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val focusRequester = remember { FocusRequester() }
+  val focusManager = LocalFocusManager.current
+  val scrollState = rememberScrollState()
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -191,9 +193,6 @@ fun BandalartBottomSheet(
         onCancelClicked = { viewModel.openDeleteCellDialog(flag = false) },
       )
     }
-
-    val focusManager = LocalFocusManager.current
-    val scrollState = rememberScrollState()
 
     Column(
       modifier = Modifier
@@ -378,7 +377,7 @@ fun BandalartBottomSheet(
                 viewModel.dueDateChanged(dueDate = dueDateResult.toString())
                 viewModel.openDatePicker(flag = openDatePickerPushResult)
               },
-              datePickerScope = rememberCoroutineScope(),
+              datePickerScope = scope,
               datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
               currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
             )
@@ -502,34 +501,30 @@ fun BandalartBottomSheet(
           }
           Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp + 20.dp))
         }
-        when {
-          scrollState.value > 0 -> {
-            Column(
-              modifier = Modifier.background(
-                brush = Brush.verticalGradient(
-                  colors = listOf(White, Transparent),
-                ),
-                shape = RectangleShape,
-              )
-                .height(77.dp)
-                .fillMaxWidth(),
-            ) {}
-          }
+        if (scrollState.value > 0) {
+          Column(
+            modifier = Modifier.background(
+              brush = Brush.verticalGradient(
+                colors = listOf(White, Transparent),
+              ),
+              shape = RectangleShape,
+            )
+              .height(77.dp)
+              .fillMaxWidth(),
+          ) {}
         }
-        when {
-          scrollState.value < scrollState.maxValue -> {
-            Column(
-              modifier = Modifier.background(
-                brush = Brush.verticalGradient(
-                  colors = listOf(Transparent, White),
-                ),
-                shape = RectangleShape,
-              )
-                .height(77.dp)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-            ) {}
-          }
+        if (scrollState.value < scrollState.maxValue) {
+          Column(
+            modifier = Modifier.background(
+              brush = Brush.verticalGradient(
+                colors = listOf(Transparent, White),
+              ),
+              shape = RectangleShape,
+            )
+              .height(77.dp)
+              .fillMaxWidth()
+              .align(Alignment.BottomCenter),
+          ) {}
         }
       }
     }
