@@ -105,6 +105,7 @@ internal fun HomeRoute(
   )
 }
 
+// TODO HomeHeader 에서 처럼 삭제 다이얼로그에 해당 셀의 타이틀 정보를 전달해야 함
 @Composable
 internal fun HomeScreen(
   modifier: Modifier = Modifier,
