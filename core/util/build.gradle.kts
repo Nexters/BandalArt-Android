@@ -2,11 +2,10 @@
 
 plugins {
   bandalart("android-library")
-  bandalart("android-compose")
 }
 
 android {
-  namespace = "com.nexters.bandalart.android.core.ui"
+  namespace = "com.nexters.bandalart.android.core.util"
 
   buildFeatures {
     buildConfig = true
@@ -15,11 +14,7 @@ android {
 
 dependencies {
   implementations(
-    projects.core.designsystem,
-    projects.core.util,
     libs.kotlinx.datetime,
     libs.androidx.core,
-    libs.lottie.compose,
-    libs.bundles.androidx.compose,
   )
 }

@@ -10,9 +10,11 @@ import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 
 @Composable
-fun BottomSheetDivider() {
+fun BottomSheetDivider(
+  modifier: Modifier = Modifier,
+) {
   Box(
-    modifier = Modifier
+    modifier = modifier
       .height(1.dp)
       .fillMaxWidth()
       .background(Gray300),

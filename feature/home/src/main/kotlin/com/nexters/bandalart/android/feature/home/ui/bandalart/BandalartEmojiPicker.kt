@@ -34,17 +34,17 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
+import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import java.util.*
 import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartEmojiPicker(
-  modifier: Modifier = Modifier,
   currentEmoji: String?,
   isBottomSheet: Boolean,
   onResult: (String?, Boolean) -> Unit,
   emojiPickerState: SheetState,
+  modifier: Modifier = Modifier,
 ): @Composable (ColumnScope.() -> Unit) {
   return {
     val scope = rememberCoroutineScope()

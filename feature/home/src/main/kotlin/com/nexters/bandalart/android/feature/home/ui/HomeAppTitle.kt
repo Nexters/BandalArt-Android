@@ -1,6 +1,5 @@
 package com.nexters.bandalart.android.feature.home.ui
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -12,6 +11,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import java.util.Locale
 
 @Composable
@@ -41,8 +41,8 @@ fun HomeAppKoreanTitle(
   modifier: Modifier = Modifier,
 ) {
   FixedSizeText(
-    modifier = modifier,
     text = stringResource(R.string.bandalart),
+    modifier = modifier,
     color = Gray900,
     fontSize = 28.sp,
     fontWeight = FontWeight.W400,
@@ -66,9 +66,4 @@ fun HomeAppEnglishTitle(
     lineHeight = 20.sp,
     letterSpacing = (-0.36).sp,
   )
-}
-
-// TODO core:util 모듈로 옮길 예정
-fun Context.getCurrentLocale(): Locale {
-  return this.resources.configuration.locales.get(0)
 }

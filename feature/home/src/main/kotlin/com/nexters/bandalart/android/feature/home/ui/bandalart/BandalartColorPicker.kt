@@ -18,20 +18,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.ui.extension.allColor
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
-import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ThemeColor
+import com.nexters.bandalart.android.core.ui.allColor
+import com.nexters.bandalart.android.core.ui.extension.toColor
 
 @Composable
 fun BandalartColorPicker(
   initColor: ThemeColor,
   onResult: (ThemeColor) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Row(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .height(45.dp),
     verticalAlignment = Alignment.CenterVertically,

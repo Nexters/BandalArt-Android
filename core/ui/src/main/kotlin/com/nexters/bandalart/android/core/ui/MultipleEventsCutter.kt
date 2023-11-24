@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.extension
+package com.nexters.bandalart.android.core.ui
 
 internal interface MultipleEventsCutter {
   fun processEvent(event: () -> Unit)

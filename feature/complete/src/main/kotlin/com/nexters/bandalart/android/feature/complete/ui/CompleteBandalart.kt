@@ -34,8 +34,8 @@ import com.nexters.bandalart.android.feature.complete.CompleteUiState
 
 @Composable
 fun CompleteBandalart(
-  modifier: Modifier = Modifier,
   uiState: CompleteUiState,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
 

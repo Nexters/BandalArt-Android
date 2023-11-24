@@ -16,10 +16,10 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BottomSheetTitleText(
-  modifier: Modifier = Modifier,
   isMainCell: Boolean,
   isSubCell: Boolean,
   isBlankCell: Boolean,
+  modifier: Modifier = Modifier,
 ) {
   FixedSizeText(
     text =

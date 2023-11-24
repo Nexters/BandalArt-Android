@@ -19,8 +19,6 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
@@ -29,7 +27,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import timber.log.Timber
-import javax.inject.Named
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 private const val MaxTimeoutMillis = 3000L
 private const val MaxRetryCount = 3
@@ -91,10 +90,10 @@ internal object NetworkModule {
     }
   }
 
+  @LoginApi
   @Singleton
   @Provides
-  @Named("AuthHttpClient")
-  internal fun provideRetrofitAuthHttpClient(
+  internal fun provideLoginApiRetrofit(
     httpLoggingInterceptor: HttpLoggingInterceptor,
   ): Retrofit {
     val contentType = "application/json".toMediaType()
@@ -110,10 +109,10 @@ internal object NetworkModule {
       .build()
   }
 
+  @BandalartApi
   @Singleton
   @Provides
-  @Named("HttpClient")
-  internal fun provideRetrofitHttpClient(
+  internal fun provideBandalartApiRetrofit(
     dataStoreProvider: DataStoreProvider,
     httpLoggingInterceptor: HttpLoggingInterceptor,
   ): Retrofit {

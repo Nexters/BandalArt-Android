@@ -2,13 +2,14 @@ package com.nexters.bandalart.android.core.data.di
 
 import com.nexters.bandalart.android.core.data.service.BandalartService
 import com.nexters.bandalart.android.core.data.service.GuestLoginService
+import com.nexters.bandalart.android.core.network.di.BandalartApi
+import com.nexters.bandalart.android.core.network.di.LoginApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import retrofit2.Retrofit
-import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -17,8 +18,7 @@ internal object ServiceModule {
   @Singleton
   @Provides
   internal fun provideBandalartService(
-    @Named("HttpClient")
-    retrofit: Retrofit,
+    @BandalartApi retrofit: Retrofit,
   ): BandalartService {
     return retrofit.create(BandalartService::class.java)
   }
@@ -26,8 +26,7 @@ internal object ServiceModule {
   @Singleton
   @Provides
   internal fun provideGuestLoginService(
-    @Named("AuthHttpClient")
-    retrofit: Retrofit,
+    @LoginApi retrofit: Retrofit,
   ): GuestLoginService {
     return retrofit.create(GuestLoginService::class.java)
   }

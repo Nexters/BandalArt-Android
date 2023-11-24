@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.feature.home.ui
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -29,6 +29,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 fun CompletionRatioProgressBar(
   completionRatio: Int,
   progressColor: Color,
+  modifier: Modifier = Modifier,
 ) {
   var progress by remember { mutableFloatStateOf(0f) }
 
@@ -46,7 +47,7 @@ fun CompletionRatioProgressBar(
   }
 
   Column(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .wrapContentSize(),
   ) {

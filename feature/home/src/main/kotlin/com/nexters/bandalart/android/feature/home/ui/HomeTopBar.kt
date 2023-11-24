@@ -27,15 +27,16 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.nonScaleSp
 
 @Composable
 internal fun HomeTopBar(
   bandalartCount: Int,
   onShowBandalartList: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Box(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .height(62.dp)
       .background(White),

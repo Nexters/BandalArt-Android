@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.nexters.bandalart.android.core.ui.extension.ThemeColor
+import com.nexters.bandalart.android.core.ui.ThemeColor
 
 @Composable
 fun BandalartCellGrid(
@@ -18,9 +18,10 @@ fun BandalartCellGrid(
   rows: Int,
   cols: Int,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier = Modifier.fillMaxSize(),
+    modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.SpaceEvenly,
   ) {

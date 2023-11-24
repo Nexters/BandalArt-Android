@@ -16,19 +16,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.MainColor
+import com.nexters.bandalart.android.core.ui.ThemeColor
+import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.feature.home.HomeUiState
 
 @Composable
 fun BandalartChart(
-  modifier: Modifier = Modifier,
   bandalartKey: String,
   uiState: HomeUiState,
   themeColor: ThemeColor,
   bottomSheetDataChanged: (Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp

@@ -7,6 +7,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
@@ -19,7 +20,9 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
-fun BandalartSkeleton() {
+fun BandalartSkeleton(
+  modifier: Modifier = Modifier,
+) {
   val shimmerMainColors = listOf(
     Gray200,
     Gray300,
@@ -66,5 +69,6 @@ fun BandalartSkeleton() {
     taskBrush = taskBrush,
     subBrush = subBrush,
     mainBrush = mainBrush,
+    modifier = modifier,
   )
 }

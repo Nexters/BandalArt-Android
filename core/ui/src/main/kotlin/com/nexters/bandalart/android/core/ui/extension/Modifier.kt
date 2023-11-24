@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
+import com.nexters.bandalart.android.core.ui.MultipleEventsCutter
+import com.nexters.bandalart.android.core.ui.get
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {

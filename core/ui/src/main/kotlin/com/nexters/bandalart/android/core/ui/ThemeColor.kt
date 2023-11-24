@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.extension
+package com.nexters.bandalart.android.core.ui
 
 data class ThemeColor(
   val mainColor: String,

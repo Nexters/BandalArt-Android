@@ -7,7 +7,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import com.nexters.bandalart.android.core.ui.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +32,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,6 +61,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.android.core.designsystem.theme.Gray100
+import com.nexters.bandalart.android.core.designsystem.theme.Gray300
+import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.designsystem.theme.Gray700
+import com.nexters.bandalart.android.core.designsystem.theme.Transparent
+import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.StatusBarHeightDp
+import com.nexters.bandalart.android.core.ui.ThemeColor
+import com.nexters.bandalart.android.core.ui.allColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
@@ -72,20 +81,11 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDi
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
-import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
-import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
-import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.ui.extension.allColor
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
-import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
-import com.nexters.bandalart.android.core.designsystem.theme.Gray100
-import com.nexters.bandalart.android.core.designsystem.theme.Gray300
-import com.nexters.bandalart.android.core.designsystem.theme.Gray400
-import com.nexters.bandalart.android.core.designsystem.theme.Gray700
-import com.nexters.bandalart.android.core.designsystem.theme.Transparent
-import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
+import com.nexters.bandalart.android.core.ui.nonScaleSp
+import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
@@ -93,8 +93,8 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellM
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker
-import java.time.LocalDateTime
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Composable
 fun BandalartBottomSheet(
@@ -107,6 +107,7 @@ fun BandalartBottomSheet(
     bottomSheetState: Boolean,
     bottomSheetDataChangedState: Boolean,
   ) -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -122,7 +123,7 @@ fun BandalartBottomSheet(
       viewModel.bottomSheetClosed()
       onResult(false, false)
     },
-    modifier = Modifier
+    modifier = modifier
       .wrapContentSize()
       .statusBarsPadding()
       .noRippleClickable { },
@@ -209,7 +210,6 @@ fun BandalartBottomSheet(
         onResult = onResult,
         bottomSheetClosed = viewModel::bottomSheetClosed,
       )
-
       Box {
         Column(
           modifier = Modifier
@@ -363,7 +363,7 @@ fun BandalartBottomSheet(
                   .align(Alignment.CenterEnd)
                   .height(21.dp)
                   .aspectRatio(1f),
-                imageVector = Icons.Default.ArrowForwardIos,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                 contentDescription = stringResource(R.string.arrow_forward_descrption),
                 tint = Gray400,
               )
@@ -499,7 +499,7 @@ fun BandalartBottomSheet(
               },
             )
           }
-          Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp + 20.dp))
+          Spacer(modifier = Modifier.height(StatusBarHeightDp + getNavigationBarPadding()))
         }
         if (scrollState.value > 0) {
           Column(
