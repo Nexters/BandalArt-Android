@@ -65,6 +65,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
+import com.nexters.bandalart.android.core.designsystem.theme.Transparent
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.StatusBarHeightDp
@@ -85,15 +86,6 @@ import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
-import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
-import com.nexters.bandalart.android.core.designsystem.theme.Gray100
-import com.nexters.bandalart.android.core.designsystem.theme.Gray300
-import com.nexters.bandalart.android.core.designsystem.theme.Gray400
-import com.nexters.bandalart.android.core.designsystem.theme.Gray700
-import com.nexters.bandalart.android.core.designsystem.theme.Transparent
-import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
@@ -101,8 +93,8 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellM
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker
-import java.time.LocalDateTime
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Composable
 fun BandalartBottomSheet(
@@ -371,7 +363,7 @@ fun BandalartBottomSheet(
                   .align(Alignment.CenterEnd)
                   .height(21.dp)
                   .aspectRatio(1f),
-                imageVector = Icons.Default.ArrowForwardIos,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                 contentDescription = stringResource(R.string.arrow_forward_descrption),
                 tint = Gray400,
               )
