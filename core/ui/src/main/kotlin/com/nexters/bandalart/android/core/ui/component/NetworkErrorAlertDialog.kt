@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun NetworkErrorAlertDialog(
@@ -89,9 +87,9 @@ fun NetworkErrorAlertDialog(
             onClick = onConfirmClick,
             colors = ButtonDefaults.buttonColors(containerColor = Gray900),
           ) {
-            Text(
+            FixedSizeText(
               text = context.getString(R.string.network_error_retry_message),
-              fontSize = 16.sp.nonScaleSp,
+              fontSize = 16.sp,
               fontWeight = FontWeight.W600,
               color = White,
             )

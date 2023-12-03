@@ -124,9 +124,9 @@ fun BandalartBottomSheet(
       onResult(false, false)
     },
     modifier = modifier
-        .wrapContentSize()
-        .statusBarsPadding()
-        .noRippleClickable { },
+      .wrapContentSize()
+      .statusBarsPadding()
+      .noRippleClickable { },
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
@@ -197,9 +197,9 @@ fun BandalartBottomSheet(
 
     Column(
       modifier = Modifier
-          .background(White)
-          .navigationBarsPadding()
-          .noRippleClickable { focusManager.clearFocus() },
+        .background(White)
+        .navigationBarsPadding()
+        .noRippleClickable { focusManager.clearFocus() },
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
@@ -213,14 +213,14 @@ fun BandalartBottomSheet(
       Box {
         Column(
           modifier = Modifier
-              .fillMaxWidth()
-              .wrapContentHeight()
-              .verticalScroll(scrollState)
-              .padding(
-                  start = 20.dp,
-                  top = 40.dp,
-                  end = 20.dp,
-              ),
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .verticalScroll(scrollState)
+            .padding(
+              start = 20.dp,
+              top = 40.dp,
+              end = 20.dp,
+            ),
         ) {
           BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
           Spacer(modifier = Modifier.height(11.dp))
@@ -228,8 +228,8 @@ fun BandalartBottomSheet(
             if (isMainCell) {
               Box(
                 modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(end = 16.dp),
+                  .align(Alignment.CenterVertically)
+                  .padding(end = 16.dp),
               ) {
                 Card(
                   shape = RoundedCornerShape(16.dp),
@@ -237,13 +237,13 @@ fun BandalartBottomSheet(
                 ) {
                   Box(
                     modifier = Modifier
-                        .width(52.dp)
-                        .aspectRatio(1f)
-                        .background(Gray100)
-                        .clickable {
-                            viewModel.openEmojiPicker(flag = !uiState.isEmojiPickerOpened)
-                            if (uiState.isDatePickerOpened) viewModel.openDatePicker(flag = false)
-                        },
+                      .width(52.dp)
+                      .aspectRatio(1f)
+                      .background(Gray100)
+                      .clickable {
+                        viewModel.openEmojiPicker(flag = !uiState.isEmojiPickerOpened)
+                        if (uiState.isDatePickerOpened) viewModel.openDatePicker(flag = false)
+                      },
                     contentAlignment = Alignment.Center,
                   ) {
                     if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
@@ -263,17 +263,17 @@ fun BandalartBottomSheet(
                   painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
                   contentDescription = stringResource(R.string.edit_descrption),
                   modifier = Modifier
-                      .align(Alignment.BottomEnd)
-                      .offset(x = 4.dp, y = 4.dp),
+                    .align(Alignment.BottomEnd)
+                    .offset(x = 4.dp, y = 4.dp),
                 )
               }
             }
             Column(modifier = Modifier.padding(top = 10.dp)) {
               BasicTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(18.dp)
-                    .focusRequester(focusRequester),
+                  .fillMaxWidth()
+                  .height(18.dp)
+                  .focusRequester(focusRequester),
                 value = uiState.cellData.title ?: "",
                 onValueChange = {
                   // TODO 다국어 지원 적용(영어 일 때는 24글자 까지 허용)
@@ -304,14 +304,14 @@ fun BandalartBottomSheet(
             Column(
               content = BandalartEmojiPicker(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(top = 4.dp)
-                    .animateContentSize(
-                        animationSpec = tween(
-                            durationMillis = 300,
-                            easing = LinearOutSlowInEasing,
-                        ),
+                  .wrapContentSize()
+                  .padding(top = 4.dp)
+                  .animateContentSize(
+                    animationSpec = tween(
+                      durationMillis = 300,
+                      easing = LinearOutSlowInEasing,
                     ),
+                  ),
                 currentEmoji = uiState.cellData.profileEmoji,
                 isBottomSheet = false,
                 onResult = { currentEmojiResult, openEmojiPushResult ->
@@ -345,12 +345,12 @@ fun BandalartBottomSheet(
           Column {
             Box(
               modifier = Modifier
-                  .fillMaxWidth()
-                  .height(18.dp)
-                  .clickable {
-                      viewModel.openDatePicker(flag = !uiState.isDatePickerOpened)
-                      if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(flag = false)
-                  },
+                .fillMaxWidth()
+                .height(18.dp)
+                .clickable {
+                  viewModel.openDatePicker(flag = !uiState.isDatePickerOpened)
+                  if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(flag = false)
+                },
             ) {
               if (uiState.cellData.dueDate.isNullOrEmpty()) {
                 BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
@@ -361,9 +361,9 @@ fun BandalartBottomSheet(
               }
               Icon(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .height(21.dp)
-                    .aspectRatio(1f),
+                  .align(Alignment.CenterEnd)
+                  .height(21.dp)
+                  .aspectRatio(1f),
                 imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                 contentDescription = stringResource(R.string.arrow_forward_descrption),
                 tint = Gray400,
@@ -390,8 +390,8 @@ fun BandalartBottomSheet(
             Column {
               BasicTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(18.dp),
+                  .fillMaxWidth()
+                  .height(18.dp),
                 value = uiState.cellData.description ?: "",
                 onValueChange = {
                   viewModel.descriptionChanged(
@@ -435,9 +435,9 @@ fun BandalartBottomSheet(
                   checkedBorderColor = Gray700,
                 ),
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .width(52.dp)
-                    .height(28.dp),
+                  .align(Alignment.CenterEnd)
+                  .width(52.dp)
+                  .height(28.dp),
               )
             }
             Spacer(modifier = Modifier.height(4.dp))
@@ -445,10 +445,10 @@ fun BandalartBottomSheet(
           Spacer(modifier = Modifier.height(28.dp))
           Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-                .padding(horizontal = 8.dp)
-                .imePadding(),
+              .fillMaxWidth()
+              .align(Alignment.CenterHorizontally)
+              .padding(horizontal = 8.dp)
+              .imePadding(),
           ) {
             if (!isBlankCell) {
               BottomSheetDeleteButton(
@@ -505,28 +505,28 @@ fun BandalartBottomSheet(
         if (scrollState.value > 0) {
           Column(
             modifier = Modifier
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(White, Transparent),
-                    ),
-                    shape = RectangleShape,
-                )
-                .height(77.dp)
-                .fillMaxWidth(),
+              .background(
+                brush = Brush.verticalGradient(
+                  colors = listOf(White, Transparent),
+                ),
+                shape = RectangleShape,
+              )
+              .height(77.dp)
+              .fillMaxWidth(),
           ) {}
         }
         if (scrollState.value < scrollState.maxValue) {
           Column(
             modifier = Modifier
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Transparent, White),
-                    ),
-                    shape = RectangleShape,
-                )
-                .height(77.dp)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
+              .background(
+                brush = Brush.verticalGradient(
+                  colors = listOf(Transparent, White),
+                ),
+                shape = RectangleShape,
+              )
+              .height(77.dp)
+              .fillMaxWidth()
+              .align(Alignment.BottomCenter),
           ) {}
         }
       }

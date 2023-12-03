@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -22,11 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Error
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BandalartDropDownMenu(
@@ -94,14 +92,14 @@ fun BandalartDropDownMenu(
                 .align(CenterVertically),
               colorFilter = ColorFilter.tint(Error),
             )
-            Text(
+            FixedSizeText(
               modifier = Modifier
                 .fillMaxHeight()
                 .padding(start = 13.dp)
                 .align(CenterVertically),
               text = context.getString(R.string.dropdown_delete),
               color = Error,
-              fontSize = 14.sp.nonScaleSp,
+              fontSize = 14.sp,
               fontFamily = pretendard,
               fontWeight = FontWeight.W500,
             )

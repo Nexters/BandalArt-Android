@@ -10,7 +10,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import java.util.Locale
 
