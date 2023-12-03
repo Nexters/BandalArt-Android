@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,25 +32,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.EmojiText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartItem(
-  modifier: Modifier = Modifier,
   bottomSheetState: SheetState,
   bandalartItem: BandalartDetailUiModel,
   currentBandalartKey: String,
   onClick: (String) -> Unit,
   onCancelClicked: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val scope = rememberCoroutineScope()
 
@@ -163,7 +163,7 @@ fun BandalartItem(
     if (currentBandalartKey != bandalartItem.key) {
       Box(modifier = Modifier.align(Alignment.CenterVertically)) {
         Icon(
-          imageVector = Icons.Default.ArrowForwardIos,
+          imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
           contentDescription = stringResource(R.string.arrow_forward_descrption),
           tint = Gray400,
           modifier = Modifier.size(16.dp),

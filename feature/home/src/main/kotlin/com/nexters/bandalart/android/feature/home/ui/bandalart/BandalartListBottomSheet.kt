@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
+import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray800
@@ -52,7 +52,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartListBottomSheet(
-  modifier: Modifier = Modifier,
   bandalartList: ImmutableList<BandalartDetailUiModel>,
   currentBandalartKey: String,
   getBandalartDetail: (String) -> Unit,
@@ -60,6 +59,7 @@ fun BandalartListBottomSheet(
   showSkeletonChanged: (Boolean) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

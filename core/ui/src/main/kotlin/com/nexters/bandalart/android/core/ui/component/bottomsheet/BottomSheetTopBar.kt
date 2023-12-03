@@ -31,11 +31,12 @@ fun BottomSheetTopBar(
   bottomSheetState: SheetState,
   onResult: (Boolean, Boolean) -> Unit,
   bottomSheetClosed: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val scope = rememberCoroutineScope()
 
   Box(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp),
   ) {

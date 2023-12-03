@@ -50,6 +50,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -75,7 +78,6 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDi
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
-import com.nexters.bandalart.android.core.ui.extension.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
 import com.nexters.bandalart.android.core.ui.extension.ThemeColor
 import com.nexters.bandalart.android.core.ui.extension.allColor
@@ -83,6 +85,7 @@ import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
 import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
+import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
@@ -104,6 +107,7 @@ fun BandalartBottomSheet(
     bottomSheetState: Boolean,
     bottomSheetDataChangedState: Boolean,
   ) -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -111,16 +115,18 @@ fun BandalartBottomSheet(
   val scope = rememberCoroutineScope()
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val focusRequester = remember { FocusRequester() }
+  val focusManager = LocalFocusManager.current
+  val scrollState = rememberScrollState()
 
   ModalBottomSheet(
     onDismissRequest = {
       viewModel.bottomSheetClosed()
       onResult(false, false)
     },
-    modifier = Modifier
-      .wrapContentSize()
-      .statusBarsPadding()
-      .noRippleClickable { },
+    modifier = modifier
+        .wrapContentSize()
+        .statusBarsPadding()
+        .noRippleClickable { },
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
@@ -189,13 +195,11 @@ fun BandalartBottomSheet(
       )
     }
 
-    val focusManager = LocalFocusManager.current
     Column(
       modifier = Modifier
-        .background(White)
-        .navigationBarsPadding()
-        .verticalScroll(rememberScrollState())
-        .noRippleClickable { focusManager.clearFocus() },
+          .background(White)
+          .navigationBarsPadding()
+          .noRippleClickable { focusManager.clearFocus() },
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       BottomSheetTopBar(
@@ -206,295 +210,325 @@ fun BandalartBottomSheet(
         onResult = onResult,
         bottomSheetClosed = viewModel::bottomSheetClosed,
       )
-      Column(
-        modifier = Modifier
-          .fillMaxWidth()
-          .wrapContentHeight()
-          .padding(
-            start = 20.dp,
-            top = 40.dp,
-            end = 20.dp,
-          ),
-      ) {
-        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
-        Spacer(modifier = Modifier.height(11.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
-          if (isMainCell) {
-            Box(
-              modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(end = 16.dp),
-            ) {
-              Card(
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+      Box {
+        Column(
+          modifier = Modifier
+              .fillMaxWidth()
+              .wrapContentHeight()
+              .verticalScroll(scrollState)
+              .padding(
+                  start = 20.dp,
+                  top = 40.dp,
+                  end = 20.dp,
+              ),
+        ) {
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
+          Spacer(modifier = Modifier.height(11.dp))
+          Row(modifier = Modifier.fillMaxWidth()) {
+            if (isMainCell) {
+              Box(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(end = 16.dp),
               ) {
-                Box(
-                  modifier = Modifier
-                    .width(52.dp)
-                    .aspectRatio(1f)
-                    .background(Gray100)
-                    .clickable {
-                      viewModel.openEmojiPicker(flag = !uiState.isEmojiPickerOpened)
-                      if (uiState.isDatePickerOpened) viewModel.openDatePicker(flag = false)
-                    },
-                  contentAlignment = Alignment.Center,
+                Card(
+                  shape = RoundedCornerShape(16.dp),
+                  elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 ) {
-                  if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
-                    Image(
-                      painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
-                      contentDescription = stringResource(R.string.empty_emoji_descrption),
-                    )
-                  } else {
-                    EmojiText(
-                      emojiText = uiState.cellData.profileEmoji,
-                      fontSize = 22.sp.nonScaleSp,
-                    )
+                  Box(
+                    modifier = Modifier
+                        .width(52.dp)
+                        .aspectRatio(1f)
+                        .background(Gray100)
+                        .clickable {
+                            viewModel.openEmojiPicker(flag = !uiState.isEmojiPickerOpened)
+                            if (uiState.isDatePickerOpened) viewModel.openDatePicker(flag = false)
+                        },
+                    contentAlignment = Alignment.Center,
+                  ) {
+                    if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
+                      Image(
+                        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
+                        contentDescription = stringResource(R.string.empty_emoji_descrption),
+                      )
+                    } else {
+                      EmojiText(
+                        emojiText = uiState.cellData.profileEmoji,
+                        fontSize = 22.sp.nonScaleSp,
+                      )
+                    }
                   }
                 }
+                Image(
+                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
+                  contentDescription = stringResource(R.string.edit_descrption),
+                  modifier = Modifier
+                      .align(Alignment.BottomEnd)
+                      .offset(x = 4.dp, y = 4.dp),
+                )
               }
-              Image(
-                painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
-                contentDescription = stringResource(R.string.edit_descrption),
+            }
+            Column(modifier = Modifier.padding(top = 10.dp)) {
+              BasicTextField(
                 modifier = Modifier
-                  .align(Alignment.BottomEnd)
-                  .offset(x = 4.dp, y = 4.dp),
+                    .fillMaxWidth()
+                    .height(18.dp)
+                    .focusRequester(focusRequester),
+                value = uiState.cellData.title ?: "",
+                onValueChange = {
+                  // TODO 다국어 지원 적용(영어 일 때는 24글자 까지 허용)
+                  viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                  onDone = {
+                    focusManager.clearFocus()
+                  },
+                ),
+                maxLines = 1,
+                textStyle = BottomSheetTextStyle(),
+                decorationBox = { innerTextField ->
+                  if (uiState.cellData.title.isNullOrEmpty()) {
+                    BottomSheetContentPlaceholder(
+                      text = stringResource(R.string.bottomsheet_title_placeholder),
+                    )
+                  }
+                  innerTextField()
+                },
               )
+              Spacer(modifier = Modifier.height(10.dp))
+              BottomSheetDivider()
             }
           }
-          Column(modifier = Modifier.padding(top = 10.dp)) {
-            BasicTextField(
-              modifier = Modifier
-                .fillMaxWidth()
-                .height(18.dp)
-                .focusRequester(focusRequester),
-              value = uiState.cellData.title ?: "",
-              onValueChange = {
-                // TODO 다국어 지원 적용(영어 일 때는 24글자 까지 허용)
-                viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
-              },
-              keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-              keyboardActions = KeyboardActions(
-                onDone = {
-                  focusManager.clearFocus()
+          AnimatedVisibility(visible = uiState.isEmojiPickerOpened) {
+            Column(
+              content = BandalartEmojiPicker(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 4.dp)
+                    .animateContentSize(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearOutSlowInEasing,
+                        ),
+                    ),
+                currentEmoji = uiState.cellData.profileEmoji,
+                isBottomSheet = false,
+                onResult = { currentEmojiResult, openEmojiPushResult ->
+                  viewModel.emojiSelected(profileEmoji = currentEmojiResult)
+                  viewModel.openEmojiPicker(flag = openEmojiPushResult)
                 },
+                emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
               ),
-              maxLines = 1,
-              textStyle = BottomSheetTextStyle(),
-              decorationBox = { innerTextField ->
-                if (uiState.cellData.title.isNullOrEmpty()) {
-                  BottomSheetContentPlaceholder(
-                    text = stringResource(R.string.bottomsheet_title_placeholder),
+            )
+          }
+          if (isMainCell && uiState.isCellDataCopied) {
+            Spacer(modifier = Modifier.height(22.dp))
+            BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
+            BandalartColorPicker(
+              initColor = ThemeColor(
+                mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
+                subColor = uiState.cellData.subColor ?: allColor[0].subColor,
+              ),
+              onResult = {
+                viewModel.colorChanged(
+                  mainColor = it.mainColor,
+                  subColor = it.subColor,
+                )
+              },
+            )
+            Spacer(modifier = Modifier.height(3.dp))
+          }
+          Spacer(modifier = Modifier.height(25.dp))
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_duedate))
+          Spacer(modifier = Modifier.height(12.dp))
+          Column {
+            Box(
+              modifier = Modifier
+                  .fillMaxWidth()
+                  .height(18.dp)
+                  .clickable {
+                      viewModel.openDatePicker(flag = !uiState.isDatePickerOpened)
+                      if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(flag = false)
+                  },
+            ) {
+              if (uiState.cellData.dueDate.isNullOrEmpty()) {
+                BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
+              } else {
+                BottomSheetContentText(
+                  text = uiState.cellData.dueDate!!.toStringLocalDateTime(),
+                )
+              }
+              Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .height(21.dp)
+                    .aspectRatio(1f),
+                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                contentDescription = stringResource(R.string.arrow_forward_descrption),
+                tint = Gray400,
+              )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            BottomSheetDivider()
+          }
+          AnimatedVisibility(visible = uiState.isDatePickerOpened) {
+            BandalartDatePicker(
+              onResult = { dueDateResult, openDatePickerPushResult ->
+                viewModel.dueDateChanged(dueDate = dueDateResult.toString())
+                viewModel.openDatePicker(flag = openDatePickerPushResult)
+              },
+              datePickerScope = scope,
+              datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+              currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
+            )
+          }
+          Spacer(modifier = Modifier.height(28.dp))
+          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_description))
+          Spacer(modifier = Modifier.height(12.dp))
+          Box {
+            Column {
+              BasicTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(18.dp),
+                value = uiState.cellData.description ?: "",
+                onValueChange = {
+                  viewModel.descriptionChanged(
+                    description = if (it.length > 15) uiState.cellData.description else it,
+                  )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                maxLines = 1,
+                textStyle = BottomSheetTextStyle(),
+                decorationBox = { innerTextField ->
+                  if (uiState.cellData.description.isNullOrEmpty()) {
+                    BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
+                  }
+                  innerTextField()
+                },
+              )
+              Spacer(modifier = Modifier.height(10.dp))
+              BottomSheetDivider()
+            }
+          }
+          if (!isSubCell && !isMainCell) {
+            Spacer(modifier = Modifier.height(28.dp))
+            BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
+            Spacer(modifier = Modifier.height(12.dp))
+            Box(modifier = Modifier.fillMaxWidth()) {
+              BottomSheetContentText(
+                modifier = Modifier.align(Alignment.CenterStart),
+                text = if (uiState.cellData.isCompleted) stringResource(R.string.bottomsheet_completed)
+                else stringResource(R.string.bottomsheet_in_completed),
+              )
+              Switch(
+                checked = uiState.cellData.isCompleted,
+                onCheckedChange = { switchOn -> viewModel.isCompletedChanged(flag = switchOn) },
+                colors = SwitchDefaults.colors(
+                  uncheckedThumbColor = White,
+                  uncheckedTrackColor = Gray300,
+                  uncheckedBorderColor = Gray300,
+                  checkedThumbColor = White,
+                  checkedTrackColor = Gray700,
+                  checkedBorderColor = Gray700,
+                ),
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .width(52.dp)
+                    .height(28.dp),
+              )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+          }
+          Spacer(modifier = Modifier.height(28.dp))
+          Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+                .padding(horizontal = 8.dp)
+                .imePadding(),
+          ) {
+            if (!isBlankCell) {
+              BottomSheetDeleteButton(
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.openDeleteCellDialog(flag = !uiState.isDeleteCellDialogOpened) },
+              )
+              Spacer(modifier = Modifier.width(9.dp))
+            }
+            BottomSheetCompleteButton(
+              modifier = Modifier.weight(1f),
+              isBlankCell = uiState.cellData.title?.trim()
+                .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
+              onClick = {
+                if (isMainCell) {
+                  viewModel.updateBandalartMainCell(
+                    bandalartKey = bandalartKey,
+                    cellKey = cellData.key,
+                    updateBandalartMainCellModel = UpdateBandalartMainCellModel(
+                      title = uiState.cellData.title?.trim(),
+                      description = uiState.cellData.description,
+                      dueDate = uiState.cellData.dueDate?.ifEmpty { null },
+                      profileEmoji = uiState.cellData.profileEmoji,
+                      mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
+                      subColor = uiState.cellData.subColor ?: allColor[0].subColor,
+                    ),
+                  )
+                } else if (isSubCell) {
+                  viewModel.updateBandalartSubCell(
+                    bandalartKey = bandalartKey,
+                    cellKey = cellData.key,
+                    updateBandalartSubCellModel = UpdateBandalartSubCellModel(
+                      title = uiState.cellData.title?.trim(),
+                      description = uiState.cellData.description,
+                      dueDate = uiState.cellData.dueDate?.ifEmpty { null },
+                    ),
+                  )
+                } else {
+                  viewModel.updateBandalartTaskCell(
+                    bandalartKey = bandalartKey,
+                    cellKey = cellData.key,
+                    updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
+                      title = uiState.cellData.title?.trim(),
+                      description = uiState.cellData.description,
+                      dueDate = uiState.cellData.dueDate?.ifEmpty { null },
+                      isCompleted = uiState.cellData.isCompleted,
+                    ),
                   )
                 }
-                innerTextField()
               },
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            BottomSheetDivider()
           }
+          Spacer(modifier = Modifier.height(StatusBarHeightDp + getNavigationBarPadding()))
         }
-        AnimatedVisibility(visible = uiState.isEmojiPickerOpened) {
+        if (scrollState.value > 0) {
           Column(
-            content = BandalartEmojiPicker(
-              modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 4.dp)
-                .animateContentSize(
-                  animationSpec = tween(
-                    durationMillis = 300,
-                    easing = LinearOutSlowInEasing,
-                  ),
-                ),
-              currentEmoji = uiState.cellData.profileEmoji,
-              isBottomSheet = false,
-              onResult = { currentEmojiResult, openEmojiPushResult ->
-                viewModel.emojiSelected(profileEmoji = currentEmojiResult)
-                viewModel.openEmojiPicker(flag = openEmojiPushResult)
-              },
-              emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            ),
-          )
-        }
-        if (isMainCell && uiState.isCellDataCopied) {
-          Spacer(modifier = Modifier.height(22.dp))
-          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
-          BandalartColorPicker(
-            initColor = ThemeColor(
-              mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
-              subColor = uiState.cellData.subColor ?: allColor[0].subColor,
-            ),
-            onResult = {
-              viewModel.colorChanged(
-                mainColor = it.mainColor,
-                subColor = it.subColor,
-              )
-            },
-          )
-          Spacer(modifier = Modifier.height(3.dp))
-        }
-        Spacer(modifier = Modifier.height(25.dp))
-        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_duedate))
-        Spacer(modifier = Modifier.height(12.dp))
-        Column {
-          Box(
             modifier = Modifier
-              .fillMaxWidth()
-              .height(18.dp)
-              .clickable {
-                viewModel.openDatePicker(flag = !uiState.isDatePickerOpened)
-                if (uiState.isEmojiPickerOpened) viewModel.openEmojiPicker(flag = false)
-              },
-          ) {
-            if (uiState.cellData.dueDate.isNullOrEmpty()) {
-              BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
-            } else {
-              BottomSheetContentText(
-                text = uiState.cellData.dueDate!!.toStringLocalDateTime(),
-              )
-            }
-            Icon(
-              modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .height(21.dp)
-                .aspectRatio(1f),
-              imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-              contentDescription = stringResource(R.string.arrow_forward_descrption),
-              tint = Gray400,
-            )
-          }
-          Spacer(modifier = Modifier.height(10.dp))
-          BottomSheetDivider()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(White, Transparent),
+                    ),
+                    shape = RectangleShape,
+                )
+                .height(77.dp)
+                .fillMaxWidth(),
+          ) {}
         }
-        AnimatedVisibility(visible = uiState.isDatePickerOpened) {
-          BandalartDatePicker(
-            onResult = { dueDateResult, openDatePickerPushResult ->
-              viewModel.dueDateChanged(dueDate = dueDateResult.toString())
-              viewModel.openDatePicker(flag = openDatePickerPushResult)
-            },
-            datePickerScope = rememberCoroutineScope(),
-            datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
-          )
-        }
-        Spacer(modifier = Modifier.height(28.dp))
-        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_description))
-        Spacer(modifier = Modifier.height(12.dp))
-        Box {
-          Column {
-            BasicTextField(
-              modifier = Modifier
+        if (scrollState.value < scrollState.maxValue) {
+          Column(
+            modifier = Modifier
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Transparent, White),
+                    ),
+                    shape = RectangleShape,
+                )
+                .height(77.dp)
                 .fillMaxWidth()
-                .height(18.dp),
-              value = uiState.cellData.description ?: "",
-              onValueChange = {
-                viewModel.descriptionChanged(
-                  description = if (it.length > 15) uiState.cellData.description else it,
-                )
-              },
-              keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-              keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-              maxLines = 1,
-              textStyle = BottomSheetTextStyle(),
-              decorationBox = { innerTextField ->
-                if (uiState.cellData.description.isNullOrEmpty()) {
-                  BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
-                }
-                innerTextField()
-              },
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            BottomSheetDivider()
-          }
+                .align(Alignment.BottomCenter),
+          ) {}
         }
-        if (!isSubCell && !isMainCell) {
-          Spacer(modifier = Modifier.height(28.dp))
-          BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
-          Spacer(modifier = Modifier.height(12.dp))
-          Box(modifier = Modifier.fillMaxWidth()) {
-            BottomSheetContentText(
-              modifier = Modifier.align(Alignment.CenterStart),
-              text = if (uiState.cellData.isCompleted) stringResource(R.string.bottomsheet_completed)
-              else stringResource(R.string.bottomsheet_in_completed),
-            )
-            Switch(
-              checked = uiState.cellData.isCompleted,
-              onCheckedChange = { switchOn -> viewModel.isCompletedChanged(flag = switchOn) },
-              colors = SwitchDefaults.colors(
-                uncheckedThumbColor = White,
-                uncheckedTrackColor = Gray300,
-                uncheckedBorderColor = Gray300,
-                checkedThumbColor = White,
-                checkedTrackColor = Gray700,
-                checkedBorderColor = Gray700,
-              ),
-              modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .width(52.dp)
-                .height(28.dp),
-            )
-          }
-          Spacer(modifier = Modifier.height(4.dp))
-        }
-        Spacer(modifier = Modifier.height(28.dp))
-        Row(
-          modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.CenterHorizontally)
-            .padding(horizontal = 8.dp)
-            .imePadding(),
-        ) {
-          if (!isBlankCell) {
-            BottomSheetDeleteButton(
-              modifier = Modifier.weight(1f),
-              onClick = { viewModel.openDeleteCellDialog(flag = !uiState.isDeleteCellDialogOpened) },
-            )
-            Spacer(modifier = Modifier.width(9.dp))
-          }
-          BottomSheetCompleteButton(
-            modifier = Modifier.weight(1f),
-            isBlankCell = uiState.cellData.title?.trim()
-              .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
-            onClick = {
-              if (isMainCell) {
-                viewModel.updateBandalartMainCell(
-                  bandalartKey = bandalartKey,
-                  cellKey = cellData.key,
-                  updateBandalartMainCellModel = UpdateBandalartMainCellModel(
-                    title = uiState.cellData.title?.trim(),
-                    description = uiState.cellData.description,
-                    dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                    profileEmoji = uiState.cellData.profileEmoji,
-                    mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
-                    subColor = uiState.cellData.subColor ?: allColor[0].subColor,
-                  ),
-                )
-              } else if (isSubCell) {
-                viewModel.updateBandalartSubCell(
-                  bandalartKey = bandalartKey,
-                  cellKey = cellData.key,
-                  updateBandalartSubCellModel = UpdateBandalartSubCellModel(
-                    title = uiState.cellData.title?.trim(),
-                    description = uiState.cellData.description,
-                    dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                  ),
-                )
-              } else {
-                viewModel.updateBandalartTaskCell(
-                  bandalartKey = bandalartKey,
-                  cellKey = cellData.key,
-                  updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
-                    title = uiState.cellData.title?.trim(),
-                    description = uiState.cellData.description,
-                    dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                    isCompleted = uiState.cellData.isCompleted,
-                  ),
-                )
-              }
-            },
-          )
-        }
-        Spacer(modifier = Modifier.height(StatusBarHeightDp + NavigationBarHeightDp + 20.dp))
       }
     }
   }

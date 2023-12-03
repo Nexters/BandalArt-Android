@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.extension
+package com.nexters.bandalart.android.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

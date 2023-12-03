@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.nexters.bandalart.android.feature.onboarding
+package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -25,8 +25,9 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 fun PagerIndicator(
   pageCount: Int,
   pagerState: PagerState,
+  modifier: Modifier = Modifier,
 ) {
-  Box {
+  Box(modifier = modifier) {
     Row(
       modifier = Modifier
         .height(32.dp)
