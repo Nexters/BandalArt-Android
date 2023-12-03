@@ -68,6 +68,9 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.StatusBarHeightDp
+import com.nexters.bandalart.android.core.ui.ThemeColor
+import com.nexters.bandalart.android.core.ui.allColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetCompleteButton
@@ -78,14 +81,11 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDi
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
-import com.nexters.bandalart.android.core.ui.extension.StatusBarHeightDp
-import com.nexters.bandalart.android.core.ui.extension.ThemeColor
-import com.nexters.bandalart.android.core.ui.extension.allColor
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
-import com.nexters.bandalart.android.core.ui.extension.toLocalDateTime
-import com.nexters.bandalart.android.core.ui.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
+import com.nexters.bandalart.android.core.ui.nonScaleSp
+import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
