@@ -13,7 +13,7 @@
 
   <!--  HomeScreen.kt -->
   <string name="home_default_emoji">default emoji</string>
-  <string name="home_share_url">제가 만든 반다라트를 구경하러오세요!\n%1$s</string>
+  <string name="home_share_url">Come and see the Bandalart I made!\n%1$s</string>
   <string name="home_share_type">text/plain</string>
   <string name="home_empty_title">Please enter your main goal</string>
   <string name="home_complete_ratio">Completion Rate %1$d%%</string>
@@ -103,7 +103,7 @@
   <string name="data_validation">Request succeeded but data validation failed</string>
   <string name="create_bandalart">Created a new bandalart.</string>
   <string name="limit_create_bandalart">You can create up to 5 bandalarts.</string>
-  <string name="delete_bandalart">Bandalart deleted.</string>
+  <string name="delete_bandalart">New Bandalart created.</string>
 
   <!-- image descrption -->
   <string name="empty_emoji_descrption">Empty Emoji Icon</string>
