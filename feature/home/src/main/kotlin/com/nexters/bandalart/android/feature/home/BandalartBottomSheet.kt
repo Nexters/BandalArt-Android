@@ -84,6 +84,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTo
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.core.ui.nonScaleSp
+import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
@@ -95,6 +96,7 @@ import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartDatePick
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.util.Locale
 
 @Composable
 fun BandalartBottomSheet(
@@ -117,6 +119,7 @@ fun BandalartBottomSheet(
   val focusRequester = remember { FocusRequester() }
   val focusManager = LocalFocusManager.current
   val scrollState = rememberScrollState()
+  val currentLocale = context.getCurrentLocale()
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -276,8 +279,20 @@ fun BandalartBottomSheet(
                   .focusRequester(focusRequester),
                 value = uiState.cellData.title ?: "",
                 onValueChange = {
-                  // TODO 다국어 지원 적용(영어 일 때는 24글자 까지 허용)
-                  viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
+                  // 영어 일 때는 title 의 글자 수를 24자 까지 허용
+                  when (currentLocale.language) {
+                    Locale.KOREAN.language -> {
+                      viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
+                    }
+
+                    Locale.ENGLISH.language -> {
+                      viewModel.titleChanged(title = if (it.length > 24) uiState.cellData.title ?: "" else it)
+                    }
+
+                    else -> {
+                      viewModel.titleChanged(title = if (it.length > 24) uiState.cellData.title ?: "" else it)
+                    }
+                  }
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -394,8 +409,9 @@ fun BandalartBottomSheet(
                   .height(18.dp),
                 value = uiState.cellData.description ?: "",
                 onValueChange = {
+                  // description 의 글자 수를 1000자 까지 허용
                   viewModel.descriptionChanged(
-                    description = if (it.length > 15) uiState.cellData.description else it,
+                    description = if (it.length > 1000) uiState.cellData.description else it,
                   )
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
