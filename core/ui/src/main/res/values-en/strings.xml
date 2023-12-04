@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- OnBoardingScreen.kt -->
-  <string name="onboarding_first_title">Say goodbye to complex and overwhelming Mandalart!</string>
-  <string name="onboarding_second_title">Now, plan effortlessly with Bandalart!</string>
+  <string name="onboarding_first_title">Say goodbye to complex and\noverwhelming Mandalart!</string>
+  <string name="onboarding_second_title">Now, plan effortlessly\nwith Bandalart!</string>
   <string name="onboarding_start">Get Started</string>
 
   <!-- CompleteScreen.kt -->

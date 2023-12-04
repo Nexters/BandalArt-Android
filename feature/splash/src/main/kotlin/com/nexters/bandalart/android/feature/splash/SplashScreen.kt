@@ -11,9 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -109,7 +110,9 @@ fun SplashScreen(
         verticalAlignment = Alignment.CenterVertically,
       ) {
         Image(
-          painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app),
+          imageVector = ImageVector.vectorResource(
+            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app
+          ),
           contentDescription = context.getString(R.string.app_icon_description),
         )
         Spacer(modifier = Modifier.width(10.dp))

@@ -18,8 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,7 +82,9 @@ fun CompleteBandalart(
             ) {
               if (uiState.profileEmoji == context.getString(R.string.home_default_emoji)) {
                 Image(
-                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
+                  imageVector = ImageVector.vectorResource(
+                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                  ),
                   contentDescription = context.getString(R.string.empty_emoji_descrption),
                 )
               } else {

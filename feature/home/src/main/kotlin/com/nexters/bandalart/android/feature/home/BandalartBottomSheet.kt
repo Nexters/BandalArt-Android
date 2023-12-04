@@ -53,10 +53,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -249,7 +250,9 @@ fun BandalartBottomSheet(
                   ) {
                     if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
                       Image(
-                        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
+                        imageVector = ImageVector.vectorResource(
+                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                        ),
                         contentDescription = stringResource(R.string.empty_emoji_descrption),
                       )
                     } else {
@@ -261,7 +264,9 @@ fun BandalartBottomSheet(
                   }
                 }
                 Image(
-                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
+                  imageVector = ImageVector.vectorResource(
+                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+                  ),
                   contentDescription = stringResource(R.string.edit_descrption),
                   modifier = Modifier
                     .align(Alignment.BottomEnd)

@@ -15,8 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -56,7 +57,7 @@ fun BandalartDropDownMenu(
 //        text = {
 //          Row {
 //            Image(
-//              painter = painterResource(id = R.drawable.ic_image),
+//              imageVector = ImageVector.vectorResource(id = R.drawable.ic_image),
 //              contentDescription = "Image Icon",
 //              modifier = Modifier
 //                .height(14.dp)
@@ -85,7 +86,9 @@ fun BandalartDropDownMenu(
         text = {
           Row {
             Image(
-              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete),
+              imageVector = ImageVector.vectorResource(
+                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
+              ),
               contentDescription = context.getString(R.string.delete_descrption),
               modifier = Modifier
                 .height(14.dp)

@@ -16,8 +16,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,7 +50,9 @@ fun BandalartDeleteAlertDialog(
           .padding(top = 24.dp),
       ) {
         Image(
-          painter = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete),
+          imageVector = ImageVector.vectorResource(
+            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
+          ),
           contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier
             .height(28.dp)

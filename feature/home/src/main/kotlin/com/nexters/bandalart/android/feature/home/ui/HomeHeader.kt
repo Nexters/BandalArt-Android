@@ -26,8 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,7 +72,9 @@ fun HomeHeader(
           ) {
             if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
               Image(
-                painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
+                imageVector = ImageVector.vectorResource(
+                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                ),
                 contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.empty_emoji_descrption),
               )
             } else {
@@ -84,7 +87,9 @@ fun HomeHeader(
         }
         if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
           Image(
-            painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
+            imageVector = ImageVector.vectorResource(
+              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+            ),
             contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.edit_descrption),
             modifier = Modifier
               .align(Alignment.BottomEnd)
@@ -110,7 +115,9 @@ fun HomeHeader(
             .clickable { openCellBottomSheet(true) },
         )
         Image(
-          painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option),
+          imageVector = ImageVector.vectorResource(
+            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
+          ),
           contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.option_descrption),
           modifier = Modifier
             .align(Alignment.CenterEnd)
