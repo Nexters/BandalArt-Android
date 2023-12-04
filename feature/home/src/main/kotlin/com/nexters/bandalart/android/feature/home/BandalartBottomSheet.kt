@@ -166,19 +166,17 @@ fun BandalartBottomSheet(
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
         title = if (isMainCell) {
-          stringResource(R.string.delete_bandalart_maincelll_dialog_empty_title)
+          stringResource(R.string.delete_bandalart_maincell_dialog_title, uiState.cellData.title ?: "")
         } else if (isSubCell) {
-          stringResource(R.string.delete_bandalart_subcell_dialog_empty_title)
+          stringResource(R.string.delete_bandalart_subcell_dialog_title, uiState.cellData.title ?: "")
         } else {
-          stringResource(R.string.delete_bandalart_taskcell_dialog_empty_title)
+          stringResource(R.string.delete_bandalart_taskcell_dialog_title, uiState.cellData.title ?: "")
         },
         message = if (isMainCell) {
           stringResource(R.string.delete_bandalart_maincell_dialog_message)
         } else if (isSubCell) {
           stringResource(R.string.delete_bandalart_subcell_dialog_message)
-        } else {
-          stringResource(R.string.delete_bandalart_taskcell_dialog_message)
-        },
+        } else null,
         onDeleteClicked = {
           scope.launch {
             viewModel.deleteBandalartCell(

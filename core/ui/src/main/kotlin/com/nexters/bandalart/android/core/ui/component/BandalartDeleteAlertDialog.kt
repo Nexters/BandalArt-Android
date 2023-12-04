@@ -32,7 +32,7 @@ import com.nexters.bandalart.android.core.ui.R
 @Composable
 fun BandalartDeleteAlertDialog(
   title: String,
-  message: String,
+  message: String?,
   onDeleteClicked: () -> Unit,
   onCancelClicked: () -> Unit,
   modifier: Modifier = Modifier,
@@ -66,16 +66,18 @@ fun BandalartDeleteAlertDialog(
           lineHeight = 30.sp,
           letterSpacing = (-0.4).sp,
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-          text = message,
-          color = Gray400,
-          fontSize = 14.sp,
-          fontWeight = FontWeight.W500,
-          textAlign = TextAlign.Center,
-          letterSpacing = (-0.28).sp,
-        )
+        if (message != null) {
+          Spacer(modifier = Modifier.height(8.dp))
+          FixedSizeText(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = message,
+            color = Gray400,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.W500,
+            textAlign = TextAlign.Center,
+            letterSpacing = (-0.28).sp,
+          )
+        }
         Spacer(modifier = Modifier.height(30.dp))
         Row(
           modifier = Modifier
