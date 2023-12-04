@@ -28,7 +28,6 @@ import timber.log.Timber
  * @param title 반다라트 제목
  * @param profileEmoji 반다라트 프로필 이모지
  * @param shareUrl 공유 링크
- * @param error 서버와의 통신을 실패
  */
 
 data class CompleteUiState(
@@ -36,7 +35,6 @@ data class CompleteUiState(
   val title: String = "",
   val profileEmoji: String? = "",
   val shareUrl: String = "",
-  val error: Throwable? = null,
 )
 
 sealed interface CompleteUiEvent {
@@ -88,10 +86,7 @@ class CompleteViewModel @Inject constructor(
       val result = shareBandalartUseCase(key)
       when {
         result.isSuccess && result.getOrNull() != null -> {
-          _uiState.value = _uiState.value.copy(
-            shareUrl = result.getOrNull()!!.shareUrl,
-            error = null,
-          )
+          _uiState.value = _uiState.value.copy(shareUrl = result.getOrNull()!!.shareUrl)
         }
 
         result.isSuccess && result.getOrNull() == null -> {
@@ -100,7 +95,6 @@ class CompleteViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.value = _uiState.value.copy(error = exception)
           _eventFlow.emit(CompleteUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception)
         }
