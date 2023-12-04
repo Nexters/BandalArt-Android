@@ -170,7 +170,7 @@ fun BandalartBottomSheet(
         } else if (isSubCell) {
           stringResource(R.string.delete_bandalart_subcell_dialog_empty_title)
         } else {
-          stringResource(R.string.delete_bandalart_taskcell_dialog_title)
+          stringResource(R.string.delete_bandalart_taskcell_dialog_empty_title)
         },
         message = if (isMainCell) {
           stringResource(R.string.delete_bandalart_maincell_dialog_message)

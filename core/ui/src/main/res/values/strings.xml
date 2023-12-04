@@ -83,6 +83,7 @@
   <string name="delete_bandalart_subcell_dialog_title">\&apos;%1$s\&apos;\n서브목표를 삭제하시겠어요?</string>
   <string name="delete_bandalart_subcell_dialog_message">속해있는 하위 태스크들이 모두 삭제돼요</string>
 
+  <string name="delete_bandalart_taskcell_dialog_empty_title">태스크를 삭제하시겠어요?</string>
   <string name="delete_bandalart_taskcell_dialog_title">\&apos;%1$s\&apos;\n태스크를 삭제하시겠어요?</string>
   <string name="delete_bandalart_taskcell_dialog_message">""</string>
 

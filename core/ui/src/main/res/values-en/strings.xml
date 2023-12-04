@@ -83,6 +83,7 @@
   <string name="delete_bandalart_subcell_dialog_title">Do you want to delete the sub goal\n&quot;%1$s&quot;?</string>
   <string name="delete_bandalart_subcell_dialog_message">All associated tasks will be deleted.</string>
 
+  <string name="delete_bandalart_taskcell_dialog_empty_title">Do you want to delete\nthe task?</string>
   <string name="delete_bandalart_taskcell_dialog_title">Do you want to delete\nthe task\n&quot;%1$s&quot;?</string>
   <string name="delete_bandalart_taskcell_dialog_message">""</string>
 
