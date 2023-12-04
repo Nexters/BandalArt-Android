@@ -84,7 +84,7 @@
   <string name="delete_bandalart_subcell_dialog_message">All associated tasks will be deleted.</string>
 
   <string name="delete_bandalart_taskcell_dialog_title">Do you want to delete\nthe task\n&quot;%1$s&quot;?</string>
-  <string name="delete_bandalart_taskcell_dialog_message">Deleted content cannot be restored.</string>
+  <string name="delete_bandalart_taskcell_dialog_message">""</string>
 
   <string name="delete_bandalart_delete">Delete</string>
   <string name="delete_bandalart_cancel">Cancel</string>
