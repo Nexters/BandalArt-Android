@@ -19,6 +19,7 @@ dependencies {
     projects.core.designsystem,
     projects.core.domain,
     projects.core.ui,
+    projects.core.util,
     libs.kotlinx.collections.immutable,
     libs.androidx.core,
     libs.androidx.hilt.compose.navigation,

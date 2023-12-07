@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
-import com.nexters.bandalart.android.core.ui.extension.UiText
+import com.nexters.bandalart.android.core.ui.UiText
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_KEY
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_PROFILE_EMOJI
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_TITLE
@@ -39,8 +39,9 @@ data class CompleteUiState(
   val error: Throwable? = null,
 )
 
-sealed class CompleteUiEvent {
-  data class ShowToast(val message: UiText) : CompleteUiEvent()
+sealed interface CompleteUiEvent {
+  data object NavigateToHome : CompleteUiEvent
+  data class ShowToast(val message: UiText) : CompleteUiEvent
 }
 
 @HiltViewModel
@@ -110,5 +111,11 @@ class CompleteViewModel @Inject constructor(
 
   fun initShareUrl() {
     _uiState.value = _uiState.value.copy(shareUrl = "")
+  }
+
+  fun navigateToHome() {
+    viewModelScope.launch {
+      _eventFlow.emit(CompleteUiEvent.NavigateToHome)
+    }
   }
 }

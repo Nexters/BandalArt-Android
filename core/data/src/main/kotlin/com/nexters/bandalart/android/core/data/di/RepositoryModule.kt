@@ -20,12 +20,6 @@ internal abstract class RepositoryModule {
     guestLoginTokenRepositoryImpl: GuestLoginTokenRepositoryImpl,
   ): GuestLoginTokenRepository
 
-//  @Binds
-//  @Singleton
-//  abstract fun bindServerHealthCheckRepository(
-//    serverHealthCheckRepositoryImpl: ServerHealthCheckRepositoryImpl,
-//  ): ServerHealthCheckRepository
-
   @Binds
   @Singleton
   abstract fun bindBandalartRepository(

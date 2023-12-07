@@ -23,6 +23,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
@@ -31,39 +33,41 @@ import com.nexters.bandalart.android.feature.complete.ui.CompleteTopBar
 
 @Composable
 internal fun CompleteRoute(
-  modifier: Modifier = Modifier,
   onNavigateBack: () -> Unit,
+  modifier: Modifier = Modifier,
   viewModel: CompleteViewModel = hiltViewModel(),
 ) {
   val context = LocalContext.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  LaunchedEffect(viewModel) {
-    viewModel.eventFlow.collect { event ->
-      when (event) {
-        is CompleteUiEvent.ShowToast -> {
-          Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-        }
+  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+    when (event) {
+      is CompleteUiEvent.NavigateToHome -> {
+        onNavigateBack()
+      }
+
+      is CompleteUiEvent.ShowToast -> {
+        Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
       }
     }
   }
 
   CompleteScreen(
-    modifier = modifier,
     uiState = uiState,
-    onNavigateBack = onNavigateBack,
+    navigateToHome = viewModel::navigateToHome,
     shareBandalart = viewModel::shareBandalart,
     initShareUrl = viewModel::initShareUrl,
+    modifier = modifier,
   )
 }
 
 @Composable
 internal fun CompleteScreen(
-  modifier: Modifier = Modifier,
   uiState: CompleteUiState,
-  onNavigateBack: () -> Unit,
+  navigateToHome: () -> Unit,
   shareBandalart: () -> Unit,
   initShareUrl: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   val composition by rememberLottieComposition(
@@ -94,6 +98,7 @@ internal fun CompleteScreen(
 
   Surface(
     modifier = modifier.fillMaxSize(),
+    color = Gray50,
   ) {
     Box {
       LottieAnimation(
@@ -106,7 +111,7 @@ internal fun CompleteScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Spacer(modifier = Modifier.height(16.dp))
-        CompleteTopBar(onNavigateBack = onNavigateBack)
+        CompleteTopBar(onNavigateBack = navigateToHome)
         Spacer(modifier = Modifier.height(40.dp))
         TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {

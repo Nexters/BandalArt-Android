@@ -15,8 +15,8 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BottomSheetDeleteButton(
-  modifier: Modifier = Modifier,
   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   FilledIconButton(
     onClick = onClick,
@@ -32,9 +32,9 @@ fun BottomSheetDeleteButton(
 
 @Composable
 fun BottomSheetCompleteButton(
-  modifier: Modifier = Modifier,
   isBlankCell: Boolean,
   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   FilledIconButton(
     onClick = onClick,

@@ -24,17 +24,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
 fun NetworkErrorAlertDialog(
-  modifier: Modifier = Modifier,
   title: String,
   message: String,
   onConfirmClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   Dialog(onDismissRequest = {}) {
@@ -54,8 +54,8 @@ fun NetworkErrorAlertDialog(
         )
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           text = title,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray900,
           fontSize = 20.sp,
           fontWeight = FontWeight.W700,
@@ -65,8 +65,8 @@ fun NetworkErrorAlertDialog(
         )
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           text = message,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray400,
           fontSize = 14.sp,
           fontWeight = FontWeight.W500,

@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.extension.nonScaleSp
+import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 
 val cellLineBreak = LineBreak(
@@ -23,10 +23,10 @@ val cellLineBreak = LineBreak(
 
 @Composable
 fun CellText(
-  modifier: Modifier = Modifier,
   cellText: String,
   cellTextColor: Color,
   fontWeight: FontWeight,
+  modifier: Modifier = Modifier,
   textAlpha: Float = 1f,
 ) {
   Text(

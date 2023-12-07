@@ -16,7 +16,7 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalar
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.extension.UiText
+import com.nexters.bandalart.android.core.ui.UiText
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
@@ -82,9 +82,15 @@ data class HomeUiState(
   val error: Throwable? = null,
 )
 
-sealed class HomeUiEvent {
-  data class ShowSnackbar(val message: UiText) : HomeUiEvent()
-  data class ShowToast(val message: UiText) : HomeUiEvent()
+sealed interface HomeUiEvent {
+  data class NavigateToComplete(
+    val key: String,
+    val title: String,
+    val profileEmoji: String,
+  ) : HomeUiEvent
+
+  data class ShowSnackbar(val message: UiText) : HomeUiEvent
+  data class ShowToast(val message: UiText) : HomeUiEvent
 }
 
 @HiltViewModel
@@ -499,6 +505,18 @@ class HomeViewModel @Inject constructor(
   private suspend fun deleteBandalartKey(bandalartKey: String) {
     viewModelScope.launch {
       deleteBandalartKeyUseCase(bandalartKey)
+    }
+  }
+
+  fun navigateToComplete() {
+    viewModelScope.launch {
+      _eventFlow.emit(
+        HomeUiEvent.NavigateToComplete(
+          key = uiState.value.bandalartDetailData!!.key,
+          title = uiState.value.bandalartDetailData!!.title!!,
+          profileEmoji = uiState.value.bandalartDetailData!!.profileEmoji ?: "",
+        ),
+      )
     }
   }
 }

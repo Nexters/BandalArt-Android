@@ -16,6 +16,7 @@ android {
 dependencies {
   implementations(
     projects.core.designsystem,
+    projects.core.util,
     libs.kotlinx.datetime,
     libs.androidx.core,
     libs.lottie.compose,

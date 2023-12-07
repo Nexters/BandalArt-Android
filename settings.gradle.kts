@@ -28,6 +28,7 @@ include(
   ":core:domain",
   ":core:network",
   ":core:ui",
+  ":core:util",
   ":feature:complete",
   ":feature:home",
   ":feature:onboarding",

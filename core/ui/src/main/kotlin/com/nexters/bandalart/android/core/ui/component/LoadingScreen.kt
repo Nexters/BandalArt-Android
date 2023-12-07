@@ -23,7 +23,9 @@ import com.nexters.bandalart.android.core.designsystem.theme.Black
 import com.nexters.bandalart.android.core.designsystem.theme.White
 
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
+fun LoadingScreen(
+  modifier: Modifier = Modifier,
+) {
   Box(
     modifier = modifier.noRippleClickable { },
     contentAlignment = Alignment.Center,
