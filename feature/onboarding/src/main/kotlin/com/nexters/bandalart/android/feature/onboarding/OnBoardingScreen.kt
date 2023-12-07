@@ -39,6 +39,8 @@ import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.ui.component.AppEnglishTitle
+import com.nexters.bandalart.android.core.ui.component.AppKoreanTitle
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.core.ui.component.PagerIndicator
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
@@ -72,17 +74,44 @@ internal fun OnBoardingScreen(
   navigateToHome: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val context = LocalContext.current
+  val currentLocale = context.getCurrentLocale()
+
+  when (currentLocale.language) {
+    Locale.KOREAN.language -> {
+      AppKoreanTitle(modifier = modifier)
+    }
+
+    Locale.ENGLISH.language -> {
+      AppEnglishTitle(modifier = modifier)
+    }
+
+    else -> {
+      AppEnglishTitle(modifier = modifier)
+    }
+  }
+
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
-      com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_kr,
+      when (currentLocale.language) {
+        Locale.KOREAN.language -> {
+          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_kr
+        }
+
+        Locale.ENGLISH.language -> {
+          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
+        }
+
+        else -> {
+          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
+        }
+      }
     ),
   )
   val progress by animateLottieCompositionAsState(
     composition = composition,
     iterations = LottieConstants.IterateForever,
   )
-  val context = LocalContext.current
-  val currentLocale = context.getCurrentLocale()
 
   Surface(
     modifier = modifier.fillMaxSize(),
