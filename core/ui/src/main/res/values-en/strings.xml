@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!--  AppName-->
+  <string name="app_name">Bandalart</string>
+  <string name="app_name_dev">Bandalart.dev</string>
+
   <!-- OnBoardingScreen.kt -->
   <string name="onboarding_first_title">Say goodbye to complex and\noverwhelming Mandalart!</string>
   <string name="onboarding_second_title">Now, plan effortlessly\nwith Bandalart!</string>
