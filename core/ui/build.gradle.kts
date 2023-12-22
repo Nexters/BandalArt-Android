@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
+@file:Suppress("INLINE_FROM_HIGHER_PLATFORM", "UnstableApiUsage")
 
 plugins {
   bandalart("android-library")

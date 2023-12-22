@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
+@file:Suppress("DSL_SCOPE_VIOLATION", "INLINE_FROM_HIGHER_PLATFORM", "UnstableApiUsage")
 
 import java.util.Properties
 
@@ -33,8 +33,9 @@ android {
     }
 
     create("benchmark") {
-      isDebuggable = false
       initWith(buildTypes.getByName("release"))
+      isDebuggable = false
+      manifestPlaceholders += mapOf("appName" to "@string/app_name")
       matchingFallbacks += listOf("release")
     }
 

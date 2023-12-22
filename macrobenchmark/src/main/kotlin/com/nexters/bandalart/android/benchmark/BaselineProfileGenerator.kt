@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalBaselineProfilesApi::class)
+
 package com.nexters.bandalart.android.benchmark
 
+import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -17,12 +20,10 @@ class BaselineProfileGenerator {
   val baselineProfileRule = BaselineProfileRule()
 
   @Test
-  fun startUp() {
-    baselineProfileRule.collect(
-      packageName = "com.nexters.bandalart.android",
-      profileBlock = {
-        startActivityAndWait()
-      }
-    )
+  fun startup() {
+    baselineProfileRule.collectBaselineProfile(packageName = "com.nexters.bandalart.android") {
+      pressHome()
+      startActivityAndWait()
+    }
   }
 }
