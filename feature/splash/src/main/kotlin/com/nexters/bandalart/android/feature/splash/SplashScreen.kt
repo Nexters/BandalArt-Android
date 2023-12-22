@@ -111,7 +111,7 @@ fun SplashScreen(
       ) {
         Image(
           imageVector = ImageVector.vectorResource(
-            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app
+            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app,
           ),
           contentDescription = context.getString(R.string.app_icon_description),
         )

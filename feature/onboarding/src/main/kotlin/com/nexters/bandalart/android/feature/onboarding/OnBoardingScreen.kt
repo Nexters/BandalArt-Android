@@ -105,7 +105,7 @@ internal fun OnBoardingScreen(
         else -> {
           com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
         }
-      }
+      },
     ),
   )
   val progress by animateLottieCompositionAsState(
