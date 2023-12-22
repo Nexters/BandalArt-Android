@@ -17,8 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,6 +27,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.nonScaleSp
 
@@ -43,7 +45,7 @@ internal fun HomeTopBar(
     contentAlignment = Alignment.CenterStart,
   ) {
     Row(modifier = Modifier.fillMaxWidth()) {
-      HomeAppTitle(
+      AppTitle(
         modifier = Modifier
           .align(Alignment.CenterVertically)
           .padding(start = 20.dp, top = 2.dp),
@@ -57,7 +59,9 @@ internal fun HomeTopBar(
         Row(verticalAlignment = Alignment.CenterVertically) {
           if (bandalartCount > 1) {
             Image(
-              painter = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_hamburger),
+              imageVector = ImageVector.vectorResource(
+                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_hamburger,
+              ),
               contentDescription = stringResource(R.string.hamburger_descrption),
             )
             Text(

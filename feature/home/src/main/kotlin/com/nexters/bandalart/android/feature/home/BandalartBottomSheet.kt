@@ -51,11 +51,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,7 +67,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
-import com.nexters.bandalart.android.core.designsystem.theme.Transparent
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.StatusBarHeightDp
@@ -84,6 +85,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTo
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.core.ui.nonScaleSp
+import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
@@ -95,6 +97,7 @@ import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartDatePick
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiPicker
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.util.Locale
 
 @Composable
 fun BandalartBottomSheet(
@@ -117,6 +120,7 @@ fun BandalartBottomSheet(
   val focusRequester = remember { FocusRequester() }
   val focusManager = LocalFocusManager.current
   val scrollState = rememberScrollState()
+  val currentLocale = context.getCurrentLocale()
 
   ModalBottomSheet(
     onDismissRequest = {
@@ -163,19 +167,17 @@ fun BandalartBottomSheet(
     if (uiState.isDeleteCellDialogOpened) {
       BandalartDeleteAlertDialog(
         title = if (isMainCell) {
-          stringResource(R.string.delete_bandalart_maincelll_dialog_empty_title)
+          stringResource(R.string.delete_bandalart_maincell_dialog_title, uiState.cellData.title ?: "")
         } else if (isSubCell) {
-          stringResource(R.string.delete_bandalart_subcell_dialog_empty_title)
+          stringResource(R.string.delete_bandalart_subcell_dialog_title, uiState.cellData.title ?: "")
         } else {
-          stringResource(R.string.delete_bandalart_taskcell_dialog_title)
+          stringResource(R.string.delete_bandalart_taskcell_dialog_title, uiState.cellData.title ?: "")
         },
         message = if (isMainCell) {
           stringResource(R.string.delete_bandalart_maincell_dialog_message)
         } else if (isSubCell) {
           stringResource(R.string.delete_bandalart_subcell_dialog_message)
-        } else {
-          stringResource(R.string.delete_bandalart_taskcell_dialog_message)
-        },
+        } else null,
         onDeleteClicked = {
           scope.launch {
             viewModel.deleteBandalartCell(
@@ -248,7 +250,9 @@ fun BandalartBottomSheet(
                   ) {
                     if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
                       Image(
-                        painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji),
+                        imageVector = ImageVector.vectorResource(
+                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                        ),
                         contentDescription = stringResource(R.string.empty_emoji_descrption),
                       )
                     } else {
@@ -260,7 +264,9 @@ fun BandalartBottomSheet(
                   }
                 }
                 Image(
-                  painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit),
+                  imageVector = ImageVector.vectorResource(
+                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+                  ),
                   contentDescription = stringResource(R.string.edit_descrption),
                   modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -276,7 +282,20 @@ fun BandalartBottomSheet(
                   .focusRequester(focusRequester),
                 value = uiState.cellData.title ?: "",
                 onValueChange = {
-                  viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
+                  // 영어 일 때는 title 의 글자 수를 24자 까지 허용
+                  when (currentLocale.language) {
+                    Locale.KOREAN.language -> {
+                      viewModel.titleChanged(title = if (it.length > 15) uiState.cellData.title ?: "" else it)
+                    }
+
+                    Locale.ENGLISH.language -> {
+                      viewModel.titleChanged(title = if (it.length > 24) uiState.cellData.title ?: "" else it)
+                    }
+
+                    else -> {
+                      viewModel.titleChanged(title = if (it.length > 24) uiState.cellData.title ?: "" else it)
+                    }
+                  }
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -393,8 +412,9 @@ fun BandalartBottomSheet(
                   .height(18.dp),
                 value = uiState.cellData.description ?: "",
                 onValueChange = {
+                  // description 의 글자 수를 1000자 까지 허용
                   viewModel.descriptionChanged(
-                    description = if (it.length > 15) uiState.cellData.description else it,
+                    description = if (it.length > 1000) uiState.cellData.description else it,
                   )
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -503,24 +523,26 @@ fun BandalartBottomSheet(
         }
         if (scrollState.value > 0) {
           Column(
-            modifier = Modifier.background(
-              brush = Brush.verticalGradient(
-                colors = listOf(White, Transparent),
-              ),
-              shape = RectangleShape,
-            )
+            modifier = Modifier
+              .background(
+                brush = Brush.verticalGradient(
+                  colors = listOf(White, Transparent),
+                ),
+                shape = RectangleShape,
+              )
               .height(77.dp)
               .fillMaxWidth(),
           ) {}
         }
         if (scrollState.value < scrollState.maxValue) {
           Column(
-            modifier = Modifier.background(
-              brush = Brush.verticalGradient(
-                colors = listOf(Transparent, White),
-              ),
-              shape = RectangleShape,
-            )
+            modifier = Modifier
+              .background(
+                brush = Brush.verticalGradient(
+                  colors = listOf(Transparent, White),
+                ),
+                shape = RectangleShape,
+              )
               .height(77.dp)
               .fillMaxWidth()
               .align(Alignment.BottomCenter),

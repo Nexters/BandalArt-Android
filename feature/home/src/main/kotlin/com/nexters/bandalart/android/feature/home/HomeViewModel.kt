@@ -58,7 +58,6 @@ import javax.inject.Inject
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
  * @param shareUrl 공유 링크
  * @param isNetworking 중복 통신 호출 방지를 위해 통신 중임을 알림
- * @param error 서버와의 통신을 실패
  */
 
 data class HomeUiState(
@@ -79,7 +78,6 @@ data class HomeUiState(
   val isShowSkeleton: Boolean = false,
   val isLoading: Boolean = false,
   val isNetworking: Boolean = false,
-  val error: Throwable? = null,
 )
 
 sealed interface HomeUiEvent {
@@ -127,10 +125,7 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
           _uiState.update {
-            it.copy(
-              bandalartList = bandalartList.toImmutableList(),
-              error = null,
-            )
+            it.copy(bandalartList = bandalartList.toImmutableList())
           }
           // 이전 반다라트 목록 상태 조회
           val prevBandalartList = getPrevBandalartListUseCase()
@@ -186,13 +181,11 @@ class HomeViewModel @Inject constructor(
         }
 
         result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
           _uiState.update {
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
               isNetworkErrorAlertDialogOpened = true,
-              error = exception,
             )
           }
         }
@@ -212,7 +205,6 @@ class HomeViewModel @Inject constructor(
               bandalartDetailData = bandalartDetailData,
               isBandalartListBottomSheetOpened = false,
               isBandalartCompleted = isBandalartCompleted,
-              error = null,
             )
           }
           getBandalartMainCell(bandalartKey)
@@ -223,14 +215,12 @@ class HomeViewModel @Inject constructor(
         }
 
         result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
           _uiState.update {
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
               bandalartCellData = null,
               isNetworkErrorAlertDialogOpened = true,
-              error = exception,
             )
           }
         }
@@ -248,7 +238,6 @@ class HomeViewModel @Inject constructor(
             it.copy(
               isShowSkeleton = false,
               bandalartCellData = result.getOrNull()!!.toUiModel(),
-              error = null,
             )
           }
           bottomSheetDataChanged(flag = false)
@@ -260,13 +249,11 @@ class HomeViewModel @Inject constructor(
         }
 
         result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
           _uiState.update {
             it.copy(
               bandalartCellData = null,
               isNetworkErrorAlertDialogOpened = true,
               isShowSkeleton = false,
-              error = exception,
             )
           }
         }
@@ -296,10 +283,7 @@ class HomeViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           val bandalart = result.getOrNull()!!
           _uiState.update {
-            it.copy(
-              isBandalartListBottomSheetOpened = false,
-              error = null,
-            )
+            it.copy(isBandalartListBottomSheetOpened = false)
           }
           // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
           getBandalartList(bandalart.key)
@@ -320,7 +304,6 @@ class HomeViewModel @Inject constructor(
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              error = exception,
             )
           }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
@@ -341,10 +324,7 @@ class HomeViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update {
-            it.copy(
-              isBandalartDeleted = true,
-              error = null,
-            )
+            it.copy(isBandalartDeleted = true)
           }
           openBandalartDeleteAlertDialog(false)
           getBandalartList()
@@ -363,7 +343,6 @@ class HomeViewModel @Inject constructor(
               isLoading = false,
               isShowSkeleton = false,
               isBandalartDeleted = false,
-              error = exception,
             )
           }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
@@ -397,7 +376,6 @@ class HomeViewModel @Inject constructor(
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              error = exception,
             )
           }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
@@ -417,10 +395,7 @@ class HomeViewModel @Inject constructor(
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update {
-            it.copy(
-              shareUrl = result.getOrNull()!!.shareUrl,
-              error = null,
-            )
+            it.copy(shareUrl = result.getOrNull()!!.shareUrl)
           }
         }
 
@@ -430,7 +405,6 @@ class HomeViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.update { it.copy(error = exception) }
           _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
         }
       }

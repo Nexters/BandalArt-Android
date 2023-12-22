@@ -23,8 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
@@ -38,8 +39,12 @@ import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.ui.component.AppEnglishTitle
+import com.nexters.bandalart.android.core.ui.component.AppKoreanTitle
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import com.nexters.bandalart.android.core.ui.component.PagerIndicator
+import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
+import java.util.Locale
 
 @Composable
 internal fun OnBoardingRoute(
@@ -69,16 +74,44 @@ internal fun OnBoardingScreen(
   navigateToHome: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val context = LocalContext.current
+  val currentLocale = context.getCurrentLocale()
+
+  when (currentLocale.language) {
+    Locale.KOREAN.language -> {
+      AppKoreanTitle(modifier = modifier)
+    }
+
+    Locale.ENGLISH.language -> {
+      AppEnglishTitle(modifier = modifier)
+    }
+
+    else -> {
+      AppEnglishTitle(modifier = modifier)
+    }
+  }
+
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
-      com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding,
+      when (currentLocale.language) {
+        Locale.KOREAN.language -> {
+          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_kr
+        }
+
+        Locale.ENGLISH.language -> {
+          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
+        }
+
+        else -> {
+          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
+        }
+      },
     ),
   )
   val progress by animateLottieCompositionAsState(
     composition = composition,
     iterations = LottieConstants.IterateForever,
   )
-  val context = LocalContext.current
 
   Surface(
     modifier = modifier.fillMaxSize(),
@@ -121,11 +154,37 @@ internal fun OnBoardingScreen(
                     .background(Gray50),
                   contentAlignment = Alignment.Center,
                 ) {
-                  Image(
-                    painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding),
-                    contentDescription = context.getString(R.string.delete_descrption),
-                    modifier = Modifier.fillMaxSize(),
-                  )
+                  when (currentLocale.language) {
+                    Locale.KOREAN.language -> {
+                      Image(
+                        imageVector = ImageVector.vectorResource(
+                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_kr,
+                        ),
+                        contentDescription = context.getString(R.string.delete_descrption),
+                        modifier = Modifier.fillMaxSize(),
+                      )
+                    }
+
+                    Locale.ENGLISH.language -> {
+                      Image(
+                        imageVector = ImageVector.vectorResource(
+                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_en,
+                        ),
+                        contentDescription = context.getString(R.string.delete_descrption),
+                        modifier = Modifier.fillMaxSize(),
+                      )
+                    }
+
+                    else -> {
+                      Image(
+                        imageVector = ImageVector.vectorResource(
+                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_en,
+                        ),
+                        contentDescription = context.getString(R.string.delete_descrption),
+                        modifier = Modifier.fillMaxSize(),
+                      )
+                    }
+                  }
                 }
               }
             }

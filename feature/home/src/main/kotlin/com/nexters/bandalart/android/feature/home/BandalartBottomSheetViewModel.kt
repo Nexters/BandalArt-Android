@@ -36,7 +36,6 @@ import timber.log.Timber
  * @param isEmojiPickerOpened 이모지 피커가 열림
  * @param isDeleteCellDialogOpened 셀 삭제 시, 경고 창이 열림
  * @param isNetworking 중복 통신 호출 방지를 위해 통신 중임을 알림
- * @param error 서버와의 통신을 실패
  */
 
 data class BottomSheetUiState(
@@ -49,7 +48,6 @@ data class BottomSheetUiState(
   val isEmojiPickerOpened: Boolean = false,
   val isDeleteCellDialogOpened: Boolean = false,
   val isNetworking: Boolean = false,
-  val error: Throwable? = null,
 )
 
 sealed class BottomSheetUiEvent {
@@ -102,7 +100,6 @@ class BottomSheetViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.update { it.copy(error = exception) }
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
@@ -131,7 +128,6 @@ class BottomSheetViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.update { it.copy(error = exception) }
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
@@ -160,7 +156,6 @@ class BottomSheetViewModel @Inject constructor(
         }
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _uiState.update { it.copy(error = exception) }
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
@@ -184,10 +179,7 @@ class BottomSheetViewModel @Inject constructor(
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
-            it.copy(
-              isCellDeleted = false,
-              error = exception,
-            )
+            it.copy(isCellDeleted = false)
           }
           openDeleteCellDialog(false)
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))

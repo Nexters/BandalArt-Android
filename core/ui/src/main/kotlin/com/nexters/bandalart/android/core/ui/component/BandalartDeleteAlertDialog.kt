@@ -13,28 +13,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BandalartDeleteAlertDialog(
   title: String,
-  message: String,
+  message: String?,
   onDeleteClicked: () -> Unit,
   onCancelClicked: () -> Unit,
   modifier: Modifier = Modifier,
@@ -51,7 +50,9 @@ fun BandalartDeleteAlertDialog(
           .padding(top = 24.dp),
       ) {
         Image(
-          painter = painterResource(id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete),
+          imageVector = ImageVector.vectorResource(
+            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
+          ),
           contentDescription = context.getString(R.string.delete_descrption),
           modifier = Modifier
             .height(28.dp)
@@ -68,16 +69,18 @@ fun BandalartDeleteAlertDialog(
           lineHeight = 30.sp,
           letterSpacing = (-0.4).sp,
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-          text = message,
-          color = Gray400,
-          fontSize = 14.sp,
-          fontWeight = FontWeight.W500,
-          textAlign = TextAlign.Center,
-          letterSpacing = (-0.28).sp,
-        )
+        if (message != null) {
+          Spacer(modifier = Modifier.height(8.dp))
+          FixedSizeText(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = message,
+            color = Gray400,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.W500,
+            textAlign = TextAlign.Center,
+            letterSpacing = (-0.28).sp,
+          )
+        }
         Spacer(modifier = Modifier.height(30.dp))
         Row(
           modifier = Modifier
@@ -99,9 +102,9 @@ fun BandalartDeleteAlertDialog(
               disabledContentColor = Gray900,
             ),
           ) {
-            Text(
+            FixedSizeText(
               text = context.getString(R.string.delete_bandalart_cancel),
-              fontSize = 16.sp.nonScaleSp,
+              fontSize = 16.sp,
               fontWeight = FontWeight.W600,
               color = Gray900,
             )
@@ -119,9 +122,9 @@ fun BandalartDeleteAlertDialog(
               disabledContentColor = White,
             ),
           ) {
-            Text(
+            FixedSizeText(
               text = context.getString(R.string.delete_bandalart_delete),
-              fontSize = 16.sp.nonScaleSp,
+              fontSize = 16.sp,
               fontWeight = FontWeight.W600,
               color = White,
             )

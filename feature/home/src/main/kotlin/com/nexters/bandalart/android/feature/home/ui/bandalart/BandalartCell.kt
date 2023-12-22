@@ -23,8 +23,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -179,7 +180,9 @@ fun BandalartCell(
               fontWeight = fontWeight,
             )
             Image(
-              painter = painterResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_cell_check),
+              imageVector = ImageVector.vectorResource(
+                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_cell_check,
+              ),
               contentDescription = stringResource(R.string.complete_descrption),
               modifier = Modifier
                 .align(Alignment.BottomEnd)

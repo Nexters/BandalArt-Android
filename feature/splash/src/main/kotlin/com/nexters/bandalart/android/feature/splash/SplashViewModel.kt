@@ -25,14 +25,12 @@ import javax.inject.Inject
  * @param isLoggedIn 로그인 여부 확인
  * @param isNetworkErrorAlertDialogOpened 네트워크 에러 발생
  * @param isLoading 서버와의 통신 중 로딩 상태
- * @param error 서버와의 통신을 실패
  */
 
 data class SplashUiState(
   val isLoggedIn: Boolean = false,
   val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isLoading: Boolean = true,
-  val error: Throwable? = null,
 )
 
 sealed interface SplashUiEvent {

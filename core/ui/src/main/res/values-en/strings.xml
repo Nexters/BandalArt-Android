@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!--  AppName-->
+  <string name="app_name">Bandalart</string>
+  <string name="app_name_dev">Bandalart.dev</string>
+
   <!-- OnBoardingScreen.kt -->
-  <string name="onboarding_first_title">Say goodbye to complex and overwhelming Mandalart!</string>
-  <string name="onboarding_second_title">Now, plan effortlessly with Bandalart!</string>
+  <string name="onboarding_first_title">Say goodbye to complex and\noverwhelming Mandalart!</string>
+  <string name="onboarding_second_title">Now, plan effortlessly\nwith Bandalart!</string>
   <string name="onboarding_start">Get Started</string>
 
   <!-- CompleteScreen.kt -->
@@ -13,7 +17,7 @@
 
   <!--  HomeScreen.kt -->
   <string name="home_default_emoji">default emoji</string>
-  <string name="home_share_url">제가 만든 반다라트를 구경하러오세요!\n%1$s</string>
+  <string name="home_share_url">Come and see the Bandalart I made!\n%1$s</string>
   <string name="home_share_type">text/plain</string>
   <string name="home_empty_title">Please enter your main goal</string>
   <string name="home_complete_ratio">Completion Rate %1$d%%</string>
@@ -53,7 +57,7 @@
   <string name="bottomsheet_header_taskcell_enter_title">Enter Task</string>
   <string name="bottomsheet_header_taskcell_edit_title">Edit Task</string>
   <string name="bottomsheet_title">Goal Name (Required)</string>
-  <string name="bottomsheet_title_placeholder">Enter within 15 characters</string>
+  <string name="bottomsheet_title_placeholder">Enter within 24 characters</string>
   <string name="bottomsheet_color">Color Theme</string>
   <string name="bottomsheet_duedate">Due Date (Optional)</string>
   <string name="bottomsheet_duedate_placeholder">Please select a due date</string>
@@ -71,20 +75,21 @@
   <string name="datepicker_day">%1$s day</string>
 
   <!-- BandalartDeleteAlertDialog -->
-  <string name="delete_bandalart_dialog_empty_title">Do you want to delete the Bandalart?</string>
-  <string name="delete_bandalart_dialog_title">Do you want to delete the &quot;%1$s&quot; Bandalart?</string>
+  <string name="delete_bandalart_dialog_empty_title">Do you want to delete\nthe Bandalart?</string>
+  <string name="delete_bandalart_dialog_title">Do you want to delete\nthe \&apos;%1$s\&apos; Bandalart?</string>
   <string name="delete_bandalart_dialog_message">Deleted Bandalart cannot be restored</string>
 
-  <string name="delete_bandalart_maincelll_dialog_empty_title">Do you want to delete the main goal?</string>
-  <string name="delete_bandalart_maincell_dialog_title">Do you want to delete the main goal &quot;%1$s&quot;?</string>
+  <string name="delete_bandalart_maincelll_dialog_empty_title">Do you want to delete\nthe main goal?</string>
+  <string name="delete_bandalart_maincell_dialog_title">Do you want to delete\nthe main goal\n\&apos;%1$s\&apos;?</string>
   <string name="delete_bandalart_maincell_dialog_message">Sub goals and tasks will all be deleted</string>
 
-  <string name="delete_bandalart_subcell_dialog_empty_title">Do you want to delete the sub goal?</string>
-  <string name="delete_bandalart_subcell_dialog_title">Do you want to delete the sub goal &quot;%1$s&quot;?</string>
+  <string name="delete_bandalart_subcell_dialog_empty_title">Do you want to delete\nthe sub goal?</string>
+  <string name="delete_bandalart_subcell_dialog_title">Do you want to delete\nthe sub goal\n\&apos;%1$s\&apos;?</string>
   <string name="delete_bandalart_subcell_dialog_message">All associated tasks will be deleted.</string>
 
-  <string name="delete_bandalart_taskcell_dialog_title">Do you want to delete the task &quot;%1$s&quot;?</string>
-  <string name="delete_bandalart_taskcell_dialog_message">Deleted content cannot be restored.</string>
+  <string name="delete_bandalart_taskcell_dialog_empty_title">Do you want to delete\nthe task?</string>
+  <string name="delete_bandalart_taskcell_dialog_title">Do you want to delete\nthe task\n\&apos;%1$s\&apos;?</string>
+  <string name="delete_bandalart_taskcell_dialog_message">""</string>
 
   <string name="delete_bandalart_delete">Delete</string>
   <string name="delete_bandalart_cancel">Cancel</string>
@@ -103,7 +108,7 @@
   <string name="data_validation">Request succeeded but data validation failed</string>
   <string name="create_bandalart">Created a new bandalart.</string>
   <string name="limit_create_bandalart">You can create up to 5 bandalarts.</string>
-  <string name="delete_bandalart">Bandalart deleted.</string>
+  <string name="delete_bandalart">New Bandalart created.</string>
 
   <!-- image descrption -->
   <string name="empty_emoji_descrption">Empty Emoji Icon</string>
@@ -117,7 +122,7 @@
   <string name="hamburger_descrption">Hamburger Icon</string>
   <string name="clear_descrption">Clear Icon</string>
   <string name="delete_descrption">Delete Icon</string>
-  <string name="splash_description">Splash Icon</string>
+  <string name="app_icon_description">App Icon</string>
   <string name="gallery_icon">Gallery Icon</string>
 
   <!--  label -->
