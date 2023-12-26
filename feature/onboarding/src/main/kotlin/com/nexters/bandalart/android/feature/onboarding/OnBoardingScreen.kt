@@ -50,7 +50,7 @@ import java.util.Locale
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
   modifier: Modifier = Modifier,
-  viewModel: SplashViewModel = hiltViewModel(),
+  viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
   ObserveAsEvents(flow = viewModel.eventFlow) { event ->
     when (event) {

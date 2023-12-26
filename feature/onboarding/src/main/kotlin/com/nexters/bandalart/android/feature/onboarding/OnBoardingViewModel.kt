@@ -14,7 +14,7 @@ sealed interface OnBoardingUiEvent {
 }
 
 @HiltViewModel
-class SplashViewModel @Inject constructor() : ViewModel() {
+class OnboardingViewModel @Inject constructor() : ViewModel() {
   private val _eventFlow = MutableSharedFlow<OnBoardingUiEvent>()
   val eventFlow: SharedFlow<OnBoardingUiEvent> = _eventFlow.asSharedFlow()
 
