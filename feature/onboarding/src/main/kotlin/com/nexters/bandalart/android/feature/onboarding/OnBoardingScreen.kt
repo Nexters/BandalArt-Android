@@ -8,9 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -34,19 +32,19 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.BandalartButton
-import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppEnglishTitle
 import com.nexters.bandalart.android.core.ui.component.AppKoreanTitle
-import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
+import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.PagerIndicator
+import com.nexters.bandalart.android.core.ui.component.TitleText
+import com.nexters.bandalart.android.core.ui.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
+import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import java.util.Locale
 
-// TODO 테블릿 대응
 @Composable
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
@@ -150,8 +148,7 @@ internal fun OnBoardingScreen(
               ) {
                 Box(
                   modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
+                    .aspectRatioBasedOnOrientation(1f)
                     .background(Gray50),
                   contentAlignment = Alignment.Center,
                 ) {
@@ -206,8 +203,7 @@ internal fun OnBoardingScreen(
                 ) {
                   Box(
                     modifier = Modifier
-                      .fillMaxWidth()
-                      .aspectRatio(1f)
+                      .aspectRatioBasedOnOrientation(1f)
                       .background(Gray50),
                     contentAlignment = Alignment.Center,
                   ) {
