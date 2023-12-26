@@ -91,8 +91,7 @@ fun SplashScreen(
       )
     }
 
-    // TODO 에러처리 보완
-    !uiState.isLoggedIn -> {
+    !uiState.isLoggedIn && uiState.isLoginTokenCreated -> {
       navigateToOnBoarding()
     }
 

@@ -23,12 +23,14 @@ import javax.inject.Inject
  * SplashUiState
  *
  * @param isLoggedIn 로그인 여부 확인
+ * @param isLoginTokenCreated 로그인 토큰 생성 확인
  * @param isNetworkErrorAlertDialogOpened 네트워크 에러 발생
  * @param isLoading 서버와의 통신 중 로딩 상태
  */
 
 data class SplashUiState(
   val isLoggedIn: Boolean = false,
+  val isLoginTokenCreated: Boolean = false,
   val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isLoading: Boolean = true,
 )
@@ -68,6 +70,7 @@ class SplashViewModel @Inject constructor(
         _uiState.update {
           it.copy(
             isLoggedIn = true,
+            isLoginTokenCreated = true,
             isLoading = false,
           )
         }
@@ -87,7 +90,12 @@ class SplashViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           val newGuestLoginToken = result.getOrNull()!!
           setGuestLoginTokenUseCase(newGuestLoginToken.key)
-          _uiState.update { it.copy(isLoggedIn = false) }
+          _uiState.update {
+            it.copy(
+              isLoggedIn = false,
+              isLoginTokenCreated = true,
+            )
+          }
           createBandalartUseCase()
         }
 
@@ -96,7 +104,13 @@ class SplashViewModel @Inject constructor(
         }
 
         result.isFailure -> {
-          _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = true) }
+          _uiState.update {
+            it.copy(
+              isLoggedIn = false,
+              isLoginTokenCreated = false,
+              isNetworkErrorAlertDialogOpened = true,
+            )
+          }
         }
       }
       _uiState.update { it.copy(isLoading = false) }
