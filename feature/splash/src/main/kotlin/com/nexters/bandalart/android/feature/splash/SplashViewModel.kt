@@ -62,14 +62,15 @@ class SplashViewModel @Inject constructor(
   private fun getGuestLoginToken() {
     viewModelScope.launch {
       val guestLoginToken = getGuestLoginTokenUseCase()
-      Timber.d(guestLoginToken)
       if (guestLoginToken.isEmpty()) {
         createGuestLoginToken()
       } else {
-        _uiState.value = _uiState.value.copy(
-          isLoggedIn = true,
-          isLoading = false,
-        )
+        _uiState.update {
+          it.copy(
+            isLoggedIn = true,
+            isLoading = false,
+          )
+        }
       }
     }
   }

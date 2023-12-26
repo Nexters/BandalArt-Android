@@ -46,6 +46,7 @@ import com.nexters.bandalart.android.core.ui.component.PagerIndicator
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import java.util.Locale
 
+// TODO 테블릿 대응
 @Composable
 internal fun OnBoardingRoute(
   navigateToHome: (NavOptions) -> Unit,
