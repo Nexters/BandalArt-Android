@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
@@ -125,6 +126,7 @@ internal fun CompleteScreen(
             onClick = shareBandalart,
             text = context.getString(R.string.complete_share),
             modifier = Modifier
+              .fillMaxWidth()
               .align(Alignment.BottomCenter)
               .padding(bottom = 32.dp),
           )
