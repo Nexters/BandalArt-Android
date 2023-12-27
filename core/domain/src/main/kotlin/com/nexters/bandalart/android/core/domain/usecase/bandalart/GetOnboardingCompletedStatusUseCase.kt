@@ -12,4 +12,3 @@ class GetOnboardingCompletedStatusUseCase @Inject constructor(
     return repository.getOnboardingCompletedStatus()
   }
 }
-

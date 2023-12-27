@@ -53,30 +53,31 @@ fun Modifier.clickableSingle(
 }
 
 fun Modifier.aspectRatioBasedOnOrientation(aspectRatio: Float): Modifier {
-  return this.then(object : LayoutModifier {
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
-      val width = constraints.maxWidth
-      val height = constraints.maxHeight
+  return this.then(
+    object : LayoutModifier {
+      override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        val width = constraints.maxWidth
+        val height = constraints.maxHeight
 
-      val targetWidth: Int
-      val targetHeight: Int
+        val targetWidth: Int
+        val targetHeight: Int
 
-      if (width <= height) {
-        targetWidth = width
-        targetHeight = (width / aspectRatio).toInt()
-      } else {
-        targetHeight = height
-        targetWidth = (height * aspectRatio).toInt()
+        if (width <= height) {
+          targetWidth = width
+          targetHeight = (width / aspectRatio).toInt()
+        } else {
+          targetHeight = height
+          targetWidth = (height * aspectRatio).toInt()
+        }
+
+        val placeable = measurable.measure(
+          Constraints.fixed(targetWidth, targetHeight),
+        )
+
+        return layout(placeable.width, placeable.height) {
+          placeable.placeRelative(0, 0)
+        }
       }
-
-      val placeable = measurable.measure(
-        Constraints.fixed(targetWidth, targetHeight)
-      )
-
-      return layout(placeable.width, placeable.height) {
-        placeable.placeRelative(0, 0)
-      }
-    }
-  })
+    },
+  )
 }
-
