@@ -2,7 +2,6 @@ package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,19 +25,18 @@ fun BandalartButton(
 ) {
   Box(
     modifier = modifier
-      .fillMaxWidth()
-      .padding(horizontal = 24.dp)
+      .padding(horizontal = 24.dp, vertical = 16.dp)
       .height(56.dp)
       .clip(shape = RoundedCornerShape(50.dp))
       .clickableSingle(onClick = onClick)
-      .background(color = Gray900)
-      .padding(16.dp),
+      .background(color = Gray900),
     contentAlignment = Alignment.Center,
   ) {
     FixedSizeText(
       text = text,
       fontFamily = pretendard,
       fontWeight = FontWeight.W700,
+      modifier = Modifier.padding(horizontal = 32.dp),
       fontSize = 16.sp,
       color = White,
       letterSpacing = (-0.32).sp,

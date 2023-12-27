@@ -3,6 +3,7 @@
 plugins {
   bandalart("android-library")
   bandalart("android-compose")
+  bandalart("android-hilt")
 }
 
 android {

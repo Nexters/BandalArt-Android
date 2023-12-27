@@ -16,10 +16,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.layout.LayoutModifier
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Constraints
 import com.nexters.bandalart.android.core.ui.MultipleEventsCutter
 import com.nexters.bandalart.android.core.ui.get
 
@@ -80,4 +85,34 @@ fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = composed {
       }
     }
   }
+}
+
+fun Modifier.aspectRatioBasedOnOrientation(aspectRatio: Float): Modifier {
+  return this.then(
+    object : LayoutModifier {
+      override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        val width = constraints.maxWidth
+        val height = constraints.maxHeight
+
+        val targetWidth: Int
+        val targetHeight: Int
+
+        if (width <= height) {
+          targetWidth = width
+          targetHeight = (width / aspectRatio).toInt()
+        } else {
+          targetHeight = height
+          targetWidth = (height * aspectRatio).toInt()
+        }
+
+        val placeable = measurable.measure(
+          Constraints.fixed(targetWidth, targetHeight),
+        )
+
+        return layout(placeable.width, placeable.height) {
+          placeable.placeRelative(0, 0)
+        }
+      }
+    },
+  )
 }
