@@ -63,14 +63,14 @@ internal fun OnBoardingRoute(
   }
 
   OnBoardingScreen(
-    navigateToHome = viewModel::navigateToHome,
+    setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
     modifier = modifier,
   )
 }
 
 @Composable
 internal fun OnBoardingScreen(
-  navigateToHome: () -> Unit,
+  setOnboardingCompletedStatus: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -216,7 +216,7 @@ internal fun OnBoardingScreen(
                 }
               }
               BandalartButton(
-                onClick = navigateToHome,
+                onClick = { setOnboardingCompletedStatus(true) },
                 text = context.getString(R.string.onboarding_start),
                 modifier = Modifier
                   .align(Alignment.BottomCenter)

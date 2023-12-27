@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.core.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -16,15 +17,17 @@ class DataStoreProvider @Inject constructor(
   private val dataStore: DataStore<Preferences>,
 ) {
 
-  companion object {
+  private companion object {
     private const val GUEST_LOGIN_TOKEN = "guest_login_token"
     private const val RECENT_BANDALART_KEY = "recent_bandalart_key"
     private const val COMPLETED_BANDALART_LIST_KEY = "completed_bandalart_list_key"
+    private const val ONBOARDING_COMPLETED_KEY = "completed_onboarding_key"
   }
 
   private val prefKeyGuestLoginToken = stringPreferencesKey(GUEST_LOGIN_TOKEN)
   private val prefKeyRecentBandalartKey = stringPreferencesKey(RECENT_BANDALART_KEY)
   private val prefKeyCompletedBandalartList = stringPreferencesKey(COMPLETED_BANDALART_LIST_KEY)
+  private val prefKeyOnboardingCompletedKey = booleanPreferencesKey(ONBOARDING_COMPLETED_KEY)
 
   suspend fun setGuestLoginToken(guestLoginToken: String) {
     dataStore.edit { preferences ->
@@ -105,4 +108,16 @@ class DataStoreProvider @Inject constructor(
     if (data.isEmpty()) return emptyList()
     return Json.decodeFromString(data)
   }
+
+  suspend fun setOnboardingCompletedStatus(flag: Boolean) {
+    dataStore.edit { preferences ->
+      preferences[prefKeyOnboardingCompletedKey] = flag
+    }
+  }
+
+  suspend fun getOnboardingCompletedStatus() = dataStore.data
+    .catch { exception ->
+      if (exception is IOException) emit(emptyPreferences())
+      else throw exception
+    }.first()[prefKeyOnboardingCompletedKey] ?: false
 }

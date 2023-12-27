@@ -3,6 +3,7 @@ package com.nexters.bandalart.android.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
+import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetOnboardingCompletedStatusUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.GetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.SetGuestLoginTokenUseCase
@@ -23,14 +24,15 @@ import javax.inject.Inject
  * SplashUiState
  *
  * @param isLoggedIn 로그인 여부 확인
- * @param isLoginTokenCreated 로그인 토큰 생성 확인
+ * @param isGuestLoginTokenCreated 로그인 토큰 생성 확인
  * @param isNetworkErrorAlertDialogOpened 네트워크 에러 발생
  * @param isLoading 서버와의 통신 중 로딩 상태
  */
 
 data class SplashUiState(
   val isLoggedIn: Boolean = false,
-  val isLoginTokenCreated: Boolean = false,
+  val isGuestLoginTokenCreated: Boolean = false,
+  val isOnboardingCompleted: Boolean = false,
   val isNetworkErrorAlertDialogOpened: Boolean = false,
   val isLoading: Boolean = true,
 )
@@ -46,6 +48,7 @@ class SplashViewModel @Inject constructor(
   private val createGuestLoginTokenUseCase: CreateGuestLoginTokenUseCase,
   private val setGuestLoginTokenUseCase: SetGuestLoginTokenUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
+  private val getOnboardingCompletedStatusUseCase: GetOnboardingCompletedStatusUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(SplashUiState())
@@ -58,6 +61,7 @@ class SplashViewModel @Inject constructor(
     viewModelScope.launch {
       delay(500)
       getGuestLoginToken()
+      getOnboardingCompletedStatus()
     }
   }
 
@@ -70,7 +74,7 @@ class SplashViewModel @Inject constructor(
         _uiState.update {
           it.copy(
             isLoggedIn = true,
-            isLoginTokenCreated = true,
+            isGuestLoginTokenCreated = true,
             isLoading = false,
           )
         }
@@ -93,7 +97,7 @@ class SplashViewModel @Inject constructor(
           _uiState.update {
             it.copy(
               isLoggedIn = false,
-              isLoginTokenCreated = true,
+              isGuestLoginTokenCreated = true,
             )
           }
           createBandalartUseCase()
@@ -107,13 +111,24 @@ class SplashViewModel @Inject constructor(
           _uiState.update {
             it.copy(
               isLoggedIn = false,
-              isLoginTokenCreated = false,
+              isGuestLoginTokenCreated = false,
               isNetworkErrorAlertDialogOpened = true,
             )
           }
         }
       }
       _uiState.update { it.copy(isLoading = false) }
+    }
+  }
+
+  private fun getOnboardingCompletedStatus() {
+    viewModelScope.launch {
+      val onboardingCompletedStatus = getOnboardingCompletedStatusUseCase()
+      if (onboardingCompletedStatus) {
+        _uiState.update { it.copy(isOnboardingCompleted = true) }
+      } else {
+        _uiState.update { it.copy(isOnboardingCompleted = false) }
+      }
     }
   }
 

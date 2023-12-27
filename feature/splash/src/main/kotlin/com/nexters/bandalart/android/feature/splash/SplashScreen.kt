@@ -91,11 +91,15 @@ fun SplashScreen(
       )
     }
 
-    !uiState.isLoggedIn && uiState.isLoginTokenCreated -> {
+    !uiState.isLoggedIn && uiState.isGuestLoginTokenCreated -> {
       navigateToOnBoarding()
     }
 
-    uiState.isLoggedIn -> {
+    !uiState.isOnboardingCompleted -> {
+      navigateToOnBoarding()
+    }
+
+    uiState.isLoggedIn && uiState.isOnboardingCompleted -> {
       navigateToHome()
     }
   }
