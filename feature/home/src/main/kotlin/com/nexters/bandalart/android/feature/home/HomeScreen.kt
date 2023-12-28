@@ -40,9 +40,12 @@ import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartList
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
-import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.HomeShareButton
+import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartChart
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartListBottomSheet
@@ -331,8 +334,12 @@ private fun updateBandalartListTitles(
 @Composable
 fun HomeScreenSingleBandalartPreview() {
   HomeScreen(
-    uiState = HomeUiState(),
-    bandalartCount = 1,
+    uiState = HomeUiState(
+      bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
+      bandalartDetailData = dummyBandalartDetailData,
+      bandalartCellData = dummyBandalartChartData,
+    ),
+    bandalartCount = listOf(dummyBandalartList[0]).size,
     navigateToComplete = {},
     getBandalartList = {},
     getBandalartDetail = {},
@@ -358,8 +365,12 @@ fun HomeScreenSingleBandalartPreview() {
 @Composable
 fun HomeScreenMultipleBandalartPreview() {
   HomeScreen(
-    uiState = HomeUiState(),
-    bandalartCount = 2,
+    uiState = HomeUiState(
+      bandalartList = dummyBandalartList.toImmutableList(),
+      bandalartDetailData = dummyBandalartDetailData,
+      bandalartCellData = dummyBandalartChartData,
+    ),
+    bandalartCount = dummyBandalartList.size,
     navigateToComplete = {},
     getBandalartList = {},
     getBandalartDetail = {},
