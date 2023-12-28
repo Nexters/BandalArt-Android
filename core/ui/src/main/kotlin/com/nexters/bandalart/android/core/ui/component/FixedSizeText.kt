@@ -46,6 +46,6 @@ fun FixedSizeTextPreview() {
     text = "발전하는 예진",
     color = Gray900,
     fontSize = 16.sp,
-    fontWeight = FontWeight.W700
+    fontWeight = FontWeight.W700,
   )
 }

@@ -121,6 +121,6 @@ fun BandalartDropDownMenuPreview() {
   BandalartDropDownMenu(
     openDropDownMenu = {},
     isDropDownMenuOpened = true,
-    onDeleteClicked = {}
+    onDeleteClicked = {},
   )
 }

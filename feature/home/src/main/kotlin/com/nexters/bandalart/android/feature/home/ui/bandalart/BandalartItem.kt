@@ -60,32 +60,32 @@ fun BandalartItem(
 
   Row(
     modifier = modifier
-        .fillMaxWidth()
-        .clip(RoundedCornerShape(12.dp))
-        .border(
-            width = 1.5.dp,
-            color = if (currentBandalartKey != bandalartItem.key) Gray100 else Gray300,
-            shape = RoundedCornerShape(12.dp),
-        )
-        .clickable {
-            if (currentBandalartKey != bandalartItem.key) {
-                onClick(bandalartItem.key)
-            }
-            scope
-                .launch { bottomSheetState.hide() }
-                .invokeOnCompletion {
-                    if (!bottomSheetState.isVisible) onCancelClicked()
-                }
+      .fillMaxWidth()
+      .clip(RoundedCornerShape(12.dp))
+      .border(
+        width = 1.5.dp,
+        color = if (currentBandalartKey != bandalartItem.key) Gray100 else Gray300,
+        shape = RoundedCornerShape(12.dp),
+      )
+      .clickable {
+        if (currentBandalartKey != bandalartItem.key) {
+          onClick(bandalartItem.key)
         }
-        .padding(horizontal = 16.dp, vertical = 12.dp),
+        scope
+          .launch { bottomSheetState.hide() }
+          .invokeOnCompletion {
+            if (!bottomSheetState.isVisible) onCancelClicked()
+          }
+      }
+      .padding(horizontal = 16.dp, vertical = 12.dp),
   ) {
     Box(modifier = Modifier.align(Alignment.CenterVertically)) {
       Card(shape = RoundedCornerShape(16.dp)) {
         Box(
           modifier = Modifier
-              .width(48.dp)
-              .aspectRatio(1f)
-              .background(Gray100),
+            .width(48.dp)
+            .aspectRatio(1f)
+            .background(Gray100),
           contentAlignment = Alignment.Center,
         ) {
           if (bandalartItem.profileEmoji.isNullOrEmpty()) {
@@ -106,14 +106,14 @@ fun BandalartItem(
     }
     Column(
       modifier = Modifier
-          .weight(1f)
-          .padding(start = 8.dp),
+        .weight(1f)
+        .padding(start = 8.dp),
     ) {
       if (bandalartItem.isCompleted) {
         Box(
           modifier = Modifier
-              .clip(RoundedCornerShape(24.dp))
-              .background(color = bandalartItem.mainColor.toColor()),
+            .clip(RoundedCornerShape(24.dp))
+            .background(color = bandalartItem.mainColor.toColor()),
         ) {
           Row(
             modifier = Modifier.padding(horizontal = 9.dp),
@@ -138,8 +138,8 @@ fun BandalartItem(
       } else {
         Box(
           modifier = Modifier
-              .clip(RoundedCornerShape(24.dp))
-              .background(color = bandalartItem.mainColor.toColor()),
+            .clip(RoundedCornerShape(24.dp))
+            .background(color = bandalartItem.mainColor.toColor()),
         ) {
           Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),

@@ -225,7 +225,7 @@ fun BandalartMainCellPreview() {
     themeColor = allColor[0],
     isMainCell = true,
     cellData = dummyBandalartChartData.children[0].children[0],
-    bottomSheetDataChanged = {}
+    bottomSheetDataChanged = {},
   )
 }
 
@@ -237,6 +237,6 @@ fun BandalartCellPreview() {
     themeColor = allColor[0],
     isMainCell = false,
     cellData = dummyBandalartChartData.children[0].children[0],
-    bottomSheetDataChanged = {}
+    bottomSheetDataChanged = {},
   )
 }

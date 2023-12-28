@@ -73,7 +73,6 @@ fun AppTitlePreview() {
   AppTitle()
 }
 
-
 @ComponentPreview
 @Composable
 fun AppKoreanTitlePreview() {

@@ -46,13 +46,12 @@ fun BandalartButton(
   }
 }
 
-
 @ComponentPreview
 @Composable
 fun BandalartButtonPreview() {
   BandalartButton(
     onClick = {},
     text = "시작하기",
-    modifier = Modifier.fillMaxWidth()
+    modifier = Modifier.fillMaxWidth(),
   )
 }

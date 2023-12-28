@@ -3,8 +3,6 @@ package com.nexters.bandalart.android.feature.home.model
 import com.nexters.bandalart.android.core.ui.allColor
 import kotlinx.datetime.Clock
 
-
-
 val dummyBandalartList = listOf(
   BandalartDetailUiModel(
     key = "6km1Z",

@@ -96,15 +96,16 @@ internal fun HomeTopBar(
 @Composable
 fun HomeTopBarSingleBandalartPreview() {
   HomeTopBar(
-    bandalartCount = 1, onShowBandalartList = {}
+    bandalartCount = 1,
+    onShowBandalartList = {},
   )
 }
-
 
 @ComponentPreview
 @Composable
 fun HomeTopBarMultipleBandalartPreview() {
   HomeTopBar(
-    bandalartCount = 2, onShowBandalartList = {}
+    bandalartCount = 2,
+    onShowBandalartList = {},
   )
 }
