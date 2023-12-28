@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,4 +43,15 @@ fun BandalartButton(
       letterSpacing = (-0.32).sp,
     )
   }
+}
+
+
+@ComponentPreview
+@Composable
+fun BandalartButtonPreview() {
+  BandalartButton(
+    onClick = {},
+    text = "시작하기",
+    modifier = Modifier.fillMaxWidth()
+  )
 }
