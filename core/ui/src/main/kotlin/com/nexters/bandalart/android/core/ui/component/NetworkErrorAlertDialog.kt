@@ -37,6 +37,7 @@ fun NetworkErrorAlertDialog(
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
+
   Dialog(onDismissRequest = {}) {
     Surface(
       shape = RoundedCornerShape(16.dp),

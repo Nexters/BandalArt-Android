@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
@@ -89,4 +90,21 @@ internal fun HomeTopBar(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun HomeTopBarSingleBandalartPreview() {
+  HomeTopBar(
+    bandalartCount = 1, onShowBandalartList = {}
+  )
+}
+
+
+@ComponentPreview
+@Composable
+fun HomeTopBarMultipleBandalartPreview() {
+  HomeTopBar(
+    bandalartCount = 2, onShowBandalartList = {}
+  )
 }

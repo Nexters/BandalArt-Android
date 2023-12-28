@@ -321,8 +321,8 @@ fun BandalartBottomSheet(
             }
           }
           AnimatedVisibility(visible = uiState.isEmojiPickerOpened) {
-            Column(
-              content = BandalartEmojiPicker(
+            Column {
+              BandalartEmojiPicker(
                 modifier = Modifier
                   .wrapContentSize()
                   .padding(top = 4.dp)
@@ -339,8 +339,8 @@ fun BandalartBottomSheet(
                   viewModel.openEmojiPicker(flag = openEmojiPushResult)
                 },
                 emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-              ),
-            )
+              )
+            }
           }
           if (isMainCell && uiState.isCellDataCopied) {
             Spacer(modifier = Modifier.height(22.dp))
@@ -398,7 +398,6 @@ fun BandalartBottomSheet(
                 viewModel.dueDateChanged(dueDate = dueDateResult.toString())
                 viewModel.openDatePicker(flag = openDatePickerPushResult)
               },
-              datePickerScope = scope,
               datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
               currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
             )

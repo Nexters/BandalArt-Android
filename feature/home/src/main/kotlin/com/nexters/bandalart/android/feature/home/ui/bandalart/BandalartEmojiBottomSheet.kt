@@ -9,8 +9,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.nexters.bandalart.android.feature.home.HomeViewModel
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 
 @Composable
@@ -18,12 +17,12 @@ fun BandalartEmojiBottomSheet(
   bandalartKey: String,
   cellKey: String,
   currentEmoji: String?,
+  updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
   onResult: (
     bottomSheetState: Boolean,
     bottomSheetDataChangedState: Boolean,
   ) -> Unit,
   modifier: Modifier = Modifier,
-  viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -35,12 +34,12 @@ fun BandalartEmojiBottomSheet(
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
-    Column(
-      content = BandalartEmojiPicker(
+    Column {
+      BandalartEmojiPicker(
         currentEmoji = currentEmoji,
         isBottomSheet = true,
         onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
-          viewModel.updateBandalartEmoji(
+          updateBandalartEmoji(
             bandalartKey,
             cellKey,
             UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
@@ -48,7 +47,19 @@ fun BandalartEmojiBottomSheet(
           onResult(false, true)
         },
         emojiPickerState = bottomSheetState,
-      ),
-    )
+      )
+    }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartEmojiBottomSheetPreview() {
+  BandalartEmojiBottomSheet(
+    bandalartKey = "",
+    cellKey = "",
+    currentEmoji = "😎",
+    updateBandalartEmoji = { _, _, _ -> },
+    onResult = { _, _ -> },
+  )
 }

@@ -1,13 +1,16 @@
 package com.nexters.bandalart.android.feature.home.model
 
-// 임시 데이터
-// 데이터의 구조를 파악 하기 위함
-val tempBandalartData = BandalartCellUiModel(
+import com.nexters.bandalart.android.core.ui.allColor
+
+val dummyBandalartChartData = BandalartCellUiModel(
   key = "6km1Z",
   title = "넥스터즈 1등하기",
   description = null,
+  dueDate = null,
   isCompleted = false,
   completionRatio = 65,
+  mainColor = allColor[0].mainColor,
+  subColor = allColor[0].subColor,
   parentKey = null,
   children = listOf(
     BandalartCellUiModel(

@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -37,11 +38,13 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,32 +60,32 @@ fun BandalartItem(
 
   Row(
     modifier = modifier
-      .fillMaxWidth()
-      .clip(RoundedCornerShape(12.dp))
-      .border(
-        width = 1.5.dp,
-        color = if (currentBandalartKey != bandalartItem.key) Gray100 else Gray300,
-        shape = RoundedCornerShape(12.dp),
-      )
-      .clickable {
-        if (currentBandalartKey != bandalartItem.key) {
-          onClick(bandalartItem.key)
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(12.dp))
+        .border(
+            width = 1.5.dp,
+            color = if (currentBandalartKey != bandalartItem.key) Gray100 else Gray300,
+            shape = RoundedCornerShape(12.dp),
+        )
+        .clickable {
+            if (currentBandalartKey != bandalartItem.key) {
+                onClick(bandalartItem.key)
+            }
+            scope
+                .launch { bottomSheetState.hide() }
+                .invokeOnCompletion {
+                    if (!bottomSheetState.isVisible) onCancelClicked()
+                }
         }
-        scope
-          .launch { bottomSheetState.hide() }
-          .invokeOnCompletion {
-            if (!bottomSheetState.isVisible) onCancelClicked()
-          }
-      }
-      .padding(horizontal = 16.dp, vertical = 12.dp),
+        .padding(horizontal = 16.dp, vertical = 12.dp),
   ) {
     Box(modifier = Modifier.align(Alignment.CenterVertically)) {
       Card(shape = RoundedCornerShape(16.dp)) {
         Box(
           modifier = Modifier
-            .width(48.dp)
-            .aspectRatio(1f)
-            .background(Gray100),
+              .width(48.dp)
+              .aspectRatio(1f)
+              .background(Gray100),
           contentAlignment = Alignment.Center,
         ) {
           if (bandalartItem.profileEmoji.isNullOrEmpty()) {
@@ -103,14 +106,14 @@ fun BandalartItem(
     }
     Column(
       modifier = Modifier
-        .weight(1f)
-        .padding(start = 8.dp),
+          .weight(1f)
+          .padding(start = 8.dp),
     ) {
       if (bandalartItem.isCompleted) {
         Box(
           modifier = Modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(color = bandalartItem.mainColor.toColor()),
+              .clip(RoundedCornerShape(24.dp))
+              .background(color = bandalartItem.mainColor.toColor()),
         ) {
           Row(
             modifier = Modifier.padding(horizontal = 9.dp),
@@ -135,8 +138,8 @@ fun BandalartItem(
       } else {
         Box(
           modifier = Modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(color = bandalartItem.mainColor.toColor()),
+              .clip(RoundedCornerShape(24.dp))
+              .background(color = bandalartItem.mainColor.toColor()),
         ) {
           Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
@@ -174,4 +177,16 @@ fun BandalartItem(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartItemPreview() {
+  BandalartItem(
+    bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    bandalartItem = dummyBandalartDetailData,
+    currentBandalartKey = "",
+    onClick = {},
+    onCancelClicked = {},
+  )
 }

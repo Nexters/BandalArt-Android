@@ -118,7 +118,8 @@ internal fun CompleteScreen(
         TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {
           CompleteBandalart(
-            uiState = uiState,
+            profileEmoji = uiState.profileEmoji,
+            title = uiState.title,
             modifier = Modifier.align(Alignment.Center),
           )
           // MVP 제외

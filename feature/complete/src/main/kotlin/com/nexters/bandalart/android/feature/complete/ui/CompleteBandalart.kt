@@ -28,14 +28,15 @@ import com.nexters.bandalart.android.core.designsystem.theme.Black
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.feature.complete.CompleteUiState
 
 @Composable
 fun CompleteBandalart(
-  uiState: CompleteUiState,
+  profileEmoji: String,
+  title: String,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -80,7 +81,7 @@ fun CompleteBandalart(
                 .background(Gray100),
               contentAlignment = Alignment.Center,
             ) {
-              if (uiState.profileEmoji == context.getString(R.string.home_default_emoji)) {
+              if (profileEmoji == context.getString(R.string.home_default_emoji)) {
                 Image(
                   imageVector = ImageVector.vectorResource(
                     id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
@@ -89,7 +90,7 @@ fun CompleteBandalart(
                 )
               } else {
                 EmojiText(
-                  emojiText = uiState.profileEmoji,
+                  emojiText = profileEmoji,
                   fontSize = 22.sp,
                 )
               }
@@ -98,7 +99,7 @@ fun CompleteBandalart(
         }
         Spacer(modifier = Modifier.height(6.dp))
         FixedSizeText(
-          text = uiState.title,
+          text = title,
           color = Black,
           fontWeight = FontWeight.W700,
           fontSize = 16.sp,
@@ -108,4 +109,13 @@ fun CompleteBandalart(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun CompleteBandalartPreview() {
+  CompleteBandalart(
+    profileEmoji = "😎",
+    title = "발전하는 예진",
+  )
 }

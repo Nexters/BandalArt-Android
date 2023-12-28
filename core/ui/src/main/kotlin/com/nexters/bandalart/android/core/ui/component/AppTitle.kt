@@ -18,8 +18,7 @@ import java.util.Locale
 fun AppTitle(
   modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
-  val currentLocale = context.getCurrentLocale()
+  val currentLocale = LocalContext.current.getCurrentLocale()
 
   when (currentLocale.language) {
     Locale.KOREAN.language -> {
@@ -72,4 +71,17 @@ fun AppEnglishTitle(
 @Composable
 fun AppTitlePreview() {
   AppTitle()
+}
+
+
+@ComponentPreview
+@Composable
+fun AppKoreanTitlePreview() {
+  AppKoreanTitle()
+}
+
+@ComponentPreview
+@Composable
+fun AppEnglishTitlePreview() {
+  AppEnglishTitle()
 }

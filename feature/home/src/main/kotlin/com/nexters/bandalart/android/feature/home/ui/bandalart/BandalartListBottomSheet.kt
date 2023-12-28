@@ -37,17 +37,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray800
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
+import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartList
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -165,4 +168,18 @@ fun BandalartListBottomSheet(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartListBottomSheetPreview() {
+  BandalartListBottomSheet(
+    bandalartList = dummyBandalartList.toImmutableList(),
+    currentBandalartKey = "5z1EG",
+    getBandalartDetail = {},
+    setRecentBandalartKey = {},
+    showSkeletonChanged = {},
+    onCancelClicked = {},
+    createBandalart = {},
+  )
 }

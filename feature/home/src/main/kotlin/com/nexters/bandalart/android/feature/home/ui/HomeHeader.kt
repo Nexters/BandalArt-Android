@@ -32,22 +32,24 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
-import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
-import com.nexters.bandalart.android.core.designsystem.theme.MainColor
+import com.nexters.bandalart.android.core.ui.ComponentPreview
+import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBar
+import com.nexters.bandalart.android.core.ui.component.EmojiText
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.core.util.extension.toFormatDate
-import com.nexters.bandalart.android.feature.home.HomeUiState
+import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
 @Composable
 fun HomeHeader(
-  uiState: HomeUiState,
+  bandalartDetailData: BandalartDetailUiModel,
+  isDropDownMenuOpened: Boolean,
   openDropDownMenu: (Boolean) -> Unit,
   openEmojiBottomSheet: (Boolean) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
@@ -70,7 +72,7 @@ fun HomeHeader(
               .clickable { openEmojiBottomSheet(true) },
             contentAlignment = Alignment.Center,
           ) {
-            if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
+            if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
               Image(
                 imageVector = ImageVector.vectorResource(
                   id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
@@ -79,13 +81,13 @@ fun HomeHeader(
               )
             } else {
               EmojiText(
-                emojiText = uiState.bandalartDetailData?.profileEmoji,
+                emojiText = bandalartDetailData.profileEmoji,
                 fontSize = 22.sp,
               )
             }
           }
         }
-        if (uiState.bandalartDetailData?.profileEmoji.isNullOrEmpty()) {
+        if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
           Image(
             imageVector = ImageVector.vectorResource(
               id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
@@ -104,9 +106,9 @@ fun HomeHeader(
           .wrapContentHeight(),
       ) {
         FixedSizeText(
-          text = uiState.bandalartDetailData?.title
+          text = bandalartDetailData.title
             ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
-          color = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) Gray300 else Gray900,
+          color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
           fontWeight = FontWeight.W700,
           fontSize = 20.sp,
           letterSpacing = (-0.4).sp,
@@ -125,7 +127,7 @@ fun HomeHeader(
         )
         BandalartDropDownMenu(
           openDropDownMenu = openDropDownMenu,
-          isDropDownMenuOpened = uiState.isDropDownMenuOpened,
+          isDropDownMenuOpened = isDropDownMenuOpened,
           onDeleteClicked = {
             openBandalartDeleteAlertDialog(true)
             openDropDownMenu(false)
@@ -141,14 +143,14 @@ fun HomeHeader(
       FixedSizeText(
         text = stringResource(
           com.nexters.bandalart.android.core.ui.R.string.home_complete_ratio,
-          uiState.bandalartDetailData?.completionRatio ?: 0,
+          bandalartDetailData.completionRatio,
         ),
         color = Gray600,
         fontWeight = FontWeight.W500,
         fontSize = 12.sp,
         letterSpacing = (-0.24).sp,
       )
-      if (!uiState.bandalartDetailData?.dueDate.isNullOrEmpty()) {
+      if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
         VerticalDivider(
           modifier = Modifier
             .height(8.dp)
@@ -157,7 +159,7 @@ fun HomeHeader(
           color = Gray300,
         )
         FixedSizeText(
-          text = uiState.bandalartDetailData?.dueDate!!.toFormatDate(),
+          text = bandalartDetailData.dueDate.toFormatDate(),
           color = Gray600,
           fontWeight = FontWeight.W500,
           fontSize = 12.sp,
@@ -166,11 +168,11 @@ fun HomeHeader(
         )
       }
       Spacer(modifier = Modifier.weight(1f))
-      if (uiState.bandalartDetailData != null && uiState.bandalartDetailData.isCompleted) {
+      if (bandalartDetailData.isCompleted) {
         Box(
           modifier
             .clip(RoundedCornerShape(24.dp))
-            .background(color = uiState.bandalartDetailData.mainColor.toColor()),
+            .background(color = bandalartDetailData.mainColor.toColor()),
         ) {
           Row(
             modifier = Modifier.padding(horizontal = 9.dp),
@@ -196,9 +198,22 @@ fun HomeHeader(
     }
     Spacer(modifier = Modifier.height(8.dp))
     CompletionRatioProgressBar(
-      completionRatio = uiState.bandalartCellData?.completionRatio ?: 0,
-      progressColor = (uiState.bandalartCellData?.mainColor?.toColor() ?: MainColor),
+      completionRatio = bandalartDetailData.completionRatio,
+      progressColor = bandalartDetailData.mainColor.toColor(),
     )
     Spacer(modifier = Modifier.height(18.dp))
   }
+}
+
+@ComponentPreview
+@Composable
+fun HomeHeaderPreview() {
+  HomeHeader(
+    bandalartDetailData = dummyBandalartDetailData,
+    isDropDownMenuOpened = false,
+    openDropDownMenu = {},
+    openEmojiBottomSheet = {},
+    openBandalartDeleteAlertDialog = {},
+    openCellBottomSheet = {},
+  )
 }
