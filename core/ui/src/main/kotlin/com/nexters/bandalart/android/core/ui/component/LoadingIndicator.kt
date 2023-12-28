@@ -21,9 +21,10 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.designsystem.theme.Black
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
-fun LoadingScreen(
+fun LoadingIndicator(
   modifier: Modifier = Modifier,
 ) {
   Box(
@@ -63,4 +64,10 @@ fun LoadingScreen(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun LoadingIndicatorPreview() {
+  LoadingIndicator()
 }

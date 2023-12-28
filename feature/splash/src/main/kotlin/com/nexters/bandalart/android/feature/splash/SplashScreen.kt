@@ -23,7 +23,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
-import com.nexters.bandalart.android.core.ui.component.LoadingScreen
+import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 
@@ -77,7 +77,7 @@ fun SplashScreen(
 
   when {
     uiState.isLoading -> {
-      LoadingScreen(modifier = Modifier.fillMaxSize())
+      LoadingIndicator(modifier = Modifier.fillMaxSize())
     }
 
     uiState.isNetworkErrorAlertDialogOpened -> {

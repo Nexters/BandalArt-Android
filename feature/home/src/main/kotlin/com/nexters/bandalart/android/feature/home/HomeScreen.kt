@@ -35,7 +35,7 @@ import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
-import com.nexters.bandalart.android.core.ui.component.LoadingScreen
+import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
@@ -296,7 +296,7 @@ internal fun HomeScreen(
       }
       when {
         uiState.isLoading -> {
-          LoadingScreen()
+          LoadingIndicator()
         }
 
         uiState.isShowSkeleton -> {
