@@ -82,6 +82,7 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDi
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
+import com.nexters.bandalart.android.core.ui.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.core.ui.nonScaleSp
@@ -279,7 +280,8 @@ fun BandalartBottomSheet(
                 modifier = Modifier
                   .fillMaxWidth()
                   .height(18.dp)
-                  .focusRequester(focusRequester),
+                  .focusRequester(focusRequester)
+                  .clearFocusOnKeyboardDismiss(),
                 value = uiState.cellData.title ?: "",
                 onValueChange = {
                   // 영어 일 때는 title 의 글자 수를 24자 까지 허용
@@ -409,7 +411,8 @@ fun BandalartBottomSheet(
               BasicTextField(
                 modifier = Modifier
                   .fillMaxWidth()
-                  .height(18.dp),
+                  .height(18.dp)
+                  .clearFocusOnKeyboardDismiss(),
                 value = uiState.cellData.description ?: "",
                 onValueChange = {
                   // description 의 글자 수를 1000자 까지 허용
