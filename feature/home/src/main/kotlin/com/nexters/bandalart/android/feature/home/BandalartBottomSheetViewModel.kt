@@ -238,7 +238,7 @@ class BottomSheetViewModel @Inject constructor(
     _uiState.update { it.copy(cellData = it.cellData.copy(description = description)) }
   }
 
-  fun isCompletedChanged(flag: Boolean) {
+  fun completionChanged(flag: Boolean) {
     _uiState.update {
       it.copy(cellData = it.cellData.copy(isCompleted = flag))
     }
