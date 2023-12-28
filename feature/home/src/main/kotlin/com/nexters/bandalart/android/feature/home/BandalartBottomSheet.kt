@@ -474,13 +474,12 @@ fun BandalartBottomSheet(
           ) {
             if (!isBlankCell) {
               BottomSheetDeleteButton(
-                modifier = Modifier.weight(1f),
                 onClick = { viewModel.openDeleteCellDialog(flag = !uiState.isDeleteCellDialogOpened) },
+                modifier = Modifier.weight(1f),
               )
               Spacer(modifier = Modifier.width(9.dp))
             }
             BottomSheetCompleteButton(
-              modifier = Modifier.weight(1f),
               isBlankCell = uiState.cellData.title?.trim()
                 .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
               onClick = {
@@ -520,6 +519,7 @@ fun BandalartBottomSheet(
                   )
                 }
               },
+              modifier = Modifier.weight(1f),
             )
           }
           Spacer(modifier = Modifier.height(StatusBarHeightDp + getNavigationBarPadding()))

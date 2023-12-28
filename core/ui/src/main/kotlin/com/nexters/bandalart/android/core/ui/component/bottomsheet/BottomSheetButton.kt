@@ -1,6 +1,8 @@
 package com.nexters.bandalart.android.core.ui.component.bottomsheet
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
@@ -11,6 +13,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 
 @Composable
@@ -47,4 +50,27 @@ fun BottomSheetCompleteButton(
       color = if (isBlankCell) Gray400 else White,
     )
   }
+}
+
+@ComponentPreview
+@Composable
+fun BottomSheetDeleteButtonPreview() {
+  BottomSheetDeleteButton(
+    onClick = {},
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = 16.dp),
+  )
+}
+
+@ComponentPreview
+@Composable
+fun BottomSheetCompleteButtonPreview() {
+  BottomSheetCompleteButton(
+    isBlankCell = false,
+    onClick = {},
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = 16.dp),
+  )
 }

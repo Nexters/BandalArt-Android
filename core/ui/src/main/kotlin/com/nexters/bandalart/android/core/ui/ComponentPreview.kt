@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui.component
+package com.nexters.bandalart.android.core.ui
 
 import androidx.compose.ui.tooling.preview.Preview
 

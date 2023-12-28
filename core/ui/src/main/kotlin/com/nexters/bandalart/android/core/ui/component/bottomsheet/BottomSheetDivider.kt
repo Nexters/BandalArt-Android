@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun BottomSheetDivider(
@@ -19,4 +20,10 @@ fun BottomSheetDivider(
       .fillMaxWidth()
       .background(Gray300),
   )
+}
+
+@ComponentPreview
+@Composable
+fun BottomSheetDividerPreview() {
+  BottomSheetDivider()
 }

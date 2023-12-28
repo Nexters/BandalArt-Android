@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun PagerIndicator(
@@ -47,4 +49,16 @@ fun PagerIndicator(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun PagerIndicatorPreview() {
+  val pageCount = 2
+  val pagerState = rememberPagerState(pageCount = { pageCount })
+
+  PagerIndicator(
+    pageCount = 2,
+    pagerState = pagerState,
+  )
 }

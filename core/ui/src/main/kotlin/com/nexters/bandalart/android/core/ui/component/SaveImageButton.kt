@@ -26,6 +26,7 @@ import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun SaveImageButton(
@@ -63,4 +64,10 @@ fun SaveImageButton(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun SaveImageButtonPreview() {
+  SaveImageButton()
 }

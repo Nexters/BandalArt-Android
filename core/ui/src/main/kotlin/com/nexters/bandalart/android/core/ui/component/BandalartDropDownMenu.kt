@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Error
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 
 @Composable
@@ -112,4 +113,14 @@ fun BandalartDropDownMenu(
       )
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartDropDownMenuPreview() {
+  BandalartDropDownMenu(
+    openDropDownMenu = {},
+    isDropDownMenuOpened = true,
+    onDeleteClicked = {}
+  )
 }

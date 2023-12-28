@@ -28,6 +28,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 
 @Composable
@@ -134,4 +135,15 @@ fun BandalartDeleteAlertDialog(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartDeleteAlertDialogPreview() {
+  BandalartDeleteAlertDialog(
+    title = "반다라트를 삭제하시겠어요?",
+    message = "삭제한 반다라트는 다시 복구할 수 없어요.",
+    onDeleteClicked = {},
+    onCancelClicked = {},
+  )
 }

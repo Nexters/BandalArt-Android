@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import java.util.Locale
@@ -65,4 +66,10 @@ fun AppEnglishTitle(
     lineHeight = 20.sp,
     letterSpacing = (-0.36).sp,
   )
+}
+
+@ComponentPreview
+@Composable
+fun AppTitlePreview() {
+  AppTitle()
 }
