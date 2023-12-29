@@ -9,14 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
@@ -28,6 +33,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
+import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.feature.complete.ui.CompleteBandalart
 import com.nexters.bandalart.android.feature.complete.ui.CompleteTopBar
@@ -71,6 +77,12 @@ internal fun CompleteScreen(
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
+  val configuration = LocalConfiguration.current
+  val screenWidth = configuration.screenWidthDp.dp
+  val screenHeight = configuration.screenHeightDp.dp
+
+  val isLandscape = screenWidth > screenHeight
+
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
       com.nexters.bandalart.android.core.designsystem.R.raw.lottie_finish,
@@ -101,35 +113,67 @@ internal fun CompleteScreen(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
   ) {
-    Box {
-      LottieAnimation(
-        composition = composition,
-        progress = { progress },
-        modifier = Modifier.align(Alignment.TopCenter),
-      )
-      Column(
-        Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-      ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        CompleteTopBar(onNavigateBack = navigateToHome)
-        Spacer(modifier = Modifier.height(40.dp))
-        TitleText(text = context.getString(R.string.complete_title))
-        Box(modifier = Modifier.fillMaxSize()) {
+    if (isLandscape) {
+      Box {
+        Column(
+          modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          Spacer(modifier = Modifier.height(16.dp))
+          CompleteTopBar(onNavigateBack = navigateToHome)
+          TitleText(text = context.getString(R.string.complete_title))
+          Spacer(modifier = Modifier.height(32.dp))
+          EmojiText(emojiText = "🥳", fontSize = 100.sp)
+          Spacer(modifier = Modifier.height(32.dp))
           CompleteBandalart(
-            modifier = Modifier.align(Alignment.Center),
             uiState = uiState,
+            modifier = Modifier.width(328.dp),
           )
+          Spacer(modifier = Modifier.height(32.dp))
           // MVP 제외
           // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
           BandalartButton(
             onClick = shareBandalart,
             text = context.getString(R.string.complete_share),
             modifier = Modifier
-              .fillMaxWidth()
-              .align(Alignment.BottomCenter)
+              .width(328.dp)
               .padding(bottom = 32.dp),
           )
+        }
+      }
+    } else {
+      Box {
+        LottieAnimation(
+          composition = composition,
+          progress = { progress },
+          modifier = Modifier.align(Alignment.TopCenter),
+        )
+        Column(
+          modifier = Modifier.fillMaxSize(),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          Spacer(modifier = Modifier.height(16.dp))
+          CompleteTopBar(onNavigateBack = navigateToHome)
+          Spacer(modifier = Modifier.height(40.dp))
+          TitleText(text = context.getString(R.string.complete_title))
+          Box(modifier = Modifier.fillMaxSize()) {
+            CompleteBandalart(
+              modifier = Modifier.align(Alignment.Center),
+              uiState = uiState,
+            )
+            // MVP 제외
+            // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
+            BandalartButton(
+              onClick = shareBandalart,
+              text = context.getString(R.string.complete_share),
+              modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp),
+            )
+          }
         }
       }
     }
