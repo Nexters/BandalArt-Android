@@ -23,7 +23,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.clickableSingle
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
@@ -53,10 +52,10 @@ fun HomeShareButton(
       )
       FixedSizeText(
         text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_share),
-        modifier = Modifier.padding(start = 4.dp),
         color = Gray900,
-        fontSize = 12.sp.nonScaleSp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.W700,
+        modifier = Modifier.padding(start = 4.dp),
       )
     }
   }

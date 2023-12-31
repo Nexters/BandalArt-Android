@@ -36,11 +36,11 @@ fun BandalartButton(
   ) {
     FixedSizeText(
       text = text,
-      fontFamily = pretendard,
+      color = White,
+      fontSize = 16.sp,
       fontWeight = FontWeight.W700,
       modifier = Modifier.padding(horizontal = 32.dp),
-      fontSize = 16.sp,
-      color = White,
+      fontFamily = pretendard,
       letterSpacing = (-0.32).sp,
     )
   }

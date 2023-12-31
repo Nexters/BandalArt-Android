@@ -101,8 +101,8 @@ fun CompleteBandalart(
         FixedSizeText(
           text = title,
           color = Black,
-          fontWeight = FontWeight.W700,
           fontSize = 16.sp,
+          fontWeight = FontWeight.W700,
           letterSpacing = (-0.32).sp,
         )
         Spacer(modifier = Modifier.height(16.dp))

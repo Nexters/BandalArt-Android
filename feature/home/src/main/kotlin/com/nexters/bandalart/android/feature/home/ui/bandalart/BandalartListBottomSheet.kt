@@ -47,7 +47,6 @@ import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartList
 import kotlinx.collections.immutable.ImmutableList
@@ -89,11 +88,11 @@ fun BandalartListBottomSheet(
       ) {
         FixedSizeText(
           text = stringResource(R.string.bandalart_list_title),
+          color = Gray900,
+          fontSize = 16.sp,
+          fontWeight = FontWeight.W700,
           modifier = modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
-          color = Gray900,
-          fontSize = 16.sp.nonScaleSp,
-          fontWeight = FontWeight.W700,
         )
         IconButton(
           modifier = Modifier
@@ -158,9 +157,9 @@ fun BandalartListBottomSheet(
                 Spacer(modifier = Modifier.padding(start = 4.dp))
                 FixedSizeText(
                   text = stringResource(R.string.bandalart_list_add),
-                  fontSize = 16.sp.nonScaleSp,
-                  fontWeight = FontWeight.W600,
                   color = Gray800,
+                  fontSize = 16.sp,
+                  fontWeight = FontWeight.W600,
                 )
               }
             }

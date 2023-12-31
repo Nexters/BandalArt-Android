@@ -20,7 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,18 +34,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.*
-import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartDatePicker(
@@ -74,7 +73,11 @@ fun BandalartDatePicker(
           bottom = 14.dp,
         ),
     ) {
-      Text(
+      FixedSizeText(
+        text = "초기화",
+        color = Gray900,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W700,
         modifier = Modifier
           .clickable {
             scope.launch { datePickerState.hide() }
@@ -87,13 +90,13 @@ fun BandalartDatePicker(
                 }
               }
           },
-        text = "초기화",
-        color = Gray900,
         fontFamily = pretendard,
-        fontWeight = FontWeight.W700,
-        fontSize = 16.sp.nonScaleSp,
       )
-      Text(
+      FixedSizeText(
+        text = stringResource(id = R.string.bottomsheet_done),
+        color = Gray900,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W700,
         modifier = Modifier
           .padding(start = 16.dp)
           .clickable {
@@ -108,11 +111,7 @@ fun BandalartDatePicker(
                 }
               }
           },
-        text = stringResource(id = R.string.bottomsheet_done),
-        color = Gray900,
         fontFamily = pretendard,
-        fontWeight = FontWeight.W700,
-        fontSize = 16.sp.nonScaleSp,
       )
     }
     DateSelectionSection(
@@ -217,25 +216,25 @@ fun InfiniteItemsPicker(
               currentValue.value = items[index].toString()
             }
             Spacer(modifier = Modifier.height(6.dp))
-            Text(
+            FixedSizeText(
               text = if (isYear) stringResource(R.string.datepicker_year, items[index].toString())
               else if (isMonth) stringResource(R.string.datepicker_month, items[index].toString())
               else stringResource(R.string.datepicker_day, items[index].toString()),
-              modifier = modifier
-                .fillMaxWidth()
-                .alpha(if (it == listState.firstVisibleItemIndex + 2) 1f else 0.6f),
-              textAlign = TextAlign.Center,
               color = Gray900,
-              fontFamily = pretendard,
-              fontWeight =
-              if (it == listState.firstVisibleItemIndex + 2) FontWeight.W500
-              else FontWeight.W400,
               fontSize =
               if (it == listState.firstVisibleItemIndex + 1 ||
                 it == listState.firstVisibleItemIndex + 2 ||
                 it == listState.firstVisibleItemIndex + 3
-              ) 20.sp.nonScaleSp
-              else 17.sp.nonScaleSp,
+              ) 20.sp
+              else 17.sp,
+              fontWeight =
+              if (it == listState.firstVisibleItemIndex + 2) FontWeight.W500
+              else FontWeight.W400,
+              modifier = modifier
+                .fillMaxWidth()
+                .alpha(if (it == listState.firstVisibleItemIndex + 2) 1f else 0.6f),
+              textAlign = TextAlign.Center,
+              fontFamily = pretendard,
             )
             Spacer(modifier = Modifier.height(6.dp))
           },

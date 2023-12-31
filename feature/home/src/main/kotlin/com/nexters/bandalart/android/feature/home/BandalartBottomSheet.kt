@@ -87,7 +87,6 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTo
 import com.nexters.bandalart.android.core.ui.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
@@ -318,7 +317,7 @@ fun BandalartBottomSheetContent(
                     } else {
                       EmojiText(
                         emojiText = uiState.cellData.profileEmoji,
-                        fontSize = 22.sp.nonScaleSp,
+                        fontSize = 22.sp,
                       )
                     }
                   }

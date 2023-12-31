@@ -41,10 +41,10 @@ fun AppKoreanTitle(
 ) {
   FixedSizeText(
     text = stringResource(R.string.bandalart),
-    modifier = modifier,
     color = Gray900,
     fontSize = 28.sp,
     fontWeight = FontWeight.W400,
+    modifier = modifier,
     fontFamily = neurimboGothicRegular,
     lineHeight = 20.sp,
     letterSpacing = (-0.56).sp,
@@ -56,11 +56,11 @@ fun AppEnglishTitle(
   modifier: Modifier = Modifier,
 ) {
   FixedSizeText(
-    modifier = modifier,
     text = stringResource(R.string.bandalart),
     color = Gray900,
     fontSize = 18.sp,
     fontWeight = FontWeight.W400,
+    modifier = modifier,
     fontFamily = koronaOneRegular,
     lineHeight = 20.sp,
     letterSpacing = (-0.36).sp,

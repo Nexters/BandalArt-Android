@@ -31,11 +31,11 @@ fun BottomSheetTitleText(
     else if (isMainCell) stringResource(id = R.string.bottomsheet_header_maincell_edit_title)
     else if (isSubCell) stringResource(id = R.string.bottomsheet_header_subcell_edit_title)
     else stringResource(id = R.string.bottomsheet_header_taskcell_edit_title),
-    modifier = modifier.fillMaxWidth(),
-    textAlign = TextAlign.Center,
     color = Gray900,
     fontSize = 16.sp,
     fontWeight = FontWeight.W700,
+    modifier = modifier.fillMaxWidth(),
+    textAlign = TextAlign.Center,
     letterSpacing = (-0.32).sp,
     lineHeight = 22.4.sp,
   )
@@ -48,11 +48,11 @@ fun BottomSheetSubTitleText(
 ) {
   FixedSizeText(
     text = text,
-    textAlign = TextAlign.Start,
     color = Gray600,
     fontSize = 12.sp,
     fontWeight = FontWeight.W700,
     modifier = modifier,
+    textAlign = TextAlign.Start,
     letterSpacing = (-0.24).sp,
     lineHeight = 22.4.sp,
   )
@@ -65,11 +65,11 @@ fun BottomSheetContentPlaceholder(
 ) {
   FixedSizeText(
     text = text,
-    textAlign = TextAlign.Start,
     color = Gray400,
     fontSize = 16.sp,
     fontWeight = FontWeight.W400,
     modifier = modifier,
+    textAlign = TextAlign.Start,
     letterSpacing = (-0.32).sp,
     lineHeight = 22.4.sp,
   )

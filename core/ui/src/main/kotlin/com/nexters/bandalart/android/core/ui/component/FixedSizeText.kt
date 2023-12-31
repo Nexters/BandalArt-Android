@@ -1,9 +1,11 @@
 package com.nexters.bandalart.android.core.ui.component
 
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,6 +27,7 @@ fun FixedSizeText(
   letterSpacing: TextUnit = TextUnit.Unspecified,
   textAlign: TextAlign? = null,
   lineHeight: TextUnit = TextUnit.Unspecified,
+  style: TextStyle = LocalTextStyle.current
 ) {
   Text(
     text = text,
@@ -36,6 +39,7 @@ fun FixedSizeText(
     letterSpacing = letterSpacing.nonScaleSp,
     textAlign = textAlign,
     lineHeight = lineHeight.nonScaleSp,
+    style = style,
   )
 }
 

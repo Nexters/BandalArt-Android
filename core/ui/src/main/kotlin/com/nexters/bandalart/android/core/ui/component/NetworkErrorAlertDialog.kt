@@ -56,10 +56,10 @@ fun NetworkErrorAlertDialog(
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
           text = title,
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray900,
           fontSize = 20.sp,
           fontWeight = FontWeight.W700,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           textAlign = TextAlign.Center,
           lineHeight = 30.sp,
           letterSpacing = (-0.4).sp,
@@ -67,10 +67,10 @@ fun NetworkErrorAlertDialog(
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
           text = message,
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray400,
           fontSize = 14.sp,
           fontWeight = FontWeight.W500,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           textAlign = TextAlign.Center,
           letterSpacing = (-0.28).sp,
         )

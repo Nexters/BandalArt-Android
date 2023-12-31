@@ -64,16 +64,16 @@ fun BandalartDropDownMenu(
 //                .height(14.dp)
 //                .align(CenterVertically),
 //            )
-//            Text(
+//            FixedSizeText(
+//              text = "이미지 내보내기",
+//              color = Gray800,
+//              fontSize = 14.sp,
+//              fontWeight = FontWeight.W500,
 //              modifier = Modifier
 //                .fillMaxHeight()
 //                .padding(start = 13.dp)
 //                .align(CenterVertically),
-//              text = "이미지 내보내기",
-//              color = Gray800,
-//              fontSize = 14.sp.nonScaleSp,
 //              fontFamily = pretendard,
-//              fontWeight = FontWeight.W500,
 //            )
 //          }
 //        },
@@ -97,15 +97,15 @@ fun BandalartDropDownMenu(
               colorFilter = ColorFilter.tint(Error),
             )
             FixedSizeText(
+              text = context.getString(R.string.dropdown_delete),
+              color = Error,
+              fontSize = 14.sp,
+              fontWeight = FontWeight.W500,
               modifier = Modifier
                 .fillMaxHeight()
                 .padding(start = 13.dp)
                 .align(CenterVertically),
-              text = context.getString(R.string.dropdown_delete),
-              color = Error,
-              fontSize = 14.sp,
               fontFamily = pretendard,
-              fontWeight = FontWeight.W500,
             )
           }
         },

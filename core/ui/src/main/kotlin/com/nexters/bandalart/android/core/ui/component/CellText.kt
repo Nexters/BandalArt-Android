@@ -32,10 +32,10 @@ fun CellText(
   textAlpha: Float = 1f,
 ) {
   Text(
+    text = cellText,
     modifier = modifier
       .padding(horizontal = 4.dp, vertical = 6.dp)
       .alpha(textAlpha),
-    text = cellText,
     color = cellTextColor,
     fontFamily = pretendard,
     fontWeight = fontWeight,

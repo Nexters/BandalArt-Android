@@ -46,9 +46,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
@@ -59,7 +56,9 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.android.core.ui.DevicePreview
+import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBar
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 
 @Composable
 fun BandalartSkeletonScreen(
@@ -87,13 +86,13 @@ fun BandalartSkeletonScreen(
         ) {
           Row(modifier = Modifier.fillMaxWidth()) {
             FixedSizeText(
-              modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 20.dp, top = 2.dp),
               text = stringResource(R.string.bandalart),
               color = Gray900,
               fontSize = 28.sp,
               fontWeight = FontWeight.W400,
+              modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 20.dp, top = 2.dp),
               fontFamily = neurimboGothicRegular,
               lineHeight = 20.sp,
               letterSpacing = (-0.56).sp,
@@ -147,12 +146,12 @@ fun BandalartSkeletonScreen(
                 FixedSizeText(
                   text = stringResource(R.string.skeleton_title),
                   color = Gray900,
-                  fontWeight = FontWeight.W700,
                   fontSize = 20.sp,
-                  letterSpacing = (-0.4).sp,
+                  fontWeight = FontWeight.W700,
                   modifier = Modifier
                     .align(Alignment.Center)
                     .background(subBrush),
+                  letterSpacing = (-0.4).sp,
                 )
                 Image(
                   imageVector = ImageVector.vectorResource(
@@ -172,8 +171,8 @@ fun BandalartSkeletonScreen(
             FixedSizeText(
               text = stringResource(R.string.skeleton_complete_ratio),
               color = Gray600,
-              fontWeight = FontWeight.W500,
               fontSize = 12.sp,
+              fontWeight = FontWeight.W500,
               letterSpacing = (-0.24).sp,
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -213,10 +212,10 @@ fun BandalartSkeletonScreen(
             )
             FixedSizeText(
               text = stringResource(R.string.home_share),
-              modifier = Modifier.padding(start = 4.dp),
               color = Gray900,
-              fontSize = 12.sp.nonScaleSp,
+              fontSize = 12.sp,
               fontWeight = FontWeight.W700,
+              modifier = Modifier.padding(start = 4.dp),
             )
           }
         }
@@ -227,10 +226,10 @@ fun BandalartSkeletonScreen(
 
 @Composable
 fun BandalartSkeletonChart(
-  modifier: Modifier = Modifier,
   taskBrush: Brush,
   subBrush: Brush,
   mainBrush: Brush,
+  modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
   val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
@@ -324,9 +323,10 @@ fun SkeletonCellGrid(
   taskBrush: Brush,
   subBrush: Brush,
   mainBrush: Brush,
+  modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier = Modifier.fillMaxSize(),
+    modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.SpaceEvenly,
   ) {
@@ -368,11 +368,11 @@ data class SkeletonCellInfo(
 
 @Composable
 fun SkeletonCell(
-  modifier: Modifier = Modifier,
   isMainCell: Boolean,
   taskBrush: Brush,
   subBrush: Brush,
   mainBrush: Brush,
+  modifier: Modifier = Modifier,
   skeletonCellInfo: SkeletonCellInfo = SkeletonCellInfo(),
   outerPadding: Dp = 3.dp,
   innerPadding: Dp = 2.dp,

@@ -130,8 +130,8 @@ fun BandalartItem(
               color = Gray900,
               fontWeight = FontWeight.W600,
               fontSize = 10.sp,
-              letterSpacing = (-0.2).sp,
               modifier = Modifier.padding(start = 2.dp),
+              letterSpacing = (-0.2).sp,
             )
           }
         }
@@ -151,8 +151,8 @@ fun BandalartItem(
                 bandalartItem.completionRatio,
               ),
               color = Gray900,
-              fontWeight = FontWeight.W600,
               fontSize = 9.sp,
+              fontWeight = FontWeight.W600,
               letterSpacing = (-0.18).sp,
             )
           }
@@ -161,8 +161,8 @@ fun BandalartItem(
       FixedSizeText(
         text = bandalartItem.title ?: "",
         color = if (bandalartItem.isGeneratedTitle) Gray300 else Gray900,
-        fontWeight = FontWeight.W700,
         fontSize = 16.sp,
+        fontWeight = FontWeight.W700,
         letterSpacing = (-0.32).sp,
       )
     }

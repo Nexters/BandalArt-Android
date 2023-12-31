@@ -109,12 +109,12 @@ fun HomeHeader(
           text = bandalartDetailData.title
             ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
           color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
-          fontWeight = FontWeight.W700,
           fontSize = 20.sp,
-          letterSpacing = (-0.4).sp,
+          fontWeight = FontWeight.W700,
           modifier = Modifier
             .align(Alignment.Center)
             .clickable { openCellBottomSheet(true) },
+          letterSpacing = (-0.4).sp,
         )
         Image(
           imageVector = ImageVector.vectorResource(
@@ -146,8 +146,8 @@ fun HomeHeader(
           bandalartDetailData.completionRatio,
         ),
         color = Gray600,
-        fontWeight = FontWeight.W500,
         fontSize = 12.sp,
+        fontWeight = FontWeight.W500,
         letterSpacing = (-0.24).sp,
       )
       if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
@@ -161,10 +161,10 @@ fun HomeHeader(
         FixedSizeText(
           text = bandalartDetailData.dueDate.toFormatDate(),
           color = Gray600,
-          fontWeight = FontWeight.W500,
           fontSize = 12.sp,
-          letterSpacing = (-0.24).sp,
+          fontWeight = FontWeight.W500,
           modifier = Modifier.padding(start = 6.dp),
+          letterSpacing = (-0.24).sp,
         )
       }
       Spacer(modifier = Modifier.weight(1f))
@@ -187,10 +187,10 @@ fun HomeHeader(
             FixedSizeText(
               text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete),
               color = Gray900,
-              fontWeight = FontWeight.W600,
               fontSize = 10.sp,
-              letterSpacing = (-0.2).sp,
+              fontWeight = FontWeight.W600,
               modifier = Modifier.padding(start = 2.dp),
+              letterSpacing = (-0.2).sp,
             )
           }
         }
