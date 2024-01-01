@@ -26,6 +26,7 @@ import androidx.compose.ui.window.Dialog
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 
 @Composable
@@ -36,6 +37,7 @@ fun NetworkErrorAlertDialog(
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
+
   Dialog(onDismissRequest = {}) {
     Surface(
       shape = RoundedCornerShape(16.dp),
@@ -54,10 +56,10 @@ fun NetworkErrorAlertDialog(
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
           text = title,
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray900,
           fontSize = 20.sp,
           fontWeight = FontWeight.W700,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           textAlign = TextAlign.Center,
           lineHeight = 30.sp,
           letterSpacing = (-0.4).sp,
@@ -65,10 +67,10 @@ fun NetworkErrorAlertDialog(
         Spacer(modifier = Modifier.height(8.dp))
         FixedSizeText(
           text = message,
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           color = Gray400,
           fontSize = 14.sp,
           fontWeight = FontWeight.W500,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           textAlign = TextAlign.Center,
           letterSpacing = (-0.28).sp,
         )
@@ -100,4 +102,14 @@ fun NetworkErrorAlertDialog(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun NetworkErrorAlertDialogPreview() {
+  NetworkErrorAlertDialog(
+    title = "네트워크 문제로 표를\n불러오지 못했어요",
+    message = "다시 시도해주시기 바랍니다.",
+    onConfirmClick = {},
+  )
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,10 +25,10 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 
 @Composable
 internal fun HomeTopBar(
@@ -64,12 +63,12 @@ internal fun HomeTopBar(
               ),
               contentDescription = stringResource(R.string.hamburger_descrption),
             )
-            Text(
+            FixedSizeText(
               text = stringResource(R.string.home_list),
-              fontFamily = pretendard,
-              fontWeight = FontWeight.W700,
               color = Gray600,
-              fontSize = 16.sp.nonScaleSp,
+              fontSize = 16.sp,
+              fontWeight = FontWeight.W700,
+              fontFamily = pretendard,
             )
           } else {
             Icon(
@@ -81,12 +80,30 @@ internal fun HomeTopBar(
             FixedSizeText(
               text = stringResource(R.string.home_add),
               color = Gray600,
-              fontWeight = FontWeight.W700,
               fontSize = 16.sp,
+              fontWeight = FontWeight.W700,
             )
           }
         }
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun HomeTopBarSingleBandalartPreview() {
+  HomeTopBar(
+    bandalartCount = 1,
+    onShowBandalartList = {},
+  )
+}
+
+@ComponentPreview
+@Composable
+fun HomeTopBarMultipleBandalartPreview() {
+  HomeTopBar(
+    bandalartCount = 2,
+    onShowBandalartList = {},
+  )
 }

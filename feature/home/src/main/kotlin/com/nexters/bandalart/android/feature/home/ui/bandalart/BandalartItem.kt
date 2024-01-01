@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -37,11 +38,13 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 import kotlinx.coroutines.launch
 
 @Composable
@@ -127,8 +130,8 @@ fun BandalartItem(
               color = Gray900,
               fontWeight = FontWeight.W600,
               fontSize = 10.sp,
-              letterSpacing = (-0.2).sp,
               modifier = Modifier.padding(start = 2.dp),
+              letterSpacing = (-0.2).sp,
             )
           }
         }
@@ -148,8 +151,8 @@ fun BandalartItem(
                 bandalartItem.completionRatio,
               ),
               color = Gray900,
-              fontWeight = FontWeight.W600,
               fontSize = 9.sp,
+              fontWeight = FontWeight.W600,
               letterSpacing = (-0.18).sp,
             )
           }
@@ -158,8 +161,8 @@ fun BandalartItem(
       FixedSizeText(
         text = bandalartItem.title ?: "",
         color = if (bandalartItem.isGeneratedTitle) Gray300 else Gray900,
-        fontWeight = FontWeight.W700,
         fontSize = 16.sp,
+        fontWeight = FontWeight.W700,
         letterSpacing = (-0.32).sp,
       )
     }
@@ -174,4 +177,16 @@ fun BandalartItem(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartItemPreview() {
+  BandalartItem(
+    bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    bandalartItem = dummyBandalartDetailData,
+    currentBandalartKey = "",
+    onClick = {},
+    onCancelClicked = {},
+  )
 }

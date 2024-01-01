@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegular
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
 import java.util.Locale
@@ -17,8 +18,7 @@ import java.util.Locale
 fun AppTitle(
   modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
-  val currentLocale = context.getCurrentLocale()
+  val currentLocale = LocalContext.current.getCurrentLocale()
 
   when (currentLocale.language) {
     Locale.KOREAN.language -> {
@@ -41,10 +41,10 @@ fun AppKoreanTitle(
 ) {
   FixedSizeText(
     text = stringResource(R.string.bandalart),
-    modifier = modifier,
     color = Gray900,
     fontSize = 28.sp,
     fontWeight = FontWeight.W400,
+    modifier = modifier,
     fontFamily = neurimboGothicRegular,
     lineHeight = 20.sp,
     letterSpacing = (-0.56).sp,
@@ -56,13 +56,31 @@ fun AppEnglishTitle(
   modifier: Modifier = Modifier,
 ) {
   FixedSizeText(
-    modifier = modifier,
     text = stringResource(R.string.bandalart),
     color = Gray900,
     fontSize = 18.sp,
     fontWeight = FontWeight.W400,
+    modifier = modifier,
     fontFamily = koronaOneRegular,
     lineHeight = 20.sp,
     letterSpacing = (-0.36).sp,
   )
+}
+
+@ComponentPreview
+@Composable
+fun AppTitlePreview() {
+  AppTitle()
+}
+
+@ComponentPreview
+@Composable
+fun AppKoreanTitlePreview() {
+  AppKoreanTitle()
+}
+
+@ComponentPreview
+@Composable
+fun AppEnglishTitlePreview() {
+  AppEnglishTitle()
 }

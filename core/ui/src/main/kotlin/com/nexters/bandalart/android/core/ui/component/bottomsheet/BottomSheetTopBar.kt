@@ -13,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import kotlinx.coroutines.launch
 
@@ -62,4 +64,43 @@ fun BottomSheetTopBar(
       )
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BottomSheetMainCellTopBarPreview() {
+  BottomSheetTopBar(
+    isMainCell = true,
+    isSubCell = false,
+    isBlankCell = false,
+    bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    onResult = { _, _ -> },
+    bottomSheetClosed = {},
+  )
+}
+
+@ComponentPreview
+@Composable
+fun BottomSheetSubCellTopBarPreview() {
+  BottomSheetTopBar(
+    isMainCell = false,
+    isSubCell = true,
+    isBlankCell = false,
+    bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    onResult = { _, _ -> },
+    bottomSheetClosed = {},
+  )
+}
+
+@ComponentPreview
+@Composable
+fun BottomSheetBlankCellTopBarPreview() {
+  BottomSheetTopBar(
+    isMainCell = false,
+    isSubCell = false,
+    isBlankCell = true,
+    bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    onResult = { _, _ -> },
+    bottomSheetClosed = {},
+  )
 }

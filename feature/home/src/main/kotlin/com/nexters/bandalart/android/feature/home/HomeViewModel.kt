@@ -62,7 +62,7 @@ import javax.inject.Inject
 
 data class HomeUiState(
   val bandalartList: ImmutableList<BandalartDetailUiModel> = persistentListOf(),
-  val bandalartDetailData: BandalartDetailUiModel? = null,
+  val bandalartDetailData: BandalartDetailUiModel = BandalartDetailUiModel(),
   val bandalartCellData: BandalartCellUiModel? = null,
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
@@ -219,7 +219,6 @@ class HomeViewModel @Inject constructor(
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              bandalartCellData = null,
               isNetworkErrorAlertDialogOpened = true,
             )
           }
@@ -251,7 +250,6 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           _uiState.update {
             it.copy(
-              bandalartCellData = null,
               isNetworkErrorAlertDialogOpened = true,
               isShowSkeleton = false,
             )
@@ -486,9 +484,9 @@ class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       _eventFlow.emit(
         HomeUiEvent.NavigateToComplete(
-          key = uiState.value.bandalartDetailData!!.key,
-          title = uiState.value.bandalartDetailData!!.title!!,
-          profileEmoji = uiState.value.bandalartDetailData!!.profileEmoji ?: "",
+          key = uiState.value.bandalartDetailData.key,
+          title = uiState.value.bandalartDetailData.title!!,
+          profileEmoji = uiState.value.bandalartDetailData.profileEmoji ?: "",
         ),
       )
     }

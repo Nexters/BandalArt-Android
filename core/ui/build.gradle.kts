@@ -14,6 +14,7 @@ android {
 }
 
 dependencies {
+  coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
     projects.core.designsystem,
     projects.core.util,

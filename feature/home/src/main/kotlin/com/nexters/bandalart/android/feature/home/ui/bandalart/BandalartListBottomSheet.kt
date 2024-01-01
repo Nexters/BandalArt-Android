@@ -37,17 +37,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray800
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
+import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
+import com.nexters.bandalart.android.core.ui.R
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartList
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -85,11 +88,11 @@ fun BandalartListBottomSheet(
       ) {
         FixedSizeText(
           text = stringResource(R.string.bandalart_list_title),
+          color = Gray900,
+          fontSize = 16.sp,
+          fontWeight = FontWeight.W700,
           modifier = modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
-          color = Gray900,
-          fontSize = 16.sp.nonScaleSp,
-          fontWeight = FontWeight.W700,
         )
         IconButton(
           modifier = Modifier
@@ -113,7 +116,7 @@ fun BandalartListBottomSheet(
       LazyColumn(
         modifier = Modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = NavigationBarHeightDp + 32.dp),
+        contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
       ) {
         items(
           count = bandalartList.size,
@@ -154,9 +157,9 @@ fun BandalartListBottomSheet(
                 Spacer(modifier = Modifier.padding(start = 4.dp))
                 FixedSizeText(
                   text = stringResource(R.string.bandalart_list_add),
-                  fontSize = 16.sp.nonScaleSp,
-                  fontWeight = FontWeight.W600,
                   color = Gray800,
+                  fontSize = 16.sp,
+                  fontWeight = FontWeight.W600,
                 )
               }
             }
@@ -165,4 +168,18 @@ fun BandalartListBottomSheet(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartListBottomSheetPreview() {
+  BandalartListBottomSheet(
+    bandalartList = dummyBandalartList.toImmutableList(),
+    currentBandalartKey = "5z1EG",
+    getBandalartDetail = {},
+    setRecentBandalartKey = {},
+    showSkeletonChanged = {},
+    onCancelClicked = {},
+    createBandalart = {},
+  )
 }

@@ -36,10 +36,13 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray500
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.ThemeColor
+import com.nexters.bandalart.android.core.ui.allColor
 import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.feature.home.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
 
 data class CellInfo(
   val isSubCell: Boolean = false,
@@ -212,4 +215,28 @@ fun BandalartCell(
       )
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartMainCellPreview() {
+  BandalartCell(
+    bandalartKey = "",
+    themeColor = allColor[0],
+    isMainCell = true,
+    cellData = dummyBandalartChartData.children[0].children[0],
+    bottomSheetDataChanged = {},
+  )
+}
+
+@ComponentPreview
+@Composable
+fun BandalartCellPreview() {
+  BandalartCell(
+    bandalartKey = "",
+    themeColor = allColor[0],
+    isMainCell = false,
+    cellData = dummyBandalartChartData.children[0].children[0],
+    bottomSheetDataChanged = {},
+  )
 }
