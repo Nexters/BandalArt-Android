@@ -2,6 +2,7 @@
 
 package com.nexters.bandalart.android.feature.onboarding
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -78,9 +79,6 @@ internal fun OnBoardingScreen(
   val context = LocalContext.current
   val currentLocale = context.getCurrentLocale()
   val configuration = LocalConfiguration.current
-  val screenWidth = configuration.screenWidthDp.dp
-  val screenHeight = configuration.screenHeightDp.dp
-  val isLandscape = screenWidth > screenHeight
 
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
@@ -207,7 +205,7 @@ internal fun OnBoardingScreen(
                   }
                 }
               }
-              if (isLandscape) {
+              if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 BandalartButton(
                   onClick = { setOnboardingCompletedStatus(true) },
                   text = context.getString(R.string.onboarding_start),
