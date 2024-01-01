@@ -18,16 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.clickableSingle
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
-import com.nexters.bandalart.android.feature.home.HomeUiState
+import com.nexters.bandalart.android.core.ui.ComponentPreview
+import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.core.ui.extension.clickableSingle
+import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
 @Composable
-fun ShareButton(
-  uiState: HomeUiState,
+fun HomeShareButton(
+  bandalartDetailData: BandalartDetailUiModel,
   shareBandalart: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -36,7 +37,7 @@ fun ShareButton(
       .wrapContentSize()
       .clip(RoundedCornerShape(18.dp))
       .background(Gray100)
-      .clickableSingle { uiState.bandalartDetailData?.let { shareBandalart(it.key) } },
+      .clickableSingle { shareBandalart(bandalartDetailData.key) },
     contentAlignment = Alignment.Center,
   ) {
     Row(
@@ -51,11 +52,20 @@ fun ShareButton(
       )
       FixedSizeText(
         text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_share),
-        modifier = Modifier.padding(start = 4.dp),
         color = Gray900,
-        fontSize = 12.sp.nonScaleSp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.W700,
+        modifier = Modifier.padding(start = 4.dp),
       )
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun HomeShareButtonPreview() {
+  HomeShareButton(
+    bandalartDetailData = dummyBandalartDetailData,
+    shareBandalart = {},
+  )
 }

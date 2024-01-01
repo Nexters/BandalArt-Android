@@ -95,9 +95,11 @@ class BottomSheetViewModel @Inject constructor(
             it.copy(isCellUpdated = true)
           }
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
@@ -123,9 +125,11 @@ class BottomSheetViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update { it.copy(isCellUpdated = true) }
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
@@ -151,9 +155,11 @@ class BottomSheetViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update { it.copy(isCellUpdated = true) }
         }
+
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
@@ -176,6 +182,7 @@ class BottomSheetViewModel @Inject constructor(
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
+
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
           _uiState.update {
@@ -204,22 +211,12 @@ class BottomSheetViewModel @Inject constructor(
 
   fun emojiSelected(profileEmoji: String?) {
     _uiState.update {
-      it.copy(
-        cellData = it.cellData.copy(
-          profileEmoji = profileEmoji,
-        ),
-      )
+      it.copy(cellData = it.cellData.copy(profileEmoji = profileEmoji))
     }
   }
 
   fun titleChanged(title: String) {
-    _uiState.update {
-      it.copy(
-        cellData = it.cellData.copy(
-          title = title,
-        ),
-      )
-    }
+    _uiState.update { it.copy(cellData = it.cellData.copy(title = title)) }
   }
 
   fun colorChanged(mainColor: String, subColor: String) {
@@ -234,32 +231,16 @@ class BottomSheetViewModel @Inject constructor(
   }
 
   fun dueDateChanged(dueDate: String?) {
-    _uiState.update {
-      it.copy(
-        cellData = it.cellData.copy(
-          dueDate = dueDate,
-        ),
-      )
-    }
+    _uiState.update { it.copy(cellData = it.cellData.copy(dueDate = dueDate)) }
   }
 
   fun descriptionChanged(description: String?) {
-    _uiState.update {
-      it.copy(
-        cellData = it.cellData.copy(
-          description = description,
-        ),
-      )
-    }
+    _uiState.update { it.copy(cellData = it.cellData.copy(description = description)) }
   }
 
-  fun isCompletedChanged(flag: Boolean) {
+  fun completionChanged(flag: Boolean) {
     _uiState.update {
-      it.copy(
-        cellData = it.cellData.copy(
-          isCompleted = flag,
-        ),
-      )
+      it.copy(cellData = it.cellData.copy(isCompleted = flag))
     }
   }
 

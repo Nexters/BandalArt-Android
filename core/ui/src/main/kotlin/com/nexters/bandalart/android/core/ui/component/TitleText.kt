@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun TitleText(
@@ -25,4 +26,10 @@ fun TitleText(
     lineHeight = 30.8.sp.nonScaleSp,
     textAlign = TextAlign.Center,
   )
+}
+
+@ComponentPreview
+@Composable
+fun TitleTextPreview() {
+  TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
 }

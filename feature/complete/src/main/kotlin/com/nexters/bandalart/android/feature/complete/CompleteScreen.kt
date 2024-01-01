@@ -25,6 +25,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
@@ -117,8 +118,9 @@ internal fun CompleteScreen(
         TitleText(text = context.getString(R.string.complete_title))
         Box(modifier = Modifier.fillMaxSize()) {
           CompleteBandalart(
+            profileEmoji = uiState.profileEmoji,
+            title = uiState.title,
             modifier = Modifier.align(Alignment.Center),
-            uiState = uiState,
           )
           // MVP 제외
           // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
@@ -134,4 +136,20 @@ internal fun CompleteScreen(
       }
     }
   }
+}
+
+@DevicePreview
+@Composable
+fun CompleteScreenPreview() {
+  CompleteScreen(
+    uiState = CompleteUiState(
+      key = "",
+      title = "발전하는 예진",
+      profileEmoji = "😎",
+      shareUrl = "",
+    ),
+    navigateToHome = {},
+    shareBandalart = {},
+    initShareUrl = {},
+  )
 }

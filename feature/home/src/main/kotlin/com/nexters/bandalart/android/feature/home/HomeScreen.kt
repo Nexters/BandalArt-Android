@@ -31,16 +31,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
-import com.nexters.bandalart.android.core.ui.component.LoadingScreen
+import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartList
 import com.nexters.bandalart.android.feature.home.ui.HomeHeader
+import com.nexters.bandalart.android.feature.home.ui.HomeShareButton
 import com.nexters.bandalart.android.feature.home.ui.HomeTopBar
-import com.nexters.bandalart.android.feature.home.ui.ShareButton
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartChart
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.android.feature.home.ui.bandalart.BandalartListBottomSheet
@@ -71,9 +76,7 @@ internal fun HomeRoute(
         navigateToComplete(
           event.key,
           event.title,
-          event.profileEmoji.ifEmpty {
-            context.getString(R.string.home_default_emoji)
-          },
+          event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
         )
       }
 
@@ -105,6 +108,7 @@ internal fun HomeRoute(
     showSkeletonChanged = viewModel::showSkeletonChanged,
     openDropDownMenu = viewModel::openDropDownMenu,
     openEmojiBottomSheet = viewModel::openEmojiBottomSheet,
+    updateBandalartEmoji = viewModel::updateBandalartEmoji,
     openBandalartDeleteAlertDialog = viewModel::openBandalartDeleteAlertDialog,
     openCellBottomSheet = viewModel::openCellBottomSheet,
     bottomSheetDataChanged = viewModel::bottomSheetDataChanged,
@@ -118,7 +122,6 @@ internal fun HomeRoute(
   )
 }
 
-// TODO HomeHeader 에서 처럼 삭제 다이얼로그에 해당 셀의 타이틀 정보를 전달해야 함
 @Composable
 internal fun HomeScreen(
   uiState: HomeUiState,
@@ -132,6 +135,7 @@ internal fun HomeScreen(
   showSkeletonChanged: (Boolean) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openEmojiBottomSheet: (Boolean) -> Unit,
+  updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   openCellBottomSheet: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
@@ -149,8 +153,8 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
-    val bandalartDetailData = uiState.bandalartDetailData ?: return@LaunchedEffect
+  LaunchedEffect(key1 = uiState.bandalartDetailData.isCompleted) {
+    val bandalartDetailData = uiState.bandalartDetailData
     // 목표를 달성했을 경우
     if (bandalartDetailData.isCompleted && !bandalartDetailData.title.isNullOrEmpty()) {
       // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
@@ -187,7 +191,7 @@ internal fun HomeScreen(
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
       bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
-      currentBandalartKey = uiState.bandalartDetailData!!.key,
+      currentBandalartKey = uiState.bandalartDetailData.key,
       getBandalartDetail = getBandalartDetail,
       setRecentBandalartKey = setRecentBandalartKey,
       showSkeletonChanged = showSkeletonChanged,
@@ -198,9 +202,10 @@ internal fun HomeScreen(
 
   if (uiState.isEmojiBottomSheetOpened) {
     BandalartEmojiBottomSheet(
-      bandalartKey = uiState.bandalartDetailData!!.key,
+      bandalartKey = uiState.bandalartDetailData.key,
       cellKey = uiState.bandalartCellData!!.key,
       currentEmoji = uiState.bandalartCellData.profileEmoji,
+      updateBandalartEmoji = updateBandalartEmoji,
       onResult = { bottomSheetState, bottomSheetDataChangedState ->
         openEmojiBottomSheet(bottomSheetState)
         bottomSheetDataChanged(bottomSheetDataChangedState)
@@ -210,7 +215,7 @@ internal fun HomeScreen(
 
   if (uiState.isCellBottomSheetOpened) {
     BandalartBottomSheet(
-      bandalartKey = uiState.bandalartDetailData!!.key,
+      bandalartKey = uiState.bandalartDetailData.key,
       isSubCell = false,
       isMainCell = true,
       isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
@@ -224,13 +229,13 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
     BandalartDeleteAlertDialog(
-      title = if (uiState.bandalartDetailData?.title.isNullOrEmpty()) {
+      title = if (uiState.bandalartDetailData.title.isNullOrEmpty()) {
         stringResource(R.string.delete_bandalart_dialog_empty_title)
       } else {
-        stringResource(R.string.delete_bandalart_dialog_title, uiState.bandalartDetailData?.title ?: "")
+        stringResource(R.string.delete_bandalart_dialog_title, uiState.bandalartDetailData.title)
       },
       message = stringResource(R.string.delete_bandalart_dialog_message),
-      onDeleteClicked = { uiState.bandalartDetailData?.let { deleteBandalart(it.key) } },
+      onDeleteClicked = { deleteBandalart(uiState.bandalartDetailData.key) },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
     )
   }
@@ -267,36 +272,35 @@ internal fun HomeScreen(
           color = Gray100,
         )
         HomeHeader(
-          uiState = uiState,
+          bandalartDetailData = uiState.bandalartDetailData,
+          isDropDownMenuOpened = uiState.isDropDownMenuOpened,
           openDropDownMenu = openDropDownMenu,
           openEmojiBottomSheet = openEmojiBottomSheet,
           openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
           openCellBottomSheet = openCellBottomSheet,
         )
-        when {
-          uiState.bandalartCellData != null && uiState.bandalartDetailData != null -> {
-            BandalartChart(
-              bandalartKey = uiState.bandalartDetailData.key,
-              uiState = uiState,
-              themeColor = ThemeColor(
-                mainColor = uiState.bandalartDetailData.mainColor,
-                subColor = uiState.bandalartDetailData.subColor,
-              ),
-              bottomSheetDataChanged = bottomSheetDataChanged,
-            )
-          }
+        if (uiState.bandalartCellData != null) {
+          BandalartChart(
+            bandalartKey = uiState.bandalartDetailData.key,
+            bandalartCellData = uiState.bandalartCellData,
+            themeColor = ThemeColor(
+              mainColor = uiState.bandalartDetailData.mainColor,
+              subColor = uiState.bandalartDetailData.subColor,
+            ),
+            bottomSheetDataChanged = bottomSheetDataChanged,
+          )
         }
         Spacer(modifier = Modifier.height(64.dp))
         Spacer(modifier = Modifier.weight(1f))
-        ShareButton(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-          uiState = uiState,
+        HomeShareButton(
+          bandalartDetailData = uiState.bandalartDetailData,
           shareBandalart = shareBandalart,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
         )
       }
       when {
         uiState.isLoading -> {
-          LoadingScreen()
+          LoadingIndicator()
         }
 
         uiState.isShowSkeleton -> {
@@ -324,4 +328,66 @@ private fun updateBandalartListTitles(
       item
     }
   }
+}
+
+@DevicePreview
+@Composable
+fun HomeScreenSingleBandalartPreview() {
+  HomeScreen(
+    uiState = HomeUiState(
+      bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
+      bandalartDetailData = dummyBandalartDetailData,
+      bandalartCellData = dummyBandalartChartData,
+    ),
+    bandalartCount = listOf(dummyBandalartList[0]).size,
+    navigateToComplete = {},
+    getBandalartList = {},
+    getBandalartDetail = {},
+    createBandalart = {},
+    deleteBandalart = {},
+    showSkeletonChanged = {},
+    openDropDownMenu = {},
+    openEmojiBottomSheet = {},
+    updateBandalartEmoji = { _, _, _ -> },
+    openBandalartDeleteAlertDialog = {},
+    openCellBottomSheet = {},
+    bottomSheetDataChanged = {},
+    openBandalartListBottomSheet = {},
+    setRecentBandalartKey = {},
+    shareBandalart = {},
+    initShareUrl = {},
+    checkCompletedBandalartKey = { _ -> false },
+    openNetworkErrorDialog = {},
+  )
+}
+
+@DevicePreview
+@Composable
+fun HomeScreenMultipleBandalartPreview() {
+  HomeScreen(
+    uiState = HomeUiState(
+      bandalartList = dummyBandalartList.toImmutableList(),
+      bandalartDetailData = dummyBandalartDetailData,
+      bandalartCellData = dummyBandalartChartData,
+    ),
+    bandalartCount = dummyBandalartList.size,
+    navigateToComplete = {},
+    getBandalartList = {},
+    getBandalartDetail = {},
+    createBandalart = {},
+    deleteBandalart = {},
+    showSkeletonChanged = {},
+    openDropDownMenu = {},
+    openEmojiBottomSheet = {},
+    updateBandalartEmoji = { _, _, _ -> },
+    openBandalartDeleteAlertDialog = {},
+    openCellBottomSheet = {},
+    bottomSheetDataChanged = {},
+    openBandalartListBottomSheet = {},
+    setRecentBandalartKey = {},
+    shareBandalart = {},
+    initShareUrl = {},
+    checkCompletedBandalartKey = { _ -> false },
+    openNetworkErrorDialog = {},
+  )
 }

@@ -36,10 +36,9 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.AppEnglishTitle
-import com.nexters.bandalart.android.core.ui.component.AppKoreanTitle
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.PagerIndicator
 import com.nexters.bandalart.android.core.ui.component.TitleText
@@ -81,22 +80,7 @@ internal fun OnBoardingScreen(
   val configuration = LocalConfiguration.current
   val screenWidth = configuration.screenWidthDp.dp
   val screenHeight = configuration.screenHeightDp.dp
-
   val isLandscape = screenWidth > screenHeight
-
-  when (currentLocale.language) {
-    Locale.KOREAN.language -> {
-      AppKoreanTitle(modifier = modifier)
-    }
-
-    Locale.ENGLISH.language -> {
-      AppEnglishTitle(modifier = modifier)
-    }
-
-    else -> {
-      AppEnglishTitle(modifier = modifier)
-    }
-  }
 
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
@@ -248,4 +232,10 @@ internal fun OnBoardingScreen(
       }
     }
   }
+}
+
+@DevicePreview
+@Composable
+fun OnBoardingScreenPreview() {
+  OnBoardingScreen(setOnboardingCompletedStatus = {})
 }

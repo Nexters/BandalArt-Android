@@ -18,6 +18,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun BandalartSkeleton(
@@ -71,4 +72,10 @@ fun BandalartSkeleton(
     mainBrush = mainBrush,
     modifier = modifier,
   )
+}
+
+@ComponentPreview
+@Composable
+fun BandalartSkeletonPreview() {
+  BandalartSkeleton()
 }

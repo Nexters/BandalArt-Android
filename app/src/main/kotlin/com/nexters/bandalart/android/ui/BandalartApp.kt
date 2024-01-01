@@ -52,11 +52,11 @@ fun BandalartApp(
             Box(Modifier.fillMaxSize()) {
               FixedSizeText(
                 text = it.visuals.message,
-                fontWeight = FontWeight.W600,
                 color = Gray700,
                 fontSize = 12.sp,
-                letterSpacing = -(0.24).sp,
+                fontWeight = FontWeight.W600,
                 modifier = Modifier.align(Alignment.Center),
+                letterSpacing = -(0.24).sp,
               )
             }
           }

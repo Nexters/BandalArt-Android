@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.ThemeColor
+import com.nexters.bandalart.android.core.ui.allColor
+import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
 
 @Composable
 fun BandalartCellGrid(
@@ -54,4 +57,24 @@ fun BandalartCellGrid(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartCellGridPreview() {
+  val subCellList = listOf(
+    SubCell(2, 3, 1, 1, dummyBandalartChartData.children[0]),
+    SubCell(3, 2, 1, 0, dummyBandalartChartData.children[1]),
+    SubCell(3, 2, 1, 1, dummyBandalartChartData.children[2]),
+    SubCell(2, 3, 0, 1, dummyBandalartChartData.children[3]),
+  )
+
+  BandalartCellGrid(
+    bandalartKey = "",
+    themeColor = allColor[0],
+    subCell = subCellList[1],
+    rows = 2,
+    cols = 3,
+    bottomSheetDataChanged = {},
+  )
 }

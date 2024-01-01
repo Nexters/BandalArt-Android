@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -20,10 +19,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
+import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
-import com.nexters.bandalart.android.core.ui.component.LoadingScreen
+import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
 import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 
@@ -65,7 +65,7 @@ internal fun SplashRoute(
 }
 
 @Composable
-fun SplashScreen(
+internal fun SplashScreen(
   uiState: SplashUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToHome: () -> Unit,
@@ -73,11 +73,9 @@ fun SplashScreen(
   createGuestLoginToken: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
-
   when {
     uiState.isLoading -> {
-      LoadingScreen(modifier = Modifier.fillMaxSize())
+      LoadingIndicator(modifier = Modifier.fillMaxSize())
     }
 
     uiState.isNetworkErrorAlertDialogOpened -> {
@@ -117,11 +115,29 @@ fun SplashScreen(
           imageVector = ImageVector.vectorResource(
             id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app,
           ),
-          contentDescription = context.getString(R.string.app_icon_description),
+          contentDescription = stringResource(R.string.app_icon_description),
         )
         Spacer(modifier = Modifier.width(10.dp))
         AppTitle()
       }
     }
   }
+}
+
+@DevicePreview
+@Composable
+fun SplashScreenPreview() {
+  SplashScreen(
+    uiState = SplashUiState(
+      isLoggedIn = false,
+      isGuestLoginTokenCreated = false,
+      isOnboardingCompleted = false,
+      isNetworkErrorAlertDialogOpened = false,
+      isLoading = false,
+    ),
+    navigateToOnBoarding = {},
+    navigateToHome = {},
+    openNetworkErrorAlertDialog = {},
+    createGuestLoginToken = {},
+  )
 }

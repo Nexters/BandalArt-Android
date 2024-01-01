@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.core.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.extension.clickableSingle
 
 @Composable
@@ -34,12 +36,22 @@ fun BandalartButton(
   ) {
     FixedSizeText(
       text = text,
-      fontFamily = pretendard,
+      color = White,
+      fontSize = 16.sp,
       fontWeight = FontWeight.W700,
       modifier = Modifier.padding(horizontal = 32.dp),
-      fontSize = 16.sp,
-      color = White,
+      fontFamily = pretendard,
       letterSpacing = (-0.32).sp,
     )
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartButtonPreview() {
+  BandalartButton(
+    onClick = {},
+    text = "시작하기",
+    modifier = Modifier.fillMaxWidth(),
+  )
 }

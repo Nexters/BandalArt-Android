@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -33,7 +34,7 @@ import timber.log.Timber
 data class CompleteUiState(
   val key: String = "",
   val title: String = "",
-  val profileEmoji: String? = "",
+  val profileEmoji: String = "",
   val shareUrl: String = "",
 )
 
@@ -71,11 +72,13 @@ class CompleteViewModel @Inject constructor(
   }
 
   private fun initComplete() {
-    _uiState.value = _uiState.value.copy(
-      key = key,
-      title = title,
-      profileEmoji = profileEmoji,
-    )
+    _uiState.update {
+      it.copy(
+        key = key,
+        title = title,
+        profileEmoji = profileEmoji,
+      )
+    }
   }
 
   fun shareBandalart() {

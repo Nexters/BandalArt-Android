@@ -28,6 +28,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 
 @Composable
@@ -60,11 +61,11 @@ fun BandalartDeleteAlertDialog(
         )
         Spacer(modifier = Modifier.height(18.dp))
         FixedSizeText(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
           text = title,
           color = Gray900,
           fontSize = 20.sp,
           fontWeight = FontWeight.W700,
+          modifier = Modifier.align(Alignment.CenterHorizontally),
           textAlign = TextAlign.Center,
           lineHeight = 30.sp,
           letterSpacing = (-0.4).sp,
@@ -72,11 +73,11 @@ fun BandalartDeleteAlertDialog(
         if (message != null) {
           Spacer(modifier = Modifier.height(8.dp))
           FixedSizeText(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
             text = message,
             color = Gray400,
             fontSize = 14.sp,
             fontWeight = FontWeight.W500,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center,
             letterSpacing = (-0.28).sp,
           )
@@ -124,9 +125,9 @@ fun BandalartDeleteAlertDialog(
           ) {
             FixedSizeText(
               text = context.getString(R.string.delete_bandalart_delete),
+              color = White,
               fontSize = 16.sp,
               fontWeight = FontWeight.W600,
-              color = White,
             )
           }
         }
@@ -134,4 +135,15 @@ fun BandalartDeleteAlertDialog(
       }
     }
   }
+}
+
+@ComponentPreview
+@Composable
+fun BandalartDeleteAlertDialogPreview() {
+  BandalartDeleteAlertDialog(
+    title = "반다라트를 삭제하시겠어요?",
+    message = "삭제한 반다라트는 다시 복구할 수 없어요.",
+    onDeleteClicked = {},
+    onCancelClicked = {},
+  )
 }
