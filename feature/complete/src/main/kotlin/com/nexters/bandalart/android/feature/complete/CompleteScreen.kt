@@ -1,6 +1,7 @@
 package com.nexters.bandalart.android.feature.complete
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -79,10 +80,6 @@ internal fun CompleteScreen(
 ) {
   val context = LocalContext.current
   val configuration = LocalConfiguration.current
-  val screenWidth = configuration.screenWidthDp.dp
-  val screenHeight = configuration.screenHeightDp.dp
-
-  val isLandscape = screenWidth > screenHeight
 
   val composition by rememberLottieComposition(
     spec = LottieCompositionSpec.RawRes(
@@ -114,7 +111,7 @@ internal fun CompleteScreen(
     modifier = modifier.fillMaxSize(),
     color = Gray50,
   ) {
-    if (isLandscape) {
+    if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       Box {
         Column(
           modifier = Modifier
@@ -131,7 +128,7 @@ internal fun CompleteScreen(
           CompleteBandalart(
             profileEmoji = uiState.profileEmoji,
             title = uiState.title,
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier.width(328.dp),
           )
           Spacer(modifier = Modifier.height(32.dp))
           // MVP 제외
