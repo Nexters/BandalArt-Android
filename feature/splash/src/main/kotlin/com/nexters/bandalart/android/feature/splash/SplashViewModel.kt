@@ -8,13 +8,12 @@ import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginT
 import com.nexters.bandalart.android.core.domain.usecase.login.GetGuestLoginTokenUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.SetGuestLoginTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -54,8 +53,8 @@ class SplashViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(SplashUiState())
   val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
 
-  private val _eventFlow = MutableSharedFlow<SplashUiEvent>()
-  val eventFlow: SharedFlow<SplashUiEvent> = _eventFlow.asSharedFlow()
+  private val _eventChannel = Channel<SplashUiEvent>()
+  val eventFlow = _eventChannel.receiveAsFlow()
 
   init {
     viewModelScope.launch {
@@ -138,13 +137,13 @@ class SplashViewModel @Inject constructor(
 
   fun navigateToOnBoarding() {
     viewModelScope.launch {
-      _eventFlow.emit(SplashUiEvent.NavigateToOnBoarding)
+      _eventChannel.send(SplashUiEvent.NavigateToOnBoarding)
     }
   }
 
   fun navigateToHome() {
     viewModelScope.launch {
-      _eventFlow.emit(SplashUiEvent.NavigateToHome)
+      _eventChannel.send(SplashUiEvent.NavigateToHome)
     }
   }
 }
