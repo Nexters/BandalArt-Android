@@ -12,12 +12,11 @@ import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_TITLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -58,8 +57,8 @@ class CompleteViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(CompleteUiState())
   val uiState: StateFlow<CompleteUiState> = this._uiState.asStateFlow()
 
-  private val _eventFlow = MutableSharedFlow<CompleteUiEvent>()
-  val eventFlow: SharedFlow<CompleteUiEvent> = _eventFlow.asSharedFlow()
+  private val _eventChannel = Channel<CompleteUiEvent>()
+  val eventFlow = _eventChannel.receiveAsFlow()
 
   init {
     initComplete()
@@ -98,7 +97,7 @@ class CompleteViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _eventFlow.emit(CompleteUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(CompleteUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception)
         }
       }
@@ -112,7 +111,7 @@ class CompleteViewModel @Inject constructor(
 
   fun navigateToHome() {
     viewModelScope.launch {
-      _eventFlow.emit(CompleteUiEvent.NavigateToHome)
+      _eventChannel.send(CompleteUiEvent.NavigateToHome)
     }
   }
 }

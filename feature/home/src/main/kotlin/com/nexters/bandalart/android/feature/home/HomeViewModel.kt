@@ -27,12 +27,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -111,8 +110,8 @@ class HomeViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(HomeUiState())
   val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-  private val _eventFlow = MutableSharedFlow<HomeUiEvent>()
-  val eventFlow: SharedFlow<HomeUiEvent> = _eventFlow.asSharedFlow()
+  private val _eventChannel = Channel<HomeUiEvent>()
+  val eventFlow = _eventChannel.receiveAsFlow()
 
   init {
     _uiState.update { it.copy(isShowSkeleton = true) }
@@ -272,7 +271,7 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
       if (_uiState.value.bandalartList.size + 1 > 5) {
-        _eventFlow.emit(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
+        _eventChannel.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
         return@launch
       }
       _uiState.update { it.copy(isShowSkeleton = true) }
@@ -289,7 +288,7 @@ class HomeViewModel @Inject constructor(
           setRecentBandalartKey(bandalart.key)
           // 새로운 반다라트를 로컬에 저장
           upsertBandalartKey(bandalart.key)
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
+          _eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
         }
 
         result.isSuccess && result.getOrNull() == null -> {
@@ -304,7 +303,7 @@ class HomeViewModel @Inject constructor(
               isShowSkeleton = false,
             )
           }
-          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -327,7 +326,7 @@ class HomeViewModel @Inject constructor(
           openBandalartDeleteAlertDialog(false)
           getBandalartList()
           deleteBandalartKey(bandalartKey)
-          _eventFlow.emit(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
+          _eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
 
         result.isSuccess && result.getOrNull() == null -> {
@@ -343,7 +342,7 @@ class HomeViewModel @Inject constructor(
               isBandalartDeleted = false,
             )
           }
-          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -376,7 +375,7 @@ class HomeViewModel @Inject constructor(
               isShowSkeleton = false,
             )
           }
-          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -403,7 +402,7 @@ class HomeViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _eventFlow.emit(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
         }
       }
       _uiState.update { it.copy(isNetworking = false) }
@@ -482,7 +481,7 @@ class HomeViewModel @Inject constructor(
 
   fun navigateToComplete() {
     viewModelScope.launch {
-      _eventFlow.emit(
+      _eventChannel.send(
         HomeUiEvent.NavigateToComplete(
           key = uiState.value.bandalartDetailData.key,
           title = uiState.value.bandalartDetailData.title!!,
