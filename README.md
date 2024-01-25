@@ -77,7 +77,7 @@
 - Gradle Version Catalog
 
 ## Architecture
-Based on [Google App Architecture](https://developer.android.com/topic/architecture) similar to Clean Architecture
+Based on [Now In Android](https://github.com/android/nowinandroid) Clean Architecture
 
 <img width="760" alt="image" src="https://github.com/easyhooon/watcha-assignment/assets/51016231/2837a3b6-32f8-46aa-a102-3fb5b3e3826a">
 
