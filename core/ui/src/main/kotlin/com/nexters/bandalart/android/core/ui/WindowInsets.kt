@@ -23,6 +23,6 @@ val StatusBarAndActionBarHeightDp
 // https://stackoverflow.com/questions/75123079/how-do-i-detect-which-type-of-navigation-bar-is-active
 @Composable
 fun getNavigationBarPadding(): Dp {
-  return if (NavigationBarHeightDp == 0.dp) 48.dp
-  else NavigationBarHeightDp - 32.dp
+  return if (NavigationBarHeightDp == 0.dp) 64.dp
+  else NavigationBarHeightDp
 }

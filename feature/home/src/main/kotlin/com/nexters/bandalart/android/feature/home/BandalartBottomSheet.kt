@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -251,14 +252,16 @@ fun BandalartBottomSheetContent(
     modifier = modifier
       .wrapContentSize()
       .statusBarsPadding()
+      .navigationBarsPadding()
       .noRippleClickable { },
     sheetState = bottomSheetState,
     dragHandle = null,
+    // https://stackoverflow.com/questions/69560253/modal-bottom-sheet-scrim-color-is-not-shown-in-status-bar-in-jetpack-compose
+    windowInsets = WindowInsets(0, 0, 0, 66),
   ) {
     Column(
       modifier = Modifier
         .background(White)
-        .navigationBarsPadding()
         .noRippleClickable { focusManager.clearFocus() },
     ) {
       Spacer(modifier = Modifier.height(20.dp))
