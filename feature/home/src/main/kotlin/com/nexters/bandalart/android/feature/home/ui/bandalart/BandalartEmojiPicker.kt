@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -34,7 +32,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
-import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import kotlinx.coroutines.launch
 
@@ -139,7 +136,6 @@ fun BandalartEmojiPicker(
         }
       }
     }
-    Spacer(modifier = Modifier.height(NavigationBarHeightDp))
   }
 }
 

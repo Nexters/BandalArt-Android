@@ -43,7 +43,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray800
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
-import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
@@ -116,7 +115,7 @@ fun BandalartListBottomSheet(
       LazyColumn(
         modifier = Modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
+        contentPadding = PaddingValues(bottom = getNavigationBarPadding()),
       ) {
         items(
           count = bandalartList.size,

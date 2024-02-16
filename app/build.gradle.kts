@@ -66,6 +66,7 @@ dependencies {
     libs.androidx.startup,
     libs.androidx.core,
     libs.androidx.splash,
+    libs.androidx.activity.compose,
     libs.timber,
     libs.bundles.androidx.compose,
     platform(libs.firebase.bom),

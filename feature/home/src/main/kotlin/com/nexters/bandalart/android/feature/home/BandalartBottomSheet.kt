@@ -69,7 +69,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
-import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
@@ -404,6 +403,7 @@ fun BandalartBottomSheetContent(
           }
           if (isMainCell && uiState.isCellDataCopied) {
             Spacer(modifier = Modifier.height(22.dp))
+            Spacer(modifier = Modifier.height(if(uiState.isEmojiPickerOpened) (-32).dp else 0.dp))
             BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
             BandalartColorPicker(
               initColor = ThemeColor(
@@ -581,7 +581,7 @@ fun BandalartBottomSheetContent(
               modifier = Modifier.weight(1f),
             )
           }
-          Spacer(modifier = Modifier.height(NavigationBarHeightDp + getNavigationBarPadding()))
+          Spacer(modifier = Modifier.height(getNavigationBarPadding()))
         }
         if (scrollState.value > 0) {
           Column(
