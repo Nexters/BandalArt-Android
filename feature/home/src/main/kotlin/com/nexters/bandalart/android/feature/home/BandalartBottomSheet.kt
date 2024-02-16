@@ -403,7 +403,7 @@ fun BandalartBottomSheetContent(
           }
           if (isMainCell && uiState.isCellDataCopied) {
             Spacer(modifier = Modifier.height(22.dp))
-            Spacer(modifier = Modifier.height(if(uiState.isEmojiPickerOpened) (-32).dp else 0.dp))
+            Spacer(modifier = Modifier.height(if (uiState.isEmojiPickerOpened) (-32).dp else 0.dp))
             BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
             BandalartColorPicker(
               initColor = ThemeColor(
