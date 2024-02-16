@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-  coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
     projects.core.data,
     projects.core.datastore,
