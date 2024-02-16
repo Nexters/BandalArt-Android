@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -43,7 +44,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray800
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
-import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
@@ -74,6 +74,7 @@ fun BandalartListBottomSheet(
     onDismissRequest = onCancelClicked,
     sheetState = bottomSheetState,
     dragHandle = null,
+    windowInsets = WindowInsets(0, 0, 0, 0),
   ) {
     Column(
       modifier = Modifier
@@ -116,7 +117,7 @@ fun BandalartListBottomSheet(
       LazyColumn(
         modifier = Modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
+        contentPadding = PaddingValues(bottom = 20.dp),
       ) {
         items(
           count = bandalartList.size,
@@ -136,36 +137,34 @@ fun BandalartListBottomSheet(
             onCancelClicked = onCancelClicked,
           )
         }
-        item {
-          Spacer(modifier = Modifier.height(20.dp))
+      }
+      Row {
+        Button(
+          modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            .padding(horizontal = 24.dp),
+          onClick = createBandalart,
+          colors = ButtonDefaults.buttonColors(containerColor = Gray200),
+        ) {
           Row {
-            Button(
-              modifier = Modifier
-                .weight(1f)
-                .height(56.dp)
-                .padding(horizontal = 24.dp),
-              onClick = createBandalart,
-              colors = ButtonDefaults.buttonColors(containerColor = Gray200),
-            ) {
-              Row {
-                Icon(
-                  imageVector = Icons.Default.Add,
-                  contentDescription = stringResource(R.string.add_descrption),
-                  tint = Gray600,
-                  modifier = Modifier.size(20.dp),
-                )
-                Spacer(modifier = Modifier.padding(start = 4.dp))
-                FixedSizeText(
-                  text = stringResource(R.string.bandalart_list_add),
-                  color = Gray800,
-                  fontSize = 16.sp,
-                  fontWeight = FontWeight.W600,
-                )
-              }
-            }
+            Icon(
+              imageVector = Icons.Default.Add,
+              contentDescription = stringResource(R.string.add_descrption),
+              tint = Gray600,
+              modifier = Modifier.size(20.dp),
+            )
+            Spacer(modifier = Modifier.padding(start = 4.dp))
+            FixedSizeText(
+              text = stringResource(R.string.bandalart_list_add),
+              color = Gray800,
+              fontSize = 16.sp,
+              fontWeight = FontWeight.W600,
+            )
           }
         }
       }
+      Spacer(modifier = Modifier.height(getNavigationBarPadding()))
     }
   }
 }
