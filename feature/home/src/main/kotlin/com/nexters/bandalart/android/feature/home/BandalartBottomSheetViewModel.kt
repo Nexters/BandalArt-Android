@@ -13,16 +13,15 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellM
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * BottomSheetUiState
@@ -65,8 +64,8 @@ class BottomSheetViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(BottomSheetUiState())
   val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
 
-  private val _eventFlow = MutableSharedFlow<BottomSheetUiEvent>()
-  val eventFlow: SharedFlow<BottomSheetUiEvent> = _eventFlow.asSharedFlow()
+  private val _eventChannel = Channel<BottomSheetUiEvent>()
+  val eventFlow = _eventChannel.receiveAsFlow()
 
   fun copyCellData(cellData: BandalartCellUiModel) {
     _uiState.update {
@@ -102,7 +101,7 @@ class BottomSheetViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
       }
@@ -132,7 +131,7 @@ class BottomSheetViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
       }
@@ -162,7 +161,7 @@ class BottomSheetViewModel @Inject constructor(
 
         result.isFailure -> {
           val exception = result.exceptionOrNull()!!
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
       }
@@ -189,7 +188,7 @@ class BottomSheetViewModel @Inject constructor(
             it.copy(isCellDeleted = false)
           }
           openDeleteCellDialog(false)
-          _eventFlow.emit(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
           Timber.e(exception.message)
         }
       }
