@@ -41,6 +41,7 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *, *>)
     }
 
     dependencies.add("detektPlugins", libs.findLibrary("detekt-plugin-formatting").get())
+    dependencies.add("coreLibraryDesugaring", libs.findLibrary("desugar-jdk").get())
 
     buildTypes {
       getByName("debug") {

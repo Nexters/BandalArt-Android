@@ -3,6 +3,7 @@
 package com.nexters.bandalart.android.feature.home.ui.bandalart
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -33,6 +34,7 @@ fun BandalartEmojiBottomSheet(
     modifier = modifier.wrapContentSize(),
     sheetState = bottomSheetState,
     dragHandle = null,
+    windowInsets = WindowInsets(0, 0, 0, 0),
   ) {
     Column {
       BandalartEmojiPicker(
