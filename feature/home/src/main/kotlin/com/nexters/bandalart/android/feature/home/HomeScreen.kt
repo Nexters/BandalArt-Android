@@ -117,7 +117,7 @@ internal fun HomeRoute(
     shareBandalart = viewModel::shareBandalart,
     initShareUrl = viewModel::initShareUrl,
     checkCompletedBandalartKey = viewModel::checkCompletedBandalartKey,
-    openNetworkErrorDialog = viewModel::openNetworkErrorAlertDialog,
+    setNetworkErrorDialogVisible = viewModel::setNetworkErrorDialogVisible,
     modifier = modifier,
   )
 }
@@ -144,7 +144,7 @@ internal fun HomeScreen(
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
   checkCompletedBandalartKey: suspend (String) -> Boolean,
-  openNetworkErrorDialog: (Boolean) -> Unit,
+  setNetworkErrorDialogVisible: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -240,12 +240,12 @@ internal fun HomeScreen(
     )
   }
 
-  if (uiState.isNetworkErrorAlertDialogOpened) {
+  if (uiState.isNetworkErrorDialogVisible) {
     NetworkErrorAlertDialog(
       title = stringResource(R.string.network_error_dialog_title),
       message = stringResource(R.string.network_error_dialog_message),
       onConfirmClick = {
-        openNetworkErrorDialog(false)
+        setNetworkErrorDialogVisible(false)
         // loadingChanged(true)
         getBandalartList(null)
       },
@@ -357,7 +357,7 @@ fun HomeScreenSingleBandalartPreview() {
     shareBandalart = {},
     initShareUrl = {},
     checkCompletedBandalartKey = { _ -> false },
-    openNetworkErrorDialog = {},
+    setNetworkErrorDialogVisible = {},
   )
 }
 
@@ -388,6 +388,6 @@ fun HomeScreenMultipleBandalartPreview() {
     shareBandalart = {},
     initShareUrl = {},
     checkCompletedBandalartKey = { _ -> false },
-    openNetworkErrorDialog = {},
+    setNetworkErrorDialogVisible = {},
   )
 }

@@ -1,6 +1,5 @@
 package com.nexters.bandalart.android.core.data.datasource
 
-import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import com.nexters.bandalart.android.core.network.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.network.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.network.model.bandalart.BandalartResponse
@@ -16,58 +15,46 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
   // private val client: HttpClient,
   private val service: BandalartService,
 ) : BandalartRemoteDataSource {
-  override suspend fun createBandalart(): BandalartResponse? {
+  override suspend fun createBandalart(): BandalartResponse {
 //    return client.safeRequest {
 //      post("v1/bandalarts").body()
 //    }
-    return safeRequest {
-      service.createBandalart()
-    }
+    return service.createBandalart()
   }
 
-  override suspend fun getBandalartList(): List<BandalartDetailResponse>? {
+  override suspend fun getBandalartList(): List<BandalartDetailResponse> {
 //    return client.safeRequest {
 //      get("v1/bandalarts").body()
 //    }
-    return safeRequest {
-      service.getBandalartList()
-    }
+    return service.getBandalartList()
   }
 
-  override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse? {
+  override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse {
 //    return client.safeRequest {
 //      get("v1/bandalarts/$bandalartKey").body()
 //    }
-    return safeRequest {
-      service.getBandalartDetail(bandalartKey)
-    }
+    return service.getBandalartDetail(bandalartKey)
   }
 
   override suspend fun deleteBandalart(bandalartKey: String) {
 //    client.safeRequest {
 //      delete("v1/bandalarts/$bandalartKey")
 //    }
-    safeRequest {
-      service.deleteBandalart(bandalartKey)
-    }
+    service.deleteBandalart(bandalartKey)
   }
 
-  override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse? {
+  override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse {
 //    return client.safeRequest {
 //      get("v1/bandalarts/$bandalartKey/cells").body()
 //    }
-    return safeRequest {
-      service.getBandalartMainCell(bandalartKey)
-    }
+    return service.getBandalartMainCell(bandalartKey)
   }
 
-  override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse? {
+  override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse {
 //    return client.safeRequest {
 //      get("v1/bandalarts/$bandalartKey/cells/$cellKey").body()
 //    }
-    return safeRequest {
-      service.getBandalartCell(bandalartKey, cellKey)
-    }
+    return service.getBandalartCell(bandalartKey, cellKey)
   }
 
   override suspend fun updateBandalartMainCell(
@@ -80,9 +67,7 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
 //        setBody(updateBandalartMainCellRequest)
 //      }
 //    }
-    safeRequest {
-      service.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellRequest)
-    }
+    service.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellRequest)
   }
 
   override suspend fun updateBandalartSubCell(
@@ -95,9 +80,7 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
 //        setBody(updateBandalartSubCellRequest)
 //      }
 //    }
-    safeRequest {
-      service.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellRequest)
-    }
+    service.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellRequest)
   }
 
   override suspend fun updateBandalartTaskCell(
@@ -110,9 +93,7 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
 //        setBody(updateBandalartTaskCellRequest)
 //      }
 //    }
-    safeRequest {
-      service.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellRequest)
-    }
+    service.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellRequest)
   }
 
   override suspend fun updateBandalartEmoji(
@@ -125,26 +106,20 @@ internal class BandalartRemoteDataSourceImpl @Inject constructor(
 //        setBody(updateBandalartEmojiRequest)
 //      }
 //    }
-    safeRequest {
-      service.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiRequest)
-    }
+    service.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiRequest)
   }
 
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
 //    client.safeRequest {
 //      delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
 //    }
-    safeRequest {
-      service.deleteBandalartCell(bandalartKey, cellKey)
-    }
+    service.deleteBandalartCell(bandalartKey, cellKey)
   }
 
-  override suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse? {
+  override suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse {
 //    return client.safeRequest {
 //      post("v1/bandalarts/$bandalartKey/shares").body()
 //    }
-    return safeRequest {
-      service.shareBandalart(bandalartKey)
-    }
+    return service.shareBandalart(bandalartKey)
   }
 }

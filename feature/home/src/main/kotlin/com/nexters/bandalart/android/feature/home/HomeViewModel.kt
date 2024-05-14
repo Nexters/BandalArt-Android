@@ -2,6 +2,7 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.common.ErrorHandlerActions
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartKeyUseCase
@@ -46,7 +47,8 @@ import javax.inject.Inject
  * @param isBandalartDeleted 표가 삭제됨
  * @param isDropDownMenuOpened 드롭다운메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
- * @param isNetworkErrorAlertDialogOpened 통신 시 네트워크 문제 발생
+ * @param isNetworkErrorDialogVisible 통신 시 네트워크 문제 발생
+ * @param isServerErrorDialogVisible 서버에서 에러 발생
  * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
  * @param isCellBottomSheetOpened 반다라트 셀 바텀시트가 열림
  * @param isEmojiBottomSheetOpened 반다라트 이모지 바텀시트가 열림
@@ -66,7 +68,8 @@ data class HomeUiState(
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
-  val isNetworkErrorAlertDialogOpened: Boolean = false,
+  val isNetworkErrorDialogVisible: Boolean = false,
+  val isServerErrorDialogVisible: Boolean = false,
   val isBandalartListBottomSheetOpened: Boolean = false,
   val isCellBottomSheetOpened: Boolean = false,
   val isEmojiBottomSheetOpened: Boolean = false,
@@ -105,7 +108,7 @@ class HomeViewModel @Inject constructor(
   private val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase,
   private val deleteBandalartKeyUseCase: DeleteBandalartKeyUseCase,
   private val getPrevBandalartListUseCase: GetPrevBandalartListUseCase,
-) : ViewModel() {
+) : ViewModel(), ErrorHandlerActions {
 
   private val _uiState = MutableStateFlow(HomeUiState())
   val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -184,7 +187,7 @@ class HomeViewModel @Inject constructor(
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              isNetworkErrorAlertDialogOpened = true,
+              isNetworkErrorDialogVisible = true,
             )
           }
         }
@@ -218,7 +221,7 @@ class HomeViewModel @Inject constructor(
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              isNetworkErrorAlertDialogOpened = true,
+              isNetworkErrorDialogVisible = true,
             )
           }
         }
@@ -239,7 +242,7 @@ class HomeViewModel @Inject constructor(
             )
           }
           bottomSheetDataChanged(flag = false)
-          openNetworkErrorAlertDialog(false)
+          setNetworkErrorDialogVisible(false)
         }
 
         result.isSuccess && result.getOrNull() == null -> {
@@ -249,7 +252,7 @@ class HomeViewModel @Inject constructor(
         result.isFailure -> {
           _uiState.update {
             it.copy(
-              isNetworkErrorAlertDialogOpened = true,
+              isNetworkErrorDialogVisible = true,
               isShowSkeleton = false,
             )
           }
@@ -437,10 +440,6 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isShowSkeleton = flag) }
   }
 
-  fun openNetworkErrorAlertDialog(flag: Boolean) {
-    _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = flag) }
-  }
-
   fun openBandalartListBottomSheet(flag: Boolean) {
     _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
   }
@@ -489,5 +488,13 @@ class HomeViewModel @Inject constructor(
         ),
       )
     }
+  }
+
+  override fun setNetworkErrorDialogVisible(flag: Boolean) {
+    _uiState.update { it.copy(isNetworkErrorDialogVisible = flag) }
+  }
+
+  override fun setServerErrorDialogVisible(flag: Boolean) {
+    _uiState.update { it.copy(isServerErrorDialogVisible = flag) }
   }
 }
