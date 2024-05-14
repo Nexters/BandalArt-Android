@@ -1,9 +1,7 @@
-package com.nexters.bandalart.android.core.data.di
+package com.nexters.bandalart.android.core.network.di
 
-import com.nexters.bandalart.android.core.data.service.BandalartService
-import com.nexters.bandalart.android.core.data.service.GuestLoginService
-import com.nexters.bandalart.android.core.network.di.BandalartApi
-import com.nexters.bandalart.android.core.network.di.LoginApi
+import com.nexters.bandalart.android.core.network.service.BandalartService
+import com.nexters.bandalart.android.core.network.service.GuestLoginService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

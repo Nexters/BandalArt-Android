@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.data.model
+package com.nexters.bandalart.android.core.network.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
