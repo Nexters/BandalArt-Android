@@ -19,7 +19,8 @@ dependencies {
     projects.core.designsystem,
     projects.core.domain,
     projects.core.ui,
-    projects.core.util,
+    projects.core.common,
+
     libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
     libs.lottie.compose,

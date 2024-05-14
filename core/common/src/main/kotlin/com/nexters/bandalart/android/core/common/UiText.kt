@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.ui
+package com.nexters.bandalart.android.core.common
 
 import android.content.Context
 import androidx.annotation.StringRes

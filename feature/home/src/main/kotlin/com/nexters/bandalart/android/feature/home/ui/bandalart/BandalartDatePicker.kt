@@ -40,12 +40,11 @@ import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.common.extension.toLocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import java.util.*
 
 @Composable
 fun BandalartDatePicker(

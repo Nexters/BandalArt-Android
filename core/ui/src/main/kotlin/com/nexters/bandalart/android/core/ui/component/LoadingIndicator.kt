@@ -18,7 +18,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
+import com.nexters.bandalart.android.core.common.extension.noRippleClickable
 import com.nexters.bandalart.android.core.designsystem.theme.Black
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview

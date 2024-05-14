@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
-import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.LoadingIndicator

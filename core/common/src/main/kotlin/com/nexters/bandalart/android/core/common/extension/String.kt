@@ -1,5 +1,6 @@
-package com.nexters.bandalart.android.core.util.extension
+package com.nexters.bandalart.android.core.common.extension
 
+import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -23,4 +24,8 @@ fun String.toStringLocalDateTime(): String {
 fun String.toLocalDateTime(): LocalDateTime {
   val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
   return LocalDateTime.parse(this.substring(0, 16), formatter)
+}
+
+fun String.toColor(): Color {
+  return Color(android.graphics.Color.parseColor(this))
 }

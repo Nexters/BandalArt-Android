@@ -22,7 +22,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.ui.extension.clickableSingle
+import com.nexters.bandalart.android.core.common.extension.clickableSingle
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 

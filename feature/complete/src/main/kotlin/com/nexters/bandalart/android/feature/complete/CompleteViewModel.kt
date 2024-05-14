@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
-import com.nexters.bandalart.android.core.ui.UiText
+import com.nexters.bandalart.android.core.common.UiText
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_KEY
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_PROFILE_EMOJI
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_TITLE

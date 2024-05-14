@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalLayoutApi::class)
 
-package com.nexters.bandalart.android.core.ui.extension
+package com.nexters.bandalart.android.core.common.extension
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.LocalIndication
@@ -25,8 +25,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Constraints
-import com.nexters.bandalart.android.core.ui.MultipleEventsCutter
-import com.nexters.bandalart.android.core.ui.get
+import com.nexters.bandalart.android.core.common.MultipleEventsCutter
+import com.nexters.bandalart.android.core.common.get
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {

@@ -32,7 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
-import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog

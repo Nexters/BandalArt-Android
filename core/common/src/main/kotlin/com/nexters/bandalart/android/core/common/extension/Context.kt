@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.util.extension
+package com.nexters.bandalart.android.core.common.extension
 
 import android.content.Context
 import java.util.Locale

@@ -15,13 +15,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.common.extension.toColor
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.MainColor
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.allColor
-import com.nexters.bandalart.android.core.ui.extension.toColor
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
 

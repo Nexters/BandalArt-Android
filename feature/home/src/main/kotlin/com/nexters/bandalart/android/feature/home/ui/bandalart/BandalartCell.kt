@@ -39,7 +39,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.allColor
-import com.nexters.bandalart.android.core.ui.extension.toColor
+import com.nexters.bandalart.android.core.common.extension.toColor
 import com.nexters.bandalart.android.feature.home.BandalartBottomSheet
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
