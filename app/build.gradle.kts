@@ -36,6 +36,8 @@ android {
 
     getByName("release") {
       isDebuggable = false
+      isMinifyEnabled = true
+      isShrinkResources = true
       signingConfig = signingConfigs.getByName("release")
       manifestPlaceholders += mapOf(
         "appName" to "@string/app_name"
