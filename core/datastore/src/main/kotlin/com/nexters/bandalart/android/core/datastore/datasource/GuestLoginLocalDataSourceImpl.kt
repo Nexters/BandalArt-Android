@@ -1,6 +1,5 @@
-package com.nexters.bandalart.android.core.data.local.datasource
+package com.nexters.bandalart.android.core.datastore.datasource
 
-import com.nexters.bandalart.android.core.data.datasource.GuestLoginLocalDataSource
 import com.nexters.bandalart.android.core.datastore.DataStoreProvider
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.data.datasource
+package com.nexters.bandalart.android.core.datastore.datasource
 
 interface CompletedBandalartKeyDataSource {
   suspend fun getPrevBandalartList(): List<Pair<String, Boolean>>

@@ -1,9 +1,8 @@
-package com.nexters.bandalart.android.core.data.remote.datasource
+package com.nexters.bandalart.android.core.data.datasource
 
-import com.nexters.bandalart.android.core.data.datasource.GuestLoginRemoteDataSource
+import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import com.nexters.bandalart.android.core.network.model.GuestLoginTokenResponse
 import com.nexters.bandalart.android.core.network.service.GuestLoginService
-import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import javax.inject.Inject
 
 internal class GuestLoginRemoteDataSourceImpl @Inject constructor(

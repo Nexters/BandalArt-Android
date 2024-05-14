@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.data.datasource
+package com.nexters.bandalart.android.core.datastore.datasource
 
 interface GuestLoginLocalDataSource {
   suspend fun setGuestLoginToken(guestLoginToken: String)

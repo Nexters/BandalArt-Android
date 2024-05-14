@@ -1,6 +1,6 @@
-package com.nexters.bandalart.android.core.data.remote.datasource
+package com.nexters.bandalart.android.core.data.datasource
 
-import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
+import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import com.nexters.bandalart.android.core.network.model.bandalart.BandalartCellResponse
 import com.nexters.bandalart.android.core.network.model.bandalart.BandalartDetailResponse
 import com.nexters.bandalart.android.core.network.model.bandalart.BandalartResponse
@@ -10,7 +10,6 @@ import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalar
 import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartSubCellRequest
 import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartTaskCellRequest
 import com.nexters.bandalart.android.core.network.service.BandalartService
-import com.nexters.bandalart.android.core.data.util.extension.safeRequest
 import javax.inject.Inject
 
 internal class BandalartRemoteDataSourceImpl @Inject constructor(

@@ -1,8 +1,8 @@
 package com.nexters.bandalart.android.core.data.repository
 
 import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
-import com.nexters.bandalart.android.core.data.datasource.CompletedBandalartKeyDataSource
-import com.nexters.bandalart.android.core.data.datasource.RecentBandalartKeyDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartKeyDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartKeyDataSource
 import com.nexters.bandalart.android.core.data.mapper.toEntity
 import com.nexters.bandalart.android.core.data.mapper.toModel
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
