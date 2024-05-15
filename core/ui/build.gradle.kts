@@ -17,9 +17,9 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
     projects.core.designsystem,
-    projects.core.util,
+    projects.core.common,
+
     libs.kotlinx.datetime,
-    libs.androidx.core,
     libs.lottie.compose,
     libs.bundles.androidx.compose,
   )

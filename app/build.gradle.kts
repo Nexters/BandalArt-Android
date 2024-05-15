@@ -57,11 +57,12 @@ dependencies {
     projects.core.domain,
     projects.core.network,
     projects.core.ui,
-    projects.core.util,
+    projects.core.common,
     projects.feature.complete,
     projects.feature.home,
     projects.feature.onboarding,
     projects.feature.splash,
+
     libs.androidx.splash,
     libs.androidx.startup,
     libs.androidx.core,

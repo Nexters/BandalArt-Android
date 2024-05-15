@@ -38,13 +38,13 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
-import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.PagerIndicator
 import com.nexters.bandalart.android.core.ui.component.TitleText
-import com.nexters.bandalart.android.core.ui.extension.aspectRatioBasedOnOrientation
-import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
+import com.nexters.bandalart.android.core.common.extension.getCurrentLocale
+import com.nexters.bandalart.android.core.common.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import java.util.Locale
 

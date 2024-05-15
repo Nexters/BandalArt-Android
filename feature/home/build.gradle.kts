@@ -20,10 +20,10 @@ dependencies {
     projects.core.designsystem,
     projects.core.domain,
     projects.core.ui,
-    projects.core.util,
+    projects.core.common,
+
     libs.kotlinx.collections.immutable,
     libs.kotlinx.datetime,
-    libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
     libs.lottie.compose,
     libs.facebook.shimmer,

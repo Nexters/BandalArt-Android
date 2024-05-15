@@ -93,3 +93,7 @@ tasks.register("release") {
   dependsOn(tasks["bundleRelease"])
   mustRunAfter(tasks["clean"])
 }
+
+apply {
+  from("gradle/projectDependencyGraph.gradle")
+}

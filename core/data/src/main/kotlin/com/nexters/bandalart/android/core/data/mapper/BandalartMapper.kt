@@ -1,13 +1,13 @@
 package com.nexters.bandalart.android.core.data.mapper
 
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartDetailResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartCellResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.BandalartShareResponse
-import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartEmojiRequest
-import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartMainCellRequest
-import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartSubCellRequest
-import com.nexters.bandalart.android.core.data.model.bandalart.UpdateBandalartTaskCellRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartDetailResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartCellResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartShareResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartEmojiRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartMainCellRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartSubCellRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartTaskCellRequest
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity

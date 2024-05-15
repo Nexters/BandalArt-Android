@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
-import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
 import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
@@ -58,8 +58,9 @@ internal fun SplashRoute(
     uiState = uiState,
     navigateToOnBoarding = viewModel::navigateToOnBoarding,
     navigateToHome = viewModel::navigateToHome,
-    openNetworkErrorAlertDialog = viewModel::openNetworkErrorAlertDialog,
     createGuestLoginToken = viewModel::createGuestLoginToken,
+    isNetworkErrorDialogVisible = viewModel::setNetworkErrorDialogVisible,
+    isServerErrorDialogVisible = viewModel::setServerErrorDialogVisible,
     modifier = modifier,
   )
 }
@@ -69,8 +70,9 @@ internal fun SplashScreen(
   uiState: SplashUiState,
   navigateToOnBoarding: () -> Unit,
   navigateToHome: () -> Unit,
-  openNetworkErrorAlertDialog: (Boolean) -> Unit,
   createGuestLoginToken: () -> Unit,
+  isNetworkErrorDialogVisible: (Boolean) -> Unit,
+  isServerErrorDialogVisible: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   when {
@@ -78,12 +80,23 @@ internal fun SplashScreen(
       LoadingIndicator(modifier = Modifier.fillMaxSize())
     }
 
-    uiState.isNetworkErrorAlertDialogOpened -> {
+    uiState.isNetworkErrorDialogVisible -> {
       NetworkErrorAlertDialog(
         title = stringResource(R.string.network_error_dialog_title),
         message = stringResource(R.string.network_error_dialog_message),
         onConfirmClick = {
-          openNetworkErrorAlertDialog(false)
+          isNetworkErrorDialogVisible(false)
+          createGuestLoginToken()
+        },
+      )
+    }
+
+    uiState.isServerErrorDialogVisible -> {
+      NetworkErrorAlertDialog(
+        title = stringResource(R.string.server_error_dialog_title),
+        message = stringResource(R.string.server_error_dialog_message),
+        onConfirmClick = {
+          isServerErrorDialogVisible(false)
           createGuestLoginToken()
         },
       )
@@ -132,12 +145,13 @@ fun SplashScreenPreview() {
       isLoggedIn = false,
       isGuestLoginTokenCreated = false,
       isOnboardingCompleted = false,
-      isNetworkErrorAlertDialogOpened = false,
+      isNetworkErrorDialogVisible = false,
       isLoading = false,
     ),
     navigateToOnBoarding = {},
     navigateToHome = {},
-    openNetworkErrorAlertDialog = {},
     createGuestLoginToken = {},
+    isNetworkErrorDialogVisible = {},
+    isServerErrorDialogVisible = {},
   )
 }

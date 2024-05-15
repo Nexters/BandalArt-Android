@@ -3,14 +3,13 @@ package com.nexters.bandalart.android.feature.complete
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.common.UiText
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
-import com.nexters.bandalart.android.core.ui.UiText
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_KEY
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_PROFILE_EMOJI
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_TITLE
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * CompleteUiState

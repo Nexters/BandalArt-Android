@@ -1,51 +1,51 @@
 [versions]
 
-android-gradle-plugin = "8.1.4"
+android-gradle-plugin = "8.2.2"
 gradle-dependency-handler-extensions = "1.1.0"
 
 google-secrets = "2.0.1"
-google-service = "4.4.0"
+google-service = "4.4.1"
 
-kotlin-core = "1.9.20"
-kotlin-detekt = "1.23.3"
+kotlin-core = "1.9.23"
+kotlin-detekt = "1.23.6"
 kotlin-ktlint-gradle = "11.6.1"
-kotlin-ktlint-source = "0.49.1"
+kotlin-ktlint-source = "0.50.0"
 
-kotlinx-coroutines = "1.7.3"
-kotlinx-datetime = "0.4.0"
-kotlinx-serialization = "1.6.2"
+kotlinx-coroutines = "1.8.1"
+kotlinx-datetime = "0.5.0"
+kotlinx-serialization = "1.6.3"
 kotlinx-serialization-converter = "1.0.0"
-kotlinx-collections-immutable = "0.3.6"
+kotlinx-collections-immutable = "0.3.7"
 
-android-hilt = "2.49"
+android-hilt = "2.51.1"
 
-androidx-core = "1.12.0"
+androidx-core = "1.13.1"
 androidx-datastore = "1.0.0"
-androidx-lifecycle-runtime = "2.6.2"
+androidx-lifecycle-runtime = "2.7.0"
 androidx-splash = "1.0.1"
 androidx-startup = "1.1.1"
-androidx-activity-compose = "1.8.1"
-androidx-compose-compiler = "1.5.4"
-androidx-compose-bom = "2023.10.01"
-androidx-compose-material3 = "1.2.0-alpha12"
+androidx-activity-compose = "1.9.0"
+androidx-compose-compiler = "1.5.11"
+androidx-compose-bom = "2024.05.00"
+androidx-compose-material3 = "1.2.1"
 androidx-compose-runtime-tracing = "1.0.0-beta01"
 androidx-compose-constraintlayout = "1.0.1"
-androidx-compose-navigation = "2.7.5"
-androidx-hilt-navigation-compose = "1.1.0"
+androidx-compose-navigation = "2.7.7"
+androidx-hilt-navigation-compose = "1.2.0"
 
 desugar-jdk = "2.0.4"
 javax-inject = "1"
-ktor-client = "2.3.5"
-retrofit = "2.9.0"
-okhttp = "5.0.0-alpha.11"
+ktor-client = "2.3.11"
+retrofit = "2.11.0"
+okhttp = "5.0.0-alpha.14"
 lottie-compose = "5.2.0"
 timber = "5.0.1"
 facebook-shimmer = "0.5.0"
-firebase-bom = "32.6.0"
+firebase-bom = "32.8.1"
 firebase-crashlytics = "2.9.9"
-ksp = "1.9.20-1.0.14"
+ksp = "1.9.23-1.0.20"
 
-test-kotest = "5.8.0"
+test-kotest = "5.8.1"
 
 [libraries]
 
@@ -64,7 +64,7 @@ android-hilt-compile = { group = "com.google.dagger", name = "hilt-android-compi
 android-hilt-runtime = { group = "com.google.dagger", name = "hilt-android", version.ref = "android-hilt" }
 
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
-androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidx.datastore" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidx-datastore" }
 androidx-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
 androidx-splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-splash" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup" }
@@ -138,40 +138,40 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 [bundles]
 
 androidx-compose = [
-    "androidx-compose-animation",
-    "androidx-compose-foundation",
-    "androidx-compose-foundation-layout",
-    "androidx-compose-material-iconsExtended",
-    "androidx-compose-material3",
-    "androidx-compose-runtime",
-    "androidx-compose-runtime-tracing",
-    "androidx-compose-navigation",
-    "androidx-compose-ui-tooling",
-    "androidx-compose-ui-tooling-preview",
-    "androidx-compose-ui-util",
+  "androidx-compose-animation",
+  "androidx-compose-foundation",
+  "androidx-compose-foundation-layout",
+  "androidx-compose-material-iconsExtended",
+  "androidx-compose-material3",
+  "androidx-compose-runtime",
+  "androidx-compose-runtime-tracing",
+  "androidx-compose-navigation",
+  "androidx-compose-ui-tooling",
+  "androidx-compose-ui-tooling-preview",
+  "androidx-compose-ui-util",
 ]
 
 androidx-lifecycle = [
-    "androidx-lifecycle-runtime-compose",
-    "androidx-lifecycle-viewmodel-compose",
+  "androidx-lifecycle-runtime-compose",
+  "androidx-lifecycle-viewmodel-compose",
 ]
 
 ktor-client = [
-    "ktor-client-core",
-    "ktor-client-engine-cio",
-    "ktor-client-content-negotiation",
-    "ktor-client-okhttp",
-    "ktor-client-json",
-    "ktor-client-logging",
-    "ktor-serialization",
+  "ktor-client-core",
+  "ktor-client-engine-cio",
+  "ktor-client-content-negotiation",
+  "ktor-client-okhttp",
+  "ktor-client-json",
+  "ktor-client-logging",
+  "ktor-serialization",
 ]
 
 retrofit = [
-    "retrofit",
-    "retrofit-kotlinx-serialization-converter",
+  "retrofit",
+  "retrofit-kotlinx-serialization-converter",
 ]
 
 okhttp = [
-    "okhttp",
-    "okhttp-logging-interceptor",
+  "okhttp",
+  "okhttp-logging-interceptor",
 ]

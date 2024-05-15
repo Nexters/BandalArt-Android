@@ -40,6 +40,7 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *, *>)
       jvmToolchain(ApplicationConstants.JavaVersionAsInt)
     }
 
+    dependencies.add("coreLibraryDesugaring", libs.findLibrary("desugar-jdk").get())
     dependencies.add("detektPlugins", libs.findLibrary("detekt-plugin-formatting").get())
 
     buildTypes {

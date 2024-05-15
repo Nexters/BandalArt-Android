@@ -22,7 +22,6 @@ dependencies {
     projects.core.datastore,
     projects.core.network,
     libs.kotlinx.serialization.json,
-    libs.androidx.datastore.preferences,
     libs.bundles.ktor.client,
     libs.bundles.retrofit,
     libs.bundles.okhttp,

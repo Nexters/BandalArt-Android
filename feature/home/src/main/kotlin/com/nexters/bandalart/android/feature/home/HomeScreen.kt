@@ -32,12 +32,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
-import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
+import com.nexters.bandalart.android.core.ui.component.ServerErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
@@ -117,7 +118,8 @@ internal fun HomeRoute(
     shareBandalart = viewModel::shareBandalart,
     initShareUrl = viewModel::initShareUrl,
     checkCompletedBandalartKey = viewModel::checkCompletedBandalartKey,
-    openNetworkErrorDialog = viewModel::openNetworkErrorAlertDialog,
+    setNetworkErrorDialogVisible = viewModel::setNetworkErrorDialogVisible,
+    setServerErrorDialogVisible = viewModel::setServerErrorDialogVisible,
     modifier = modifier,
   )
 }
@@ -144,7 +146,8 @@ internal fun HomeScreen(
   shareBandalart: (String) -> Unit,
   initShareUrl: () -> Unit,
   checkCompletedBandalartKey: suspend (String) -> Boolean,
-  openNetworkErrorDialog: (Boolean) -> Unit,
+  setNetworkErrorDialogVisible: (Boolean) -> Unit,
+  setServerErrorDialogVisible: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -240,12 +243,24 @@ internal fun HomeScreen(
     )
   }
 
-  if (uiState.isNetworkErrorAlertDialogOpened) {
+  if (uiState.isNetworkErrorDialogVisible) {
     NetworkErrorAlertDialog(
       title = stringResource(R.string.network_error_dialog_title),
       message = stringResource(R.string.network_error_dialog_message),
       onConfirmClick = {
-        openNetworkErrorDialog(false)
+        setNetworkErrorDialogVisible(false)
+        // loadingChanged(true)
+        getBandalartList(null)
+      },
+    )
+  }
+
+  if (uiState.isServerErrorDialogVisible) {
+    ServerErrorAlertDialog(
+      title = stringResource(R.string.server_error_dialog_title),
+      message = stringResource(R.string.server_error_dialog_message),
+      onConfirmClick = {
+        setServerErrorDialogVisible(false)
         // loadingChanged(true)
         getBandalartList(null)
       },
@@ -357,7 +372,8 @@ fun HomeScreenSingleBandalartPreview() {
     shareBandalart = {},
     initShareUrl = {},
     checkCompletedBandalartKey = { _ -> false },
-    openNetworkErrorDialog = {},
+    setNetworkErrorDialogVisible = {},
+    setServerErrorDialogVisible = {},
   )
 }
 
@@ -388,6 +404,7 @@ fun HomeScreenMultipleBandalartPreview() {
     shareBandalart = {},
     initShareUrl = {},
     checkCompletedBandalartKey = { _ -> false },
-    openNetworkErrorDialog = {},
+    setNetworkErrorDialogVisible = {},
+    setServerErrorDialogVisible = {},
   )
 }

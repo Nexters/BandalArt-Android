@@ -2,6 +2,8 @@ package com.nexters.bandalart.android.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.android.core.common.ErrorHandlerActions
+import com.nexters.bandalart.android.core.common.handleException
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetOnboardingCompletedStatusUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginTokenUseCase
@@ -24,7 +26,8 @@ import javax.inject.Inject
  *
  * @param isLoggedIn 로그인 여부 확인
  * @param isGuestLoginTokenCreated 로그인 토큰 생성 확인
- * @param isNetworkErrorAlertDialogOpened 네트워크 에러 발생
+ * @param isNetworkErrorDialogVisible 네트워크 에러 발생
+ * @param isServerErrorDialogVisible 서버 에러 발생
  * @param isLoading 서버와의 통신 중 로딩 상태
  */
 
@@ -32,7 +35,8 @@ data class SplashUiState(
   val isLoggedIn: Boolean = false,
   val isGuestLoginTokenCreated: Boolean = false,
   val isOnboardingCompleted: Boolean = false,
-  val isNetworkErrorAlertDialogOpened: Boolean = false,
+  val isNetworkErrorDialogVisible: Boolean = false,
+  val isServerErrorDialogVisible: Boolean = false,
   val isLoading: Boolean = true,
 )
 
@@ -48,7 +52,7 @@ class SplashViewModel @Inject constructor(
   private val setGuestLoginTokenUseCase: SetGuestLoginTokenUseCase,
   private val createBandalartUseCase: CreateBandalartUseCase,
   private val getOnboardingCompletedStatusUseCase: GetOnboardingCompletedStatusUseCase,
-) : ViewModel() {
+) : ViewModel(), ErrorHandlerActions {
 
   private val _uiState = MutableStateFlow(SplashUiState())
   val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
@@ -87,8 +91,8 @@ class SplashViewModel @Inject constructor(
         delay(500)
         _uiState.update { it.copy(isLoading = true) }
       }
-      val result = createGuestLoginTokenUseCase()
       delayJob.cancel()
+      val result = createGuestLoginTokenUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val newGuestLoginToken = result.getOrNull()!!
@@ -107,11 +111,12 @@ class SplashViewModel @Inject constructor(
         }
 
         result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          handleException(exception, this@SplashViewModel)
           _uiState.update {
             it.copy(
               isLoggedIn = false,
               isGuestLoginTokenCreated = false,
-              isNetworkErrorAlertDialogOpened = true,
             )
           }
         }
@@ -131,10 +136,6 @@ class SplashViewModel @Inject constructor(
     }
   }
 
-  fun openNetworkErrorAlertDialog(flag: Boolean) {
-    _uiState.update { it.copy(isNetworkErrorAlertDialogOpened = flag) }
-  }
-
   fun navigateToOnBoarding() {
     viewModelScope.launch {
       _eventChannel.send(SplashUiEvent.NavigateToOnBoarding)
@@ -145,5 +146,13 @@ class SplashViewModel @Inject constructor(
     viewModelScope.launch {
       _eventChannel.send(SplashUiEvent.NavigateToHome)
     }
+  }
+
+  override fun setServerErrorDialogVisible(flag: Boolean) {
+    _uiState.update { it.copy(isNetworkErrorDialogVisible = flag) }
+  }
+
+  override fun setNetworkErrorDialogVisible(flag: Boolean) {
+    _uiState.update { it.copy(isServerErrorDialogVisible = flag) }
   }
 }

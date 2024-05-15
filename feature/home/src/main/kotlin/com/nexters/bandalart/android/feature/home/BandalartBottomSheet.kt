@@ -70,7 +70,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
-import com.nexters.bandalart.android.core.ui.ObserveAsEvents
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.allColor
@@ -84,12 +84,12 @@ import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetDi
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.android.core.ui.component.bottomsheet.BottomSheetTopBar
-import com.nexters.bandalart.android.core.ui.extension.clearFocusOnKeyboardDismiss
-import com.nexters.bandalart.android.core.ui.extension.noRippleClickable
+import com.nexters.bandalart.android.core.common.extension.clearFocusOnKeyboardDismiss
+import com.nexters.bandalart.android.core.common.extension.noRippleClickable
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.android.core.util.extension.getCurrentLocale
-import com.nexters.bandalart.android.core.util.extension.toLocalDateTime
-import com.nexters.bandalart.android.core.util.extension.toStringLocalDateTime
+import com.nexters.bandalart.android.core.common.extension.getCurrentLocale
+import com.nexters.bandalart.android.core.common.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.common.extension.toStringLocalDateTime
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel

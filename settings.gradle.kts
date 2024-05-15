@@ -22,13 +22,15 @@ buildCache {
 
 include(
   ":app",
+
   ":core:data",
   ":core:datastore",
   ":core:designsystem",
   ":core:domain",
   ":core:network",
   ":core:ui",
-  ":core:util",
+  ":core:common",
+
   ":feature:complete",
   ":feature:home",
   ":feature:onboarding",

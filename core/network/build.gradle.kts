@@ -20,6 +20,7 @@ android {
 dependencies {
   implementations(
     projects.core.datastore,
+
     libs.kotlinx.serialization.json,
     libs.bundles.ktor.client,
     libs.bundles.retrofit,

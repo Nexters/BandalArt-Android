@@ -1,6 +1,6 @@
 package com.nexters.bandalart.android.core.data.repository
 
-import com.nexters.bandalart.android.core.data.datasource.OnboardingDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.OnboardingDataSource
 import com.nexters.bandalart.android.core.domain.repository.OnboardingRepository
 import javax.inject.Inject
 
