@@ -23,27 +23,27 @@ interface BandalartRemoteDataSource {
   suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse?
 
   suspend fun updateBandalartMainCell(
-      bandalartKey: String,
-      cellKey: String,
-      updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
   )
 
   suspend fun updateBandalartSubCell(
-      bandalartKey: String,
-      cellKey: String,
-      updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
   )
 
   suspend fun updateBandalartTaskCell(
-      bandalartKey: String,
-      cellKey: String,
-      updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
   )
 
   suspend fun updateBandalartEmoji(
-      bandalartKey: String,
-      cellKey: String,
-      updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
+    bandalartKey: String,
+    cellKey: String,
+    updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
   )
 
   suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String)
