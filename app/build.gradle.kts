@@ -64,6 +64,7 @@ dependencies {
     projects.feature.home,
     projects.feature.onboarding,
     projects.feature.splash,
+
     libs.androidx.splash,
     libs.androidx.startup,
     libs.androidx.core,

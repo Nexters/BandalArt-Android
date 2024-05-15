@@ -20,7 +20,6 @@ dependencies {
     projects.core.common,
 
     libs.kotlinx.datetime,
-    libs.androidx.core,
     libs.lottie.compose,
     libs.bundles.androidx.compose,
   )

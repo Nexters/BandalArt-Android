@@ -21,7 +21,6 @@ dependencies {
     projects.core.ui,
     projects.core.common,
 
-    libs.androidx.core,
     libs.androidx.hilt.compose.navigation,
     libs.lottie.compose,
     libs.timber,
