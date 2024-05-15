@@ -96,7 +96,7 @@ internal fun SplashScreen(
         title = stringResource(R.string.server_error_dialog_title),
         message = stringResource(R.string.server_error_dialog_message),
         onConfirmClick = {
-          isNetworkErrorDialogVisible(false)
+          isServerErrorDialogVisible(false)
           createGuestLoginToken()
         },
       )

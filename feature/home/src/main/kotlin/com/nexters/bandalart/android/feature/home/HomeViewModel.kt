@@ -18,6 +18,7 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandala
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.common.UiText
+import com.nexters.bandalart.android.core.common.handleException
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
@@ -183,11 +184,12 @@ class HomeViewModel @Inject constructor(
         }
 
         result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          handleException(exception, this@HomeViewModel)
           _uiState.update {
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              isNetworkErrorDialogVisible = true,
             )
           }
         }
@@ -217,11 +219,12 @@ class HomeViewModel @Inject constructor(
         }
 
         result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          handleException(exception, this@HomeViewModel)
           _uiState.update {
             it.copy(
               isLoading = false,
               isShowSkeleton = false,
-              isNetworkErrorDialogVisible = true,
             )
           }
         }
@@ -250,11 +253,10 @@ class HomeViewModel @Inject constructor(
         }
 
         result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          handleException(exception, this@HomeViewModel)
           _uiState.update {
-            it.copy(
-              isNetworkErrorDialogVisible = true,
-              isShowSkeleton = false,
-            )
+            it.copy(isShowSkeleton = false)
           }
         }
       }

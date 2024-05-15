@@ -3,7 +3,6 @@ package com.nexters.bandalart.android.feature.complete
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.android.core.common.ErrorHandlerActions
 import com.nexters.bandalart.android.core.common.UiText
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
@@ -36,8 +35,6 @@ data class CompleteUiState(
   val title: String = "",
   val profileEmoji: String = "",
   val shareUrl: String = "",
-  val isNetworkErrorDialogVisible: Boolean = false,
-  val isServerErrorDialogVisible: Boolean = false,
 )
 
 sealed interface CompleteUiEvent {
@@ -50,7 +47,7 @@ class CompleteViewModel @Inject constructor(
   private val shareBandalartUseCase: ShareBandalartUseCase,
   private val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase,
   savedStateHandle: SavedStateHandle,
-) : ViewModel(), ErrorHandlerActions {
+) : ViewModel() {
   private var shareBandalartJob: Job? = null
 
   private val key = savedStateHandle[BANDALART_KEY] ?: ""
@@ -116,13 +113,5 @@ class CompleteViewModel @Inject constructor(
     viewModelScope.launch {
       _eventChannel.send(CompleteUiEvent.NavigateToHome)
     }
-  }
-
-  override fun setNetworkErrorDialogVisible(flag: Boolean) {
-    _uiState.update { it.copy(isNetworkErrorDialogVisible = flag) }
-  }
-
-  override fun setServerErrorDialogVisible(flag: Boolean) {
-    _uiState.update { it.copy(isServerErrorDialogVisible = flag) }
   }
 }

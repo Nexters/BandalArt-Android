@@ -3,6 +3,7 @@ package com.nexters.bandalart.android.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.common.ErrorHandlerActions
+import com.nexters.bandalart.android.core.common.handleException
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetOnboardingCompletedStatusUseCase
 import com.nexters.bandalart.android.core.domain.usecase.login.CreateGuestLoginTokenUseCase
@@ -90,8 +91,8 @@ class SplashViewModel @Inject constructor(
         delay(500)
         _uiState.update { it.copy(isLoading = true) }
       }
-      val result = createGuestLoginTokenUseCase()
       delayJob.cancel()
+      val result = createGuestLoginTokenUseCase()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val newGuestLoginToken = result.getOrNull()!!
@@ -110,11 +111,12 @@ class SplashViewModel @Inject constructor(
         }
 
         result.isFailure -> {
+          val exception = result.exceptionOrNull()!!
+          handleException(exception, this@SplashViewModel)
           _uiState.update {
             it.copy(
               isLoggedIn = false,
               isGuestLoginTokenCreated = false,
-              isNetworkErrorDialogVisible = true,
             )
           }
         }

@@ -38,6 +38,7 @@ import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
 import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
+import com.nexters.bandalart.android.core.ui.component.ServerErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
@@ -118,6 +119,7 @@ internal fun HomeRoute(
     initShareUrl = viewModel::initShareUrl,
     checkCompletedBandalartKey = viewModel::checkCompletedBandalartKey,
     setNetworkErrorDialogVisible = viewModel::setNetworkErrorDialogVisible,
+    setServerErrorDialogVisible = viewModel::setServerErrorDialogVisible,
     modifier = modifier,
   )
 }
@@ -145,6 +147,7 @@ internal fun HomeScreen(
   initShareUrl: () -> Unit,
   checkCompletedBandalartKey: suspend (String) -> Boolean,
   setNetworkErrorDialogVisible: (Boolean) -> Unit,
+  setServerErrorDialogVisible: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -246,6 +249,18 @@ internal fun HomeScreen(
       message = stringResource(R.string.network_error_dialog_message),
       onConfirmClick = {
         setNetworkErrorDialogVisible(false)
+        // loadingChanged(true)
+        getBandalartList(null)
+      },
+    )
+  }
+
+  if (uiState.isServerErrorDialogVisible) {
+    ServerErrorAlertDialog(
+      title = stringResource(R.string.server_error_dialog_title),
+      message = stringResource(R.string.server_error_dialog_message),
+      onConfirmClick = {
+        setServerErrorDialogVisible(false)
         // loadingChanged(true)
         getBandalartList(null)
       },
@@ -358,6 +373,7 @@ fun HomeScreenSingleBandalartPreview() {
     initShareUrl = {},
     checkCompletedBandalartKey = { _ -> false },
     setNetworkErrorDialogVisible = {},
+    setServerErrorDialogVisible = {},
   )
 }
 
@@ -389,5 +405,6 @@ fun HomeScreenMultipleBandalartPreview() {
     initShareUrl = {},
     checkCompletedBandalartKey = { _ -> false },
     setNetworkErrorDialogVisible = {},
+    setServerErrorDialogVisible = {},
   )
 }
