@@ -58,3 +58,5 @@ secrets.properties
 
 # report module
 /report/*
+
+/app/release/*
