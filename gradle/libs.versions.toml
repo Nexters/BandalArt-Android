@@ -45,6 +45,7 @@ facebook-shimmer = "0.5.0"
 firebase-bom = "32.8.1"
 firebase-crashlytics = "2.9.9"
 ksp = "1.9.23-1.0.20"
+circuit = "0.25.0"
 
 test-kotest = "5.8.1"
 
@@ -119,6 +120,12 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 test-kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "test-kotest" }
 test-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "test-kotest" }
 
+circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuit" }
+circuit-codegen-annotation = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "circuit" }
+circuit-codegen-ksp = { module = "com.slack.circuit:circuit-codegen", version.ref = "circuit" }
+circuitx-android = { module = "com.slack.circuit:circuitx-android", version.ref = "circuit" }
+circuitx-overlay = { module = "com.slack.circuit:circuitx-overlays", version.ref = "circuit" }
+
 [plugins]
 
 gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
@@ -182,4 +189,10 @@ retrofit = [
 okhttp = [
   "okhttp",
   "okhttp-logging-interceptor",
+]
+
+circuit = [
+  "circuit-foundation",
+  "circuitx-android",
+  "circuitx-overlay"
 ]
