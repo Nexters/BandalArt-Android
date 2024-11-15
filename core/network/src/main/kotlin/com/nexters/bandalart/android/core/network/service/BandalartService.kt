@@ -30,7 +30,7 @@ interface BandalartService {
   @DELETE("v1/bandalarts/{bandalartKey}")
   suspend fun deleteBandalart(
     @Path("bandalartKey") bandalartKey: String,
-  ): Unit
+  )
 
   @GET("v1/bandalarts/{bandalartKey}/cells")
   suspend fun getBandalartMainCell(
