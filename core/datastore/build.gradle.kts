@@ -1,11 +1,9 @@
 @file:Suppress("INLINE_FROM_HIGHER_PLATFORM", "UnstableApiUsage")
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-  bandalart("android-library")
-  bandalart("android-hilt")
-  alias(libs.plugins.kotlinx.serialization)
+  alias(libs.plugins.bandalart.android.library)
+  alias(libs.plugins.bandalart.android.hilt)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -21,10 +19,4 @@ dependencies {
     libs.kotlinx.serialization.json,
     libs.androidx.datastore.preferences,
   )
-}
-
-tasks.withType<KotlinCompile> {
-  kotlinOptions {
-    freeCompilerArgs = freeCompilerArgs + listOf("-opt-in=kotlin.ExperimentalStdlibApi")
-  }
 }

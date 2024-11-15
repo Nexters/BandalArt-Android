@@ -1,6 +1,5 @@
 plugins {
-  bandalart("jvm-kotlin")
-  bandalart("test-kotest")
+  alias(libs.plugins.bandalart.jvm.kotlin)
 }
 
 dependencies {

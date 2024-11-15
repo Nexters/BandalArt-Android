@@ -1,8 +1,8 @@
 @file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
 
 plugins {
-  bandalart("android-library")
-  bandalart("android-compose")
+  alias(libs.plugins.bandalart.android.library)
+  alias(libs.plugins.bandalart.android.library.compose)
 }
 
 android {
@@ -14,7 +14,6 @@ android {
 }
 
 dependencies {
-  coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
     projects.core.designsystem,
     projects.core.common,

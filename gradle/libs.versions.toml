@@ -1,59 +1,66 @@
 [versions]
 
-android-gradle-plugin = "8.2.2"
+minSdk = "26"
+targetSdk = "34"
+compileSdk = "34"
+versionCode = "10"
+versionName = "1.0.9"
+packageName = "com.nexters.bandalart.android"
+
+android-gradle-plugin = "8.5.2"
 gradle-dependency-handler-extensions = "1.1.0"
 
 google-secrets = "2.0.1"
-google-service = "4.4.1"
+google-service = "4.4.2"
 
-kotlin-core = "1.9.23"
+kotlin-core = "2.0.21"
 kotlin-detekt = "1.23.6"
 kotlin-ktlint-gradle = "11.6.1"
 kotlin-ktlint-source = "0.50.0"
 
-kotlinx-coroutines = "1.8.1"
-kotlinx-datetime = "0.5.0"
+kotlinx-coroutines = "1.9.0"
+kotlinx-datetime = "0.6.1"
 kotlinx-serialization = "1.6.3"
 kotlinx-serialization-converter = "1.0.0"
 kotlinx-collections-immutable = "0.3.7"
 
-android-hilt = "2.51.1"
+hilt = "2.52"
 
 androidx-core = "1.13.1"
-androidx-datastore = "1.0.0"
-androidx-lifecycle-runtime = "2.7.0"
+androidx-datastore = "1.1.1"
+androidx-lifecycle-runtime = "2.8.7"
 androidx-splash = "1.0.1"
-androidx-startup = "1.1.1"
-androidx-activity-compose = "1.9.0"
-androidx-compose-compiler = "1.5.11"
-androidx-compose-bom = "2024.05.00"
-androidx-compose-material3 = "1.2.1"
-androidx-compose-runtime-tracing = "1.0.0-beta01"
-androidx-compose-constraintlayout = "1.0.1"
-androidx-compose-navigation = "2.7.7"
+androidx-startup = "1.2.0"
+androidx-activity-compose = "1.9.3"
+androidx-compose-bom = "2024.11.00"
+androidx-compose-material3 = "1.3.1"
+androidx-compose-runtime-tracing = "1.7.5"
+androidx-navigation = "2.8.4"
 androidx-hilt-navigation-compose = "1.2.0"
 androidx-room = "2.6.1"
 
-desugar-jdk = "2.0.4"
+desugar-jdk-libs = "2.1.3"
 javax-inject = "1"
 ktor-client = "2.3.11"
 retrofit = "2.11.0"
 okhttp = "5.0.0-alpha.14"
-lottie-compose = "5.2.0"
+lottie-compose = "6.1.0"
 timber = "5.0.1"
 facebook-shimmer = "0.5.0"
-firebase-bom = "32.8.1"
-firebase-crashlytics = "2.9.9"
-ksp = "1.9.23-1.0.20"
+firebase-bom = "33.5.1"
+firebase-crashlytics = "3.0.2"
+ksp = "2.0.21-1.0.25"
 circuit = "0.25.0"
+compose-stable-marker = "1.0.4"
 
 test-kotest = "5.8.1"
 
 [libraries]
 
-gradle-android = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
-gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-core" }
+gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
+gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin-core" }
 gradle-androidx-room = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "androidx-room" }
+compose-compiler-extension = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin-core" }
 
 kotlin-ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "kotlin-ktlint-source" }
 
@@ -63,12 +70,8 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 
-android-hilt-compile = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "android-hilt" }
-android-hilt-runtime = { group = "com.google.dagger", name = "hilt-android", version.ref = "android-hilt" }
-
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidx-datastore" }
-androidx-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
 androidx-splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-splash" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup" }
 
@@ -82,12 +85,17 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidx-compose-material3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
-androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-compose-navigation" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidx-compose-runtime-tracing" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
+
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
@@ -107,8 +115,8 @@ retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit",
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 
-desugar-jdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk" }
-detekt-plugin-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "kotlin-detekt" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "kotlin-detekt" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
@@ -116,15 +124,13 @@ facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.r
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-marker", version.ref = "compose-stable-marker" }
 
-test-kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "test-kotest" }
-test-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "test-kotest" }
-
-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuit" }
-circuit-codegen-annotation = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "circuit" }
-circuit-codegen-ksp = { module = "com.slack.circuit:circuit-codegen", version.ref = "circuit" }
-circuitx-android = { module = "com.slack.circuit:circuitx-android", version.ref = "circuit" }
-circuitx-overlay = { module = "com.slack.circuit:circuitx-overlays", version.ref = "circuit" }
+circuit-foundation = { group = "com.slack.circuit", name = "circuit-foundation", version.ref = "circuit" }
+circuit-codegen-annotation = { group = "com.slack.circuit", name = "circuit-codegen-annotations", version.ref = "circuit" }
+circuit-codegen-ksp = { group = "com.slack.circuit", name = "circuit-codegen", version.ref = "circuit" }
+circuitx-android = { group = "com.slack.circuit", name = "circuitx-android", version.ref = "circuit" }
+circuitx-overlay = { group = "com.slack.circuit", name = "circuitx-overlays", version.ref = "circuit" }
 
 [plugins]
 
@@ -138,17 +144,29 @@ kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "kotlin-dete
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-core" }
 kotlin-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "kotlin-ktlint-gradle" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-core" }
-
-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-core" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-core" }
 
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-android-hilt = { id = "com.google.dagger.hilt.android", version.ref = "android-hilt" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-core" }
 
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+# Plugins defined by this project
+bandalart-android-application = { id = "bandalart.android.application", version = "unspecified" }
+bandalart-android-application-compose = { id = "bandalart.android.application.compose", version = "unspecified" }
+bandalart-android-firebase = { id = "bandalart.android.firebase", version = "unspecified" }
+bandalart-android-library = { id = "bandalart.android.library", version = "unspecified" }
+bandalart-android-library-compose = { id = "bandalart.android.library.compose", version = "unspecified" }
+bandalart-android-feature = { id = "bandalart.android.feature", version = "unspecified" }
+bandalart-android-hilt = { id = "bandalart.android.hilt", version = "unspecified" }
+bandalart-android-retrofit = { id = "bandalart.android.retrofit", version = "unspecified" }
+bandalart-android-room = { id = "bandalart.android.room", version = "unspecified" }
+bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
 
 [bundles]
 
@@ -160,7 +178,6 @@ androidx-compose = [
   "androidx-compose-material3",
   "androidx-compose-runtime",
   "androidx-compose-runtime-tracing",
-  "androidx-compose-navigation",
   "androidx-compose-ui-tooling",
   "androidx-compose-ui-tooling-preview",
   "androidx-compose-ui-util",

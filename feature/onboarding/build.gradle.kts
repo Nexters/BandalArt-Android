@@ -1,9 +1,7 @@
 @file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
 
 plugins {
-  bandalart("android-library")
-  bandalart("android-compose")
-  bandalart("android-hilt")
+  alias(libs.plugins.bandalart.android.feature)
 }
 
 android {
@@ -16,15 +14,7 @@ android {
 
 dependencies {
   implementations(
-    projects.core.designsystem,
-    projects.core.domain,
-    projects.core.ui,
-    projects.core.common,
-
-    libs.androidx.hilt.compose.navigation,
     libs.lottie.compose,
     libs.timber,
-    libs.bundles.androidx.compose,
-    libs.bundles.androidx.lifecycle,
   )
 }

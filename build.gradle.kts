@@ -5,13 +5,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
+  alias(libs.plugins.gradle.dependency.handler.extensions)
   alias(libs.plugins.kotlin.detekt)
   alias(libs.plugins.kotlin.ktlint)
-  alias(libs.plugins.gradle.dependency.handler.extensions)
+  alias(libs.plugins.kotlin.serialization) apply false
+  alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
-  alias(libs.plugins.android.hilt) apply false
-  alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.hilt) apply false
+  alias(libs.plugins.androidx.room) apply false
+  alias(libs.plugins.compose.compiler) apply false
   alias(libs.plugins.google.service) apply false
   alias(libs.plugins.firebase.crashlytics) apply false
   alias(libs.plugins.ksp) apply false
@@ -29,8 +32,6 @@ buildscript {
 }
 
 allprojects {
-  val projectPath = rootProject.file(".").absolutePath
-
   repositories {
     google()
     mavenCentral()
@@ -54,23 +55,6 @@ allprojects {
       version.set(rootProject.libs.versions.kotlin.ktlint.source.get())
       android.set(true)
       verbose.set(true)
-    }
-
-    tasks.withType<KotlinCompile> {
-      kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf(
-          "-opt-in=kotlin.OptIn",
-          "-opt-in=kotlin.RequiresOptIn",
-        )
-        freeCompilerArgs = freeCompilerArgs + listOf(
-          "-P",
-          "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$projectPath/report/compose-metrics"
-        )
-        freeCompilerArgs = freeCompilerArgs + listOf(
-          "-P",
-          "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$projectPath/report/compose-reports"
-        )
-      }
     }
   }
 }

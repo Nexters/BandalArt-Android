@@ -7,54 +7,50 @@ plugins {
 }
 
 gradlePlugin {
-  val pluginClasses = listOf(
-    "AndroidApplicationPlugin" to "android-application",
-    "AndroidLibraryPlugin" to "android-library",
-    "AndroidComposePlugin" to "android-compose",
-    "AndroidHiltPlugin" to "android-hilt",
-    "JvmKotlinPlugin" to "jvm-kotlin",
-    "KotlinExplicitApiPlugin" to "kotlin-explicit-api",
-    "TestKotestPlugin" to "test-kotest",
+  val conventionPluginClasses = listOf(
+    "android.application" to "AndroidApplicationConventionPlugin",
+    "android.application.compose" to "AndroidApplicationComposeConventionPlugin",
+    "android.firebase" to "AndroidFirebaseConventionPlugin",
+    "android.library" to "AndroidLibraryConventionPlugin",
+    "android.library.compose" to "AndroidLibraryComposeConventionPlugin",
+    "android.feature" to "AndroidFeatureConventionPlugin",
+    "android.hilt" to "AndroidHiltConventionPlugin",
+    "android.retrofit" to "AndroidRetrofitConventionPlugin",
+    "jvm.kotlin" to "JvmKotlinConventionPlugin",
+    "android.room" to "AndroidRoomConventionPlugin",
   )
 
   plugins {
-    pluginClasses.forEach { pluginClass ->
+    conventionPluginClasses.forEach { pluginClass ->
       pluginRegister(pluginClass)
     }
   }
 }
 
-repositories {
-  google()
-  mavenCentral()
-  gradlePluginPortal()
-}
-
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
 }
 
 kotlin {
   jvmToolchain(17)
 }
 
-sourceSets {
-  getByName("main").java.srcDir("src/main/kotlin")
-}
-
 dependencies {
-  implementations(
-    libs.gradle.android,
-    libs.gradle.kotlin,
-  )
+  compileOnly(libs.gradle.android)
+  compileOnly(libs.gradle.kotlin)
+  compileOnly(libs.gradle.androidx.room)
+  compileOnly(libs.compose.compiler.extension)
+
+  compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
-// Pair<ClassName, PluginName>
+// Pair<PluginName, ClassName>
 fun NamedDomainObjectContainer<PluginDeclaration>.pluginRegister(data: Pair<String, String>) {
-  val (className, pluginName) = data
+  val (pluginName, className) = data
   register(pluginName) {
+    id = "bandalart.$pluginName"
     implementationClass = className
-    id = "bandalart.plugin.$pluginName"
   }
 }

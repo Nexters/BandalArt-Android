@@ -3,11 +3,11 @@
 import java.util.Properties
 
 plugins {
-  bandalart("android-application")
-  bandalart("android-compose")
-  bandalart("android-hilt")
-  alias(libs.plugins.google.service)
-  alias(libs.plugins.firebase.crashlytics)
+  alias(libs.plugins.bandalart.android.application)
+  alias(libs.plugins.bandalart.android.application.compose)
+  alias(libs.plugins.bandalart.android.firebase)
+  alias(libs.plugins.bandalart.android.hilt)
+  alias(libs.plugins.google.secrets)
 }
 
 android {
@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-  coreLibraryDesugaring(libs.desugar.jdk)
   implementations(
     projects.core.data,
     projects.core.datastore,
@@ -63,14 +62,12 @@ dependencies {
     projects.feature.onboarding,
     projects.feature.splash,
 
+    libs.androidx.activity.compose,
     libs.androidx.splash,
     libs.androidx.startup,
     libs.androidx.core,
-    libs.androidx.splash,
+    libs.androidx.navigation.compose,
+    libs.androidx.hilt.navigation.compose,
     libs.timber,
-    libs.bundles.androidx.compose,
-    platform(libs.firebase.bom),
-    libs.firebase.analytics,
-    libs.firebase.crashlytics
   )
 }
