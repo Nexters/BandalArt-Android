@@ -11,7 +11,7 @@ package com.nexters.bandalart.android.core.domain.entity
  */
 
 data class BandalartEntity(
-  val key: String,
+  val key: Long,
   val mainColor: String,
   val subColor: String,
   val profileEmoji: String?,

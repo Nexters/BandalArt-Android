@@ -3,6 +3,9 @@ package com.nexters.bandalart.android.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.common.ErrorHandlerActions
+import com.nexters.bandalart.android.core.common.UiText
+import com.nexters.bandalart.android.core.common.handleException
+import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartKeyUseCase
@@ -17,8 +20,6 @@ import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalar
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
 import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.common.UiText
-import com.nexters.bandalart.android.core.common.handleException
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
@@ -109,6 +110,7 @@ class HomeViewModel @Inject constructor(
   private val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase,
   private val deleteBandalartKeyUseCase: DeleteBandalartKeyUseCase,
   private val getPrevBandalartListUseCase: GetPrevBandalartListUseCase,
+  private val bandalartRepository: BandalartRepository,
 ) : ViewModel(), ErrorHandlerActions {
 
   private val _uiState = MutableStateFlow(HomeUiState())
@@ -388,30 +390,30 @@ class HomeViewModel @Inject constructor(
   }
 
   fun shareBandalart(bandalartKey: String) {
-    if (uiState.value.isNetworking || _uiState.value.shareUrl.isNotEmpty())
-      return
-
-    _uiState.update { it.copy(isNetworking = true) }
-    viewModelScope.launch {
-      val result = shareBandalartUseCase(bandalartKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.update {
-            it.copy(shareUrl = result.getOrNull()!!.shareUrl)
-          }
-        }
-
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _eventChannel.send(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-        }
-      }
-      _uiState.update { it.copy(isNetworking = false) }
-    }
+//    if (uiState.value.isNetworking || _uiState.value.shareUrl.isNotEmpty())
+//      return
+//
+//    _uiState.update { it.copy(isNetworking = true) }
+//    viewModelScope.launch {
+//      val result = shareBandalartUseCase(bandalartKey)
+//      when {
+//        result.isSuccess && result.getOrNull() != null -> {
+//          _uiState.update {
+//            it.copy(shareUrl = result.getOrNull()!!.shareUrl)
+//          }
+//        }
+//
+//        result.isSuccess && result.getOrNull() == null -> {
+//          Timber.e("Request succeeded but data validation failed")
+//        }
+//
+//        result.isFailure -> {
+//          val exception = result.exceptionOrNull()!!
+//          _eventChannel.send(HomeUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
+//        }
+//      }
+//      _uiState.update { it.copy(isNetworking = false) }
+//    }
   }
 
   fun openDropDownMenu(flag: Boolean) {
@@ -448,13 +450,15 @@ class HomeViewModel @Inject constructor(
 
   private suspend fun getRecentBandalartKey(): String {
     return viewModelScope.async {
-      getRecentBandalartKeyUseCase()
+      // getRecentBandalartKeyUseCase()
+      bandalartRepository.getRecentBandalartKey()
     }.await()
   }
 
   fun setRecentBandalartKey(bandalartKey: String) {
     viewModelScope.launch {
-      setRecentBandalartKeyUseCase(bandalartKey)
+      //setRecentBandalartKeyUseCase(bandalartKey)
+      bandalartRepository.setRecentBandalartKey(bandalartKey)
     }
   }
 
@@ -464,19 +468,22 @@ class HomeViewModel @Inject constructor(
 
   private fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean = false) {
     viewModelScope.launch {
-      upsertBandalartKeyUseCase(bandalartKey, isCompleted)
+      // upsertBandalartKeyUseCase(bandalartKey, isCompleted)
+      bandalartRepository.upsertBandalartKey(bandalartKey, isCompleted)
     }
   }
 
   suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
     return viewModelScope.async {
-      checkCompletedBandalartKeyUseCase(bandalartKey)
+      // checkCompletedBandalartKeyUseCase(bandalartKey)
+      bandalartRepository.checkCompletedBandalartKey(bandalartKey)
     }.await()
   }
 
   private suspend fun deleteBandalartKey(bandalartKey: String) {
     viewModelScope.launch {
-      deleteBandalartKeyUseCase(bandalartKey)
+      // deleteBandalartKeyUseCase(bandalartKey)
+      bandalartRepository.deleteBandalartKey(bandalartKey)
     }
   }
 

@@ -7,27 +7,32 @@ import kotlinx.serialization.Serializable
 
 data class BandalartCellWithChildrenDto(
   @Embedded
-  val cell: BandalartCellEntity,
+  val cell: BandalartCellDBEntity,
 
   @Relation(
     parentColumn = "id",
     entityColumn = "parentId"
   )
-  val children: List<BandalartCellEntity>
+  val children: List<BandalartCellDBEntity>
 )
 
 @Serializable
 data class UpdateBandalartMainCellDto(
   @SerialName("title")
   val title: String?,
+
   @SerialName("description")
   val description: String?,
+
   @SerialName("dueDate")
   val dueDate: String?,
+
   @SerialName("profileEmoji")
   val profileEmoji: String?,
+
   @SerialName("mainColor")
   val mainColor: String,
+
   @SerialName("subColor")
   val subColor: String,
 )
@@ -36,8 +41,10 @@ data class UpdateBandalartMainCellDto(
 data class UpdateBandalartSubCellDto(
   @SerialName("title")
   val title: String?,
+
   @SerialName("description")
   val description: String?,
+
   @SerialName("dueDate")
   val dueDate: String?,
 )
@@ -46,10 +53,13 @@ data class UpdateBandalartSubCellDto(
 data class UpdateBandalartTaskCellDto(
   @SerialName("title")
   val title: String?,
+
   @SerialName("description")
   val description: String?,
+
   @SerialName("dueDate")
   val dueDate: String?,
+
   @SerialName("isCompleted")
   val isCompleted: Boolean? = null,
 )

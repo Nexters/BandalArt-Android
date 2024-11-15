@@ -9,13 +9,13 @@ import javax.inject.Singleton
 
 private val ShareBandalartResponseIsNull = IOException("Share Bandalart API response is null.")
 
-@Singleton
-class ShareBandalartUseCase @Inject constructor(
-  private val repository: BandalartRepository,
-) {
-  suspend operator fun invoke(bandalartKey: String): Result<BandalartShareEntity> {
-    return runSuspendCatching {
-      repository.shareBandalart(bandalartKey) ?: throw ShareBandalartResponseIsNull
-    }
-  }
-}
+//@Singleton
+//class ShareBandalartUseCase @Inject constructor(
+//  private val repository: BandalartRepository,
+//) {
+//  suspend operator fun invoke(bandalartKey: String): Result<BandalartShareEntity> {
+//    return runSuspendCatching {
+//      repository.shareBandalart(bandalartKey) ?: throw ShareBandalartResponseIsNull
+//    }
+//  }
+//}

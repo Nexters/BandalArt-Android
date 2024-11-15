@@ -117,11 +117,11 @@ interface BandalartRepository {
    */
   suspend fun getRecentBandalartKey(): String
 
-  /**
-   * 반다라트 공유
-   * @param bandalartKey 반다라트 고유 키
-   */
-  suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity?
+//  /**
+//   * 반다라트 공유
+//   * @param bandalartKey 반다라트 고유 키
+//   */
+//  suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity?
 
   /**
    * 바로 직전 상태의 반다라트 키와 목표달성 여부를 가진 목록을 조회

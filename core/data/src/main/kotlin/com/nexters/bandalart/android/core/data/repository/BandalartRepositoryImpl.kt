@@ -1,14 +1,13 @@
 package com.nexters.bandalart.android.core.data.repository
 
-import com.nexters.bandalart.android.core.data.datasource.BandalartRemoteDataSource
+import com.nexters.bandalart.android.core.data.mapper.toDBEntity
+import com.nexters.bandalart.android.core.data.mapper.toEntity
+import com.nexters.bandalart.android.core.database.BandalartDao
 import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartKeyDataSource
 import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartKeyDataSource
-import com.nexters.bandalart.android.core.data.mapper.toEntity
-import com.nexters.bandalart.android.core.data.mapper.toModel
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
-import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
@@ -17,32 +16,39 @@ import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import javax.inject.Inject
 
 internal class BandalartRepositoryImpl @Inject constructor(
-  private val bandalartRemoteDataSource: BandalartRemoteDataSource,
+  // private val bandalartRemoteDataSource: BandalartRemoteDataSource,
   private val recentBandalartKeyDataSource: RecentBandalartKeyDataSource,
   private val completedBandalartKeyDataSource: CompletedBandalartKeyDataSource,
+  private val bandalartDao: BandalartDao,
 ) : BandalartRepository {
   override suspend fun createBandalart(): BandalartEntity? {
-    return bandalartRemoteDataSource.createBandalart()?.toEntity()
+    // return bandalartRemoteDataSource.createBandalart()?.toEntity()
+    return bandalartDao.createBandalart(bandalart.toDBEntity())
   }
 
   override suspend fun getBandalartList(): List<BandalartDetailEntity>? {
-    return bandalartRemoteDataSource.getBandalartList()?.map { it.toEntity() }
+    // return bandalartRemoteDataSource.getBandalartList()?.map { it.toEntity() }
+    return bandalartDao.getBandalartList().map { it.toEntity() }
   }
 
   override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailEntity? {
-    return bandalartRemoteDataSource.getBandalartDetail(bandalartKey)?.toEntity()
+    // return bandalartRemoteDataSource.getBandalartDetail(bandalartKey)?.toEntity()
+    return bandalartDao.getBandalartDetail(bandalartId).toEntity()
   }
 
   override suspend fun deleteBandalart(bandalartKey: String) {
-    bandalartRemoteDataSource.deleteBandalart(bandalartKey)
+    // bandalartRemoteDataSource.deleteBandalart(bandalartKey)
+    bandalartDao.deleteBandalart(bandalart.toDBEntity())
   }
 
   override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellEntity? {
-    return bandalartRemoteDataSource.getBandalartMainCell(bandalartKey)?.toEntity()
+    // return bandalartRemoteDataSource.getBandalartMainCell(bandalartKey)?.toEntity()
+    return bandalartDao.getBandalartMainCell(bandalartId)
   }
 
   override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellEntity? {
-    return bandalartRemoteDataSource.getBandalartCell(bandalartKey, cellKey)?.toEntity()
+    // return bandalartRemoteDataSource.getBandalartCell(bandalartKey, cellKey)?.toEntity()
+    return bandalartDao.getBandalartCell(cellId)
   }
 
   override suspend fun updateBandalartMainCell(
@@ -50,7 +56,8 @@ internal class BandalartRepositoryImpl @Inject constructor(
     cellKey: String,
     updateBandalartMainCellEntity: UpdateBandalartMainCellEntity,
   ) {
-    bandalartRemoteDataSource.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellEntity.toModel())
+    // bandalartRemoteDataSource.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellEntity.toModel())
+    bandalartDao.updateMainCellWithDto(cellId, updateDto)
   }
 
   override suspend fun updateBandalartSubCell(
@@ -58,7 +65,8 @@ internal class BandalartRepositoryImpl @Inject constructor(
     cellKey: String,
     updateBandalartSubCellEntity: UpdateBandalartSubCellEntity,
   ) {
-    bandalartRemoteDataSource.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellEntity.toModel())
+    // bandalartRemoteDataSource.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellEntity.toModel())
+    bandalartDao.updateSubCellWithDto(cellId, updateDto)
   }
 
   override suspend fun updateBandalartTaskCell(
@@ -66,7 +74,8 @@ internal class BandalartRepositoryImpl @Inject constructor(
     cellKey: String,
     updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
   ) {
-    bandalartRemoteDataSource.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellEntity.toModel())
+    // bandalartRemoteDataSource.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellEntity.toModel())
+    bandalartDao.updateTaskCellWithDto(cellId, updateDto)
   }
 
   override suspend fun updateBandalartEmoji(
@@ -74,10 +83,13 @@ internal class BandalartRepositoryImpl @Inject constructor(
     cellKey: String,
     updateBandalartEmojiEntity: UpdateBandalartEmojiEntity,
   ) {
-    bandalartRemoteDataSource.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiEntity.toModel())
+    // bandalartRemoteDataSource.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiEntity.toModel())
+    bandalartDao.updateEmojiWithDto(cellId, updateDto)
   }
+
   override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    bandalartRemoteDataSource.deleteBandalartCell(bandalartKey, cellKey)
+    // bandalartRemoteDataSource.deleteBandalartCell(bandalartKey, cellKey)
+    bandalartDao.deleteBandalartCell(cellId)
   }
 
   override suspend fun setRecentBandalartKey(recentBandalartKey: String) {
@@ -88,9 +100,9 @@ internal class BandalartRepositoryImpl @Inject constructor(
     return recentBandalartKeyDataSource.getRecentBandalartKey()
   }
 
-  override suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity? {
-    return bandalartRemoteDataSource.shareBandalart(bandalartKey)?.toEntity()
-  }
+//  override suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity? {
+//    return bandalartRemoteDataSource.shareBandalart(bandalartKey)?.toEntity()
+//  }
 
   override suspend fun getPrevBandalartList(): List<Pair<String, Boolean>> {
     return completedBandalartKeyDataSource.getPrevBandalartList()

@@ -2,15 +2,15 @@ package com.nexters.bandalart.android.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.nexters.bandalart.android.core.database.entity.BandalartCellEntity
-import com.nexters.bandalart.android.core.database.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.database.entity.BandalartEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartCellDBEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartDetailDBEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartDBEntity
 
 @Database(
     entities = [
-        BandalartEntity::class,
-        BandalartDetailEntity::class,
-        BandalartCellEntity::class
+        BandalartDBEntity::class,
+        BandalartDetailDBEntity::class,
+        BandalartCellDBEntity::class
     ],
     version = 1,
     exportSchema = true,

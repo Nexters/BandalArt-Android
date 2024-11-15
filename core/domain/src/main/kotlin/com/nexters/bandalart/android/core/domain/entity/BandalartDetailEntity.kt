@@ -14,12 +14,12 @@ package com.nexters.bandalart.android.core.domain.entity
  */
 
 data class BandalartDetailEntity(
-  val key: String,
+  val key: Long,
   val mainColor: String,
   val subColor: String,
   val profileEmoji: String?,
   val title: String?,
-  val cellKey: String,
+  val cellKey: Long,
   val dueDate: String?,
   val isCompleted: Boolean,
   val completionRatio: Int,

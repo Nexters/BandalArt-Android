@@ -1,60 +1,62 @@
 package com.nexters.bandalart.android.core.data.mapper
 
-import com.nexters.bandalart.android.core.network.model.bandalart.BandalartDetailResponse
-import com.nexters.bandalart.android.core.network.model.bandalart.BandalartCellResponse
-import com.nexters.bandalart.android.core.network.model.bandalart.BandalartResponse
-import com.nexters.bandalart.android.core.network.model.bandalart.BandalartShareResponse
-import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartEmojiRequest
-import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartMainCellRequest
-import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartSubCellRequest
-import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartTaskCellRequest
-import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartDBEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartDetailDBEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartCellResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartDetailResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.BandalartShareResponse
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartEmojiRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartMainCellRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartSubCellRequest
+import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartTaskCellRequest
 
-internal fun BandalartResponse.toEntity() =
-  BandalartEntity(
-    key = key,
-    mainColor = mainColor,
-    subColor = subColor,
-    profileEmoji = profileEmoji,
-    completionRatio = completionRatio,
-  )
+//internal fun BandalartResponse.toEntity() =
+//  BandalartEntity(
+//    key = key,
+//    mainColor = mainColor,
+//    subColor = subColor,
+//    profileEmoji = profileEmoji,
+//    completionRatio = completionRatio,
+//  )
 
-internal fun BandalartDetailResponse.toEntity() =
-  BandalartDetailEntity(
-    key = key,
-    mainColor = mainColor,
-    subColor = subColor,
-    profileEmoji = profileEmoji,
-    title = title,
-    cellKey = cellKey,
-    dueDate = dueDate,
-    isCompleted = isCompleted,
-    completionRatio = completionRatio,
-  )
+//internal fun BandalartDetailResponse.toEntity() =
+//  BandalartDetailEntity(
+//    key = key,
+//    mainColor = mainColor,
+//    subColor = subColor,
+//    profileEmoji = profileEmoji,
+//    title = title,
+//    cellKey = cellKey,
+//    dueDate = dueDate,
+//    isCompleted = isCompleted,
+//    completionRatio = completionRatio,
+//  )
 
 // 재귀 호출시 컴파일러가 타입을 추론할 수 없기 때문에 예외적으로 반환타입을 지정
-internal fun BandalartCellResponse.toEntity(): BandalartCellEntity {
-  return BandalartCellEntity(
-    key = key,
-    title = title,
-    description = description,
-    dueDate = dueDate,
-    isCompleted = isCompleted,
-    completionRatio = completionRatio,
-    profileEmoji = profileEmoji,
-    mainColor = mainColor,
-    subColor = subColor,
-    parentKey = parentKey,
-    children = children.map { it.toEntity() },
-  )
-}
+//internal fun BandalartCellResponse.toEntity(): BandalartCellEntity {
+//  return BandalartCellEntity(
+//    key = key,
+//    title = title,
+//    description = description,
+//    dueDate = dueDate,
+//    isCompleted = isCompleted,
+//    completionRatio = completionRatio,
+//    profileEmoji = profileEmoji,
+//    mainColor = mainColor,
+//    subColor = subColor,
+//    parentKey = parentKey,
+//    children = children.map { it.toEntity() },
+//  )
+//}
 
 internal fun UpdateBandalartMainCellEntity.toModel() =
   UpdateBandalartMainCellRequest(
@@ -84,9 +86,49 @@ internal fun UpdateBandalartTaskCellEntity.toModel() =
 internal fun UpdateBandalartEmojiEntity.toModel() =
   UpdateBandalartEmojiRequest(profileEmoji = profileEmoji)
 
-internal fun BandalartShareResponse.toEntity() =
-  BandalartShareEntity(
-    shareUrl = shareUrl,
-    key = key,
-    endDate = endDate,
+//internal fun BandalartShareResponse.toEntity() =
+//  BandalartShareEntity(
+//    shareUrl = shareUrl,
+//    key = key,
+//    endDate = endDate,
+//  )
+
+fun BandalartDBEntity.toEntity(): BandalartEntity = BandalartEntity(
+  key = id,
+  mainColor = mainColor,
+  subColor = subColor,
+  profileEmoji = profileEmoji,
+  completionRatio = completionRatio
+)
+
+fun BandalartEntity.toDBEntity(): BandalartDBEntity = BandalartDBEntity(
+    id = key,
+    mainColor = mainColor,
+    subColor = subColor,
+    profileEmoji = profileEmoji,
+    completionRatio = completionRatio
   )
+
+fun BandalartDetailDBEntity.toEntity(): BandalartDetailEntity = BandalartDetailEntity(
+  key = id,
+  mainColor = mainColor,
+  subColor = subColor,
+  profileEmoji = profileEmoji,
+  title = title,
+  cellKey = cellId,
+  dueDate = dueDate,
+  isCompleted = isCompleted,
+  completionRatio = completionRatio
+)
+
+fun BandalartDetailEntity.toDBEntity(): BandalartDetailDBEntity = BandalartDetailDBEntity(
+  id = key,
+  mainColor = mainColor,
+  subColor = subColor,
+  profileEmoji = profileEmoji,
+  title = title,
+  cellId = cellKey,
+  dueDate = dueDate,
+  isCompleted = isCompleted,
+  completionRatio = completionRatio
+)

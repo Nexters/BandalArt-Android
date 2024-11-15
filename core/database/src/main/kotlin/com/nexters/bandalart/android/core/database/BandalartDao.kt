@@ -7,10 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.nexters.bandalart.android.core.database.entity.BandalartCellEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartCellDBEntity
 import com.nexters.bandalart.android.core.database.entity.BandalartCellWithChildrenDto
-import com.nexters.bandalart.android.core.database.entity.BandalartDetailEntity
-import com.nexters.bandalart.android.core.database.entity.BandalartEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartDetailDBEntity
+import com.nexters.bandalart.android.core.database.entity.BandalartDBEntity
 import com.nexters.bandalart.android.core.database.entity.UpdateBandalartEmojiDto
 import com.nexters.bandalart.android.core.database.entity.UpdateBandalartMainCellDto
 import com.nexters.bandalart.android.core.database.entity.UpdateBandalartSubCellDto
@@ -21,33 +21,34 @@ interface BandalartDao {
   // ===== 생성 관련 함수들 =====
   /** 새로운 반다라트 생성 */
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun createBandalart(bandalart: BandalartEntity): Long
+  suspend fun createBandalart(bandalart: BandalartDBEntity): Long
 
   /** 반다라트 상세 정보 삽입 */
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insertBandalartDetail(detail: BandalartDetailEntity)
+  suspend fun insertBandalartDetail(detail: BandalartDetailDBEntity)
 
   /** 반다라트 셀 삽입 */
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insertCell(cell: BandalartCellEntity)
+  suspend fun insertCell(cell: BandalartCellDBEntity): Long
 
   /** 부모 셀과 자식 셀들을 한번에 삽입 */
   @Transaction
-  suspend fun insertCellWithChildren(cell: BandalartCellEntity, children: List<BandalartCellEntity>) {
-    insertCell(cell)
+  suspend fun insertCellWithChildren(cell: BandalartCellDBEntity, children: List<BandalartCellDBEntity>) {
+    // insert가 반환하는 Long 값이 새로 생성된 id
+    val parentId = insertCell(cell)
     children.forEach { childCell ->
-      insertCell(childCell.copy(parentId = cell.id))
+      insertCell(childCell.copy(parentId = parentId))
     }
   }
 
   // ===== 조회 관련 함수들 - 반다라트 =====
   /** 모든 반다라트 목록 조회 */
-  @Query("SELECT * FROM bandalarts")
-  suspend fun getBandalartList(): List<BandalartEntity>
+  @Query("SELECT * FROM bandalart_details")
+  suspend fun getBandalartList(): List<BandalartDetailDBEntity>
 
   /** 특정 반다라트의 상세 정보 조회 */
   @Query("SELECT * FROM bandalart_details WHERE id = :bandalartId")
-  suspend fun getBandalartDetail(bandalartId: String): BandalartDetailEntity
+  suspend fun getBandalartDetail(bandalartId: String): BandalartDetailDBEntity
 
   // ===== 조회 관련 함수들 - 셀 =====
   /** 특정 반다라트의 메인 셀(최상위 셀) 조회 */
@@ -62,16 +63,16 @@ interface BandalartDao {
 
   /** 특정 셀의 자식 셀들 조회 */
   @Query("SELECT * FROM bandalart_cells WHERE parentId = :parentId")
-  suspend fun getChildCells(parentId: String): List<BandalartCellEntity>
+  suspend fun getChildCells(parentId: String): List<BandalartCellDBEntity>
 
   // ===== 업데이트 관련 함수들 - 반다라트 =====
   /** 반다라트 정보 업데이트 */
   @Update
-  suspend fun updateBandalart(bandalart: BandalartEntity)
+  suspend fun updateBandalart(bandalart: BandalartDBEntity)
 
   /** 반다라트 상세 정보 업데이트 */
   @Update
-  suspend fun updateBandalartDetail(detail: BandalartDetailEntity)
+  suspend fun updateBandalartDetail(detail: BandalartDetailDBEntity)
 
   // ===== 업데이트 관련 함수들 - 셀 =====
   /** 메인 셀 정보 업데이트 */
@@ -136,12 +137,12 @@ interface BandalartDao {
 
   /** 셀 정보 업데이트 */
   @Update
-  suspend fun updateCell(cell: BandalartCellEntity)
+  suspend fun updateCell(cell: BandalartCellDBEntity)
 
   // ===== 삭제 관련 함수들 =====
   /** 반다라트 삭제 */
   @Delete
-  suspend fun deleteBandalart(bandalart: BandalartEntity)
+  suspend fun deleteBandalart(bandalart: BandalartDBEntity)
 
   /** 특정 셀 삭제 */
   @Query("DELETE FROM bandalart_cells WHERE id = :cellId")

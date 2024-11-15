@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
   tableName = "bandalart_cells",
   foreignKeys = [
     ForeignKey(
-      entity = BandalartEntity::class,
+      entity = BandalartDBEntity::class,
       parentColumns = ["id"],
       childColumns = ["bandalartId"],
       onDelete = ForeignKey.CASCADE
@@ -21,28 +21,38 @@ import androidx.room.PrimaryKey
     Index(value = ["bandalartId"])
   ]
 )
-data class BandalartCellEntity(
-  @PrimaryKey
+data class BandalartCellDBEntity(
+  @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "id")
-  val id: String,
+  val id: Long,
+
   @ColumnInfo(name = "bandalartId")
   val bandalartId: String,
+
   @ColumnInfo(name = "title")
-  val title: String?,
+  val title: String? = null,
+
   @ColumnInfo(name = "description")
-  val description: String?,
+  val description: String? = null,
+
   @ColumnInfo(name = "dueDate")
-  val dueDate: String?,
+  val dueDate: String? = null,
+
   @ColumnInfo(name = "isCompleted")
-  val isCompleted: Boolean,
+  val isCompleted: Boolean = false,
+
   @ColumnInfo(name = "completionRatio")
-  val completionRatio: Int,
+  val completionRatio: Int = 0,
+
   @ColumnInfo(name = "profileEmoji")
-  val profileEmoji: String?,
+  val profileEmoji: String? = null,
+
   @ColumnInfo(name = "mainColor")
-  val mainColor: String?,
+  val mainColor: String? = "0xFF3FFFBA",
+
   @ColumnInfo(name = "subColor")
-  val subColor: String?,
+  val subColor: String? = "0xFF111827",
+
   @ColumnInfo(name = "parentId")
-  val parentId: String?
+  val parentId: Long? = null
 )
