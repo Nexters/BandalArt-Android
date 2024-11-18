@@ -36,7 +36,6 @@ data class CompleteUiState(
 
 sealed interface CompleteUiEvent {
   data object NavigateToHome : CompleteUiEvent
-  data class ShowToast(val message: UiText) : CompleteUiEvent
 }
 
 @HiltViewModel

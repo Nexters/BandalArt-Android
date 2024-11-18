@@ -2,7 +2,6 @@ package com.nexters.bandalart.android.feature.complete
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,9 +29,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
-import com.nexters.bandalart.android.core.common.ObserveAsEvents
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.BandalartButton
 import com.nexters.bandalart.android.core.ui.component.EmojiText
@@ -54,10 +53,6 @@ internal fun CompleteRoute(
     when (event) {
       is CompleteUiEvent.NavigateToHome -> {
         onNavigateBack()
-      }
-
-      is CompleteUiEvent.ShowToast -> {
-        Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
       }
     }
   }

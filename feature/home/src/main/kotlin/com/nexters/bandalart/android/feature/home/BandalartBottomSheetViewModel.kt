@@ -44,10 +44,6 @@ data class BottomSheetUiState(
   val isDeleteCellDialogOpened: Boolean = false,
 )
 
-sealed class BottomSheetUiEvent {
-  data class ShowToast(val message: UiText) : BottomSheetUiEvent()
-}
-
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
   private val bandalartRepository: BandalartRepository,
@@ -55,9 +51,6 @@ class BottomSheetViewModel @Inject constructor(
 
   private val _uiState = MutableStateFlow(BottomSheetUiState())
   val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
-
-  private val _uiEvent = Channel<BottomSheetUiEvent>()
-  val uiEvent = _uiEvent.receiveAsFlow()
 
   fun copyCellData(cellData: BandalartCellUiModel) {
     _uiState.update {
