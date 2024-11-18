@@ -43,6 +43,7 @@ import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBa
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.common.extension.toFormatDate
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
@@ -208,12 +209,14 @@ fun HomeHeader(
 @ComponentPreview
 @Composable
 fun HomeHeaderPreview() {
-  HomeHeader(
-    bandalartDetailData = dummyBandalartDetailData,
-    isDropDownMenuOpened = false,
-    openDropDownMenu = {},
-    openEmojiBottomSheet = {},
-    openBandalartDeleteAlertDialog = {},
-    openCellBottomSheet = {},
-  )
+  BandalartTheme {
+    HomeHeader(
+      bandalartDetailData = dummyBandalartDetailData,
+      isDropDownMenuOpened = false,
+      openDropDownMenu = {},
+      openEmojiBottomSheet = {},
+      openBandalartDeleteAlertDialog = {},
+      openCellBottomSheet = {},
+    )
+  }
 }

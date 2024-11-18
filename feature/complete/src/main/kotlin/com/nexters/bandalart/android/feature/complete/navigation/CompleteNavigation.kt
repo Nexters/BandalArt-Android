@@ -15,11 +15,11 @@ const val COMPLETE_NAVIGATION_ROUTE = "complete_route/{$BANDALART_KEY}/{$BANDALA
 
 fun NavController.navigateToComplete(
   navOptions: NavOptions? = null,
-  bandalartKey: String,
+  bandalartId: Long,
   bandalartTitle: String,
   bandalartProfileEmoji: String?,
 ) {
-  this.navigate("complete_route/$bandalartKey/$bandalartTitle/$bandalartProfileEmoji", navOptions)
+  this.navigate("complete_route/$bandalartId/$bandalartTitle/$bandalartProfileEmoji", navOptions)
 }
 
 fun NavGraphBuilder.completeScreen(
@@ -29,7 +29,7 @@ fun NavGraphBuilder.completeScreen(
     route = COMPLETE_NAVIGATION_ROUTE,
     arguments = listOf(
       navArgument(BANDALART_KEY) {
-        type = NavType.StringType
+        type = NavType.LongType
       },
       navArgument(BANDALART_TITLE) {
         type = NavType.StringType

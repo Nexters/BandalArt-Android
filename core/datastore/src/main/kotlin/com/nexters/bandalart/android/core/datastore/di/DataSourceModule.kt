@@ -26,13 +26,13 @@ internal abstract class DataSourceModule {
 
   @Binds
   @Singleton
-  abstract fun bindRecentBandalartKeyDataSource(
-    recentBandalartKeyDataSourceImpl: RecentBandalartIdDataSourceImpl,
+  abstract fun bindRecentBandalartIdDataSource(
+    recentBandalartIdDataSourceImpl: RecentBandalartIdDataSourceImpl,
   ): RecentBandalartIdDataSource
 
   @Binds
   @Singleton
-  abstract fun bindCompletedBandalartKeyDataSource(
+  abstract fun bindCompletedBandalartIdDataSource(
     completedBandalartIdDataStoreImpl: CompletedBandalartIdDataStoreImpl,
   ): CompletedBandalartIdDataSource
 

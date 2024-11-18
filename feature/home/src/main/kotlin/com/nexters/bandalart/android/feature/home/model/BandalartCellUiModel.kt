@@ -1,7 +1,7 @@
 package com.nexters.bandalart.android.feature.home.model
 
 data class BandalartCellUiModel(
-  val key: String = "",
+  val id: Long = 0L,
   val title: String? = null,
   val description: String? = null,
   val dueDate: String? = null,
@@ -10,11 +10,10 @@ data class BandalartCellUiModel(
   val profileEmoji: String? = "",
   val mainColor: String? = "",
   val subColor: String? = "",
-  val parentKey: String? = "",
-  val children: List<BandalartCellUiModel> = emptyList(),
+  val parentId: Long? = 0L,
 ) {
   fun copy(): BandalartCellUiModel = BandalartCellUiModel(
-    key,
+    id,
     title,
     description,
     dueDate,
@@ -23,7 +22,6 @@ data class BandalartCellUiModel(
     profileEmoji,
     mainColor,
     subColor,
-    parentKey,
-    children,
+    parentId,
   )
 }

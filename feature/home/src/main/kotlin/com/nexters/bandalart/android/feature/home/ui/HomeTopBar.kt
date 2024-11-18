@@ -22,6 +22,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
@@ -93,17 +94,21 @@ internal fun HomeTopBar(
 @ComponentPreview
 @Composable
 fun HomeTopBarSingleBandalartPreview() {
-  HomeTopBar(
-    bandalartCount = 1,
-    onShowBandalartList = {},
-  )
+  BandalartTheme {
+    HomeTopBar(
+      bandalartCount = 1,
+      onShowBandalartList = {},
+    )
+  }
 }
 
 @ComponentPreview
 @Composable
 fun HomeTopBarMultipleBandalartPreview() {
-  HomeTopBar(
-    bandalartCount = 2,
-    onShowBandalartList = {},
-  )
+  BandalartTheme {
+    HomeTopBar(
+      bandalartCount = 2,
+      onShowBandalartList = {},
+    )
+  }
 }

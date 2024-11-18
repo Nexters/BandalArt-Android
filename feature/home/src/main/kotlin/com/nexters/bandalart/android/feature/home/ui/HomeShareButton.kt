@@ -23,13 +23,13 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.common.extension.clickableSingle
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
 @Composable
 fun HomeShareButton(
-  bandalartDetailData: BandalartDetailUiModel,
-  shareBandalart: (String) -> Unit,
+  shareBandalart: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Box(
@@ -37,7 +37,7 @@ fun HomeShareButton(
       .wrapContentSize()
       .clip(RoundedCornerShape(18.dp))
       .background(Gray100)
-      .clickableSingle { shareBandalart(bandalartDetailData.key) },
+      .clickableSingle { shareBandalart() },
     contentAlignment = Alignment.Center,
   ) {
     Row(
@@ -64,8 +64,9 @@ fun HomeShareButton(
 @ComponentPreview
 @Composable
 fun HomeShareButtonPreview() {
-  HomeShareButton(
-    bandalartDetailData = dummyBandalartDetailData,
-    shareBandalart = {},
-  )
+  BandalartTheme {
+    HomeShareButton(
+      shareBandalart = {},
+    )
+  }
 }

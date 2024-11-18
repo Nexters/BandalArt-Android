@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
@@ -20,24 +21,27 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 
+private val shimmerMainColors = listOf(
+  Gray200,
+  Gray300,
+  Gray400,
+)
+
+private val shimmerSubColors = listOf(
+  Gray100,
+  Gray200,
+  Gray300,
+)
+
+private val shimmerTaskColors = listOf(
+  White,
+  Gray50,
+)
+
 @Composable
 fun BandalartSkeleton(
   modifier: Modifier = Modifier,
 ) {
-  val shimmerMainColors = listOf(
-    Gray200,
-    Gray300,
-    Gray400,
-  )
-  val shimmerSubColors = listOf(
-    Gray100,
-    Gray200,
-    Gray300,
-  )
-  val shimmerTaskColors = listOf(
-    White,
-    Gray50,
-  )
   val transition = rememberInfiniteTransition(label = "Skeleton transition")
   val translateAnim = transition.animateFloat(
     initialValue = 0f,
@@ -77,5 +81,7 @@ fun BandalartSkeleton(
 @ComponentPreview
 @Composable
 fun BandalartSkeletonPreview() {
-  BandalartSkeleton()
+  BandalartTheme {
+    BandalartSkeleton()
+  }
 }

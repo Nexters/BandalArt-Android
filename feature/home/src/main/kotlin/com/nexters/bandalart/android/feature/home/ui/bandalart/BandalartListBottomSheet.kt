@@ -56,9 +56,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun BandalartListBottomSheet(
   bandalartList: ImmutableList<BandalartDetailUiModel>,
-  currentBandalartKey: String,
-  getBandalartDetail: (String) -> Unit,
-  setRecentBandalartKey: (String) -> Unit,
+  currentBandalartId: Long,
+  getBandalartDetail: (Long) -> Unit,
+  setRecentBandalartId: (Long) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
   onCancelClicked: () -> Unit,
   createBandalart: () -> Unit,
@@ -120,16 +120,16 @@ fun BandalartListBottomSheet(
       ) {
         items(
           count = bandalartList.size,
-          key = { index -> bandalartList[index].key },
+          key = { index -> bandalartList[index].id },
         ) { index ->
           val bandalartItem = bandalartList[index]
           BandalartItem(
             bottomSheetState = bottomSheetState,
             bandalartItem = bandalartItem,
-            currentBandalartKey = currentBandalartKey,
+            currentBandalartId = currentBandalartId,
             onClick = { key ->
               // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
-              setRecentBandalartKey(key)
+              setRecentBandalartId(key)
               showSkeletonChanged(true)
               getBandalartDetail(key)
             },
@@ -175,9 +175,9 @@ fun BandalartListBottomSheet(
 fun BandalartListBottomSheetPreview() {
   BandalartListBottomSheet(
     bandalartList = dummyBandalartList.toImmutableList(),
-    currentBandalartKey = "5z1EG",
+    currentBandalartId = 0L,
     getBandalartDetail = {},
-    setRecentBandalartKey = {},
+    setRecentBandalartId = {},
     showSkeletonChanged = {},
     onCancelClicked = {},
     createBandalart = {},

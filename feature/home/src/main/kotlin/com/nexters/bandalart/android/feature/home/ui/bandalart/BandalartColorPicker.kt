@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.common.extension.noRippleClickable
 import com.nexters.bandalart.android.core.common.extension.toColor
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
@@ -75,8 +76,10 @@ fun BandalartColorPicker(
 @ComponentPreview
 @Composable
 fun BandalartColorPickerPreview() {
-  BandalartColorPicker(
-    initColor = ThemeColor("#3FFFBA", "#111827"),
-    onResult = {},
-  )
+  BandalartTheme {
+    BandalartColorPicker(
+      initColor = ThemeColor("#3FFFBA", "#111827"),
+      onResult = {},
+    )
+  }
 }

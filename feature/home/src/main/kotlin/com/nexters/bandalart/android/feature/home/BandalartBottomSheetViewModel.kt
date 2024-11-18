@@ -2,11 +2,8 @@ package com.nexters.bandalart.android.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartMainCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartSubCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartTaskCellUseCase
 import com.nexters.bandalart.android.core.common.UiText
+import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
@@ -46,7 +43,6 @@ data class BottomSheetUiState(
   val isDatePickerOpened: Boolean = false,
   val isEmojiPickerOpened: Boolean = false,
   val isDeleteCellDialogOpened: Boolean = false,
-  val isNetworking: Boolean = false,
 )
 
 sealed class BottomSheetUiEvent {
@@ -55,10 +51,7 @@ sealed class BottomSheetUiEvent {
 
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
-  private val updateBandalartMainCellUseCase: UpdateBandalartMainCellUseCase,
-  private val updateBandalartSubCellUseCase: UpdateBandalartSubCellUseCase,
-  private val updateBandalartTaskCellUseCase: UpdateBandalartTaskCellUseCase,
-  private val deleteBandalartCellUseCase: DeleteBandalartCellUseCase,
+  private val bandalartRepository: BandalartRepository,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(BottomSheetUiState())
@@ -78,121 +71,46 @@ class BottomSheetViewModel @Inject constructor(
   }
 
   fun updateBandalartMainCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartMainCellModel: UpdateBandalartMainCellModel,
   ) {
-    if (_uiState.value.isNetworking)
-      return
-
-    _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
-      val result = updateBandalartMainCellUseCase(bandalartKey, cellKey, updateBandalartMainCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.update {
-            it.copy(isCellUpdated = true)
-          }
-        }
-
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
-        }
+      bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel.toEntity())
+      _uiState.update {
+        it.copy(isCellUpdated = true)
       }
-      _uiState.update { it.copy(isNetworking = false) }
     }
   }
 
   fun updateBandalartSubCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartSubCellModel: UpdateBandalartSubCellModel,
   ) {
-    if (_uiState.value.isNetworking)
-      return
-
-    _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
-      val result = updateBandalartSubCellUseCase(bandalartKey, cellKey, updateBandalartSubCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.update { it.copy(isCellUpdated = true) }
-        }
-
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
-        }
-      }
-      _uiState.update { it.copy(isNetworking = false) }
+      bandalartRepository.updateBandalartSubCell(bandalartId, cellId, updateBandalartSubCellModel.toEntity())
+      _uiState.update { it.copy(isCellUpdated = true) }
     }
   }
 
   fun updateBandalartTaskCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
   ) {
-    if (_uiState.value.isNetworking)
-      return
-
-    _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
-      val result = updateBandalartTaskCellUseCase(bandalartKey, cellKey, updateBandalartTaskCellModel.toEntity())
-      when {
-        result.isSuccess && result.getOrNull() != null -> {
-          _uiState.update { it.copy(isCellUpdated = true) }
-        }
-
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
-        }
-      }
-      _uiState.update { it.copy(isNetworking = false) }
+      bandalartRepository.updateBandalartTaskCell(bandalartId, cellId, updateBandalartTaskCellModel.toEntity())
+      _uiState.update { it.copy(isCellUpdated = true) }
     }
   }
 
-  fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
-    if (_uiState.value.isNetworking)
-      return
-
-    _uiState.update { it.copy(isNetworking = true) }
+  fun deleteBandalartCell(
+    bandalartId: Long,
+    cellId: Long,
+  ) {
     viewModelScope.launch {
-      val result = deleteBandalartCellUseCase(bandalartKey, cellKey)
-      when {
-        result.isSuccess && result.getOrNull() != null -> {}
-        result.isSuccess && result.getOrNull() == null -> {
-          Timber.e("Request succeeded but data validation failed")
-        }
-
-        result.isFailure -> {
-          val exception = result.exceptionOrNull()!!
-          _uiState.update {
-            it.copy(isCellDeleted = false)
-          }
-          openDeleteCellDialog(false)
-          _eventChannel.send(BottomSheetUiEvent.ShowToast(UiText.DirectString(exception.message.toString())))
-          Timber.e(exception.message)
-        }
-      }
-      _uiState.update { it.copy(isNetworking = false) }
+      bandalartRepository.deleteBandalartCell(bandalartId, cellId)
     }
   }
 

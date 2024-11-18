@@ -41,6 +41,7 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.common.extension.toLocalDateTime
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -258,58 +259,68 @@ fun selectedDateWithValidate(year: String, month: String, day: String): LocalDat
 @ComponentPreview
 @Composable
 fun BandalartDatePickerPreview() {
-  BandalartDatePicker(
-    onResult = { _, _ -> },
-    datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-    currentDueDate = LocalDateTime.now(),
-  )
+  BandalartTheme {
+    BandalartDatePicker(
+      onResult = { _, _ -> },
+      datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+      currentDueDate = LocalDateTime.now(),
+    )
+  }
 }
 
 @ComponentPreview
 @Composable
 fun DateSelectionSectionPreview() {
-  DateSelectionSection(
-    onYearChosen = {},
-    onMonthChosen = {},
-    onDayChosen = {},
-    currentYear = 2023,
-    currentMonth = 12,
-    currentDay = 31,
-  )
+  BandalartTheme {
+    DateSelectionSection(
+      onYearChosen = {},
+      onMonthChosen = {},
+      onDayChosen = {},
+      currentYear = 2023,
+      currentMonth = 12,
+      currentDay = 31,
+    )
+  }
 }
 
 @ComponentPreview
 @Composable
 fun InfiniteYearItemsPickerPreview() {
-  InfiniteItemsPicker(
-    items = years.toImmutableList(),
-    isYear = true,
-    isMonth = false,
-    firstIndex = Int.MAX_VALUE / 2 + (2023 - 1963),
-    onItemSelected = {},
-  )
+  BandalartTheme {
+    InfiniteItemsPicker(
+      items = years.toImmutableList(),
+      isYear = true,
+      isMonth = false,
+      firstIndex = Int.MAX_VALUE / 2 + (2023 - 1963),
+      onItemSelected = {},
+    )
+  }
 }
 
 @ComponentPreview
 @Composable
 fun InfiniteMonthItemsPickerPreview() {
-  InfiniteItemsPicker(
-    items = monthsNumber.toImmutableList(),
-    isYear = false,
-    isMonth = true,
-    firstIndex = Int.MAX_VALUE / 2 - 6 + 12,
-    onItemSelected = {},
-  )
+  BandalartTheme {
+    InfiniteItemsPicker(
+      items = monthsNumber.toImmutableList(),
+      isYear = false,
+      isMonth = true,
+      firstIndex = Int.MAX_VALUE / 2 - 6 + 12,
+      onItemSelected = {},
+    )
+  }
 }
 
 @ComponentPreview
 @Composable
 fun InfiniteDayItemsPickerPreview() {
-  InfiniteItemsPicker(
-    items = days.toImmutableList(),
-    isYear = false,
-    isMonth = false,
-    firstIndex = Int.MAX_VALUE / 2 + (31 - 3),
-    onItemSelected = {},
-  )
+  BandalartTheme {
+    InfiniteItemsPicker(
+      items = days.toImmutableList(),
+      isYear = false,
+      isMonth = false,
+      firstIndex = Int.MAX_VALUE / 2 + (31 - 3),
+      onItemSelected = {},
+    )
+  }
 }

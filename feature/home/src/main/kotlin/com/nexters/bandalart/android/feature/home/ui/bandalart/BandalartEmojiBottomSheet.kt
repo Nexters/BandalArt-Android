@@ -14,10 +14,10 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiMode
 
 @Composable
 fun BandalartEmojiBottomSheet(
-  bandalartKey: String,
-  cellKey: String,
+  bandalartId: Long,
+  cellId: Long,
   currentEmoji: String?,
-  updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
+  updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
   onResult: (
     bottomSheetState: Boolean,
     bottomSheetDataChangedState: Boolean,
@@ -40,8 +40,8 @@ fun BandalartEmojiBottomSheet(
         isBottomSheet = true,
         onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
           updateBandalartEmoji(
-            bandalartKey,
-            cellKey,
+            bandalartId,
+            cellId,
             UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
           )
           onResult(false, true)
@@ -56,8 +56,8 @@ fun BandalartEmojiBottomSheet(
 @Composable
 fun BandalartEmojiBottomSheetPreview() {
   BandalartEmojiBottomSheet(
-    bandalartKey = "",
-    cellKey = "",
+    bandalartId = 0L,
+    cellId = 0L,
     currentEmoji = "😎",
     updateBandalartEmoji = { _, _, _ -> },
     onResult = { _, _ -> },

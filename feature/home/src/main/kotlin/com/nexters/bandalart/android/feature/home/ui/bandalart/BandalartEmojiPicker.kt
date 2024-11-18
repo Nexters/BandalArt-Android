@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.White
@@ -37,6 +38,13 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.component.EmojiText
 import kotlinx.coroutines.launch
+
+private val emojiList = listOf(
+  "🔥", "😀", "😃", "😄", "😆", "🥹",
+  "🥰", "😍", "😂", "🥲", "☺️", "😎",
+  "🥳", "🤩", "⭐", "🌟", "✨", "💥",
+  "❤️", "🧡", "💛", "💚", "💙", "❤️‍🔥",
+)
 
 @Composable
 fun BandalartEmojiPicker(
@@ -49,12 +57,7 @@ fun BandalartEmojiPicker(
   val scope = rememberCoroutineScope()
   var selectedEmoji by remember { mutableStateOf(currentEmoji) }
   var prevSelectedEmoji by remember { mutableStateOf(currentEmoji) }
-  val emojiList = listOf(
-    "🔥", "😀", "😃", "😄", "😆", "🥹",
-    "🥰", "😍", "😂", "🥲", "☺️", "😎",
-    "🥳", "🤩", "⭐", "🌟", "✨", "💥",
-    "❤️", "🧡", "💛", "💚", "💙", "❤️‍🔥",
-  )
+
 
   Column(
     modifier = modifier
@@ -146,10 +149,12 @@ fun BandalartEmojiPicker(
 @ComponentPreview
 @Composable
 fun BandalartEmojiPickerPreview() {
-  BandalartEmojiPicker(
-    currentEmoji = "😎",
-    isBottomSheet = false,
-    onResult = { _, _ -> },
-    emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-  )
+  BandalartTheme {
+    BandalartEmojiPicker(
+      currentEmoji = "😎",
+      isBottomSheet = false,
+      onResult = { _, _ -> },
+      emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    )
+  }
 }

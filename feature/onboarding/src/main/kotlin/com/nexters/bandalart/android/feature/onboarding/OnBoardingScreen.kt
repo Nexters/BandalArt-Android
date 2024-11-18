@@ -45,6 +45,7 @@ import com.nexters.bandalart.android.core.ui.component.PagerIndicator
 import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.android.core.common.extension.aspectRatioBasedOnOrientation
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import java.util.Locale
 
@@ -235,5 +236,9 @@ internal fun OnBoardingScreen(
 @DevicePreview
 @Composable
 fun OnBoardingScreenPreview() {
-  OnBoardingScreen(setOnboardingCompletedStatus = {})
+  BandalartTheme {
+    OnBoardingScreen(
+      setOnboardingCompletedStatus = {},
+    )
+  }
 }

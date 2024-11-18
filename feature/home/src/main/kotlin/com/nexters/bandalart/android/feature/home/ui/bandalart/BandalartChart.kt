@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.common.extension.toColor
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.MainColor
 import com.nexters.bandalart.android.core.ui.ComponentPreview
@@ -27,7 +28,7 @@ import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
 
 @Composable
 fun BandalartChart(
-  bandalartKey: String,
+  bandalartId: Long,
   bandalartCellData: BandalartCellUiModel,
   themeColor: ThemeColor,
   bottomSheetDataChanged: (Boolean) -> Unit,
@@ -39,11 +40,15 @@ fun BandalartChart(
     screenWidthDp - (15.dp * 2)
   }
 
+  val taskCells = remember(bandalartCellData.id) {
+    listOf<BandalartCellUiModel>()
+  }
+
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1, bandalartCellData.children[0]),
-    SubCell(3, 2, 1, 0, bandalartCellData.children[1]),
-    SubCell(3, 2, 1, 1, bandalartCellData.children[2]),
-    SubCell(2, 3, 0, 1, bandalartCellData.children[3]),
+    SubCell(2, 3, 1, 1, taskCells.getOrNull(0), taskCells.subList(0, 5)),
+    SubCell(3, 2, 1, 0, taskCells.getOrNull(1), taskCells.subList(5, 10)),
+    SubCell(3, 2, 1, 1, taskCells.getOrNull(2), taskCells.subList(10, 15)),
+    SubCell(2, 3, 0, 1, taskCells.getOrNull(3), taskCells.subList(15, 20)),
   )
 
   Layout(
@@ -59,7 +64,7 @@ fun BandalartChart(
             .background(color = Gray100),
           content = {
             BandalartCellGrid(
-              bandalartKey = bandalartKey,
+              bandalartId = bandalartId,
               themeColor = themeColor,
               subCell = subCellList[index],
               rows = subCellList[index].rowCnt,
@@ -79,7 +84,7 @@ fun BandalartChart(
             isMainCell = true,
             themeColor = themeColor,
             cellData = bandalartCellData,
-            bandalartKey = bandalartKey,
+            bandalartId = bandalartId,
             bottomSheetDataChanged = bottomSheetDataChanged,
           )
         },
@@ -121,10 +126,12 @@ fun BandalartChart(
 @ComponentPreview
 @Composable
 fun BandalartChartPreview() {
-  BandalartChart(
-    bandalartKey = "",
-    bandalartCellData = dummyBandalartChartData,
-    themeColor = allColor[0],
-    bottomSheetDataChanged = {},
-  )
+  BandalartTheme {
+    BandalartChart(
+      bandalartId = 0L,
+      bandalartCellData = dummyBandalartChartData,
+      themeColor = allColor[0],
+      bottomSheetDataChanged = {},
+    )
+  }
 }

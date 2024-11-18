@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.common.extension.toColor
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
@@ -51,8 +52,8 @@ import kotlinx.coroutines.launch
 fun BandalartItem(
   bottomSheetState: SheetState,
   bandalartItem: BandalartDetailUiModel,
-  currentBandalartKey: String,
-  onClick: (String) -> Unit,
+  currentBandalartId: Long,
+  onClick: (Long) -> Unit,
   onCancelClicked: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -64,12 +65,12 @@ fun BandalartItem(
       .clip(RoundedCornerShape(12.dp))
       .border(
         width = 1.5.dp,
-        color = if (currentBandalartKey != bandalartItem.key) Gray100 else Gray300,
+        color = if (currentBandalartId != bandalartItem.id) Gray100 else Gray300,
         shape = RoundedCornerShape(12.dp),
       )
       .clickable {
-        if (currentBandalartKey != bandalartItem.key) {
-          onClick(bandalartItem.key)
+        if (currentBandalartId != bandalartItem.id) {
+          onClick(bandalartItem.id)
         }
         scope
           .launch { bottomSheetState.hide() }
@@ -166,7 +167,7 @@ fun BandalartItem(
         letterSpacing = (-0.32).sp,
       )
     }
-    if (currentBandalartKey != bandalartItem.key) {
+    if (currentBandalartId != bandalartItem.id) {
       Box(modifier = Modifier.align(Alignment.CenterVertically)) {
         Icon(
           imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
@@ -182,11 +183,13 @@ fun BandalartItem(
 @ComponentPreview
 @Composable
 fun BandalartItemPreview() {
-  BandalartItem(
-    bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-    bandalartItem = dummyBandalartDetailData,
-    currentBandalartKey = "",
-    onClick = {},
-    onCancelClicked = {},
-  )
+  BandalartTheme {
+    BandalartItem(
+      bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+      bandalartItem = dummyBandalartDetailData,
+      currentBandalartId = 0L,
+      onClick = {},
+      onCancelClicked = {},
+    )
+  }
 }

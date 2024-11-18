@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
@@ -59,6 +60,16 @@ import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBar
 import com.nexters.bandalart.android.core.ui.component.FixedSizeText
+import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
+
+data class SkeletonSubCell(
+  val rowCnt: Int,
+  val colCnt: Int,
+  val subCellRowIndex: Int,
+  val subCellColIndex: Int,
+  val subCellData: BandalartCellUiModel? = null,
+  val taskCells: List<BandalartCellUiModel> = emptyList()
+)
 
 @Composable
 fun BandalartSkeletonScreen(
@@ -238,10 +249,10 @@ fun BandalartSkeletonChart(
   }
 
   val subCellList = listOf(
-    SubCell(2, 3, 1, 1, null),
-    SubCell(3, 2, 1, 0, null),
-    SubCell(3, 2, 1, 1, null),
-    SubCell(2, 3, 0, 1, null),
+    SkeletonSubCell(2, 3, 1, 1, null),
+    SkeletonSubCell(3, 2, 1, 0, null),
+    SkeletonSubCell(3, 2, 1, 1, null),
+    SkeletonSubCell(2, 3, 0, 1, null),
   )
 
   Layout(
@@ -319,7 +330,7 @@ fun BandalartSkeletonChart(
 fun SkeletonCellGrid(
   rows: Int,
   cols: Int,
-  subCell: SubCell,
+  subCell: SkeletonSubCell,
   taskBrush: Brush,
   subBrush: Brush,
   mainBrush: Brush,
@@ -441,9 +452,11 @@ fun BandalartSkeletonScreenPreview() {
     end = Offset(x = translateAnim.value, y = translateAnim.value),
   )
 
-  BandalartSkeletonScreen(
-    taskBrush = mainBrush,
-    subBrush = subBrush,
-    mainBrush = taskBrush,
-  )
+  BandalartTheme {
+    BandalartSkeletonScreen(
+      taskBrush = mainBrush,
+      subBrush = subBrush,
+      mainBrush = taskBrush,
+    )
+  }
 }

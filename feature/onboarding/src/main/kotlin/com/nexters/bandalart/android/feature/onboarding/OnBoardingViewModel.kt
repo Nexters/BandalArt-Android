@@ -2,7 +2,7 @@ package com.nexters.bandalart.android.feature.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetOnboardingCompletedStatusUseCase
+import com.nexters.bandalart.android.core.domain.repository.OnboardingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -15,14 +15,14 @@ sealed interface OnBoardingUiEvent {
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-  private val setOnboardingCompletedStatusUseCase: SetOnboardingCompletedStatusUseCase,
+  private val onboardingRepository: OnboardingRepository,
 ) : ViewModel() {
   private val _eventChannel = Channel<OnBoardingUiEvent>()
   val eventFlow = _eventChannel.receiveAsFlow()
 
   fun setOnboardingCompletedStatus(flag: Boolean) {
     viewModelScope.launch {
-      setOnboardingCompletedStatusUseCase(flag)
+      onboardingRepository.setOnboardingCompletedStatus(flag)
       navigateToHome()
     }
   }

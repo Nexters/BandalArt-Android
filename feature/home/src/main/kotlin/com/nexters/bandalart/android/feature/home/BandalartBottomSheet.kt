@@ -90,6 +90,7 @@ import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.android.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.common.extension.toStringLocalDateTime
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartMainCellModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartSubCellModel
@@ -104,7 +105,7 @@ import java.util.Locale
 
 @Composable
 fun BandalartBottomSheet(
-  bandalartKey: String,
+  bandalartId: Long,
   isSubCell: Boolean,
   isMainCell: Boolean,
   isBlankCell: Boolean,
@@ -129,7 +130,7 @@ fun BandalartBottomSheet(
 
   BandalartBottomSheetContent(
     uiState = uiState,
-    bandalartKey = bandalartKey,
+    bandalartId = bandalartId,
     isSubCell = isSubCell,
     isMainCell = isMainCell,
     isBlankCell = isBlankCell,
@@ -157,7 +158,7 @@ fun BandalartBottomSheet(
 @Composable
 fun BandalartBottomSheetContent(
   uiState: BottomSheetUiState,
-  bandalartKey: String,
+  bandalartId: Long,
   isMainCell: Boolean,
   isSubCell: Boolean,
   isBlankCell: Boolean,
@@ -168,7 +169,7 @@ fun BandalartBottomSheetContent(
   ) -> Unit,
   bottomSheetClosed: () -> Unit,
   copyCellData: (BandalartCellUiModel) -> Unit,
-  deleteBandalartCell: (String, String) -> Unit,
+  deleteBandalartCell: (Long, Long) -> Unit,
   openDeleteCellDialog: (Boolean) -> Unit,
   openEmojiPicker: (Boolean) -> Unit,
   openDatePicker: (Boolean) -> Unit,
@@ -178,9 +179,9 @@ fun BandalartBottomSheetContent(
   dueDateChanged: (String) -> Unit,
   descriptionChanged: (String) -> Unit,
   completionChanged: (Boolean) -> Unit,
-  updateBandalartMainCell: (String, String, UpdateBandalartMainCellModel) -> Unit,
-  updateBandalartSubCell: (String, String, UpdateBandalartSubCellModel) -> Unit,
-  updateBandalartTaskCell: (String, String, UpdateBandalartTaskCellModel) -> Unit,
+  updateBandalartMainCell: (Long, Long, UpdateBandalartMainCellModel) -> Unit,
+  updateBandalartSubCell: (Long, Long, UpdateBandalartSubCellModel) -> Unit,
+  updateBandalartTaskCell: (Long, Long, UpdateBandalartTaskCellModel) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -228,8 +229,8 @@ fun BandalartBottomSheetContent(
       onDeleteClicked = {
         scope.launch {
           deleteBandalartCell(
-            bandalartKey,
-            uiState.cellData.key,
+            bandalartId,
+            uiState.cellData.id,
           )
           openDeleteCellDialog(false)
           bottomSheetState.hide()
@@ -544,8 +545,8 @@ fun BandalartBottomSheetContent(
               onClick = {
                 if (isMainCell) {
                   updateBandalartMainCell(
-                    bandalartKey,
-                    cellData.key,
+                    bandalartId,
+                    cellData.id,
                     UpdateBandalartMainCellModel(
                       title = uiState.cellData.title?.trim(),
                       description = uiState.cellData.description,
@@ -557,8 +558,8 @@ fun BandalartBottomSheetContent(
                   )
                 } else if (isSubCell) {
                   updateBandalartSubCell(
-                    bandalartKey,
-                    cellData.key,
+                    bandalartId,
+                    cellData.id,
                     UpdateBandalartSubCellModel(
                       title = uiState.cellData.title?.trim(),
                       description = uiState.cellData.description,
@@ -567,8 +568,8 @@ fun BandalartBottomSheetContent(
                   )
                 } else {
                   updateBandalartTaskCell(
-                    bandalartKey,
-                    cellData.key,
+                    bandalartId,
+                    cellData.id,
                     UpdateBandalartTaskCellModel(
                       title = uiState.cellData.title?.trim(),
                       description = uiState.cellData.description,
@@ -623,7 +624,7 @@ fun BandalartMainCellBottomSheetPreview() {
       cellData = dummyBandalartCellData,
       cellDataForCheck = dummyBandalartCellData,
     ),
-    bandalartKey = "",
+    bandalartId = 0L,
     isMainCell = true,
     isSubCell = false,
     isBlankCell = false,
@@ -650,63 +651,67 @@ fun BandalartMainCellBottomSheetPreview() {
 @ComponentPreview
 @Composable
 fun BandalartSubCellBottomSheetPreview() {
-  BandalartBottomSheetContent(
-    uiState = BottomSheetUiState(
+  BandalartTheme {
+    BandalartBottomSheetContent(
+      uiState = BottomSheetUiState(
+        cellData = dummyBandalartCellData,
+        cellDataForCheck = dummyBandalartCellData,
+      ),
+      bandalartId = 0L,
+      isMainCell = false,
+      isSubCell = true,
+      isBlankCell = false,
       cellData = dummyBandalartCellData,
-      cellDataForCheck = dummyBandalartCellData,
-    ),
-    bandalartKey = "",
-    isMainCell = false,
-    isSubCell = true,
-    isBlankCell = false,
-    cellData = dummyBandalartCellData,
-    onResult = { _, _ -> },
-    bottomSheetClosed = {},
-    copyCellData = {},
-    deleteBandalartCell = { _, _ -> },
-    openDeleteCellDialog = {},
-    openEmojiPicker = {},
-    openDatePicker = {},
-    titleChanged = {},
-    emojiSelected = {},
-    colorChanged = { _, _ -> },
-    dueDateChanged = {},
-    descriptionChanged = {},
-    completionChanged = {},
-    updateBandalartMainCell = { _, _, _ -> },
-    updateBandalartSubCell = { _, _, _ -> },
-    updateBandalartTaskCell = { _, _, _ -> },
-  )
+      onResult = { _, _ -> },
+      bottomSheetClosed = {},
+      copyCellData = {},
+      deleteBandalartCell = { _, _ -> },
+      openDeleteCellDialog = {},
+      openEmojiPicker = {},
+      openDatePicker = {},
+      titleChanged = {},
+      emojiSelected = {},
+      colorChanged = { _, _ -> },
+      dueDateChanged = {},
+      descriptionChanged = {},
+      completionChanged = {},
+      updateBandalartMainCell = { _, _, _ -> },
+      updateBandalartSubCell = { _, _, _ -> },
+      updateBandalartTaskCell = { _, _, _ -> },
+    )
+  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartTaskCellBottomSheetPreview() {
-  BandalartBottomSheetContent(
-    uiState = BottomSheetUiState(
+  BandalartTheme {
+    BandalartBottomSheetContent(
+      uiState = BottomSheetUiState(
+        cellData = dummyBandalartCellData,
+        cellDataForCheck = dummyBandalartCellData,
+      ),
+      bandalartId = 0L,
+      isMainCell = false,
+      isSubCell = false,
+      isBlankCell = true,
       cellData = dummyBandalartCellData,
-      cellDataForCheck = dummyBandalartCellData,
-    ),
-    bandalartKey = "",
-    isMainCell = false,
-    isSubCell = false,
-    isBlankCell = true,
-    cellData = dummyBandalartCellData,
-    onResult = { _, _ -> },
-    bottomSheetClosed = {},
-    copyCellData = {},
-    deleteBandalartCell = { _, _ -> },
-    openDeleteCellDialog = {},
-    openEmojiPicker = {},
-    openDatePicker = {},
-    titleChanged = {},
-    emojiSelected = {},
-    colorChanged = { _, _ -> },
-    dueDateChanged = {},
-    descriptionChanged = {},
-    completionChanged = {},
-    updateBandalartMainCell = { _, _, _ -> },
-    updateBandalartSubCell = { _, _, _ -> },
-    updateBandalartTaskCell = { _, _, _ -> },
-  )
+      onResult = { _, _ -> },
+      bottomSheetClosed = {},
+      copyCellData = {},
+      deleteBandalartCell = { _, _ -> },
+      openDeleteCellDialog = {},
+      openEmojiPicker = {},
+      openDatePicker = {},
+      titleChanged = {},
+      emojiSelected = {},
+      colorChanged = { _, _ -> },
+      dueDateChanged = {},
+      descriptionChanged = {},
+      completionChanged = {},
+      updateBandalartMainCell = { _, _, _ -> },
+      updateBandalartSubCell = { _, _, _ -> },
+      updateBandalartTaskCell = { _, _, _ -> },
+    )
+  }
 }

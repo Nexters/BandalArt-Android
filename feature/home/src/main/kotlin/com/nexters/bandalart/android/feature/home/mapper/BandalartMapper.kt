@@ -15,8 +15,8 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartTaskCellM
 
 internal fun BandalartDetailEntity.toUiModel() =
   BandalartDetailUiModel(
-    key = id,
-    cellKey = cellKey,
+    id = id,
+    cellId = cellId,
     mainColor = mainColor,
     subColor = subColor,
     profileEmoji = profileEmoji,
@@ -27,22 +27,18 @@ internal fun BandalartDetailEntity.toUiModel() =
     isGeneratedTitle = false,
   )
 
-// 재귀 호출시 컴파일러가 타입을 추론할 수 없기 때문에 예외적으로 반환타입을 지정
-internal fun BandalartCellEntity.toUiModel(): BandalartCellUiModel {
-  return BandalartCellUiModel(
-    key = id,
-    title = title,
-    description = description,
-    dueDate = dueDate,
-    isCompleted = isCompleted,
-    profileEmoji = profileEmoji,
-    mainColor = mainColor,
-    subColor = subColor,
-    completionRatio = completionRatio,
-    parentKey = parentId,
-    children = children.map { it.toUiModel() },
-  )
-}
+fun BandalartCellEntity.toUiModel() = BandalartCellUiModel(
+  id = id ?: 0,
+  title = title,
+  description = description,
+  dueDate = dueDate,
+  isCompleted = isCompleted,
+  completionRatio = completionRatio,
+  profileEmoji = profileEmoji,
+  mainColor = mainColor,
+  subColor = subColor,
+  parentId = parentId,
+)
 
 internal fun UpdateBandalartMainCellModel.toEntity() =
   UpdateBandalartMainCellEntity(

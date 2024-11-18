@@ -65,7 +65,6 @@ internal fun CompleteRoute(
     uiState = uiState,
     navigateToHome = viewModel::navigateToHome,
     shareBandalart = viewModel::shareBandalart,
-    initShareUrl = viewModel::initShareUrl,
     modifier = modifier,
   )
 }
@@ -75,7 +74,6 @@ internal fun CompleteScreen(
   uiState: CompleteUiState,
   navigateToHome: () -> Unit,
   shareBandalart: () -> Unit,
-  initShareUrl: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -103,7 +101,6 @@ internal fun CompleteScreen(
       }
       val shareIntent = Intent.createChooser(sendIntent, null)
       context.startActivity(shareIntent)
-      initShareUrl()
     }
   }
 
@@ -185,13 +182,12 @@ internal fun CompleteScreen(
 fun CompleteScreenPreview() {
   CompleteScreen(
     uiState = CompleteUiState(
-      key = "",
+      id = 0L,
       title = "발전하는 예진",
       profileEmoji = "😎",
       shareUrl = "",
     ),
     navigateToHome = {},
     shareBandalart = {},
-    initShareUrl = {},
   )
 }

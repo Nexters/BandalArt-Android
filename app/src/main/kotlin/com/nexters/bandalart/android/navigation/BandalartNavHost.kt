@@ -33,9 +33,9 @@ fun BandalartNavHost(
       navigateToHome = navController::navigateToHome,
     )
     homeScreen(
-      navigateToComplete = { key, title, emoji ->
+      navigateToComplete = { id, title, emoji ->
         navController.navigateToComplete(
-          bandalartKey = key,
+          bandalartId = id,
           bandalartTitle = title,
           bandalartProfileEmoji = emoji,
         )

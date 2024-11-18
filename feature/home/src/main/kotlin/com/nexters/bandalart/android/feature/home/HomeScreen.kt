@@ -37,8 +37,6 @@ import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.android.core.ui.component.LoadingIndicator
-import com.nexters.bandalart.android.core.ui.component.NetworkErrorAlertDialog
-import com.nexters.bandalart.android.core.ui.component.ServerErrorAlertDialog
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
@@ -60,7 +58,7 @@ private const val SnackbarDuration = 1000L
 // TODO Share 로직 변경 (드로이드카이기 방식으로)
 @Composable
 internal fun HomeRoute(
-  navigateToComplete: (String, String, String) -> Unit,
+  navigateToComplete: (Long, String, String) -> Unit,
   onShowSnackbar: suspend (String) -> Boolean,
   modifier: Modifier = Modifier,
   viewModel: HomeViewModel = hiltViewModel(),
@@ -76,7 +74,7 @@ internal fun HomeRoute(
     when (event) {
       is HomeUiEvent.NavigateToComplete -> {
         navigateToComplete(
-          event.key,
+          event.id,
           event.title,
           event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
         )
@@ -106,7 +104,6 @@ internal fun HomeRoute(
     getBandalartDetail = viewModel::getBandalartDetail,
     createBandalart = viewModel::createBandalart,
     deleteBandalart = viewModel::deleteBandalart,
-    // loadingChanged = { state -> viewModel.loadingChanged(state) },
     showSkeletonChanged = viewModel::showSkeletonChanged,
     openDropDownMenu = viewModel::openDropDownMenu,
     openEmojiBottomSheet = viewModel::openEmojiBottomSheet,
@@ -115,12 +112,9 @@ internal fun HomeRoute(
     openCellBottomSheet = viewModel::openCellBottomSheet,
     bottomSheetDataChanged = viewModel::bottomSheetDataChanged,
     openBandalartListBottomSheet = viewModel::openBandalartListBottomSheet,
-    setRecentBandalartKey = viewModel::setRecentBandalartId,
+    setRecentBandalartId = viewModel::setRecentBandalartId,
     shareBandalart = viewModel::shareBandalart,
-    initShareUrl = viewModel::initShareUrl,
-    checkCompletedBandalartKey = viewModel::checkCompletedBandalartId,
-    setNetworkErrorDialogVisible = viewModel::setNetworkErrorDialogVisible,
-    setServerErrorDialogVisible = viewModel::setServerErrorDialogVisible,
+    checkCompletedBandalartId = viewModel::checkCompletedBandalartId,
     modifier = modifier,
   )
 }
@@ -130,25 +124,21 @@ internal fun HomeScreen(
   uiState: HomeUiState,
   bandalartCount: Int,
   navigateToComplete: () -> Unit,
-  getBandalartList: (String?) -> Unit,
-  getBandalartDetail: (String) -> Unit,
+  getBandalartList: (Long?) -> Unit,
+  getBandalartDetail: (Long) -> Unit,
   createBandalart: () -> Unit,
-  deleteBandalart: (String) -> Unit,
-  // loadingChanged: (Boolean) -> Unit,
+  deleteBandalart: (Long) -> Unit,
   showSkeletonChanged: (Boolean) -> Unit,
   openDropDownMenu: (Boolean) -> Unit,
   openEmojiBottomSheet: (Boolean) -> Unit,
-  updateBandalartEmoji: (String, String, UpdateBandalartEmojiModel) -> Unit,
+  updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
   openBandalartDeleteAlertDialog: (Boolean) -> Unit,
   openCellBottomSheet: (Boolean) -> Unit,
   bottomSheetDataChanged: (Boolean) -> Unit,
   openBandalartListBottomSheet: (Boolean) -> Unit,
-  setRecentBandalartKey: (String) -> Unit,
-  shareBandalart: (String) -> Unit,
-  initShareUrl: () -> Unit,
-  checkCompletedBandalartKey: suspend (String) -> Boolean,
-  setNetworkErrorDialogVisible: (Boolean) -> Unit,
-  setServerErrorDialogVisible: (Boolean) -> Unit,
+  setRecentBandalartId: (Long) -> Unit,
+  shareBandalart: () -> Unit,
+  checkCompletedBandalartId: suspend (Long) -> Boolean,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -157,12 +147,12 @@ internal fun HomeScreen(
     getBandalartList(null)
   }
 
-  LaunchedEffect(key1 = uiState.bandalartDetailData.isCompleted) {
+  LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
     val bandalartDetailData = uiState.bandalartDetailData
     // 목표를 달성했을 경우
-    if (bandalartDetailData.isCompleted && !bandalartDetailData.title.isNullOrEmpty()) {
+    if (bandalartDetailData!!.isCompleted && !bandalartDetailData.title.isNullOrEmpty()) {
       // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
-      val isBandalartCompleted = checkCompletedBandalartKey(bandalartDetailData.key)
+      val isBandalartCompleted = checkCompletedBandalartId(bandalartDetailData!!.id)
       if (isBandalartCompleted) {
         navigateToComplete()
       }
@@ -171,7 +161,6 @@ internal fun HomeScreen(
 
   LaunchedEffect(key1 = uiState.isBottomSheetDataChanged) {
     if (uiState.isBottomSheetDataChanged) {
-      // loadingChanged(true)
       getBandalartList(null)
     }
   }
@@ -188,16 +177,15 @@ internal fun HomeScreen(
       }
       val shareIntent = Intent.createChooser(sendIntent, null)
       context.startActivity(shareIntent)
-      initShareUrl()
     }
   }
 
   if (uiState.isBandalartListBottomSheetOpened) {
     BandalartListBottomSheet(
       bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
-      currentBandalartKey = uiState.bandalartDetailData.key,
+      currentBandalartId = uiState.bandalartDetailData!!.id,
       getBandalartDetail = getBandalartDetail,
-      setRecentBandalartKey = setRecentBandalartKey,
+      setRecentBandalartId = setRecentBandalartId,
       showSkeletonChanged = showSkeletonChanged,
       onCancelClicked = { openBandalartListBottomSheet(false) },
       createBandalart = createBandalart,
@@ -206,8 +194,8 @@ internal fun HomeScreen(
 
   if (uiState.isEmojiBottomSheetOpened) {
     BandalartEmojiBottomSheet(
-      bandalartKey = uiState.bandalartDetailData.key,
-      cellKey = uiState.bandalartCellData!!.key,
+      bandalartId = uiState.bandalartDetailData!!.id,
+      cellId = uiState.bandalartCellData!!.id,
       currentEmoji = uiState.bandalartCellData.profileEmoji,
       updateBandalartEmoji = updateBandalartEmoji,
       onResult = { bottomSheetState, bottomSheetDataChangedState ->
@@ -219,7 +207,7 @@ internal fun HomeScreen(
 
   if (uiState.isCellBottomSheetOpened) {
     BandalartBottomSheet(
-      bandalartKey = uiState.bandalartDetailData.key,
+      bandalartId = uiState.bandalartDetailData!!.id,
       isSubCell = false,
       isMainCell = true,
       isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
@@ -233,38 +221,14 @@ internal fun HomeScreen(
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
     BandalartDeleteAlertDialog(
-      title = if (uiState.bandalartDetailData.title.isNullOrEmpty()) {
+      title = if (uiState.bandalartDetailData!!.title.isNullOrEmpty()) {
         stringResource(R.string.delete_bandalart_dialog_empty_title)
       } else {
-        stringResource(R.string.delete_bandalart_dialog_title, uiState.bandalartDetailData.title)
+        stringResource(R.string.delete_bandalart_dialog_title, uiState.bandalartDetailData!!.title!!)
       },
       message = stringResource(R.string.delete_bandalart_dialog_message),
-      onDeleteClicked = { deleteBandalart(uiState.bandalartDetailData.key) },
+      onDeleteClicked = { deleteBandalart(uiState.bandalartDetailData!!.id) },
       onCancelClicked = { openBandalartDeleteAlertDialog(false) },
-    )
-  }
-
-  if (uiState.isNetworkErrorDialogVisible) {
-    NetworkErrorAlertDialog(
-      title = stringResource(R.string.network_error_dialog_title),
-      message = stringResource(R.string.network_error_dialog_message),
-      onConfirmClick = {
-        setNetworkErrorDialogVisible(false)
-        // loadingChanged(true)
-        getBandalartList(null)
-      },
-    )
-  }
-
-  if (uiState.isServerErrorDialogVisible) {
-    ServerErrorAlertDialog(
-      title = stringResource(R.string.server_error_dialog_title),
-      message = stringResource(R.string.server_error_dialog_message),
-      onConfirmClick = {
-        setServerErrorDialogVisible(false)
-        // loadingChanged(true)
-        getBandalartList(null)
-      },
     )
   }
 
@@ -288,7 +252,7 @@ internal fun HomeScreen(
           color = Gray100,
         )
         HomeHeader(
-          bandalartDetailData = uiState.bandalartDetailData,
+          bandalartDetailData = uiState.bandalartDetailData!!,
           isDropDownMenuOpened = uiState.isDropDownMenuOpened,
           openDropDownMenu = openDropDownMenu,
           openEmojiBottomSheet = openEmojiBottomSheet,
@@ -297,7 +261,7 @@ internal fun HomeScreen(
         )
         if (uiState.bandalartCellData != null) {
           BandalartChart(
-            bandalartKey = uiState.bandalartDetailData.key,
+            bandalartId = uiState.bandalartDetailData.id,
             bandalartCellData = uiState.bandalartCellData,
             themeColor = ThemeColor(
               mainColor = uiState.bandalartDetailData.mainColor,
@@ -309,7 +273,6 @@ internal fun HomeScreen(
         Spacer(modifier = Modifier.height(64.dp))
         Spacer(modifier = Modifier.weight(1f))
         HomeShareButton(
-          bandalartDetailData = uiState.bandalartDetailData,
           shareBandalart = shareBandalart,
           modifier = Modifier.align(Alignment.CenterHorizontally),
         )
@@ -369,12 +332,9 @@ fun HomeScreenSingleBandalartPreview() {
     openCellBottomSheet = {},
     bottomSheetDataChanged = {},
     openBandalartListBottomSheet = {},
-    setRecentBandalartKey = {},
+    setRecentBandalartId = {},
     shareBandalart = {},
-    initShareUrl = {},
-    checkCompletedBandalartKey = { _ -> false },
-    setNetworkErrorDialogVisible = {},
-    setServerErrorDialogVisible = {},
+    checkCompletedBandalartId = { _ -> false },
   )
 }
 
@@ -401,11 +361,8 @@ fun HomeScreenMultipleBandalartPreview() {
     openCellBottomSheet = {},
     bottomSheetDataChanged = {},
     openBandalartListBottomSheet = {},
-    setRecentBandalartKey = {},
+    setRecentBandalartId = {},
     shareBandalart = {},
-    initShareUrl = {},
-    checkCompletedBandalartKey = { _ -> false },
-    setNetworkErrorDialogVisible = {},
-    setServerErrorDialogVisible = {},
+    checkCompletedBandalartId = { _ -> false },
   )
 }

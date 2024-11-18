@@ -11,7 +11,7 @@ package com.nexters.bandalart.android.core.domain.entity
  */
 
 data class BandalartEntity(
-  val id: Long? = null,  // nullable (생성 시에는 id 없음)
+  val id: Long? = null,
   val mainColor: String,
   val subColor: String,
   val profileEmoji: String?,
