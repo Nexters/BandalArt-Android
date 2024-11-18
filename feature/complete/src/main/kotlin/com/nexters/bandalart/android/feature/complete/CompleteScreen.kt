@@ -40,6 +40,7 @@ import com.nexters.bandalart.android.core.ui.component.TitleText
 import com.nexters.bandalart.android.feature.complete.ui.CompleteBandalart
 import com.nexters.bandalart.android.feature.complete.ui.CompleteTopBar
 
+// TODO Share 로직 변경 (드로이드카이기 방식으로), 어떻게 구현 해야 할지 고민
 @Composable
 internal fun CompleteRoute(
   onNavigateBack: () -> Unit,

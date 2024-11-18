@@ -56,6 +56,7 @@ import kotlinx.coroutines.launch
 private const val SnackbarDuration = 1000L
 
 // TODO Share 로직 변경 (드로이드카이기 방식으로)
+// TODO createBandalart 로직 쪽 재확인
 @Composable
 internal fun HomeRoute(
   navigateToComplete: (Long, String, String) -> Unit,
