@@ -13,15 +13,15 @@ data class BandalartCellUiModel(
   val parentId: Long? = 0L,
 ) {
   fun copy(): BandalartCellUiModel = BandalartCellUiModel(
-    id,
-    title,
-    description,
-    dueDate,
-    isCompleted,
-    completionRatio,
-    profileEmoji,
-    mainColor,
-    subColor,
-    parentId,
+    id = id,
+    title = title,
+    description = description,
+    dueDate = dueDate,
+    isCompleted = isCompleted,
+    completionRatio = completionRatio,
+    profileEmoji = profileEmoji,
+    mainColor = mainColor,
+    subColor = subColor,
+    parentId = parentId,
   )
 }

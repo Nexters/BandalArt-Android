@@ -70,7 +70,7 @@ internal fun HomeRoute(
     derivedStateOf { uiState.bandalartList.size }
   }
 
-  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+  ObserveAsEvents(flow = viewModel.uiEvent) { event ->
     when (event) {
       is HomeUiEvent.NavigateToComplete -> {
         navigateToComplete(
@@ -148,13 +148,14 @@ internal fun HomeScreen(
   }
 
   LaunchedEffect(key1 = uiState.bandalartDetailData?.isCompleted) {
-    val bandalartDetailData = uiState.bandalartDetailData
-    // 목표를 달성했을 경우
-    if (bandalartDetailData!!.isCompleted && !bandalartDetailData.title.isNullOrEmpty()) {
-      // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
-      val isBandalartCompleted = checkCompletedBandalartId(bandalartDetailData!!.id)
-      if (isBandalartCompleted) {
-        navigateToComplete()
+    uiState.bandalartDetailData?.let { detailData ->
+      // 목표를 달성했을 경우
+      if (detailData.isCompleted && !detailData.title.isNullOrEmpty()) {
+        val isBandalartCompleted = checkCompletedBandalartId(detailData.id)
+        // 목표 달성 화면을 띄워 줘야 하는 반다라트일 경우
+        if (isBandalartCompleted) {
+          navigateToComplete()
+        }
       }
     }
   }
@@ -181,55 +182,67 @@ internal fun HomeScreen(
   }
 
   if (uiState.isBandalartListBottomSheetOpened) {
-    BandalartListBottomSheet(
-      bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
-      currentBandalartId = uiState.bandalartDetailData!!.id,
-      getBandalartDetail = getBandalartDetail,
-      setRecentBandalartId = setRecentBandalartId,
-      showSkeletonChanged = showSkeletonChanged,
-      onCancelClicked = { openBandalartListBottomSheet(false) },
-      createBandalart = createBandalart,
-    )
+    uiState.bandalartDetailData?.let { detailData ->
+      BandalartListBottomSheet(
+        bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
+        currentBandalartId = detailData.id,
+        getBandalartDetail = getBandalartDetail,
+        setRecentBandalartId = setRecentBandalartId,
+        showSkeletonChanged = showSkeletonChanged,
+        onCancelClicked = { openBandalartListBottomSheet(false) },
+        createBandalart = createBandalart,
+      )
+    }
   }
 
   if (uiState.isEmojiBottomSheetOpened) {
-    BandalartEmojiBottomSheet(
-      bandalartId = uiState.bandalartDetailData!!.id,
-      cellId = uiState.bandalartCellData!!.id,
-      currentEmoji = uiState.bandalartCellData.profileEmoji,
-      updateBandalartEmoji = updateBandalartEmoji,
-      onResult = { bottomSheetState, bottomSheetDataChangedState ->
-        openEmojiBottomSheet(bottomSheetState)
-        bottomSheetDataChanged(bottomSheetDataChangedState)
-      },
-    )
+    uiState.bandalartDetailData?.let { detailData ->
+      uiState.bandalartCellData?.let { cellData ->
+        BandalartEmojiBottomSheet(
+          bandalartId = detailData.id,
+          cellId = cellData.id,
+          currentEmoji = cellData.profileEmoji,
+          updateBandalartEmoji = updateBandalartEmoji,
+          onResult = { bottomSheetState, bottomSheetDataChangedState ->
+            openEmojiBottomSheet(bottomSheetState)
+            bottomSheetDataChanged(bottomSheetDataChangedState)
+          },
+        )
+      }
+    }
   }
 
   if (uiState.isCellBottomSheetOpened) {
-    BandalartBottomSheet(
-      bandalartId = uiState.bandalartDetailData!!.id,
-      isSubCell = false,
-      isMainCell = true,
-      isBlankCell = uiState.bandalartCellData!!.title.isNullOrEmpty(),
-      cellData = uiState.bandalartCellData,
-      onResult = { bottomSheetState, bottomSheetDataChangedState ->
-        openCellBottomSheet(bottomSheetState)
-        bottomSheetDataChanged(bottomSheetDataChangedState)
-      },
-    )
+    uiState.bandalartDetailData?.let { detailData ->
+      uiState.bandalartCellData?.let { cellData ->
+        BandalartBottomSheet(
+          bandalartId = detailData.id,
+          isSubCell = false,
+          isMainCell = true,
+          isBlankCell = cellData.title.isNullOrEmpty(),
+          cellData = cellData,
+          onResult = { bottomSheetState, bottomSheetDataChangedState ->
+            openCellBottomSheet(bottomSheetState)
+            bottomSheetDataChanged(bottomSheetDataChangedState)
+          },
+        )
+      }
+    }
   }
 
   if (uiState.isBandalartDeleteAlertDialogOpened) {
-    BandalartDeleteAlertDialog(
-      title = if (uiState.bandalartDetailData!!.title.isNullOrEmpty()) {
-        stringResource(R.string.delete_bandalart_dialog_empty_title)
-      } else {
-        stringResource(R.string.delete_bandalart_dialog_title, uiState.bandalartDetailData!!.title!!)
-      },
-      message = stringResource(R.string.delete_bandalart_dialog_message),
-      onDeleteClicked = { deleteBandalart(uiState.bandalartDetailData!!.id) },
-      onCancelClicked = { openBandalartDeleteAlertDialog(false) },
-    )
+    uiState.bandalartDetailData?.let { detailData ->
+      BandalartDeleteAlertDialog(
+        title = if (detailData.title.isNullOrEmpty()) {
+          stringResource(R.string.delete_bandalart_dialog_empty_title)
+        } else {
+          stringResource(R.string.delete_bandalart_dialog_title, detailData.title)
+        },
+        message = stringResource(R.string.delete_bandalart_dialog_message),
+        onDeleteClicked = { deleteBandalart(detailData.id) },
+        onCancelClicked = { openBandalartDeleteAlertDialog(false) },
+      )
+    }
   }
 
   Surface(
@@ -251,15 +264,17 @@ internal fun HomeScreen(
           thickness = 1.dp,
           color = Gray100,
         )
-        HomeHeader(
-          bandalartDetailData = uiState.bandalartDetailData!!,
-          isDropDownMenuOpened = uiState.isDropDownMenuOpened,
-          openDropDownMenu = openDropDownMenu,
-          openEmojiBottomSheet = openEmojiBottomSheet,
-          openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
-          openCellBottomSheet = openCellBottomSheet,
-        )
-        if (uiState.bandalartCellData != null) {
+        uiState.bandalartDetailData?.let { detail ->
+          HomeHeader(
+            bandalartDetailData = detail,
+            isDropDownMenuOpened = uiState.isDropDownMenuOpened,
+            openDropDownMenu = openDropDownMenu,
+            openEmojiBottomSheet = openEmojiBottomSheet,
+            openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
+            openCellBottomSheet = openCellBottomSheet,
+          )
+        }
+        if (uiState.bandalartCellData != null && uiState.bandalartDetailData != null) {
           BandalartChart(
             bandalartId = uiState.bandalartDetailData.id,
             bandalartCellData = uiState.bandalartCellData,

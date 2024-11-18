@@ -3,9 +3,6 @@ package com.nexters.bandalart.android.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.common.UiText
-import com.nexters.bandalart.android.core.common.handleException
-import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
@@ -17,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -49,8 +45,8 @@ import javax.inject.Inject
 
 data class HomeUiState(
   val bandalartList: ImmutableList<BandalartDetailUiModel> = persistentListOf(),
-  val bandalartDetailData: BandalartDetailUiModel? = null,
-  val bandalartCellData: BandalartCellUiModel? = null,
+  val bandalartDetailData: BandalartDetailUiModel? = BandalartDetailUiModel(),
+  val bandalartCellData: BandalartCellUiModel? = BandalartCellUiModel(),
   val isBandalartDeleted: Boolean = false,
   val isDropDownMenuOpened: Boolean = false,
   val isBandalartDeleteAlertDialogOpened: Boolean = false,
@@ -84,8 +80,8 @@ class HomeViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(HomeUiState())
   val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-  private val _eventChannel = Channel<HomeUiEvent>()
-  val eventFlow = _eventChannel.receiveAsFlow()
+  private val _uiEvent = Channel<HomeUiEvent>()
+  val uiEvent = _uiEvent.receiveAsFlow()
 
   init {
     _uiState.update { it.copy(isShowSkeleton = true) }
@@ -93,15 +89,16 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartList(bandalartId: Long? = null) {
     viewModelScope.launch {
-      val bandalartList = bandalartRepository.getBandalartList()?.map { it.toUiModel() }
+      val bandalartList = bandalartRepository.getBandalartList()?.map { it.toUiModel() } ?: emptyList()
       _uiState.update {
-        it.copy(bandalartList = bandalartRepository.getBandalartList()!!.map { it.toUiModel() }.toImmutableList ())
+        it.copy(bandalartList = bandalartList.toImmutableList())
       }
+
       // 이전 반다라트 목록 상태 조회
       val prevBandalartList = bandalartRepository.getPrevBandalartList()
 
       // 새로 업데이트 된 상태와 이전 상태를 비교
-      val completedKeys = bandalartList!!.filter { bandalart ->
+      val completedKeys = bandalartList.filter { bandalart ->
         val prevBandalart = prevBandalartList.find { it.first == bandalart.id }
         prevBandalart != null && !prevBandalart.second && bandalart.isCompleted
       }.map { it.id }
@@ -113,8 +110,8 @@ class HomeViewModel @Inject constructor(
       }
 
       // 서버의 데이터와 로컬의 데이터를 동기화
-      bandalartList?.forEach { bandalart ->
-        bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
+      bandalartList.forEach { bandalart ->
+          bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
       }
 
       // 생성한 반다라트 표를 화면에 띄우는 경우
@@ -124,12 +121,11 @@ class HomeViewModel @Inject constructor(
         return@launch
       }
       // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
-      if (bandalartList.isNullOrEmpty()) {
+      if (bandalartList.isEmpty()) {
         createBandalart()
         return@launch
-      }
-      // 반다라트 목록이 존재할 경우
-      else {
+      } else {
+        // 반다라트 목록이 존재할 경우
         // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
         val recentBandalartId = getRecentBandalartId()
         // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
@@ -148,57 +144,62 @@ class HomeViewModel @Inject constructor(
 
   fun getBandalartDetail(bandalartId: Long, isBandalartCompleted: Boolean = false) {
     viewModelScope.launch {
-      val bandalartDetailData = bandalartRepository.getBandalartDetail(bandalartId)
-      _uiState.update {
-        it.copy(
-          bandalartDetailData = bandalartDetailData!!.toUiModel(),
-          isBandalartListBottomSheetOpened = false,
-          isBandalartCompleted = isBandalartCompleted,
-        )
+      bandalartRepository.getBandalartDetail(bandalartId)?.let { detail ->
+        _uiState.update {
+          it.copy(
+            bandalartDetailData = detail.toUiModel(),
+            isBandalartListBottomSheetOpened = false,
+            isBandalartCompleted = isBandalartCompleted,
+          )
+        }
+        getBandalartMainCell(bandalartId)
       }
-      getBandalartMainCell(bandalartId)
     }
+    _uiState.update { it.copy(isShowSkeleton = false) }
   }
 
   private fun getBandalartMainCell(bandalartId: Long) {
     viewModelScope.launch {
-      _uiState.update {
-        it.copy(
-          isShowSkeleton = false,
-          bandalartCellData = bandalartRepository.getBandalartMainCell(bandalartId)!!.toUiModel(),
-        )
+      bandalartRepository.getBandalartMainCell(bandalartId)?.let { mainCell ->
+        _uiState.update {
+          it.copy(
+            bandalartCellData = mainCell.toUiModel(),
+            isShowSkeleton = false,
+          )
+        }
+        bottomSheetDataChanged(flag = false)
       }
-      bottomSheetDataChanged(flag = false)
-    }
-    _uiState.update {
-      it.copy(isLoading = false)
     }
   }
 
   fun createBandalart() {
     viewModelScope.launch {
       if (_uiState.value.bandalartList.size + 1 > 5) {
-        _eventChannel.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
+        _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
         return@launch
       }
+
       _uiState.update { it.copy(isShowSkeleton = true) }
-      val bandalart = bandalartRepository.createBandalart()
-      _uiState.update {
-        it.copy(isBandalartListBottomSheetOpened = false)
+
+      val bandalart = bandalartRepository.createBandalart()?.let { bandalart ->
+        _uiState.update {
+          it.copy(isBandalartListBottomSheetOpened = false)
+        }
+        // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 id 를 전달
+        getBandalartList(bandalart.id)
+        // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
+        setRecentBandalartId(bandalart.id!!)
+        // 새로운 반다라트를 로컬에 저장
+        upsertBandalartId(bandalart.id!!)
+        _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
       }
-      // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 id 를 전달
-      getBandalartList(bandalart!!.id)
-      // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
-      setRecentBandalartId(bandalart.id!!)
-      // 새로운 반다라트를 로컬에 저장
-      upsertBandalartId(bandalart.id!!)
-      _eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
     }
   }
 
   fun deleteBandalart(bandalartId: Long) {
     viewModelScope.launch {
       _uiState.update { it.copy(isShowSkeleton = true) }
+
       bandalartRepository.deleteBandalart(bandalartId)
       _uiState.update {
         it.copy(isBandalartDeleted = true)
@@ -206,7 +207,7 @@ class HomeViewModel @Inject constructor(
       openBandalartDeleteAlertDialog(false)
       getBandalartList()
       deleteBandalartId(bandalartId)
-      _eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
+      _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
     }
   }
 
@@ -251,9 +252,7 @@ class HomeViewModel @Inject constructor(
   }
 
   private suspend fun getRecentBandalartId(): Long {
-    return viewModelScope.async {
-      bandalartRepository.getRecentBandalartId()
-    }.await()
+    return bandalartRepository.getRecentBandalartId()
   }
 
   fun setRecentBandalartId(bandalartId: Long) {
@@ -269,9 +268,9 @@ class HomeViewModel @Inject constructor(
   }
 
   suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
-    return viewModelScope.async {
+    return withContext(viewModelScope.coroutineContext) {
       bandalartRepository.checkCompletedBandalartId(bandalartId)
-    }.await()
+    }
   }
 
   private fun deleteBandalartId(bandalartId: Long) {
@@ -282,13 +281,17 @@ class HomeViewModel @Inject constructor(
 
   fun navigateToComplete() {
     viewModelScope.launch {
-      _eventChannel.send(
-        HomeUiEvent.NavigateToComplete(
-          id = uiState.value.bandalartDetailData!!.id,
-          title = uiState.value.bandalartDetailData!!.title!!,
-          profileEmoji = uiState.value.bandalartDetailData?.profileEmoji ?: "",
-        ),
-      )
+      uiState.value.bandalartDetailData?.let { detail ->
+        detail.title?.let { title ->
+          _uiEvent.send(
+            HomeUiEvent.NavigateToComplete(
+              id = detail.id,
+              title = title,
+              profileEmoji = detail.profileEmoji.orEmpty(),
+            ),
+          )
+        }
+      }
     }
   }
 }
