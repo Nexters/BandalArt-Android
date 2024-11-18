@@ -6,19 +6,6 @@ import com.nexters.bandalart.android.core.common.ErrorHandlerActions
 import com.nexters.bandalart.android.core.common.UiText
 import com.nexters.bandalart.android.core.common.handleException
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.CheckCompletedBandalartKeyUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.CreateBandalartUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartKeyUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.DeleteBandalartUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartDetailUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartListUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetBandalartMainCellUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetPrevBandalartListUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.GetRecentBandalartKeyUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.SetRecentBandalartKeyUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.ShareBandalartUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpdateBandalartEmojiUseCase
-import com.nexters.bandalart.android.core.domain.usecase.bandalart.UpsertBandalartKeyUseCase
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.feature.home.mapper.toEntity
 import com.nexters.bandalart.android.feature.home.mapper.toUiModel
@@ -97,19 +84,19 @@ sealed interface HomeUiEvent {
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-  private val getBandalartListUseCase: GetBandalartListUseCase,
-  private val getBandalartDetailUseCase: GetBandalartDetailUseCase,
-  private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
-  private val createBandalartUseCase: CreateBandalartUseCase,
-  private val deleteBandalartUseCase: DeleteBandalartUseCase,
-  private val updateBandalartEmojiUseCase: UpdateBandalartEmojiUseCase,
-  private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
-  private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
-  private val shareBandalartUseCase: ShareBandalartUseCase,
-  private val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase,
-  private val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase,
-  private val deleteBandalartKeyUseCase: DeleteBandalartKeyUseCase,
-  private val getPrevBandalartListUseCase: GetPrevBandalartListUseCase,
+//  private val getBandalartListUseCase: GetBandalartListUseCase,
+//  private val getBandalartDetailUseCase: GetBandalartDetailUseCase,
+//  private val getBandalartMainCellUseCase: GetBandalartMainCellUseCase,
+//  private val createBandalartUseCase: CreateBandalartUseCase,
+//  private val deleteBandalartUseCase: DeleteBandalartUseCase,
+//  private val updateBandalartEmojiUseCase: UpdateBandalartEmojiUseCase,
+//  private val getRecentBandalartKeyUseCase: GetRecentBandalartKeyUseCase,
+//  private val setRecentBandalartKeyUseCase: SetRecentBandalartKeyUseCase,
+// private val shareBandalartUseCase: ShareBandalartUseCase,
+//  private val upsertBandalartKeyUseCase: UpsertBandalartKeyUseCase,
+//  private val checkCompletedBandalartKeyUseCase: CheckCompletedBandalartKeyUseCase,
+//  private val deleteBandalartKeyUseCase: DeleteBandalartKeyUseCase,
+//  private val getPrevBandalartListUseCase: GetPrevBandalartListUseCase,
   private val bandalartRepository: BandalartRepository,
 ) : ViewModel(), ErrorHandlerActions {
 
@@ -123,9 +110,10 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isShowSkeleton = true) }
   }
 
-  fun getBandalartList(bandalartKey: String? = null) {
+  fun getBandalartList(bandalartId: Long? = null) {
     viewModelScope.launch {
-      val result = getBandalartListUseCase()
+      // val result = getBandalartListUseCase()
+      val result = bandalartRepository.getBandalartList()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalartList = result.getOrNull()!!.map { it.toUiModel() }
@@ -133,7 +121,8 @@ class HomeViewModel @Inject constructor(
             it.copy(bandalartList = bandalartList.toImmutableList())
           }
           // 이전 반다라트 목록 상태 조회
-          val prevBandalartList = getPrevBandalartListUseCase()
+          // val prevBandalartList = getPrevBandalartListUseCase()
+          val prevBandalartList = bandalartRepository.getPrevBandalartList()
 
           // 새로 업데이트 된 상태와 이전 상태를 비교
           val completedKeys = bandalartList.filter { bandalart ->
@@ -149,13 +138,14 @@ class HomeViewModel @Inject constructor(
 
           // 서버의 데이터와 로컬의 데이터를 동기화
           bandalartList.forEach { bandalart ->
-            upsertBandalartKeyUseCase(bandalart.key, bandalart.isCompleted)
+            // upsertBandalartKeyUseCase(bandalart.key, bandalart.isCompleted)
+            bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
           }
 
           // 생성한 반다라트 표를 화면에 띄우는 경우
-          if (bandalartKey != null) {
+          if (bandalartId != null) {
             _uiState.update { it.copy(isShowSkeleton = true) }
-            getBandalartDetail(bandalartKey)
+            getBandalartDetail(bandalartId)
             return@launch
           }
           // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
@@ -167,7 +157,7 @@ class HomeViewModel @Inject constructor(
           // 반다라트 목록이 존재할 경우
           else {
             // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
-            val recentBandalartkey = getRecentBandalartKey()
+            val recentBandalartkey = getRecentBandalartId()
             // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
             if (bandalartList.any { it.key == recentBandalartkey }) {
               getBandalartDetail(recentBandalartkey)
@@ -200,9 +190,10 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun getBandalartDetail(bandalartKey: String, isBandalartCompleted: Boolean = false) {
+  fun getBandalartDetail(bandalartId: Long, isBandalartCompleted: Boolean = false) {
     viewModelScope.launch {
-      val result = getBandalartDetailUseCase(bandalartKey)
+      // val result = getBandalartDetailUseCase(bandalartId)
+      val result = bandalartRepository.getBandalartDetail(bandalartId)
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalartDetailData = result.getOrNull()!!.toUiModel()
@@ -213,7 +204,7 @@ class HomeViewModel @Inject constructor(
               isBandalartCompleted = isBandalartCompleted,
             )
           }
-          getBandalartMainCell(bandalartKey)
+          getBandalartMainCell(bandalartId)
         }
 
         result.isSuccess && result.getOrNull() == null -> {
@@ -235,9 +226,10 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  private fun getBandalartMainCell(bandalartKey: String) {
+  private fun getBandalartMainCell(bandalartId: Long) {
     viewModelScope.launch {
-      val result = getBandalartMainCellUseCase(bandalartKey)
+      // val result = getBandalartMainCellUseCase(bandalartId)
+      val result = bandalartRepository.getBandalartMainCell(bandalartId)
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update {
@@ -282,19 +274,20 @@ class HomeViewModel @Inject constructor(
         return@launch
       }
       _uiState.update { it.copy(isShowSkeleton = true) }
-      val result = createBandalartUseCase()
+      // val result = createBandalartUseCase()
+      val result = bandalartRepository.createBandalart()
       when {
         result.isSuccess && result.getOrNull() != null -> {
           val bandalart = result.getOrNull()!!
           _uiState.update {
             it.copy(isBandalartListBottomSheetOpened = false)
           }
-          // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 key 를 전달
-          getBandalartList(bandalart.key)
+          // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 id 를 전달
+          getBandalartList(bandalart.id)
           // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
-          setRecentBandalartKey(bandalart.key)
+          setRecentBandalartId(bandalart.id)
           // 새로운 반다라트를 로컬에 저장
-          upsertBandalartKey(bandalart.key)
+          upsertBandalartId(bandalart.id)
           _eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
         }
 
@@ -317,14 +310,15 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun deleteBandalart(bandalartKey: String) {
+  fun deleteBandalart(bandalartId: Long) {
     if (_uiState.value.isNetworking)
       return
 
     _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
       _uiState.update { it.copy(isShowSkeleton = true) }
-      val result = deleteBandalartUseCase(bandalartKey)
+     // val result = deleteBandalartUseCase(bandalartId)
+      val result = bandalartRepository.deleteBandalart(bandalartId)
       when {
         result.isSuccess && result.getOrNull() != null -> {
           _uiState.update {
@@ -332,7 +326,7 @@ class HomeViewModel @Inject constructor(
           }
           openBandalartDeleteAlertDialog(false)
           getBandalartList()
-          deleteBandalartKey(bandalartKey)
+          deleteBandalartId(bandalartId)
           _eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
 
@@ -357,8 +351,8 @@ class HomeViewModel @Inject constructor(
   }
 
   fun updateBandalartEmoji(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartEmojiModel: UpdateBandalartEmojiModel,
   ) {
     if (_uiState.value.isNetworking)
@@ -367,9 +361,9 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isNetworking = true) }
     viewModelScope.launch {
       // _uiState.update { it.copy(isLoading = true) }
-      val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
+      // val result = updateBandalartEmojiUseCase(bandalartKey, cellKey, updateBandalartEmojiModel.toEntity())
+      val result = bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel.toEntity())
       when {
-        result.isSuccess && result.getOrNull() != null -> {}
         result.isSuccess && result.getOrNull() == null -> {
           Timber.e("Request succeeded but data validation failed")
         }
@@ -448,17 +442,17 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
   }
 
-  private suspend fun getRecentBandalartKey(): String {
+  private suspend fun getRecentBandalartId(): Long {
     return viewModelScope.async {
       // getRecentBandalartKeyUseCase()
-      bandalartRepository.getRecentBandalartKey()
+      bandalartRepository.getRecentBandalartId()
     }.await()
   }
 
-  fun setRecentBandalartKey(bandalartKey: String) {
+  fun setRecentBandalartId(bandalartId: Long) {
     viewModelScope.launch {
       //setRecentBandalartKeyUseCase(bandalartKey)
-      bandalartRepository.setRecentBandalartKey(bandalartKey)
+      bandalartRepository.setRecentBandalartId(bandalartId)
     }
   }
 
@@ -466,24 +460,24 @@ class HomeViewModel @Inject constructor(
     _uiState.update { it.copy(shareUrl = "") }
   }
 
-  private fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean = false) {
+  private fun upsertBandalartId(bandalartId: Long, isCompleted: Boolean = false) {
     viewModelScope.launch {
       // upsertBandalartKeyUseCase(bandalartKey, isCompleted)
-      bandalartRepository.upsertBandalartKey(bandalartKey, isCompleted)
+      bandalartRepository.upsertBandalartId(bandalartId, isCompleted)
     }
   }
 
-  suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
+  suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
     return viewModelScope.async {
       // checkCompletedBandalartKeyUseCase(bandalartKey)
-      bandalartRepository.checkCompletedBandalartKey(bandalartKey)
+      bandalartRepository.checkCompletedBandalartId(bandalartId)
     }.await()
   }
 
-  private suspend fun deleteBandalartKey(bandalartKey: String) {
+  private suspend fun deleteBandalartId(bandalartId: Long) {
     viewModelScope.launch {
       // deleteBandalartKeyUseCase(bandalartKey)
-      bandalartRepository.deleteBandalartKey(bandalartKey)
+      bandalartRepository.deleteBandalartId(bandalartId)
     }
   }
 

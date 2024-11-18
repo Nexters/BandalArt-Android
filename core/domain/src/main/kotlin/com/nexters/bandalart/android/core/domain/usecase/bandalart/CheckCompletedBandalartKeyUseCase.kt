@@ -9,6 +9,6 @@ class CheckCompletedBandalartKeyUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
   suspend operator fun invoke(bandalartKey: String): Boolean {
-    return repository.checkCompletedBandalartKey(bandalartKey)
+    return repository.checkCompletedBandalartId(bandalartKey)
   }
 }

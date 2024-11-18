@@ -9,6 +9,6 @@ class SetRecentBandalartKeyUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
   suspend operator fun invoke(recentBandalartKey: String) {
-    repository.setRecentBandalartKey(recentBandalartKey)
+    repository.setRecentBandalartId(recentBandalartKey)
   }
 }

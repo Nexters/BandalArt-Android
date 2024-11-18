@@ -3,7 +3,7 @@ package com.nexters.bandalart.android.core.domain.entity
 /**
  * 반다라트 셀 조회
  *
- * @param key 셀 고유 키
+ * @param id 셀 고유 id
  * @param title 셀 제목
  * @param description 셀 설명
  * @param dueDate 셀 마감일, 미설정인 경우 null
@@ -12,12 +12,12 @@ package com.nexters.bandalart.android.core.domain.entity
  * @param profileEmoji 프로필 이모지 (Sub Cell, Task Cell 이면 null)
  * @param mainColor 메인 테마 색상 (Sub Cell, Task Cell 이면 null)
  * @param subColor 서브 테마 색상 (Sub Cell, Task Cell 이면 null)
- * @param parentKey 부모 셀 고유 키 (Main Cell 이면 null)
- * @param children 하위 셀 목록(Task Cell 이면 빈 배열)
+ * @param parentId 부모 셀 고유 키 (Main Cell 이면 null)
  */
 
 data class BandalartCellEntity(
-  val key: String,
+  val id: Long? = null,  // nullable (생성 시에는 id 없음)
+  val bandalartId: Long,  // non-null (항상 속한 반다라트 존재)
   val title: String?,
   val description: String?,
   val dueDate: String?,
@@ -26,6 +26,5 @@ data class BandalartCellEntity(
   val profileEmoji: String?,
   val mainColor: String?,
   val subColor: String?,
-  val parentKey: String?,
-  val children: List<BandalartCellEntity>,
+  val parentId: Long?,  // nullable (최상위 셀은 parentId 없음)
 )

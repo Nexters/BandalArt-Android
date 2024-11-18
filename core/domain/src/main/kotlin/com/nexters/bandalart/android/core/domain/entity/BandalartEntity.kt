@@ -3,7 +3,7 @@ package com.nexters.bandalart.android.core.domain.entity
 /**
  * 반다라트 생성
  *
- * @param key 셀 고유 키
+ * @param id 셀 고유 id
  * @param mainColor 메인 테마 색상 (Sub Cell, Task Cell 이면 null)
  * @param subColor 서브 테마 색상 (Sub Cell, Task Cell 이면 null)
  * @param profileEmoji 프로필 이모지 (Sub Cell, Task Cell 이면 null)
@@ -11,7 +11,7 @@ package com.nexters.bandalart.android.core.domain.entity
  */
 
 data class BandalartEntity(
-  val key: Long,
+  val id: Long? = null,  // nullable (생성 시에는 id 없음)
   val mainColor: String,
   val subColor: String,
   val profileEmoji: String?,

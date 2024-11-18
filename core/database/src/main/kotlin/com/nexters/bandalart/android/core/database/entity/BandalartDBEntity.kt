@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class BandalartDBEntity(
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "id")
-  val id: Long,
+  val id: Long? = null,
 
   @ColumnInfo(name = "mainColor")
   val mainColor: String = "0xFF3FFFBA",

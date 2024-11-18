@@ -1,13 +1,13 @@
 package com.nexters.bandalart.android.core.datastore.di
 
-import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartKeyDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartIdDataSource
 import com.nexters.bandalart.android.core.datastore.datasource.GuestLoginLocalDataSource
 import com.nexters.bandalart.android.core.datastore.datasource.OnboardingDataSource
-import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartKeyDataSource
-import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartKeyDataStoreImpl
+import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartIdDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartIdDataStoreImpl
 import com.nexters.bandalart.android.core.datastore.datasource.GuestLoginLocalDataSourceImpl
 import com.nexters.bandalart.android.core.datastore.datasource.OnboardingDataSourceImpl
-import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartKeyDataSourceImpl
+import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartIdDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,14 +27,14 @@ internal abstract class DataSourceModule {
   @Binds
   @Singleton
   abstract fun bindRecentBandalartKeyDataSource(
-    recentBandalartKeyDataSourceImpl: RecentBandalartKeyDataSourceImpl,
-  ): RecentBandalartKeyDataSource
+    recentBandalartKeyDataSourceImpl: RecentBandalartIdDataSourceImpl,
+  ): RecentBandalartIdDataSource
 
   @Binds
   @Singleton
   abstract fun bindCompletedBandalartKeyDataSource(
-    completedBandalartKeyDataStoreImpl: CompletedBandalartKeyDataStoreImpl,
-  ): CompletedBandalartKeyDataSource
+    completedBandalartIdDataStoreImpl: CompletedBandalartIdDataStoreImpl,
+  ): CompletedBandalartIdDataSource
 
   @Binds
   @Singleton

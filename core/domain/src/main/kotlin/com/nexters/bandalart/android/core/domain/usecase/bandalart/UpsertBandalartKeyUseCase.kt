@@ -9,6 +9,6 @@ class UpsertBandalartKeyUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
   suspend operator fun invoke(bandalartKey: String, isCompleted: Boolean = false) {
-    repository.upsertBandalartKey(bandalartKey, isCompleted)
+    repository.upsertBandalartId(bandalartKey, isCompleted)
   }
 }

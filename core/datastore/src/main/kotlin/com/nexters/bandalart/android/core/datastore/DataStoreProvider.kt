@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import java.io.IOException
 import javax.inject.Inject
@@ -19,19 +20,19 @@ class DataStoreProvider @Inject constructor(
 
   private companion object {
     private const val GUEST_LOGIN_TOKEN = "guest_login_token"
-    private const val RECENT_BANDALART_KEY = "recent_bandalart_key"
-    private const val COMPLETED_BANDALART_LIST_KEY = "completed_bandalart_list_key"
-    private const val ONBOARDING_COMPLETED_KEY = "completed_onboarding_key"
+    private const val RECENT_BANDALART_ID = "recent_bandalart_id"
+    private const val COMPLETED_BANDALART_LIST_ID = "completed_bandalart_list_id"
+    private const val ONBOARDING_COMPLETED_ID = "completed_onboarding_id"
   }
 
-  private val prefKeyGuestLoginToken = stringPreferencesKey(GUEST_LOGIN_TOKEN)
-  private val prefKeyRecentBandalartKey = stringPreferencesKey(RECENT_BANDALART_KEY)
-  private val prefKeyCompletedBandalartList = stringPreferencesKey(COMPLETED_BANDALART_LIST_KEY)
-  private val prefKeyOnboardingCompletedKey = booleanPreferencesKey(ONBOARDING_COMPLETED_KEY)
+  private val prefGuestLoginToken = stringPreferencesKey(GUEST_LOGIN_TOKEN)
+  private val prefRecentBandalartId = longPreferencesKey(RECENT_BANDALART_ID)
+  private val prefCompletedBandalartList = stringPreferencesKey(COMPLETED_BANDALART_LIST_ID)
+  private val prefOnboardingCompletedId = booleanPreferencesKey(ONBOARDING_COMPLETED_ID)
 
   suspend fun setGuestLoginToken(guestLoginToken: String) {
     dataStore.edit { preferences ->
-      preferences[prefKeyGuestLoginToken] = guestLoginToken
+      preferences[prefGuestLoginToken] = guestLoginToken
     }
   }
 
@@ -39,79 +40,79 @@ class DataStoreProvider @Inject constructor(
     .catch { exception ->
       if (exception is IOException) emit(emptyPreferences())
       else throw exception
-    }.first()[prefKeyGuestLoginToken] ?: ""
+    }.first()[prefGuestLoginToken] ?: ""
 
-  suspend fun setRecentBandalartKey(recentBandalartKey: String) {
+  suspend fun setRecentBandalartId(recentBandalartId: Long) {
     dataStore.edit { preferences ->
-      preferences[prefKeyRecentBandalartKey] = recentBandalartKey
+      preferences[prefRecentBandalartId] = recentBandalartId
     }
   }
 
-  suspend fun getRecentBandalartKey() = dataStore.data
+  suspend fun getRecentBandalartId() = dataStore.data
     .catch { exception ->
       if (exception is IOException) emit(emptyPreferences())
       else throw exception
-    }.first()[prefKeyRecentBandalartKey] ?: ""
+    }.first()[prefRecentBandalartId] ?: 0L
 
   suspend fun getPrevBandalartList() = stringToList(
     dataStore.data
       .catch { exception ->
         if (exception is IOException) emit(emptyPreferences())
         else throw exception
-      }.first()[prefKeyCompletedBandalartList] ?: "",
+      }.first()[prefCompletedBandalartList] ?: "",
   )
 
   // 키가 존재하면 값을 갱신, 없으면 추가
-  suspend fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean) {
+  suspend fun upsertBandalartId(bandalartId: Long, isCompleted: Boolean) {
     dataStore.edit { preferences ->
-      val currentListAsString = preferences[prefKeyCompletedBandalartList] ?: ""
+      val currentListAsString = preferences[prefCompletedBandalartList] ?: ""
       val currentList = stringToList(currentListAsString)
-      val isKeyExists = currentList.any { it.first == bandalartKey }
+      val isKeyExists = currentList.any { it.first == bandalartId }
       val updatedList = if (isKeyExists) {
         currentList.map {
-          if (it.first == bandalartKey) Pair(bandalartKey, isCompleted)
+          if (it.first == bandalartId) Pair(bandalartId, isCompleted)
           else it
         }
       } else {
-        currentList + Pair(bandalartKey, isCompleted)
+        currentList + Pair(bandalartId, isCompleted)
       }
-      preferences[prefKeyCompletedBandalartList] = listToString(updatedList)
+      preferences[prefCompletedBandalartList] = listToString(updatedList)
     }
   }
 
   // 목표를 달성하지 못했었는데 이번에 달성한 경우를 검사
-  suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean = dataStore.data
+  suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean = dataStore.data
     .catch { exception ->
       if (exception is IOException) emit(emptyPreferences())
       else throw exception
-    }.first()[prefKeyCompletedBandalartList]?.let { currentListAsString ->
+    }.first()[prefCompletedBandalartList]?.let { currentListAsString ->
     val currentList = stringToList(currentListAsString)
     // 이전에 목표를 달성하지 않았었는지 확인
-    val wasCompleted = currentList.find { it.first == bandalartKey }?.second ?: false
+    val wasCompleted = currentList.find { it.first == bandalartId }?.second ?: false
     !wasCompleted
   } ?: false
 
-  suspend fun deleteBandalartKey(bandalartKey: String) {
+  suspend fun deleteBandalartId(bandalartId: Long) {
     dataStore.edit { preferences ->
-      val currentListAsString = preferences[prefKeyCompletedBandalartList] ?: ""
+      val currentListAsString = preferences[prefCompletedBandalartList] ?: ""
       val currentList = stringToList(currentListAsString)
-      val updatedList = currentList.filter { it.first != bandalartKey }
-      preferences[prefKeyCompletedBandalartList] = listToString(updatedList)
+      val updatedList = currentList.filter { it.first != bandalartId }
+      preferences[prefCompletedBandalartList] = listToString(updatedList)
     }
   }
 
-  private fun listToString(list: List<Pair<String, Boolean>>): String {
+  private fun listToString(list: List<Pair<Long, Boolean>>): String {
     return Json.encodeToString(list)
   }
 
-  private fun stringToList(data: String): List<Pair<String, Boolean>> {
+  private fun stringToList(data: String): List<Pair<Long, Boolean>> {
     if (data.isEmpty()) return emptyList()
     return Json.decodeFromString(data)
   }
 
   suspend fun setOnboardingCompletedStatus(flag: Boolean) {
     dataStore.edit { preferences ->
-      preferences[prefKeyOnboardingCompletedKey] = flag
+      preferences[prefOnboardingCompletedId] = flag
     }
   }
 
@@ -119,5 +120,5 @@ class DataStoreProvider @Inject constructor(
     .catch { exception ->
       if (exception is IOException) emit(emptyPreferences())
       else throw exception
-    }.first()[prefKeyOnboardingCompletedKey] ?: false
+    }.first()[prefOnboardingCompletedId] ?: false
 }

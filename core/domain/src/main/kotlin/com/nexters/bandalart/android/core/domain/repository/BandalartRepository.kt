@@ -3,7 +3,6 @@ package com.nexters.bandalart.android.core.domain.repository
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
-import com.nexters.bandalart.android.core.domain.entity.BandalartShareEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEntity
@@ -25,125 +24,125 @@ interface BandalartRepository {
   /**
    * 반다라트 상세 조회
    *
-   * @param bandalartKey 반다라트 고유 키
+   * @param bandalartId 반다라트 고유 id
    */
-  suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailEntity?
+  suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailEntity?
 
   /**
    * 반다라트 삭제
    *
-   * @param bandalartKey 반다라트 고유 키
+   * @param bandalartId 반다라트 고유 id
    */
-  suspend fun deleteBandalart(bandalartKey: String)
+  suspend fun deleteBandalart(bandalartId: Long)
 
   /**
    * 반다라트 메인 셀 조회
    *
-   * @param bandalartKey 반다라트 고유 키
+   * @param bandalartId 반다라트 고유 id
    */
-  suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellEntity?
+  suspend fun getBandalartMainCell(bandalartId: Long): BandalartCellEntity?
 
   /**
    * 반다라트 셀 조회
    *
-   * @param bandalartKey 반다라트 고유 키
-   * @param cellKey 셀 고유 키
+   * @param bandalartId 반다라트 고유 id
+   * @param cellId 셀 고유 id
    */
-  suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellEntity?
+  suspend fun getBandalartCell(bandalartId: Long, cellId: Long): BandalartCellEntity?
 
   /**
    * 반다라트 메인 셀 수정
    *
-   * @param bandalartKey 반다라트 고유 키
-   * @param cellKey 메인 셀 고유 키
+   * @param bandalartId 반다라트 고유 id
+   * @param cellId 메인 셀 고유 id
    */
   suspend fun updateBandalartMainCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartMainCellEntity: UpdateBandalartMainCellEntity,
   )
 
   /**
    * 반다라트 서브 셀 수정
    *
-   * @param bandalartKey 반다라트 고유 키
-   * @param cellKey 서브 셀 고유 키
+   * @param bandalartId 반다라트 고유 id
+   * @param cellId 서브 셀 고유 id
    */
   suspend fun updateBandalartSubCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartSubCellEntity: UpdateBandalartSubCellEntity,
   )
 
   /**
    * 반다라트 태스크 셀 수정
    *
-   * @param bandalartKey 빈디라트 고유 키
-   * @param cellKey 테스크 셀 고유 키
+   * @param bandalartId 빈디라트 고유 id
+   * @param cellId 테스크 셀 고유 id
    */
   suspend fun updateBandalartTaskCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
   )
 
   /**
    * 반다라트 이모지 수정
    *
-   * @param bandalartKey 빈디라트 고유 키
-   * @param cellKey 테스크 셀 고유 키
+   * @param bandalartId 빈디라트 고유 id
+   * @param cellId 테스크 셀 고유 id
    */
   suspend fun updateBandalartEmoji(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartEmojiEntity: UpdateBandalartEmojiEntity,
   )
 
   /**
    * 반다라트 셀 삭제
-   * @param bandalartKey 메인 셀 고유 키
-   * @param cellKey 셀 고유 키
+   * @param bandalartId 메인 셀 고유 id
+   * @param cellId 셀 고유 id
    */
-  suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String)
+  suspend fun deleteBandalartCell(bandalartId: Long, cellId: Long)
 
   /**
-   * 최근에 수정한 반다라트 고유 키 수정
-   * @param recentBandalartKey 최근에 수정한 반다라트 고유키
+   * 최근에 수정한 반다라트 고유 id 수정
+   * @param recentBandalartId 최근에 수정한 반다라트 고유 id
    */
-  suspend fun setRecentBandalartKey(recentBandalartKey: String)
+  suspend fun setRecentBandalartId(recentBandalartId: Long)
 
   /**
-   * 최근에 수정한 반다라트 고유 키 조회
+   * 최근에 수정한 반다라트 고유 id 조회
    */
-  suspend fun getRecentBandalartKey(): String
+  suspend fun getRecentBandalartId(): Long
 
 //  /**
 //   * 반다라트 공유
-//   * @param bandalartKey 반다라트 고유 키
+//   * @param bandalartKey 반다라트 고유 id
 //   */
 //  suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity?
 
   /**
-   * 바로 직전 상태의 반다라트 키와 목표달성 여부를 가진 목록을 조회
+   * 바로 직전 상태의 반다라트 id 와 목표달성 여부를 가진 목록을 조회
    */
-  suspend fun getPrevBandalartList(): List<Pair<String, Boolean>>
+  suspend fun getPrevBandalartList(): List<Pair<Long, Boolean>>
 
   /**
-   * 반다라트 키와 반다라트의 목표 달성 여부를 갱신 및 추가
-   * @param bandalartKey 반다라트 고유 키
+   * 반다라트 id 와 반다라트의 목표 달성 여부를 갱신 및 추가
+   * @param bandalartId 반다라트 고유 id
    * @param isCompleted 반다라트 완료 여부
    */
-  suspend fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean)
+  suspend fun upsertBandalartId(bandalartId: Long, isCompleted: Boolean)
 
   /**
    * 이번에 목표를 달성한 반다라트 인지 여부 확인
-   * @param bandalartKey 반다라트 고유 키
+   * @param bandalartId 반다라트 고유 id
    */
-  suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean
+  suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean
 
   /**
    * 삭제한 반다라트를 제거
-   * @param bandalartKey 반다라트 고유 키
+   * @param bandalartId 반다라트 고유 id
    */
-  suspend fun deleteBandalartKey(bandalartKey: String)
+  suspend fun deleteBandalartId(bandalartId: Long)
 }

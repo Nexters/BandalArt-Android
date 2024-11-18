@@ -9,6 +9,6 @@ class DeleteBandalartKeyUseCase @Inject constructor(
   private val repository: BandalartRepository,
 ) {
   suspend operator fun invoke(bandalartKey: String) {
-    repository.deleteBandalartKey(bandalartKey)
+    repository.deleteBandalartId(bandalartKey)
   }
 }

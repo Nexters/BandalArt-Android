@@ -24,10 +24,10 @@ import androidx.room.PrimaryKey
 data class BandalartCellDBEntity(
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "id")
-  val id: Long,
+  val id: Long? = null,
 
   @ColumnInfo(name = "bandalartId")
-  val bandalartId: String,
+  val bandalartId: Long,
 
   @ColumnInfo(name = "title")
   val title: String? = null,
@@ -54,5 +54,5 @@ data class BandalartCellDBEntity(
   val subColor: String? = "0xFF111827",
 
   @ColumnInfo(name = "parentId")
-  val parentId: Long? = null
+  val parentId: Long? = null  // 계층 구조를 위한 self-referencing
 )

@@ -1,10 +1,10 @@
 package com.nexters.bandalart.android.core.data.repository
 
-import com.nexters.bandalart.android.core.data.mapper.toDBEntity
+import com.nexters.bandalart.android.core.data.mapper.toDto
 import com.nexters.bandalart.android.core.data.mapper.toEntity
 import com.nexters.bandalart.android.core.database.BandalartDao
-import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartKeyDataSource
-import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartKeyDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.CompletedBandalartIdDataSource
+import com.nexters.bandalart.android.core.datastore.datasource.RecentBandalartIdDataSource
 import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.android.core.domain.entity.BandalartEntity
@@ -17,106 +17,121 @@ import javax.inject.Inject
 
 internal class BandalartRepositoryImpl @Inject constructor(
   // private val bandalartRemoteDataSource: BandalartRemoteDataSource,
-  private val recentBandalartKeyDataSource: RecentBandalartKeyDataSource,
-  private val completedBandalartKeyDataSource: CompletedBandalartKeyDataSource,
+  private val recentBandalartIdDataSource: RecentBandalartIdDataSource,
+  private val completedBandalartIdDataSource: CompletedBandalartIdDataSource,
   private val bandalartDao: BandalartDao,
 ) : BandalartRepository {
-  override suspend fun createBandalart(): BandalartEntity? {
+  override suspend fun createBandalart(): BandalartEntity {
     // return bandalartRemoteDataSource.createBandalart()?.toEntity()
-    return bandalartDao.createBandalart(bandalart.toDBEntity())
+    val bandalartId = bandalartDao.createEmptyBandalart()
+    return bandalartDao.getBandalart(bandalartId).toEntity()
   }
 
-  override suspend fun getBandalartList(): List<BandalartDetailEntity>? {
+  override suspend fun getBandalartList(): List<BandalartDetailEntity> {
     // return bandalartRemoteDataSource.getBandalartList()?.map { it.toEntity() }
     return bandalartDao.getBandalartList().map { it.toEntity() }
   }
 
-  override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailEntity? {
+  override suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailEntity? {
     // return bandalartRemoteDataSource.getBandalartDetail(bandalartKey)?.toEntity()
     return bandalartDao.getBandalartDetail(bandalartId).toEntity()
   }
 
-  override suspend fun deleteBandalart(bandalartKey: String) {
+  override suspend fun deleteBandalart(bandalartId: Long) {
     // bandalartRemoteDataSource.deleteBandalart(bandalartKey)
-    bandalartDao.deleteBandalart(bandalart.toDBEntity())
+    bandalartDao.getBandalart(bandalartId).let {
+      bandalartDao.deleteBandalart(it)
+    }
   }
 
-  override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellEntity? {
+  override suspend fun getBandalartMainCell(bandalartId: Long): BandalartCellEntity? {
     // return bandalartRemoteDataSource.getBandalartMainCell(bandalartKey)?.toEntity()
-    return bandalartDao.getBandalartMainCell(bandalartId)
+    return bandalartDao.getBandalartMainCell(bandalartId).cell.toEntity()
   }
 
-  override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellEntity? {
+  override suspend fun getBandalartCell(bandalartId: Long, cellId: Long): BandalartCellEntity? {
     // return bandalartRemoteDataSource.getBandalartCell(bandalartKey, cellKey)?.toEntity()
-    return bandalartDao.getBandalartCell(cellId)
+    return bandalartDao.getBandalartCell(cellId).cell.toEntity()
   }
 
   override suspend fun updateBandalartMainCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartMainCellEntity: UpdateBandalartMainCellEntity,
   ) {
     // bandalartRemoteDataSource.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellEntity.toModel())
-    bandalartDao.updateMainCellWithDto(cellId, updateDto)
+    bandalartDao.updateMainCellWithDto(
+      cellId,
+      updateBandalartMainCellEntity.toDto()
+    )
   }
 
   override suspend fun updateBandalartSubCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartSubCellEntity: UpdateBandalartSubCellEntity,
   ) {
     // bandalartRemoteDataSource.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellEntity.toModel())
-    bandalartDao.updateSubCellWithDto(cellId, updateDto)
+    bandalartDao.updateSubCellWithDto(
+      cellId,
+      updateBandalartSubCellEntity.toDto()
+    )
   }
 
   override suspend fun updateBandalartTaskCell(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
   ) {
     // bandalartRemoteDataSource.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellEntity.toModel())
-    bandalartDao.updateTaskCellWithDto(cellId, updateDto)
+    bandalartDao.updateTaskCellWithDto(
+      cellId,
+      updateBandalartTaskCellEntity.toDto()
+    )
   }
 
   override suspend fun updateBandalartEmoji(
-    bandalartKey: String,
-    cellKey: String,
+    bandalartId: Long,
+    cellId: Long,
     updateBandalartEmojiEntity: UpdateBandalartEmojiEntity,
   ) {
     // bandalartRemoteDataSource.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiEntity.toModel())
-    bandalartDao.updateEmojiWithDto(cellId, updateDto)
+    bandalartDao.updateEmojiWithDto(
+      cellId,
+      updateBandalartEmojiEntity.toDto()
+    )
   }
 
-  override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
+  override suspend fun deleteBandalartCell(bandalartId: Long, cellId: Long) {
     // bandalartRemoteDataSource.deleteBandalartCell(bandalartKey, cellKey)
     bandalartDao.deleteBandalartCell(cellId)
   }
 
-  override suspend fun setRecentBandalartKey(recentBandalartKey: String) {
-    recentBandalartKeyDataSource.setRecentBandalartKey(recentBandalartKey)
+  override suspend fun setRecentBandalartId(recentBandalartId: Long) {
+    recentBandalartIdDataSource.setRecentBandalartId(recentBandalartId)
   }
 
-  override suspend fun getRecentBandalartKey(): String {
-    return recentBandalartKeyDataSource.getRecentBandalartKey()
+  override suspend fun getRecentBandalartId(): Long {
+    return recentBandalartIdDataSource.getRecentBandalartId()
   }
 
 //  override suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity? {
 //    return bandalartRemoteDataSource.shareBandalart(bandalartKey)?.toEntity()
 //  }
 
-  override suspend fun getPrevBandalartList(): List<Pair<String, Boolean>> {
-    return completedBandalartKeyDataSource.getPrevBandalartList()
+  override suspend fun getPrevBandalartList(): List<Pair<Long, Boolean>> {
+    return completedBandalartIdDataSource.getPrevBandalartList()
   }
 
-  override suspend fun upsertBandalartKey(bandalartKey: String, isCompleted: Boolean) {
-    completedBandalartKeyDataSource.upsertBandalartKey(bandalartKey, isCompleted)
+  override suspend fun upsertBandalartId(bandalartId: Long, isCompleted: Boolean) {
+    completedBandalartIdDataSource.upsertBandalartId(bandalartId, isCompleted)
   }
 
-  override suspend fun checkCompletedBandalartKey(bandalartKey: String): Boolean {
-    return completedBandalartKeyDataSource.checkCompletedBandalartKey(bandalartKey)
+  override suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
+    return completedBandalartIdDataSource.checkCompletedBandalartId(bandalartId)
   }
 
-  override suspend fun deleteBandalartKey(bandalartKey: String) {
-    completedBandalartKeyDataSource.deleteBandalartKey(bandalartKey)
+  override suspend fun deleteBandalartId(bandalartId: Long) {
+    completedBandalartIdDataSource.deleteBandalartId(bandalartId)
   }
 }

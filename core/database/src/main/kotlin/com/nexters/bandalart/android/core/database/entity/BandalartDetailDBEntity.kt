@@ -13,6 +13,12 @@ import androidx.room.PrimaryKey
       parentColumns = ["id"],
       childColumns = ["id"],
       onDelete = ForeignKey.CASCADE
+    ),
+    ForeignKey(
+      entity = BandalartCellDBEntity::class,
+      parentColumns = ["id"],
+      childColumns = ["cellId"],
+      onDelete = ForeignKey.CASCADE
     )
   ]
 )
