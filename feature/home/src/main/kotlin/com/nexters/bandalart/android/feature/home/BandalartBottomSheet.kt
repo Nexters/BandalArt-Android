@@ -120,7 +120,7 @@ fun BandalartBottomSheet(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
 
-  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+  ObserveAsEvents(flow = viewModel.uiEvent) { event ->
     when (event) {
       is BottomSheetUiEvent.ShowToast -> {
         Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()

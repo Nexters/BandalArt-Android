@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.android.core.common.UiText
 import com.nexters.bandalart.android.core.domain.repository.BandalartRepository
-import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_KEY
+import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_ID
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_PROFILE_EMOJI
 import com.nexters.bandalart.android.feature.complete.navigation.BANDALART_TITLE
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,21 +44,21 @@ class CompleteViewModel @Inject constructor(
   private val bandalartRepository: BandalartRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-  private val key = savedStateHandle[BANDALART_KEY] ?: 0L
+  private val id = savedStateHandle[BANDALART_ID] ?: 0L
   private val title = savedStateHandle[BANDALART_TITLE] ?: ""
   private val profileEmoji = savedStateHandle[BANDALART_PROFILE_EMOJI] ?: ""
 
   private val _uiState = MutableStateFlow(CompleteUiState())
   val uiState: StateFlow<CompleteUiState> = this._uiState.asStateFlow()
 
-  private val _eventChannel = Channel<CompleteUiEvent>()
-  val eventFlow = _eventChannel.receiveAsFlow()
+  private val _uiEvent = Channel<CompleteUiEvent>()
+  val uiEvent = _uiEvent.receiveAsFlow()
 
   init {
     initComplete()
     viewModelScope.launch {
       bandalartRepository.upsertBandalartId(
-        bandalartId = key,
+        bandalartId = id,
         isCompleted = true,
       )
     }
@@ -67,7 +67,7 @@ class CompleteViewModel @Inject constructor(
   private fun initComplete() {
     _uiState.update {
       it.copy(
-        id = key,
+        id = id,
         title = title,
         profileEmoji = profileEmoji,
       )
@@ -78,7 +78,7 @@ class CompleteViewModel @Inject constructor(
 
   fun navigateToHome() {
     viewModelScope.launch {
-      _eventChannel.send(CompleteUiEvent.NavigateToHome)
+      _uiEvent.send(CompleteUiEvent.NavigateToHome)
     }
   }
 }

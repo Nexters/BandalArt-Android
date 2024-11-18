@@ -49,7 +49,7 @@ internal fun CompleteRoute(
   val context = LocalContext.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+  ObserveAsEvents(flow = viewModel.uiEvent) { event ->
     when (event) {
       is CompleteUiEvent.NavigateToHome -> {
         onNavigateBack()

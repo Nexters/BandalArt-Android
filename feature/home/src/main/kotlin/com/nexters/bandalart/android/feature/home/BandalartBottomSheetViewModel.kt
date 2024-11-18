@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -57,8 +56,8 @@ class BottomSheetViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(BottomSheetUiState())
   val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
 
-  private val _eventChannel = Channel<BottomSheetUiEvent>()
-  val eventFlow = _eventChannel.receiveAsFlow()
+  private val _uiEvent = Channel<BottomSheetUiEvent>()
+  val uiEvent = _uiEvent.receiveAsFlow()
 
   fun copyCellData(cellData: BandalartCellUiModel) {
     _uiState.update {
@@ -77,9 +76,7 @@ class BottomSheetViewModel @Inject constructor(
   ) {
     viewModelScope.launch {
       bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel.toEntity())
-      _uiState.update {
-        it.copy(isCellUpdated = true)
-      }
+      _uiState.update { it.copy(isCellUpdated = true) }
     }
   }
 

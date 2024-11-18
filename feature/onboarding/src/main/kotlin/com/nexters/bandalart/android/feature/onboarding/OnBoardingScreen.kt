@@ -55,7 +55,7 @@ internal fun OnBoardingRoute(
   modifier: Modifier = Modifier,
   viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
-  ObserveAsEvents(flow = viewModel.eventFlow) { event ->
+  ObserveAsEvents(flow = viewModel.uiEvent) { event ->
     when (event) {
       is OnBoardingUiEvent.NavigateToHome -> {
         val options = NavOptions.Builder()

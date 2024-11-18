@@ -17,8 +17,8 @@ sealed interface OnBoardingUiEvent {
 class OnboardingViewModel @Inject constructor(
   private val onboardingRepository: OnboardingRepository,
 ) : ViewModel() {
-  private val _eventChannel = Channel<OnBoardingUiEvent>()
-  val eventFlow = _eventChannel.receiveAsFlow()
+  private val _uiEvent = Channel<OnBoardingUiEvent>()
+  val uiEvent = _uiEvent.receiveAsFlow()
 
   fun setOnboardingCompletedStatus(flag: Boolean) {
     viewModelScope.launch {
@@ -29,7 +29,7 @@ class OnboardingViewModel @Inject constructor(
 
   private fun navigateToHome() {
     viewModelScope.launch {
-      _eventChannel.send(OnBoardingUiEvent.NavigateToHome)
+      _uiEvent.send(OnBoardingUiEvent.NavigateToHome)
     }
   }
 }
