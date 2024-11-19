@@ -25,8 +25,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Constraints
-import com.nexters.bandalart.core.common.MultipleEventsCutter
-import com.nexters.bandalart.core.common.get
+import com.nexters.bandalart.core.common.utils.MultipleEventsCutter
+import com.nexters.bandalart.core.common.utils.get
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {

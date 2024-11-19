@@ -1,8 +1,10 @@
 package com.nexters.bandalart.feature.home
 
+import android.graphics.Bitmap
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.core.common.UiText
+import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.feature.home.mapper.toEntity
 import com.nexters.bandalart.feature.home.mapper.toUiModel
@@ -54,10 +56,10 @@ data class HomeUiState(
     val isEmojiBottomSheetOpened: Boolean = false,
     val isBottomSheetDataChanged: Boolean = false,
     val isBottomSheetMainCellChanged: Boolean = false,
-    val shareUrl: String = "",
     val isBandalartCompleted: Boolean = false,
     val isLoading: Boolean = false,
     val isShowSkeleton: Boolean = false,
+    val isShared: Boolean = false,
 )
 
 sealed interface HomeUiEvent {
@@ -69,6 +71,7 @@ sealed interface HomeUiEvent {
 
     data class ShowSnackbar(val message: UiText) : HomeUiEvent
     data class ShowToast(val message: UiText) : HomeUiEvent
+    data class ShareBandalart(val bitmap: ImageBitmap): HomeUiEvent
 }
 
 @HiltViewModel
@@ -263,7 +266,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun shareBandalart() {}
+    fun onShareButtonClick() {
+        _uiState.update { it.copy(isShared = true) }
+    }
+
+    fun shareBandalart(bitmap: ImageBitmap) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isShared = false) }
+            _uiEvent.send(HomeUiEvent.ShareBandalart(bitmap))
+        }
+    }
 
     fun openDropDownMenu(flag: Boolean) {
         _uiState.update { it.copy(isDropDownMenuOpened = flag) }

@@ -1,4 +1,4 @@
-package com.nexters.bandalart.core.common
+package com.nexters.bandalart.core.common.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

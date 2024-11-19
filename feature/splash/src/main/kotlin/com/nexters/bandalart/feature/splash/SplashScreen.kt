@@ -19,7 +19,7 @@ import androidx.navigation.NavOptions
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
-import com.nexters.bandalart.core.common.ObserveAsEvents
+import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE

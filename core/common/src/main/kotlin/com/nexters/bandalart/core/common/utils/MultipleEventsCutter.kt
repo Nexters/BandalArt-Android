@@ -1,4 +1,4 @@
-package com.nexters.bandalart.core.common
+package com.nexters.bandalart.core.common.utils
 
 internal interface MultipleEventsCutter {
     fun processEvent(event: () -> Unit)

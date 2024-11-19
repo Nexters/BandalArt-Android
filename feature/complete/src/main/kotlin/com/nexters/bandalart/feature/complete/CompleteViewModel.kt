@@ -3,7 +3,6 @@ package com.nexters.bandalart.feature.complete
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexters.bandalart.core.common.UiText
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.feature.complete.navigation.BANDALART_ID
 import com.nexters.bandalart.feature.complete.navigation.BANDALART_PROFILE_EMOJI

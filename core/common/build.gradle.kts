@@ -15,6 +15,7 @@ android {
 
 dependencies {
     implementations(
+        libs.androidx.core,
         libs.kotlinx.datetime,
         libs.timber,
         libs.bundles.retrofit,

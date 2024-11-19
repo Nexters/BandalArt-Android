@@ -1,7 +1,6 @@
 package com.nexters.bandalart.feature.onboarding
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -36,7 +35,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.common.ObserveAsEvents
+import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator

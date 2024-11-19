@@ -7,7 +7,7 @@ import com.nexters.bandalart.BuildConfig
 
 class FirebaseCrashlyticsInitializer : Initializer<Unit> {
     override fun create(context: Context) {
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {

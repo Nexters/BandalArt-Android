@@ -4,8 +4,8 @@ package com.nexters.bandalart.feature.home
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,12 +24,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexters.bandalart.core.common.ObserveAsEvents
+import com.nexters.bandalart.core.common.utils.ObserveAsEvents
+import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -95,6 +100,8 @@ internal fun HomeRoute(
             is HomeUiEvent.ShowToast -> {
                 Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
             }
+
+            is HomeUiEvent.ShareBandalart -> context.externalShareForBitmap(event.bitmap)
         }
     }
 
@@ -115,6 +122,7 @@ internal fun HomeRoute(
         bottomSheetDataChanged = viewModel::bottomSheetDataChanged,
         openBandalartListBottomSheet = viewModel::openBandalartListBottomSheet,
         setRecentBandalartId = viewModel::setRecentBandalartId,
+        onShareButtonClick = viewModel::onShareButtonClick,
         shareBandalart = viewModel::shareBandalart,
         checkCompletedBandalartId = viewModel::checkCompletedBandalartId,
         modifier = modifier,
@@ -139,11 +147,13 @@ internal fun HomeScreen(
     bottomSheetDataChanged: (Boolean) -> Unit,
     openBandalartListBottomSheet: (Boolean) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
-    shareBandalart: () -> Unit,
+    onShareButtonClick: () -> Unit,
+    shareBandalart: (ImageBitmap) -> Unit,
     checkCompletedBandalartId: suspend (Long) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val graphicsLayer = rememberGraphicsLayer()
 
     LaunchedEffect(key1 = Unit) {
         getBandalartList(null)
@@ -168,19 +178,22 @@ internal fun HomeScreen(
         }
     }
 
-    LaunchedEffect(key1 = uiState.shareUrl) {
-        if (uiState.shareUrl.isNotEmpty()) {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                    Intent.EXTRA_TEXT,
-                    context.getString(R.string.home_share_url, uiState.shareUrl),
-                )
-                type = context.getString(R.string.home_share_type)
-            }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            context.startActivity(shareIntent)
+    LaunchedEffect(key1 = uiState.isShared) {
+        if (uiState.isShared) {
+            shareBandalart(graphicsLayer.toImageBitmap())
         }
+//        if (uiState.shareUrl.isNotEmpty()) {
+//            val sendIntent: Intent = Intent().apply {
+//                action = Intent.ACTION_SEND
+//                putExtra(
+//                    Intent.EXTRA_TEXT,
+//                    context.getString(R.string.home_share_url, uiState.shareUrl),
+//                )
+//                type = context.getString(R.string.home_share_type)
+//            }
+//            val shareIntent = Intent.createChooser(sendIntent, null)
+//            context.startActivity(shareIntent)
+//        }
     }
 
     if (uiState.isBandalartListBottomSheetOpened) {
@@ -266,31 +279,39 @@ internal fun HomeScreen(
                     thickness = 1.dp,
                     color = Gray100,
                 )
-                uiState.bandalartDetailData?.let { detail ->
-                    HomeHeader(
-                        bandalartDetailData = detail,
-                        isDropDownMenuOpened = uiState.isDropDownMenuOpened,
-                        openDropDownMenu = openDropDownMenu,
-                        openEmojiBottomSheet = openEmojiBottomSheet,
-                        openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
-                        openCellBottomSheet = openCellBottomSheet,
-                    )
+                Column(
+                    modifier = Modifier
+                        .drawWithContent {
+                            graphicsLayer.record { this@drawWithContent.drawContent() }
+                            drawLayer(graphicsLayer)
+                        }
+                ) {
+                    uiState.bandalartDetailData?.let { detail ->
+                        HomeHeader(
+                            bandalartDetailData = detail,
+                            isDropDownMenuOpened = uiState.isDropDownMenuOpened,
+                            openDropDownMenu = openDropDownMenu,
+                            openEmojiBottomSheet = openEmojiBottomSheet,
+                            openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
+                            openCellBottomSheet = openCellBottomSheet,
+                        )
+                    }
+                    if (uiState.bandalartCellData != null && uiState.bandalartDetailData != null) {
+                        BandalartChart(
+                            bandalartId = uiState.bandalartDetailData.id,
+                            bandalartCellData = uiState.bandalartCellData,
+                            themeColor = ThemeColor(
+                                mainColor = uiState.bandalartDetailData.mainColor,
+                                subColor = uiState.bandalartDetailData.subColor,
+                            ),
+                            bottomSheetDataChanged = bottomSheetDataChanged,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(64.dp))
                 }
-                if (uiState.bandalartCellData != null && uiState.bandalartDetailData != null) {
-                    BandalartChart(
-                        bandalartId = uiState.bandalartDetailData.id,
-                        bandalartCellData = uiState.bandalartCellData,
-                        themeColor = ThemeColor(
-                            mainColor = uiState.bandalartDetailData.mainColor,
-                            subColor = uiState.bandalartDetailData.subColor,
-                        ),
-                        bottomSheetDataChanged = bottomSheetDataChanged,
-                    )
-                }
-                Spacer(modifier = Modifier.height(64.dp))
                 Spacer(modifier = Modifier.weight(1f))
                 HomeShareButton(
-                    shareBandalart = shareBandalart,
+                    onShareButtonClick = onShareButtonClick,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
@@ -351,6 +372,7 @@ private fun HomeScreenSingleBandalartPreview() {
             bottomSheetDataChanged = {},
             openBandalartListBottomSheet = {},
             setRecentBandalartId = {},
+            onShareButtonClick = {},
             shareBandalart = {},
             checkCompletedBandalartId = { _ -> false },
         )
@@ -382,6 +404,7 @@ private fun HomeScreenMultipleBandalartPreview() {
             bottomSheetDataChanged = {},
             openBandalartListBottomSheet = {},
             setRecentBandalartId = {},
+            onShareButtonClick = {},
             shareBandalart = {},
             checkCompletedBandalartId = { _ -> false },
         )

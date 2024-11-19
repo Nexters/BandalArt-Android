@@ -1,4 +1,4 @@
-package com.nexters.bandalart.core.common
+package com.nexters.bandalart.core.common.utils
 
 import retrofit2.HttpException
 import timber.log.Timber

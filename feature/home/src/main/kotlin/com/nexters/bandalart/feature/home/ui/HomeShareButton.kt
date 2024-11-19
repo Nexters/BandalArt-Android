@@ -27,7 +27,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 
 @Composable
 fun HomeShareButton(
-    shareBandalart: () -> Unit,
+    onShareButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -35,7 +35,7 @@ fun HomeShareButton(
             .wrapContentSize()
             .clip(RoundedCornerShape(18.dp))
             .background(Gray100)
-            .clickableSingle { shareBandalart() },
+            .clickableSingle { onShareButtonClick() },
         contentAlignment = Alignment.Center,
     ) {
         Row(
@@ -64,7 +64,7 @@ fun HomeShareButton(
 private fun HomeShareButtonPreview() {
     BandalartTheme {
         HomeShareButton(
-            shareBandalart = {},
+            onShareButtonClick = {},
         )
     }
 }
