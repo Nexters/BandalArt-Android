@@ -8,16 +8,24 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "bandalart_cells",
+    // 데이터 무결성을 보장하기 위한 외래 키 제약 조건 설정
     foreignKeys = [
         ForeignKey(
+            // 참조할 부모 엔터티 클래스
             entity = BandalartDBEntity::class,
+            // 부모 테이블의 참조할 컬럼명
             parentColumns = ["id"],
+            // 현재 테이블의 외래 키 컬럼명
             childColumns = ["bandalartId"],
+            // 부모 레코드 삭제 시 자식 레코드도 함께 삭제
             onDelete = ForeignKey.CASCADE,
         ),
     ],
+    // 인덱스 설정 - 쿼리 성능 최적화를 위한 설정
     indices = [
+        // 계층구조 조회 쿼리 최적화를 위한 parentId 인덱스
         Index(value = ["parentId"]),
+        // 특정 반다라트에 속한 셀 조회 최적화를 위한 인덱스
         Index(value = ["bandalartId"]),
     ],
 )

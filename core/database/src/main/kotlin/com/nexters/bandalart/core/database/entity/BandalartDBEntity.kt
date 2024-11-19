@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// 반다라트 메인 테이블
 @Entity(tableName = "bandalarts")
 data class BandalartDBEntity(
     @PrimaryKey(autoGenerate = true)
