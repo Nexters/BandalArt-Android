@@ -20,67 +20,67 @@ import androidx.compose.ui.unit.Density
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-  primary = Purple80,
-  secondary = PurpleGrey80,
-  tertiary = Pink80,
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80,
 )
 
 private val LightColorScheme = lightColorScheme(
-  primary = Purple40,
-  secondary = PurpleGrey40,
-  tertiary = Pink40,
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40,
 )
 
 @Composable
 fun BandalartTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
-  // Dynamic color is available on Android 12+
-  dynamicColor: Boolean = true,
-  content: @Composable () -> Unit,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
+    content: @Composable () -> Unit,
 ) {
-  val colorScheme = when {
-    dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-      val context = LocalContext.current
-      if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+        }
     }
 
-    darkTheme -> DarkColorScheme
-    else -> LightColorScheme
-  }
-  val view = LocalView.current
-  if (!view.isInEditMode) {
     SideEffect {
-      val window = (view.context as Activity).window
-      window.statusBarColor = colorScheme.primary.toArgb()
-      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+        val window = (view.context as Activity).window
+
+        window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+        window.navigationBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // remove unnecessary black screen from bars
+            window.isNavigationBarContrastEnforced = false
+        }
+
+        val windowsInsetsController = WindowCompat.getInsetsController(window, view)
+
+        // status bar's icon always visible
+        windowsInsetsController.isAppearanceLightStatusBars = !darkTheme
+        windowsInsetsController.isAppearanceLightNavigationBars = !darkTheme
     }
-  }
 
-  SideEffect {
-    val window = (view.context as Activity).window
-
-    window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
-    window.navigationBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-      // remove unnecessary black screen from bars
-      window.isNavigationBarContrastEnforced = false
+    CompositionLocalProvider(
+        LocalDensity provides Density(density = LocalDensity.current.density, fontScale = 1f),
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content,
+        )
     }
-
-    val windowsInsetsController = WindowCompat.getInsetsController(window, view)
-
-    // status bar's icon always visible
-    windowsInsetsController.isAppearanceLightStatusBars = !darkTheme
-    windowsInsetsController.isAppearanceLightNavigationBars = !darkTheme
-  }
-
-  CompositionLocalProvider(
-    LocalDensity provides Density(density = LocalDensity.current.density, fontScale = 1f),
-  ) {
-    MaterialTheme(
-      colorScheme = colorScheme,
-      typography = Typography,
-      content = content,
-    )
-  }
 }

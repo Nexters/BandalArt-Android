@@ -14,13 +14,13 @@ package com.nexters.bandalart.android.core.domain.entity
  */
 
 data class BandalartDetailEntity(
-  val id: Long,  // non-null (항상 Bandalart의 id 있음)
-  val mainColor: String,
-  val subColor: String,
-  val profileEmoji: String?,
-  val title: String?,
-  val cellId: Long,  // non-null (항상 메인셀 존재)
-  val dueDate: String?,
-  val isCompleted: Boolean,
-  val completionRatio: Int,
+    val id: Long,  // non-null (항상 Bandalart의 id 있음)
+    val mainColor: String,
+    val subColor: String,
+    val profileEmoji: String?,
+    val title: String?,
+    val cellId: Long,  // non-null (항상 메인셀 존재)
+    val dueDate: String?,
+    val isCompleted: Boolean,
+    val completionRatio: Int,
 )

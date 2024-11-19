@@ -43,6 +43,6 @@ fun DependencyHandler.project(
         mapOf(
             "path" to path,
             "configuration" to configuration,
-        ).filterValues { it != null }
+        ).filterValues { it != null },
     )
 }

@@ -9,17 +9,17 @@ import com.nexters.bandalart.android.feature.splash.SplashRoute
 const val SPLASH_NAVIGATION_ROUTE = "splash_route"
 
 fun NavController.navigateToSplash(navOptions: NavOptions? = null) {
-  this.navigate(SPLASH_NAVIGATION_ROUTE, navOptions)
+    this.navigate(SPLASH_NAVIGATION_ROUTE, navOptions)
 }
 
 fun NavGraphBuilder.splashScreen(
-  navigateToOnBoarding: (NavOptions) -> Unit,
-  navigateToHome: (NavOptions) -> Unit,
+    navigateToOnBoarding: (NavOptions) -> Unit,
+    navigateToHome: (NavOptions) -> Unit,
 ) {
-  composable(route = SPLASH_NAVIGATION_ROUTE) {
-    SplashRoute(
-      navigateToOnBoarding = navigateToOnBoarding,
-      navigateToHome = navigateToHome,
-    )
-  }
+    composable(route = SPLASH_NAVIGATION_ROUTE) {
+        SplashRoute(
+            navigateToOnBoarding = navigateToOnBoarding,
+            navigateToHome = navigateToHome,
+        )
+    }
 }

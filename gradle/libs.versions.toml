@@ -171,45 +171,45 @@ bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
 [bundles]
 
 androidx-compose = [
-  "androidx-compose-animation",
-  "androidx-compose-foundation",
-  "androidx-compose-foundation-layout",
-  "androidx-compose-material-iconsExtended",
-  "androidx-compose-material3",
-  "androidx-compose-runtime",
-  "androidx-compose-runtime-tracing",
-  "androidx-compose-ui-tooling",
-  "androidx-compose-ui-tooling-preview",
-  "androidx-compose-ui-util",
+    "androidx-compose-animation",
+    "androidx-compose-foundation",
+    "androidx-compose-foundation-layout",
+    "androidx-compose-material-iconsExtended",
+    "androidx-compose-material3",
+    "androidx-compose-runtime",
+    "androidx-compose-runtime-tracing",
+    "androidx-compose-ui-tooling",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-ui-util",
 ]
 
 androidx-lifecycle = [
-  "androidx-lifecycle-runtime-compose",
-  "androidx-lifecycle-viewmodel-compose",
+    "androidx-lifecycle-runtime-compose",
+    "androidx-lifecycle-viewmodel-compose",
 ]
 
 ktor-client = [
-  "ktor-client-core",
-  "ktor-client-engine-cio",
-  "ktor-client-content-negotiation",
-  "ktor-client-okhttp",
-  "ktor-client-json",
-  "ktor-client-logging",
-  "ktor-serialization",
+    "ktor-client-core",
+    "ktor-client-engine-cio",
+    "ktor-client-content-negotiation",
+    "ktor-client-okhttp",
+    "ktor-client-json",
+    "ktor-client-logging",
+    "ktor-serialization",
 ]
 
 retrofit = [
-  "retrofit",
-  "retrofit-kotlinx-serialization-converter",
+    "retrofit",
+    "retrofit-kotlinx-serialization-converter",
 ]
 
 okhttp = [
-  "okhttp",
-  "okhttp-logging-interceptor",
+    "okhttp",
+    "okhttp-logging-interceptor",
 ]
 
 circuit = [
-  "circuit-foundation",
-  "circuitx-android",
-  "circuitx-overlay"
+    "circuit-foundation",
+    "circuitx-android",
+    "circuitx-overlay"
 ]

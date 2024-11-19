@@ -30,89 +30,89 @@ import com.nexters.bandalart.android.core.common.get
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
-  clickable(
-    indication = null,
-    interactionSource = remember { MutableInteractionSource() },
-  ) {
-    onClick()
-  }
+    clickable(
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() },
+    ) {
+        onClick()
+    }
 }
 
 fun Modifier.clickableSingle(
-  enabled: Boolean = true,
-  onClickLabel: String? = null,
-  role: Role? = null,
-  onClick: () -> Unit,
+    enabled: Boolean = true,
+    onClickLabel: String? = null,
+    role: Role? = null,
+    onClick: () -> Unit,
 ) = composed(
-  inspectorInfo = debugInspectorInfo {
-    name = "clickable"
-    properties["enabled"] = enabled
-    properties["onClickLabel"] = onClickLabel
-    properties["role"] = role
-    properties["onClick"] = onClick
-  },
+    inspectorInfo = debugInspectorInfo {
+        name = "clickable"
+        properties["enabled"] = enabled
+        properties["onClickLabel"] = onClickLabel
+        properties["role"] = role
+        properties["onClick"] = onClick
+    },
 ) {
-  val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-  Modifier.clickable(
-    enabled = enabled,
-    onClickLabel = onClickLabel,
-    onClick = { multipleEventsCutter.processEvent { onClick() } },
-    role = role,
-    indication = LocalIndication.current,
-    interactionSource = remember { MutableInteractionSource() },
-  )
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+    Modifier.clickable(
+        enabled = enabled,
+        onClickLabel = onClickLabel,
+        onClick = { multipleEventsCutter.processEvent { onClick() } },
+        role = role,
+        indication = LocalIndication.current,
+        interactionSource = remember { MutableInteractionSource() },
+    )
 }
 
 fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = composed {
-  var isFocused by remember { mutableStateOf(false) }
-  var keyboardAppearedSinceLastFocused by remember { mutableStateOf(false) }
-  if (isFocused) {
-    val imeIsVisible = WindowInsets.isImeVisible
-    val focusManager = LocalFocusManager.current
-    LaunchedEffect(imeIsVisible) {
-      if (imeIsVisible) {
-        keyboardAppearedSinceLastFocused = true
-      } else if (keyboardAppearedSinceLastFocused) {
-        focusManager.clearFocus()
-      }
+    var isFocused by remember { mutableStateOf(false) }
+    var keyboardAppearedSinceLastFocused by remember { mutableStateOf(false) }
+    if (isFocused) {
+        val imeIsVisible = WindowInsets.isImeVisible
+        val focusManager = LocalFocusManager.current
+        LaunchedEffect(imeIsVisible) {
+            if (imeIsVisible) {
+                keyboardAppearedSinceLastFocused = true
+            } else if (keyboardAppearedSinceLastFocused) {
+                focusManager.clearFocus()
+            }
+        }
     }
-  }
-  onFocusEvent {
-    if (isFocused != it.isFocused) {
-      isFocused = it.isFocused
-      if (isFocused) {
-        keyboardAppearedSinceLastFocused = false
-      }
+    onFocusEvent {
+        if (isFocused != it.isFocused) {
+            isFocused = it.isFocused
+            if (isFocused) {
+                keyboardAppearedSinceLastFocused = false
+            }
+        }
     }
-  }
 }
 
 fun Modifier.aspectRatioBasedOnOrientation(aspectRatio: Float): Modifier {
-  return this.then(
-    object : LayoutModifier {
-      override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
-        val width = constraints.maxWidth
-        val height = constraints.maxHeight
+    return this.then(
+        object : LayoutModifier {
+            override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+                val width = constraints.maxWidth
+                val height = constraints.maxHeight
 
-        val targetWidth: Int
-        val targetHeight: Int
+                val targetWidth: Int
+                val targetHeight: Int
 
-        if (width <= height) {
-          targetWidth = width
-          targetHeight = (width / aspectRatio).toInt()
-        } else {
-          targetHeight = height
-          targetWidth = (height * aspectRatio).toInt()
-        }
+                if (width <= height) {
+                    targetWidth = width
+                    targetHeight = (width / aspectRatio).toInt()
+                } else {
+                    targetHeight = height
+                    targetWidth = (height * aspectRatio).toInt()
+                }
 
-        val placeable = measurable.measure(
-          Constraints.fixed(targetWidth, targetHeight),
-        )
+                val placeable = measurable.measure(
+                    Constraints.fixed(targetWidth, targetHeight),
+                )
 
-        return layout(placeable.width, placeable.height) {
-          placeable.placeRelative(0, 0)
-        }
-      }
-    },
-  )
+                return layout(placeable.width, placeable.height) {
+                    placeable.placeRelative(0, 0)
+                }
+            }
+        },
+    )
 }

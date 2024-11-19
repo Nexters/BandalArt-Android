@@ -16,15 +16,15 @@ package com.nexters.bandalart.android.core.domain.entity
  */
 
 data class BandalartCellEntity(
-  val id: Long? = null,  // nullable (생성 시에는 id 없음)
-  val bandalartId: Long,  // non-null (항상 속한 반다라트 존재)
-  val title: String?,
-  val description: String?,
-  val dueDate: String?,
-  val isCompleted: Boolean,
-  val completionRatio: Int,
-  val profileEmoji: String?,
-  val mainColor: String?,
-  val subColor: String?,
-  val parentId: Long?,  // nullable (최상위 셀은 parentId 없음)
+    val id: Long? = null,  // nullable (생성 시에는 id 없음)
+    val bandalartId: Long,  // non-null (항상 속한 반다라트 존재)
+    val title: String?,
+    val description: String?,
+    val dueDate: String?,
+    val isCompleted: Boolean,
+    val completionRatio: Int,
+    val profileEmoji: String?,
+    val mainColor: String?,
+    val subColor: String?,
+    val parentId: Long?,  // nullable (최상위 셀은 parentId 없음)
 )

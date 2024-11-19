@@ -23,42 +23,42 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun PagerIndicator(
-  pageCount: Int,
-  pagerState: PagerState,
-  modifier: Modifier = Modifier,
+    pageCount: Int,
+    pagerState: PagerState,
+    modifier: Modifier = Modifier,
 ) {
-  Box(modifier = modifier) {
-    Row(
-      modifier = Modifier
-        .height(32.dp)
-        .fillMaxWidth()
-        .align(Alignment.TopCenter),
-      horizontalArrangement = Arrangement.Center,
-    ) {
-      repeat(pageCount) { iteration ->
-        val color = if (pagerState.currentPage == iteration) Gray700 else Gray300
-        Box(
-          modifier = Modifier
-            .padding(horizontal = 5.dp)
-            .clip(CircleShape)
-            .background(color)
-            .size(8.dp),
-        )
-      }
+    Box(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .height(32.dp)
+                .fillMaxWidth()
+                .align(Alignment.TopCenter),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            repeat(pageCount) { iteration ->
+                val color = if (pagerState.currentPage == iteration) Gray700 else Gray300
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 5.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(8.dp),
+                )
+            }
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun PagerIndicatorPreview() {
-  val pageCount = 2
-  val pagerState = rememberPagerState(pageCount = { pageCount })
+    val pageCount = 2
+    val pagerState = rememberPagerState(pageCount = { pageCount })
 
-  BandalartTheme {
-    PagerIndicator(
-      pageCount = 2,
-      pagerState = pagerState,
-    )
-  }
+    BandalartTheme {
+        PagerIndicator(
+            pageCount = 2,
+            pagerState = pagerState,
+        )
+    }
 }

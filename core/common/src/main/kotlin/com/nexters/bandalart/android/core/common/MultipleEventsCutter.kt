@@ -1,24 +1,24 @@
 package com.nexters.bandalart.android.core.common
 
 internal interface MultipleEventsCutter {
-  fun processEvent(event: () -> Unit)
+    fun processEvent(event: () -> Unit)
 
-  companion object
+    companion object
 }
 
 internal fun MultipleEventsCutter.Companion.get(): MultipleEventsCutter =
-  MultipleEventsCutterImpl()
+    MultipleEventsCutterImpl()
 
 private class MultipleEventsCutterImpl : MultipleEventsCutter {
-  private val now: Long
-    get() = System.currentTimeMillis()
+    private val now: Long
+        get() = System.currentTimeMillis()
 
-  private var lastEventTimeMs: Long = 0
+    private var lastEventTimeMs: Long = 0
 
-  override fun processEvent(event: () -> Unit) {
-    if (now - lastEventTimeMs >= 500L) {
-      event.invoke()
+    override fun processEvent(event: () -> Unit) {
+        if (now - lastEventTimeMs >= 500L) {
+            event.invoke()
+        }
+        lastEventTimeMs = now
     }
-    lastEventTimeMs = now
-  }
 }

@@ -50,146 +50,146 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartItem(
-  bottomSheetState: SheetState,
-  bandalartItem: BandalartDetailUiModel,
-  currentBandalartId: Long,
-  onClick: (Long) -> Unit,
-  onCancelClicked: () -> Unit,
-  modifier: Modifier = Modifier,
+    bottomSheetState: SheetState,
+    bandalartItem: BandalartDetailUiModel,
+    currentBandalartId: Long,
+    onClick: (Long) -> Unit,
+    onCancelClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
-  Row(
-    modifier = modifier
-      .fillMaxWidth()
-      .clip(RoundedCornerShape(12.dp))
-      .border(
-        width = 1.5.dp,
-        color = if (currentBandalartId != bandalartItem.id) Gray100 else Gray300,
-        shape = RoundedCornerShape(12.dp),
-      )
-      .clickable {
-        if (currentBandalartId != bandalartItem.id) {
-          onClick(bandalartItem.id)
-        }
-        scope
-          .launch { bottomSheetState.hide() }
-          .invokeOnCompletion {
-            if (!bottomSheetState.isVisible) onCancelClicked()
-          }
-      }
-      .padding(horizontal = 16.dp, vertical = 12.dp),
-  ) {
-    Box(modifier = Modifier.align(Alignment.CenterVertically)) {
-      Card(shape = RoundedCornerShape(16.dp)) {
-        Box(
-          modifier = Modifier
-            .width(48.dp)
-            .aspectRatio(1f)
-            .background(Gray100),
-          contentAlignment = Alignment.Center,
-        ) {
-          if (bandalartItem.profileEmoji.isNullOrEmpty()) {
-            Image(
-              imageVector = ImageVector.vectorResource(
-                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-              ),
-              contentDescription = stringResource(R.string.empty_emoji_descrption),
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .border(
+                width = 1.5.dp,
+                color = if (currentBandalartId != bandalartItem.id) Gray100 else Gray300,
+                shape = RoundedCornerShape(12.dp),
             )
-          } else {
-            EmojiText(
-              emojiText = bandalartItem.profileEmoji,
-              fontSize = 22.sp,
-            )
-          }
-        }
-      }
-    }
-    Column(
-      modifier = Modifier
-        .weight(1f)
-        .padding(start = 8.dp),
+            .clickable {
+                if (currentBandalartId != bandalartItem.id) {
+                    onClick(bandalartItem.id)
+                }
+                scope
+                    .launch { bottomSheetState.hide() }
+                    .invokeOnCompletion {
+                        if (!bottomSheetState.isVisible) onCancelClicked()
+                    }
+            }
+            .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
-      if (bandalartItem.isCompleted) {
-        Box(
-          modifier = Modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(color = bandalartItem.mainColor.toColor()),
-        ) {
-          Row(
-            modifier = Modifier.padding(horizontal = 9.dp),
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
-            Icon(
-              imageVector = Icons.Default.Check,
-              contentDescription = stringResource(R.string.check_descrption),
-              tint = Gray900,
-              modifier = Modifier.size(13.dp),
-            )
-            Text(
-              text = stringResource(R.string.home_complete),
-              color = Gray900,
-              fontWeight = FontWeight.W600,
-              fontSize = 10.sp,
-              modifier = Modifier.padding(start = 2.dp),
-              letterSpacing = (-0.2).sp,
-            )
-          }
+        Box(modifier = Modifier.align(Alignment.CenterVertically)) {
+            Card(shape = RoundedCornerShape(16.dp)) {
+                Box(
+                    modifier = Modifier
+                        .width(48.dp)
+                        .aspectRatio(1f)
+                        .background(Gray100),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (bandalartItem.profileEmoji.isNullOrEmpty()) {
+                        Image(
+                            imageVector = ImageVector.vectorResource(
+                                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                            ),
+                            contentDescription = stringResource(R.string.empty_emoji_descrption),
+                        )
+                    } else {
+                        EmojiText(
+                            emojiText = bandalartItem.profileEmoji,
+                            fontSize = 22.sp,
+                        )
+                    }
+                }
+            }
         }
-      } else {
-        Box(
-          modifier = Modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(color = bandalartItem.mainColor.toColor()),
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 8.dp),
         ) {
-          Row(
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
+            if (bandalartItem.isCompleted) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(color = bandalartItem.mainColor.toColor()),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 9.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(R.string.check_descrption),
+                            tint = Gray900,
+                            modifier = Modifier.size(13.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.home_complete),
+                            color = Gray900,
+                            fontWeight = FontWeight.W600,
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(start = 2.dp),
+                            letterSpacing = (-0.2).sp,
+                        )
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(color = bandalartItem.mainColor.toColor()),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(
+                                R.string.home_complete_ratio,
+                                bandalartItem.completionRatio,
+                            ),
+                            color = Gray900,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.W600,
+                            letterSpacing = (-0.18).sp,
+                        )
+                    }
+                }
+            }
             Text(
-              text = stringResource(
-                R.string.home_complete_ratio,
-                bandalartItem.completionRatio,
-              ),
-              color = Gray900,
-              fontSize = 9.sp,
-              fontWeight = FontWeight.W600,
-              letterSpacing = (-0.18).sp,
+                text = bandalartItem.title ?: "",
+                color = if (bandalartItem.isGeneratedTitle) Gray300 else Gray900,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W700,
+                letterSpacing = (-0.32).sp,
             )
-          }
         }
-      }
-      Text(
-        text = bandalartItem.title ?: "",
-        color = if (bandalartItem.isGeneratedTitle) Gray300 else Gray900,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W700,
-        letterSpacing = (-0.32).sp,
-      )
+        if (currentBandalartId != bandalartItem.id) {
+            Box(modifier = Modifier.align(Alignment.CenterVertically)) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    contentDescription = stringResource(R.string.arrow_forward_descrption),
+                    tint = Gray400,
+                    modifier = Modifier.size(16.dp),
+                )
+            }
+        }
     }
-    if (currentBandalartId != bandalartItem.id) {
-      Box(modifier = Modifier.align(Alignment.CenterVertically)) {
-        Icon(
-          imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-          contentDescription = stringResource(R.string.arrow_forward_descrption),
-          tint = Gray400,
-          modifier = Modifier.size(16.dp),
-        )
-      }
-    }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartItemPreview() {
-  BandalartTheme {
-    BandalartItem(
-      bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-      bandalartItem = dummyBandalartDetailData,
-      currentBandalartId = 0L,
-      onClick = {},
-      onCancelClicked = {},
-    )
-  }
+    BandalartTheme {
+        BandalartItem(
+            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            bandalartItem = dummyBandalartDetailData,
+            currentBandalartId = 0L,
+            onClick = {},
+            onCancelClicked = {},
+        )
+    }
 }

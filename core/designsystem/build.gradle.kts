@@ -1,21 +1,21 @@
 @file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
 
 plugins {
-  alias(libs.plugins.bandalart.android.library)
-  alias(libs.plugins.bandalart.android.library.compose)
+    alias(libs.plugins.bandalart.android.library)
+    alias(libs.plugins.bandalart.android.library.compose)
 }
 
 android {
-  namespace = "com.nexters.bandalart.android.core.designsystem"
+    namespace = "com.nexters.bandalart.android.core.designsystem"
 
-  buildFeatures {
-    buildConfig = true
-  }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
-  implementations(
-    libs.androidx.core,
-    libs.bundles.androidx.compose
-  )
+    implementations(
+        libs.androidx.core,
+        libs.bundles.androidx.compose,
+    )
 }

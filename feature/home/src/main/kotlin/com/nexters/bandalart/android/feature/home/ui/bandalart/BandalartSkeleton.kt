@@ -22,66 +22,66 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 private val shimmerMainColors = listOf(
-  Gray200,
-  Gray300,
-  Gray400,
+    Gray200,
+    Gray300,
+    Gray400,
 )
 
 private val shimmerSubColors = listOf(
-  Gray100,
-  Gray200,
-  Gray300,
+    Gray100,
+    Gray200,
+    Gray300,
 )
 
 private val shimmerTaskColors = listOf(
-  White,
-  Gray50,
+    White,
+    Gray50,
 )
 
 @Composable
 fun BandalartSkeleton(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  val transition = rememberInfiniteTransition(label = "Skeleton transition")
-  val translateAnim = transition.animateFloat(
-    initialValue = 0f,
-    targetValue = 800f,
-    animationSpec = infiniteRepeatable(
-      animation = tween(
-        durationMillis = 600,
-        easing = FastOutLinearInEasing,
-      ),
-      repeatMode = RepeatMode.Reverse,
-    ),
-    label = stringResource(R.string.skeleton_trans_animate_label),
-  )
-  val mainBrush = Brush.linearGradient(
-    colors = shimmerMainColors,
-    start = Offset.Zero,
-    end = Offset(x = translateAnim.value, y = translateAnim.value),
-  )
-  val subBrush = Brush.linearGradient(
-    colors = shimmerSubColors,
-    start = Offset.Zero,
-    end = Offset(x = translateAnim.value, y = translateAnim.value),
-  )
-  val taskBrush = Brush.linearGradient(
-    colors = shimmerTaskColors,
-    start = Offset.Zero,
-    end = Offset(x = translateAnim.value, y = translateAnim.value),
-  )
-  BandalartSkeletonScreen(
-    taskBrush = taskBrush,
-    subBrush = subBrush,
-    mainBrush = mainBrush,
-    modifier = modifier,
-  )
+    val transition = rememberInfiniteTransition(label = "Skeleton transition")
+    val translateAnim = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 800f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 600,
+                easing = FastOutLinearInEasing,
+            ),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = stringResource(R.string.skeleton_trans_animate_label),
+    )
+    val mainBrush = Brush.linearGradient(
+        colors = shimmerMainColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim.value, y = translateAnim.value),
+    )
+    val subBrush = Brush.linearGradient(
+        colors = shimmerSubColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim.value, y = translateAnim.value),
+    )
+    val taskBrush = Brush.linearGradient(
+        colors = shimmerTaskColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim.value, y = translateAnim.value),
+    )
+    BandalartSkeletonScreen(
+        taskBrush = taskBrush,
+        subBrush = subBrush,
+        mainBrush = mainBrush,
+        modifier = modifier,
+    )
 }
 
 @ComponentPreview
 @Composable
 fun BandalartSkeletonPreview() {
-  BandalartTheme {
-    BandalartSkeleton()
-  }
+    BandalartTheme {
+        BandalartSkeleton()
+    }
 }

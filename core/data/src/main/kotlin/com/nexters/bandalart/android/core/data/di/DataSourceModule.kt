@@ -14,15 +14,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal abstract class DataSourceModule {
 
-  @Binds
-  @Singleton
-  abstract fun bindGuestLoginRemoteDataSource(
-    guestLoginRemoteDataSourceImpl: GuestLoginRemoteDataSourceImpl,
-  ): GuestLoginRemoteDataSource
+    @Binds
+    @Singleton
+    abstract fun bindGuestLoginRemoteDataSource(
+        guestLoginRemoteDataSourceImpl: GuestLoginRemoteDataSourceImpl,
+    ): GuestLoginRemoteDataSource
 
-  @Binds
-  @Singleton
-  abstract fun bindBandalartRemoteDataSource(
-    bandalartRemoteDataSourceImpl: BandalartRemoteDataSourceImpl,
-  ): BandalartRemoteDataSource
+    @Binds
+    @Singleton
+    abstract fun bindBandalartRemoteDataSource(
+        bandalartRemoteDataSourceImpl: BandalartRemoteDataSourceImpl,
+    ): BandalartRemoteDataSource
 }

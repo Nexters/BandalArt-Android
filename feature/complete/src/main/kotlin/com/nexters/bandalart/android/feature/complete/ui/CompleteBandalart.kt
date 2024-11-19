@@ -36,89 +36,89 @@ import com.nexters.bandalart.android.core.ui.component.EmojiText
 
 @Composable
 fun CompleteBandalart(
-  profileEmoji: String,
-  title: String,
-  modifier: Modifier = Modifier,
+    profileEmoji: String,
+    title: String,
+    modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
+    val context = LocalContext.current
 
-  Column(
-    modifier = modifier,
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    Text(
-      text = context.getString(R.string.complete_chart),
-      color = Gray400,
-      fontWeight = FontWeight.W600,
-      fontSize = 14.sp,
-      letterSpacing = (-0.28).sp,
-    )
-    Spacer(modifier = Modifier.height(10.dp))
-    Box(
-      modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 33.dp)
-          .clip(RoundedCornerShape(12.dp))
-          .border(
-              width = 2.dp,
-              color = Gray300,
-              shape = RoundedCornerShape(12.dp),
-          ),
-    ) {
-      Column(
-        modifier = Modifier.fillMaxWidth(),
+    Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-      ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Card(
-          shape = RoundedCornerShape(12.dp),
-          elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        ) {
-          Column {
-            Box(
-              modifier = Modifier
-                  .width(52.dp)
-                  .aspectRatio(1f)
-                  .background(Gray100),
-              contentAlignment = Alignment.Center,
-            ) {
-              if (profileEmoji == context.getString(R.string.home_default_emoji)) {
-                Image(
-                  imageVector = ImageVector.vectorResource(
-                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-                  ),
-                  contentDescription = context.getString(R.string.empty_emoji_descrption),
-                )
-              } else {
-                EmojiText(
-                  emojiText = profileEmoji,
-                  fontSize = 22.sp,
-                )
-              }
-            }
-          }
-        }
-        Spacer(modifier = Modifier.height(6.dp))
+    ) {
         Text(
-          text = title,
-          color = Black,
-          fontSize = 16.sp,
-          fontWeight = FontWeight.W700,
-          letterSpacing = (-0.32).sp,
+            text = context.getString(R.string.complete_chart),
+            color = Gray400,
+            fontWeight = FontWeight.W600,
+            fontSize = 14.sp,
+            letterSpacing = (-0.28).sp,
         )
-        Spacer(modifier = Modifier.height(16.dp))
-      }
+        Spacer(modifier = Modifier.height(10.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 33.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    width = 2.dp,
+                    color = Gray300,
+                    shape = RoundedCornerShape(12.dp),
+                ),
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                ) {
+                    Column {
+                        Box(
+                            modifier = Modifier
+                                .width(52.dp)
+                                .aspectRatio(1f)
+                                .background(Gray100),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (profileEmoji == context.getString(R.string.home_default_emoji)) {
+                                Image(
+                                    imageVector = ImageVector.vectorResource(
+                                        id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                                    ),
+                                    contentDescription = context.getString(R.string.empty_emoji_descrption),
+                                )
+                            } else {
+                                EmojiText(
+                                    emojiText = profileEmoji,
+                                    fontSize = 22.sp,
+                                )
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = title,
+                    color = Black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W700,
+                    letterSpacing = (-0.32).sp,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun CompleteBandalartPreview() {
-  BandalartTheme {
-    CompleteBandalart(
-      profileEmoji = "😎",
-      title = "발전하는 예진",
-    )
-  }
+    BandalartTheme {
+        CompleteBandalart(
+            profileEmoji = "😎",
+            title = "발전하는 예진",
+        )
+    }
 }

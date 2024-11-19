@@ -11,12 +11,12 @@ package com.nexters.bandalart.android.core.domain.entity
  * @param subColor 셀 서브 색상
  */
 data class UpdateBandalartMainCellEntity(
-  val title: String?,
-  val description: String?,
-  val dueDate: String?,
-  val profileEmoji: String?,
-  val mainColor: String,
-  val subColor: String,
+    val title: String?,
+    val description: String?,
+    val dueDate: String?,
+    val profileEmoji: String?,
+    val mainColor: String,
+    val subColor: String,
 )
 
 /**
@@ -27,9 +27,9 @@ data class UpdateBandalartMainCellEntity(
  * @param dueDate 셀 마감일, 미설정인 경우 null
  */
 data class UpdateBandalartSubCellEntity(
-  val title: String?,
-  val description: String?,
-  val dueDate: String?,
+    val title: String?,
+    val description: String?,
+    val dueDate: String?,
 )
 
 /**
@@ -41,10 +41,10 @@ data class UpdateBandalartSubCellEntity(
  * @param isCompleted 셀 완료 여부
  */
 data class UpdateBandalartTaskCellEntity(
-  val title: String?,
-  val description: String?,
-  val dueDate: String?,
-  val isCompleted: Boolean? = null,
+    val title: String?,
+    val description: String?,
+    val dueDate: String?,
+    val isCompleted: Boolean? = null,
 )
 
 /**
@@ -53,5 +53,5 @@ data class UpdateBandalartTaskCellEntity(
  * @param profileEmoji 반다라트 프로필 이모지
  */
 data class UpdateBandalartEmojiEntity(
-  val profileEmoji: String?,
+    val profileEmoji: String?,
 )

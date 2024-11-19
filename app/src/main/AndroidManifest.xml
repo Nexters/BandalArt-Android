@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-  <application
-    android:name=".BandalartApplication"
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="${appName}"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/Theme.Bandalart"
-    android:usesCleartextTraffic="true">
+    <application
+        android:name=".BandalartApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="${appName}"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Bandalart"
+        android:usesCleartextTraffic="true">
 
-    <provider
-      android:name="androidx.startup.InitializationProvider"
-      android:authorities="${applicationId}.androidx-startup"
-      android:exported="false"
-      tools:node="merge">
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
 
-      <meta-data
-        android:name="com.nexters.bandalart.android.initialize.TimberInitializer"
-        android:value="androidx.startup" />
+            <meta-data
+                android:name="com.nexters.bandalart.android.initialize.TimberInitializer"
+                android:value="androidx.startup" />
 
-      <meta-data
-        android:name="com.nexters.bandalart.android.initialize.FirebaseCrashlyticsInitializer"
-        android:value="androidx.startup" />
+            <meta-data
+                android:name="com.nexters.bandalart.android.initialize.FirebaseCrashlyticsInitializer"
+                android:value="androidx.startup" />
 
-    </provider>
+        </provider>
 
-    <activity
-      android:name="com.nexters.bandalart.android.MainActivity"
-      android:exported="true"
-      android:theme="@style/Theme.Bandalart.Splash">
+        <activity
+            android:name="com.nexters.bandalart.android.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Bandalart.Splash">
 
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-    </activity>
+        </activity>
 
-  </application>
+    </application>
 
 </manifest>

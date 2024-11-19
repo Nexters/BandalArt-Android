@@ -56,133 +56,133 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BandalartListBottomSheet(
-  bandalartList: ImmutableList<BandalartDetailUiModel>,
-  currentBandalartId: Long,
-  getBandalartDetail: (Long) -> Unit,
-  setRecentBandalartId: (Long) -> Unit,
-  showSkeletonChanged: (Boolean) -> Unit,
-  onCancelClicked: () -> Unit,
-  createBandalart: () -> Unit,
-  modifier: Modifier = Modifier,
+    bandalartList: ImmutableList<BandalartDetailUiModel>,
+    currentBandalartId: Long,
+    getBandalartDetail: (Long) -> Unit,
+    setRecentBandalartId: (Long) -> Unit,
+    showSkeletonChanged: (Boolean) -> Unit,
+    onCancelClicked: () -> Unit,
+    createBandalart: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val scope = rememberCoroutineScope()
-  val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  ModalBottomSheet(
-    modifier = Modifier
-        .wrapContentSize()
-        .statusBarsPadding(),
-    onDismissRequest = onCancelClicked,
-    sheetState = bottomSheetState,
-    dragHandle = null,
-  ) {
-    Column(
-      modifier = Modifier
-          .background(White)
-          .navigationBarsPadding(),
-    ) {
-      Spacer(modifier = Modifier.height(20.dp))
-      Box(
+    ModalBottomSheet(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-      ) {
-        Text(
-          text = stringResource(R.string.bandalart_list_title),
-          color = Gray900,
-          fontSize = 16.sp,
-          fontWeight = FontWeight.W700,
-          modifier = modifier.fillMaxWidth(),
-          textAlign = TextAlign.Center,
-        )
-        IconButton(
-          modifier = Modifier
-              .align(Alignment.CenterEnd)
-              .height(21.dp)
-              .aspectRatio(1f),
-          onClick = {
-            scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-              if (!bottomSheetState.isVisible) onCancelClicked()
-            }
-          },
+            .wrapContentSize()
+            .statusBarsPadding(),
+        onDismissRequest = onCancelClicked,
+        sheetState = bottomSheetState,
+        dragHandle = null,
+    ) {
+        Column(
+            modifier = Modifier
+                .background(White)
+                .navigationBarsPadding(),
         ) {
-          Icon(
-            imageVector = Icons.Default.Clear,
-            contentDescription = stringResource(R.string.clear_descrption),
-            tint = Gray900,
-          )
-        }
-      }
-      Spacer(modifier = Modifier.height(40.dp))
-      LazyColumn(
-        modifier = Modifier.padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
-      ) {
-        items(
-          count = bandalartList.size,
-          key = { index -> bandalartList[index].id },
-        ) { index ->
-          val bandalartItem = bandalartList[index]
-          BandalartItem(
-            bottomSheetState = bottomSheetState,
-            bandalartItem = bandalartItem,
-            currentBandalartId = currentBandalartId,
-            onClick = { key ->
-              // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
-              setRecentBandalartId(key)
-              showSkeletonChanged(true)
-              getBandalartDetail(key)
-            },
-            onCancelClicked = onCancelClicked,
-          )
-        }
-        item {
-          Spacer(modifier = Modifier.height(20.dp))
-          Row {
-            Button(
-              modifier = Modifier
-                  .weight(1f)
-                  .height(56.dp)
-                  .padding(horizontal = 24.dp),
-              onClick = createBandalart,
-              colors = ButtonDefaults.buttonColors(containerColor = Gray200),
+            Spacer(modifier = Modifier.height(20.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
             ) {
-              Row {
-                Icon(
-                  imageVector = Icons.Default.Add,
-                  contentDescription = stringResource(R.string.add_descrption),
-                  tint = Gray600,
-                  modifier = Modifier.size(20.dp),
-                )
-                Spacer(modifier = Modifier.padding(start = 4.dp))
                 Text(
-                  text = stringResource(R.string.bandalart_list_add),
-                  color = Gray800,
-                  fontSize = 16.sp,
-                  fontWeight = FontWeight.W600,
+                    text = stringResource(R.string.bandalart_list_title),
+                    color = Gray900,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W700,
+                    modifier = modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
                 )
-              }
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .height(21.dp)
+                        .aspectRatio(1f),
+                    onClick = {
+                        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                            if (!bottomSheetState.isVisible) onCancelClicked()
+                        }
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(R.string.clear_descrption),
+                        tint = Gray900,
+                    )
+                }
             }
-          }
+            Spacer(modifier = Modifier.height(40.dp))
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
+            ) {
+                items(
+                    count = bandalartList.size,
+                    key = { index -> bandalartList[index].id },
+                ) { index ->
+                    val bandalartItem = bandalartList[index]
+                    BandalartItem(
+                        bottomSheetState = bottomSheetState,
+                        bandalartItem = bandalartItem,
+                        currentBandalartId = currentBandalartId,
+                        onClick = { key ->
+                            // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
+                            setRecentBandalartId(key)
+                            showSkeletonChanged(true)
+                            getBandalartDetail(key)
+                        },
+                        onCancelClicked = onCancelClicked,
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row {
+                        Button(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp)
+                                .padding(horizontal = 24.dp),
+                            onClick = createBandalart,
+                            colors = ButtonDefaults.buttonColors(containerColor = Gray200),
+                        ) {
+                            Row {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = stringResource(R.string.add_descrption),
+                                    tint = Gray600,
+                                    modifier = Modifier.size(20.dp),
+                                )
+                                Spacer(modifier = Modifier.padding(start = 4.dp))
+                                Text(
+                                    text = stringResource(R.string.bandalart_list_add),
+                                    color = Gray800,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.W600,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartListBottomSheetPreview() {
-  BandalartTheme {
-    BandalartListBottomSheet(
-      bandalartList = dummyBandalartList.toImmutableList(),
-      currentBandalartId = 0L,
-      getBandalartDetail = {},
-      setRecentBandalartId = {},
-      showSkeletonChanged = {},
-      onCancelClicked = {},
-      createBandalart = {},
-    )
-  }
+    BandalartTheme {
+        BandalartListBottomSheet(
+            bandalartList = dummyBandalartList.toImmutableList(),
+            currentBandalartId = 0L,
+            getBandalartDetail = {},
+            setRecentBandalartId = {},
+            showSkeletonChanged = {},
+            onCancelClicked = {},
+            createBandalart = {},
+        )
+    }
 }

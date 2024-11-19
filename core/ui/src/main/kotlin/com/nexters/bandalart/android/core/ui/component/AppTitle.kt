@@ -13,75 +13,83 @@ import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegul
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.common.extension.getCurrentLocale
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import java.util.Locale
 
 @Composable
 fun AppTitle(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  val currentLocale = LocalContext.current.getCurrentLocale()
+    val currentLocale = LocalContext.current.getCurrentLocale()
 
-  when (currentLocale.language) {
-    Locale.KOREAN.language -> {
-      AppKoreanTitle(modifier = modifier)
-    }
+    when (currentLocale.language) {
+        Locale.KOREAN.language -> {
+            AppKoreanTitle(modifier = modifier)
+        }
 
-    Locale.ENGLISH.language -> {
-      AppEnglishTitle(modifier = modifier)
-    }
+        Locale.ENGLISH.language -> {
+            AppEnglishTitle(modifier = modifier)
+        }
 
-    else -> {
-      AppEnglishTitle(modifier = modifier)
+        else -> {
+            AppEnglishTitle(modifier = modifier)
+        }
     }
-  }
 }
 
 @Composable
 fun AppKoreanTitle(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  Text(
-    text = stringResource(R.string.bandalart),
-    color = Gray900,
-    fontSize = 28.sp,
-    fontWeight = FontWeight.W400,
-    modifier = modifier,
-    fontFamily = neurimboGothicRegular,
-    lineHeight = 20.sp,
-    letterSpacing = (-0.56).sp,
-  )
+    Text(
+        text = stringResource(R.string.bandalart),
+        color = Gray900,
+        fontSize = 28.sp,
+        fontWeight = FontWeight.W400,
+        modifier = modifier,
+        fontFamily = neurimboGothicRegular,
+        lineHeight = 20.sp,
+        letterSpacing = (-0.56).sp,
+    )
 }
 
 @Composable
 fun AppEnglishTitle(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  Text(
-    text = stringResource(R.string.bandalart),
-    color = Gray900,
-    fontSize = 18.sp,
-    fontWeight = FontWeight.W400,
-    modifier = modifier,
-    fontFamily = koronaOneRegular,
-    lineHeight = 20.sp,
-    letterSpacing = (-0.36).sp,
-  )
+    Text(
+        text = stringResource(R.string.bandalart),
+        color = Gray900,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.W400,
+        modifier = modifier,
+        fontFamily = koronaOneRegular,
+        lineHeight = 20.sp,
+        letterSpacing = (-0.36).sp,
+    )
 }
 
 @ComponentPreview
 @Composable
 fun AppTitlePreview() {
-  AppTitle()
+    BandalartTheme {
+        AppTitle()
+    }
 }
+
 
 @ComponentPreview
 @Composable
 fun AppKoreanTitlePreview() {
-  AppKoreanTitle()
+    BandalartTheme {
+        AppKoreanTitle()
+    }
 }
 
 @ComponentPreview
 @Composable
 fun AppEnglishTitlePreview() {
-  AppEnglishTitle()
+    BandalartTheme {
+        AppEnglishTitle()
+    }
 }

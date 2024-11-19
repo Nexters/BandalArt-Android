@@ -26,51 +26,51 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun LoadingIndicator(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier.noRippleClickable { },
-    contentAlignment = Alignment.Center,
-  ) {
-    val composition by rememberLottieComposition(
-      spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_loading_animation),
-    )
-    val progress by animateLottieCompositionAsState(
-      composition = composition,
-      iterations = 30,
-    )
-
     Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .background(Black.copy(alpha = 0.5f)),
-      contentAlignment = Alignment.Center,
+        modifier = modifier.noRippleClickable { },
+        contentAlignment = Alignment.Center,
     ) {
-      Card(
-        modifier = Modifier
-          .height(75.dp)
-          .aspectRatio(1f)
-          .align(Alignment.Center),
-        shape = RoundedCornerShape(90.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(White),
-      ) {
-        LottieAnimation(
-          modifier = Modifier
-            .fillMaxSize()
-            .padding(5.dp),
-          composition = composition,
-          progress = { progress },
+        val composition by rememberLottieComposition(
+            spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.android.core.designsystem.R.raw.lottie_loading_animation),
         )
-      }
+        val progress by animateLottieCompositionAsState(
+            composition = composition,
+            iterations = 30,
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Black.copy(alpha = 0.5f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Card(
+                modifier = Modifier
+                    .height(75.dp)
+                    .aspectRatio(1f)
+                    .align(Alignment.Center),
+                shape = RoundedCornerShape(90.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(White),
+            ) {
+                LottieAnimation(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp),
+                    composition = composition,
+                    progress = { progress },
+                )
+            }
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun LoadingIndicatorPreview() {
-  BandalartTheme {
-    LoadingIndicator()
-  }
+    BandalartTheme {
+        LoadingIndicator()
+    }
 }

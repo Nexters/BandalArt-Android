@@ -30,63 +30,63 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun CompletionRatioProgressBar(
-  completionRatio: Int,
-  progressColor: Color,
-  modifier: Modifier = Modifier,
+    completionRatio: Int,
+    progressColor: Color,
+    modifier: Modifier = Modifier,
 ) {
-  var progress by remember { mutableFloatStateOf(0f) }
+    var progress by remember { mutableFloatStateOf(0f) }
 
-  val size by animateFloatAsState(
-    targetValue = progress,
-    tween(
-      durationMillis = 1000,
-      delayMillis = 200,
-      easing = LinearOutSlowInEasing,
-    ),
-  )
+    val size by animateFloatAsState(
+        targetValue = progress,
+        tween(
+            durationMillis = 1000,
+            delayMillis = 200,
+            easing = LinearOutSlowInEasing,
+        ),
+    )
 
-  LaunchedEffect(key1 = completionRatio) {
-    progress = completionRatio / 100f
-  }
-
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .wrapContentSize(),
-  ) {
-    // Progress Bar
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(8.dp),
-    ) {
-      // for the background of the ProgressBar
-      Box(
-        modifier = Modifier
-          .fillMaxSize()
-          .clip(RoundedCornerShape(5.dp))
-          .background(Gray100),
-      )
-      // for the progress of the ProgressBar
-      Box(
-        modifier = Modifier
-          .fillMaxWidth(size)
-          .fillMaxHeight()
-          .clip(RoundedCornerShape(5.dp))
-          .background(progressColor)
-          .animateContentSize(),
-      )
+    LaunchedEffect(key1 = completionRatio) {
+        progress = completionRatio / 100f
     }
-  }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentSize(),
+    ) {
+        // Progress Bar
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp),
+        ) {
+            // for the background of the ProgressBar
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(Gray100),
+            )
+            // for the progress of the ProgressBar
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(size)
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(progressColor)
+                    .animateContentSize(),
+            )
+        }
+    }
 }
 
 @ComponentPreview
 @Composable
 fun CompletionRatioProgressBarPreview() {
-  BandalartTheme {
-    CompletionRatioProgressBar(
-      completionRatio = 66,
-      progressColor = MainColor,
-    )
-  }
+    BandalartTheme {
+        CompletionRatioProgressBar(
+            completionRatio = 66,
+            progressColor = MainColor,
+        )
+    }
 }

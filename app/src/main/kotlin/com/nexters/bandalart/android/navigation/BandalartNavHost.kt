@@ -15,35 +15,35 @@ import com.nexters.bandalart.android.ui.BandalartAppState
 
 @Composable
 fun BandalartNavHost(
-  modifier: Modifier = Modifier,
-  appState: BandalartAppState,
-  onShowSnackbar: suspend (String) -> Boolean,
+    modifier: Modifier = Modifier,
+    appState: BandalartAppState,
+    onShowSnackbar: suspend (String) -> Boolean,
 ) {
-  val navController = appState.navController
-  NavHost(
-    modifier = modifier,
-    navController = navController,
-    startDestination = SPLASH_NAVIGATION_ROUTE,
-  ) {
-    splashScreen(
-      navigateToOnBoarding = navController::navigateToOnBoarding,
-      navigateToHome = navController::navigateToHome,
-    )
-    onBoardingScreen(
-      navigateToHome = navController::navigateToHome,
-    )
-    homeScreen(
-      navigateToComplete = { id, title, emoji ->
-        navController.navigateToComplete(
-          bandalartId = id,
-          bandalartTitle = title,
-          bandalartProfileEmoji = emoji,
+    val navController = appState.navController
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = SPLASH_NAVIGATION_ROUTE,
+    ) {
+        splashScreen(
+            navigateToOnBoarding = navController::navigateToOnBoarding,
+            navigateToHome = navController::navigateToHome,
         )
-      },
-      onShowSnackbar = onShowSnackbar,
-    )
-    completeScreen(
-      onNavigateBack = navController::popBackStack,
-    )
-  }
+        onBoardingScreen(
+            navigateToHome = navController::navigateToHome,
+        )
+        homeScreen(
+            navigateToComplete = { id, title, emoji ->
+                navController.navigateToComplete(
+                    bandalartId = id,
+                    bandalartTitle = title,
+                    bandalartProfileEmoji = emoji,
+                )
+            },
+            onShowSnackbar = onShowSnackbar,
+        )
+        completeScreen(
+            onNavigateBack = navController::popBackStack,
+        )
+    }
 }

@@ -10,26 +10,26 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed interface OnBoardingUiEvent {
-  data object NavigateToHome : OnBoardingUiEvent
+    data object NavigateToHome : OnBoardingUiEvent
 }
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-  private val onboardingRepository: OnboardingRepository,
+    private val onboardingRepository: OnboardingRepository,
 ) : ViewModel() {
-  private val _uiEvent = Channel<OnBoardingUiEvent>()
-  val uiEvent = _uiEvent.receiveAsFlow()
+    private val _uiEvent = Channel<OnBoardingUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
-  fun setOnboardingCompletedStatus(flag: Boolean) {
-    viewModelScope.launch {
-      onboardingRepository.setOnboardingCompletedStatus(flag)
-      navigateToHome()
+    fun setOnboardingCompletedStatus(flag: Boolean) {
+        viewModelScope.launch {
+            onboardingRepository.setOnboardingCompletedStatus(flag)
+            navigateToHome()
+        }
     }
-  }
 
-  private fun navigateToHome() {
-    viewModelScope.launch {
-      _uiEvent.send(OnBoardingUiEvent.NavigateToHome)
+    private fun navigateToHome() {
+        viewModelScope.launch {
+            _uiEvent.send(OnBoardingUiEvent.NavigateToHome)
+        }
     }
-  }
 }

@@ -12,114 +12,114 @@ import com.nexters.bandalart.android.core.network.service.BandalartService
 import javax.inject.Inject
 
 internal class BandalartRemoteDataSourceImpl @Inject constructor(
-  // private val client: HttpClient,
-  private val service: BandalartService,
+    // private val client: HttpClient,
+    private val service: BandalartService,
 ) : BandalartRemoteDataSource {
-  override suspend fun createBandalart(): BandalartResponse {
+    override suspend fun createBandalart(): BandalartResponse {
 //    return client.safeRequest {
 //      post("v1/bandalarts").body()
 //    }
-    return service.createBandalart()
-  }
+        return service.createBandalart()
+    }
 
-  override suspend fun getBandalartList(): List<BandalartDetailResponse> {
+    override suspend fun getBandalartList(): List<BandalartDetailResponse> {
 //    return client.safeRequest {
 //      get("v1/bandalarts").body()
 //    }
-    return service.getBandalartList()
-  }
+        return service.getBandalartList()
+    }
 
-  override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse {
+    override suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse {
 //    return client.safeRequest {
 //      get("v1/bandalarts/$bandalartKey").body()
 //    }
-    return service.getBandalartDetail(bandalartKey)
-  }
+        return service.getBandalartDetail(bandalartKey)
+    }
 
-  override suspend fun deleteBandalart(bandalartKey: String) {
+    override suspend fun deleteBandalart(bandalartKey: String) {
 //    client.safeRequest {
 //      delete("v1/bandalarts/$bandalartKey")
 //    }
-    service.deleteBandalart(bandalartKey)
-  }
+        service.deleteBandalart(bandalartKey)
+    }
 
-  override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse {
+    override suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse {
 //    return client.safeRequest {
 //      get("v1/bandalarts/$bandalartKey/cells").body()
 //    }
-    return service.getBandalartMainCell(bandalartKey)
-  }
+        return service.getBandalartMainCell(bandalartKey)
+    }
 
-  override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse {
+    override suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse {
 //    return client.safeRequest {
 //      get("v1/bandalarts/$bandalartKey/cells/$cellKey").body()
 //    }
-    return service.getBandalartCell(bandalartKey, cellKey)
-  }
+        return service.getBandalartCell(bandalartKey, cellKey)
+    }
 
-  override suspend fun updateBandalartMainCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
-  ) {
+    override suspend fun updateBandalartMainCell(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
+    ) {
 //    client.safeRequest {
 //      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
 //        setBody(updateBandalartMainCellRequest)
 //      }
 //    }
-    service.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellRequest)
-  }
+        service.updateBandalartMainCell(bandalartKey, cellKey, updateBandalartMainCellRequest)
+    }
 
-  override suspend fun updateBandalartSubCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
-  ) {
+    override suspend fun updateBandalartSubCell(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
+    ) {
 //    client.safeRequest {
 //      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
 //        setBody(updateBandalartSubCellRequest)
 //      }
 //    }
-    service.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellRequest)
-  }
+        service.updateBandalartSubCell(bandalartKey, cellKey, updateBandalartSubCellRequest)
+    }
 
-  override suspend fun updateBandalartTaskCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
-  ) {
+    override suspend fun updateBandalartTaskCell(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
+    ) {
 //    client.safeRequest {
 //      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
 //        setBody(updateBandalartTaskCellRequest)
 //      }
 //    }
-    service.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellRequest)
-  }
+        service.updateBandalartTaskCell(bandalartKey, cellKey, updateBandalartTaskCellRequest)
+    }
 
-  override suspend fun updateBandalartEmoji(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
-  ) {
+    override suspend fun updateBandalartEmoji(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
+    ) {
 //    client.safeRequest {
 //      patch("v1/bandalarts/$bandalartKey/cells/$cellKey") {
 //        setBody(updateBandalartEmojiRequest)
 //      }
 //    }
-    service.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiRequest)
-  }
+        service.updateBandalartEmoji(bandalartKey, cellKey, updateBandalartEmojiRequest)
+    }
 
-  override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
+    override suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String) {
 //    client.safeRequest {
 //      delete("v1/bandalarts/$bandalartKey/cells/$cellKey")
 //    }
-    service.deleteBandalartCell(bandalartKey, cellKey)
-  }
+        service.deleteBandalartCell(bandalartKey, cellKey)
+    }
 
-  override suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse {
+    override suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse {
 //    return client.safeRequest {
 //      post("v1/bandalarts/$bandalartKey/shares").body()
 //    }
-    return service.shareBandalart(bandalartKey)
-  }
+        return service.shareBandalart(bandalartKey)
+    }
 }

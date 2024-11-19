@@ -29,64 +29,64 @@ import com.nexters.bandalart.android.feature.splash.navigation.SPLASH_NAVIGATION
 
 @Composable
 internal fun SplashRoute(
-  navigateToOnBoarding: (NavOptions) -> Unit,
-  navigateToHome: (NavOptions) -> Unit,
-  modifier: Modifier = Modifier,
-  viewModel: SplashViewModel = hiltViewModel(),
+    navigateToOnBoarding: (NavOptions) -> Unit,
+    navigateToHome: (NavOptions) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SplashViewModel = hiltViewModel(),
 ) {
-  ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-    when (event) {
-      is SplashUiEvent.NavigateToOnBoarding -> {
-        val options = NavOptions.Builder()
-          .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
-          .build()
-        navigateToOnBoarding(options)
-      }
+    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
+        when (event) {
+            is SplashUiEvent.NavigateToOnBoarding -> {
+                val options = NavOptions.Builder()
+                    .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
+                    .build()
+                navigateToOnBoarding(options)
+            }
 
-      is SplashUiEvent.NavigateToHome -> {
-        val options = NavOptions.Builder()
-          .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
-          .build()
-        navigateToHome(options)
-      }
+            is SplashUiEvent.NavigateToHome -> {
+                val options = NavOptions.Builder()
+                    .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
+                    .build()
+                navigateToHome(options)
+            }
+        }
     }
-  }
 
-  SplashScreen(
-    modifier = modifier,
-  )
+    SplashScreen(
+        modifier = modifier,
+    )
 }
 
 @Composable
 internal fun SplashScreen(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  Surface(
-    modifier = modifier.fillMaxSize(),
-    color = Gray50,
-  ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-      Row(
-        modifier = Modifier.align(Alignment.Center),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        Image(
-          imageVector = ImageVector.vectorResource(
-            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app,
-          ),
-          contentDescription = stringResource(R.string.app_icon_description),
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        AppTitle()
-      }
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = Gray50,
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier.align(Alignment.Center),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
+                    imageVector = ImageVector.vectorResource(
+                        id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_app,
+                    ),
+                    contentDescription = stringResource(R.string.app_icon_description),
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                AppTitle()
+            }
+        }
     }
-  }
 }
 
 @DevicePreview
 @Composable
 fun SplashScreenPreview() {
-  BandalartTheme {
-    SplashScreen()
-  }
+    BandalartTheme {
+        SplashScreen()
+    }
 }

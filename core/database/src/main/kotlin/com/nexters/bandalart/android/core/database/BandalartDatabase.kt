@@ -10,7 +10,7 @@ import com.nexters.bandalart.android.core.database.entity.BandalartDBEntity
     entities = [
         BandalartDBEntity::class,
         BandalartDetailDBEntity::class,
-        BandalartCellDBEntity::class
+        BandalartCellDBEntity::class,
     ],
     version = 1,
     exportSchema = true,

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
@@ -18,59 +19,63 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BottomSheetDeleteButton(
-  onClick: () -> Unit,
-  modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  FilledIconButton(
-    onClick = onClick,
-    modifier = modifier.height(56.dp),
-    colors = IconButtonColors(Gray200, Gray900, Gray200, Gray900),
-  ) {
-    BottomSheetButtonText(
-      text = stringResource(R.string.bottomsheet_delete),
-      color = Gray900,
-    )
-  }
+    FilledIconButton(
+        onClick = onClick,
+        modifier = modifier.height(56.dp),
+        colors = IconButtonColors(Gray200, Gray900, Gray200, Gray900),
+    ) {
+        BottomSheetButtonText(
+            text = stringResource(R.string.bottomsheet_delete),
+            color = Gray900,
+        )
+    }
 }
 
 @Composable
 fun BottomSheetCompleteButton(
-  isBlankCell: Boolean,
-  onClick: () -> Unit,
-  modifier: Modifier = Modifier,
+    isBlankCell: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  FilledIconButton(
-    onClick = onClick,
-    modifier = modifier.height(56.dp),
-    colors = IconButtonColors(Gray900, White, Gray200, Gray400),
-    enabled = !isBlankCell,
-  ) {
-    BottomSheetButtonText(
-      text = stringResource(R.string.bottomsheet_done),
-      color = if (isBlankCell) Gray400 else White,
-    )
-  }
+    FilledIconButton(
+        onClick = onClick,
+        modifier = modifier.height(56.dp),
+        colors = IconButtonColors(Gray900, White, Gray200, Gray400),
+        enabled = !isBlankCell,
+    ) {
+        BottomSheetButtonText(
+            text = stringResource(R.string.bottomsheet_done),
+            color = if (isBlankCell) Gray400 else White,
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun BottomSheetDeleteButtonPreview() {
-  BottomSheetDeleteButton(
-    onClick = {},
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = 16.dp),
-  )
+    BandalartTheme {
+        BottomSheetDeleteButton(
+            onClick = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun BottomSheetCompleteButtonPreview() {
-  BottomSheetCompleteButton(
-    isBlankCell = false,
-    onClick = {},
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = 16.dp),
-  )
+    BandalartTheme {
+        BottomSheetCompleteButton(
+            isBlankCell = false,
+            onClick = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        )
+    }
 }

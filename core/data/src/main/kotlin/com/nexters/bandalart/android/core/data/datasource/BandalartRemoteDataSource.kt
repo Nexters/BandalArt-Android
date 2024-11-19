@@ -10,43 +10,43 @@ import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalar
 import com.nexters.bandalart.android.core.network.model.bandalart.UpdateBandalartTaskCellRequest
 
 interface BandalartRemoteDataSource {
-  suspend fun createBandalart(): BandalartResponse?
+    suspend fun createBandalart(): BandalartResponse?
 
-  suspend fun getBandalartList(): List<BandalartDetailResponse>?
+    suspend fun getBandalartList(): List<BandalartDetailResponse>?
 
-  suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse?
+    suspend fun getBandalartDetail(bandalartKey: String): BandalartDetailResponse?
 
-  suspend fun deleteBandalart(bandalartKey: String)
+    suspend fun deleteBandalart(bandalartKey: String)
 
-  suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse?
+    suspend fun getBandalartMainCell(bandalartKey: String): BandalartCellResponse?
 
-  suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse?
+    suspend fun getBandalartCell(bandalartKey: String, cellKey: String): BandalartCellResponse?
 
-  suspend fun updateBandalartMainCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
-  )
+    suspend fun updateBandalartMainCell(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartMainCellRequest: UpdateBandalartMainCellRequest,
+    )
 
-  suspend fun updateBandalartSubCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
-  )
+    suspend fun updateBandalartSubCell(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartSubCellRequest: UpdateBandalartSubCellRequest,
+    )
 
-  suspend fun updateBandalartTaskCell(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
-  )
+    suspend fun updateBandalartTaskCell(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartTaskCellRequest: UpdateBandalartTaskCellRequest,
+    )
 
-  suspend fun updateBandalartEmoji(
-    bandalartKey: String,
-    cellKey: String,
-    updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
-  )
+    suspend fun updateBandalartEmoji(
+        bandalartKey: String,
+        cellKey: String,
+        updateBandalartEmojiRequest: UpdateBandalartEmojiRequest,
+    )
 
-  suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String)
+    suspend fun deleteBandalartCell(bandalartKey: String, cellKey: String)
 
-  suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse?
+    suspend fun shareBandalart(bandalartKey: String): BandalartShareResponse?
 }

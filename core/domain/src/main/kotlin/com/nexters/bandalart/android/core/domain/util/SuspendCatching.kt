@@ -23,13 +23,13 @@ import kotlin.contracts.ExperimentalContracts
 // 람다를 나중에 다른 곳에서 호출하지 않고, 람다를 받자마자 즉시 실행한다는 것을 의미
 
 internal inline fun <T> runSuspendCatching(block: () -> T): Result<T> {
-  // Kotlin 의 contract(계약) 시스템을 이용해 block 이 정확히 한번만 호출 되어야 함을 나타냄
-  contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
-  return runCatching(block).also { result ->
-    // 만약 람다에서 예외가 발생하면, Result 객체는 실패를 나타내고 해당 예외를 포함, 추가적인 작업을 실행
-    val maybeException = result.exceptionOrNull()
-    // 만약 예외가 CancellationException 이면 예외를 던져 코루틴 계층 구조에 따라 상위 코루틴까지 취소 신호를 전파
-    // 이를 통해, 상위 코루틴에서 적절한 예외 처리 루틴을 수행할 수 있음
-    if (maybeException is CancellationException) throw maybeException
-  }
+    // Kotlin 의 contract(계약) 시스템을 이용해 block 이 정확히 한번만 호출 되어야 함을 나타냄
+    contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
+    return runCatching(block).also { result ->
+        // 만약 람다에서 예외가 발생하면, Result 객체는 실패를 나타내고 해당 예외를 포함, 추가적인 작업을 실행
+        val maybeException = result.exceptionOrNull()
+        // 만약 예외가 CancellationException 이면 예외를 던져 코루틴 계층 구조에 따라 상위 코루틴까지 취소 신호를 전파
+        // 이를 통해, 상위 코루틴에서 적절한 예외 처리 루틴을 수행할 수 있음
+        if (maybeException is CancellationException) throw maybeException
+    }
 }

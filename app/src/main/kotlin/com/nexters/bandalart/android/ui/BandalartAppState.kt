@@ -8,18 +8,18 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun rememberBandalartAppState(
-  navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController(),
 ): BandalartAppState {
-  return remember(
-    key1 = navController,
-  ) {
-    BandalartAppState(
-      navController = navController,
-    )
-  }
+    return remember(
+        key1 = navController,
+    ) {
+        BandalartAppState(
+            navController = navController,
+        )
+    }
 }
 
 @Stable
 class BandalartAppState(
-  val navController: NavHostController,
+    val navController: NavHostController,
 )

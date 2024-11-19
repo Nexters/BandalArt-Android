@@ -12,6 +12,6 @@ import dagger.hilt.components.SingletonComponent
 object DaoModule {
     @Provides
     fun provideBandalartDao(
-      database: BandalartDatabase,
+        database: BandalartDatabase,
     ): BandalartDao = database.bandalartDao()
 }

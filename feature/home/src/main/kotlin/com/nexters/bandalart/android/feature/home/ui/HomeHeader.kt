@@ -49,170 +49,170 @@ import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
 @Composable
 fun HomeHeader(
-  bandalartDetailData: BandalartDetailUiModel,
-  isDropDownMenuOpened: Boolean,
-  openDropDownMenu: (Boolean) -> Unit,
-  openEmojiBottomSheet: (Boolean) -> Unit,
-  openBandalartDeleteAlertDialog: (Boolean) -> Unit,
-  openCellBottomSheet: (Boolean) -> Unit,
-  modifier: Modifier = Modifier,
+    bandalartDetailData: BandalartDetailUiModel,
+    isDropDownMenuOpened: Boolean,
+    openDropDownMenu: (Boolean) -> Unit,
+    openEmojiBottomSheet: (Boolean) -> Unit,
+    openBandalartDeleteAlertDialog: (Boolean) -> Unit,
+    openCellBottomSheet: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  Column(modifier.padding(horizontal = 16.dp)) {
-    Spacer(modifier = Modifier.height(24.dp))
-    Column {
-      Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-        Card(
-          shape = RoundedCornerShape(16.dp),
-          elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        ) {
-          Box(
-            modifier = Modifier
-              .width(52.dp)
-              .aspectRatio(1f)
-              .background(Gray100)
-              .clickable { openEmojiBottomSheet(true) },
-            contentAlignment = Alignment.Center,
-          ) {
-            if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
-              Image(
-                imageVector = ImageVector.vectorResource(
-                  id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
-                ),
-                contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.empty_emoji_descrption),
-              )
-            } else {
-              EmojiText(
-                emojiText = bandalartDetailData.profileEmoji,
-                fontSize = 22.sp,
-              )
+    Column(modifier.padding(horizontal = 16.dp)) {
+        Spacer(modifier = Modifier.height(24.dp))
+        Column {
+            Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .width(52.dp)
+                            .aspectRatio(1f)
+                            .background(Gray100)
+                            .clickable { openEmojiBottomSheet(true) },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+                            Image(
+                                imageVector = ImageVector.vectorResource(
+                                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_empty_emoji,
+                                ),
+                                contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.empty_emoji_descrption),
+                            )
+                        } else {
+                            EmojiText(
+                                emojiText = bandalartDetailData.profileEmoji,
+                                fontSize = 22.sp,
+                            )
+                        }
+                    }
+                }
+                if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(
+                            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
+                        ),
+                        contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.edit_descrption),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .offset(x = 4.dp, y = 4.dp),
+                    )
+                }
             }
-          }
+            Spacer(modifier = Modifier.height(12.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+            ) {
+                Text(
+                    text = bandalartDetailData.title ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
+                    color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.W700,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .clickable { openCellBottomSheet(true) },
+                    letterSpacing = (-0.4).sp,
+                )
+                Image(
+                    imageVector = ImageVector.vectorResource(
+                        id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
+                    ),
+                    contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.option_descrption),
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable(onClick = { openDropDownMenu(true) }),
+                )
+                BandalartDropDownMenu(
+                    openDropDownMenu = openDropDownMenu,
+                    isDropDownMenuOpened = isDropDownMenuOpened,
+                    onDeleteClicked = {
+                        openBandalartDeleteAlertDialog(true)
+                        openDropDownMenu(false)
+                    },
+                )
+            }
         }
-        if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
-          Image(
-            imageVector = ImageVector.vectorResource(
-              id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_edit,
-            ),
-            contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.edit_descrption),
-            modifier = Modifier
-              .align(Alignment.BottomEnd)
-              .offset(x = 4.dp, y = 4.dp),
-          )
-        }
-      }
-      Spacer(modifier = Modifier.height(12.dp))
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .wrapContentHeight(),
-      ) {
-        Text(
-          text = bandalartDetailData.title ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
-          color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
-          fontSize = 20.sp,
-          fontWeight = FontWeight.W700,
-          modifier = Modifier
-            .align(Alignment.Center)
-            .clickable { openCellBottomSheet(true) },
-          letterSpacing = (-0.4).sp,
-        )
-        Image(
-          imageVector = ImageVector.vectorResource(
-            id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_option,
-          ),
-          contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.option_descrption),
-          modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .clickable(onClick = { openDropDownMenu(true) }),
-        )
-        BandalartDropDownMenu(
-          openDropDownMenu = openDropDownMenu,
-          isDropDownMenuOpened = isDropDownMenuOpened,
-          onDeleteClicked = {
-            openBandalartDeleteAlertDialog(true)
-            openDropDownMenu(false)
-          },
-        )
-      }
-    }
-    Spacer(modifier = Modifier.height(24.dp))
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      Text(
-        text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete_ratio, bandalartDetailData.completionRatio),
-        color = Gray600,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.W500,
-        letterSpacing = (-0.24).sp,
-      )
-      if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
-        VerticalDivider(
-          modifier = Modifier
-            .height(8.dp)
-            .padding(start = 6.dp),
-          thickness = 1.dp,
-          color = Gray300,
-        )
-        Text(
-          text = bandalartDetailData.dueDate.toFormatDate(),
-          color = Gray600,
-          fontSize = 12.sp,
-          fontWeight = FontWeight.W500,
-          modifier = Modifier.padding(start = 6.dp),
-          letterSpacing = (-0.24).sp,
-        )
-      }
-      Spacer(modifier = Modifier.weight(1f))
-      if (bandalartDetailData.isCompleted) {
-        Box(
-          modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(color = bandalartDetailData.mainColor.toColor()),
-        ) {
-          Row(
-            modifier = Modifier.padding(horizontal = 9.dp),
+        Spacer(modifier = Modifier.height(24.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-          ) {
-            Icon(
-              imageVector = Icons.Default.Check,
-              contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.check_descrption),
-              tint = Gray900,
-              modifier = Modifier.size(13.dp),
-            )
+        ) {
             Text(
-              text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete),
-              color = Gray900,
-              fontSize = 10.sp,
-              fontWeight = FontWeight.W600,
-              modifier = Modifier.padding(start = 2.dp),
-              letterSpacing = (-0.2).sp,
+                text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete_ratio, bandalartDetailData.completionRatio),
+                color = Gray600,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W500,
+                letterSpacing = (-0.24).sp,
             )
-          }
+            if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
+                VerticalDivider(
+                    modifier = Modifier
+                        .height(8.dp)
+                        .padding(start = 6.dp),
+                    thickness = 1.dp,
+                    color = Gray300,
+                )
+                Text(
+                    text = bandalartDetailData.dueDate.toFormatDate(),
+                    color = Gray600,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W500,
+                    modifier = Modifier.padding(start = 6.dp),
+                    letterSpacing = (-0.24).sp,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            if (bandalartDetailData.isCompleted) {
+                Box(
+                    modifier
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(color = bandalartDetailData.mainColor.toColor()),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 9.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.check_descrption),
+                            tint = Gray900,
+                            modifier = Modifier.size(13.dp),
+                        )
+                        Text(
+                            text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete),
+                            color = Gray900,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.W600,
+                            modifier = Modifier.padding(start = 2.dp),
+                            letterSpacing = (-0.2).sp,
+                        )
+                    }
+                }
+            }
         }
-      }
+        Spacer(modifier = Modifier.height(8.dp))
+        CompletionRatioProgressBar(
+            completionRatio = bandalartDetailData.completionRatio,
+            progressColor = bandalartDetailData.mainColor.toColor(),
+        )
+        Spacer(modifier = Modifier.height(18.dp))
     }
-    Spacer(modifier = Modifier.height(8.dp))
-    CompletionRatioProgressBar(
-      completionRatio = bandalartDetailData.completionRatio,
-      progressColor = bandalartDetailData.mainColor.toColor(),
-    )
-    Spacer(modifier = Modifier.height(18.dp))
-  }
 }
 
 @ComponentPreview
 @Composable
 fun HomeHeaderPreview() {
-  BandalartTheme {
-    HomeHeader(
-      bandalartDetailData = dummyBandalartDetailData,
-      isDropDownMenuOpened = false,
-      openDropDownMenu = {},
-      openEmojiBottomSheet = {},
-      openBandalartDeleteAlertDialog = {},
-      openCellBottomSheet = {},
-    )
-  }
+    BandalartTheme {
+        HomeHeader(
+            bandalartDetailData = dummyBandalartDetailData,
+            isDropDownMenuOpened = false,
+            openDropDownMenu = {},
+            openEmojiBottomSheet = {},
+            openBandalartDeleteAlertDialog = {},
+            openCellBottomSheet = {},
+        )
+    }
 }

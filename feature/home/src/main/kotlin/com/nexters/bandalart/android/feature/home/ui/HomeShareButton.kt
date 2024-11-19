@@ -27,44 +27,44 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun HomeShareButton(
-  shareBandalart: () -> Unit,
-  modifier: Modifier = Modifier,
+    shareBandalart: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier
-      .wrapContentSize()
-      .clip(RoundedCornerShape(18.dp))
-      .background(Gray100)
-      .clickableSingle { shareBandalart() },
-    contentAlignment = Alignment.Center,
-  ) {
-    Row(
-      modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
-      verticalAlignment = Alignment.CenterVertically,
+    Box(
+        modifier = modifier
+            .wrapContentSize()
+            .clip(RoundedCornerShape(18.dp))
+            .background(Gray100)
+            .clickableSingle { shareBandalart() },
+        contentAlignment = Alignment.Center,
     ) {
-      Image(
-        imageVector = ImageVector.vectorResource(
-          id = R.drawable.ic_share,
-        ),
-        contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.share_descrption),
-      )
-      Text(
-        text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_share),
-        color = Gray900,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.W700,
-        modifier = Modifier.padding(start = 4.dp),
-      )
+        Row(
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                imageVector = ImageVector.vectorResource(
+                    id = R.drawable.ic_share,
+                ),
+                contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.share_descrption),
+            )
+            Text(
+                text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_share),
+                color = Gray900,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W700,
+                modifier = Modifier.padding(start = 4.dp),
+            )
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun HomeShareButtonPreview() {
-  BandalartTheme {
-    HomeShareButton(
-      shareBandalart = {},
-    )
-  }
+    BandalartTheme {
+        HomeShareButton(
+            shareBandalart = {},
+        )
+    }
 }

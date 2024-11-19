@@ -3,71 +3,71 @@
 import java.util.Properties
 
 plugins {
-  alias(libs.plugins.bandalart.android.application)
-  alias(libs.plugins.bandalart.android.application.compose)
-  alias(libs.plugins.bandalart.android.firebase)
-  alias(libs.plugins.bandalart.android.hilt)
-  alias(libs.plugins.google.secrets)
+    alias(libs.plugins.bandalart.android.application)
+    alias(libs.plugins.bandalart.android.application.compose)
+    alias(libs.plugins.bandalart.android.firebase)
+    alias(libs.plugins.bandalart.android.hilt)
+    alias(libs.plugins.google.secrets)
 }
 
 android {
-  namespace = "com.nexters.bandalart.android"
+    namespace = "com.nexters.bandalart.android"
 
-  signingConfigs {
-    create("release") {
-      val propertiesFile = rootProject.file("keystore.properties")
-      val properties = Properties()
-      properties.load(propertiesFile.inputStream())
-      storeFile = file(properties["STORE_FILE"] as String)
-      storePassword = properties["STORE_PASSWORD"] as String
-      keyAlias = properties["KEY_ALIAS"] as String
-      keyPassword = properties["KEY_PASSWORD"] as String
-    }
-  }
-
-  buildTypes {
-    getByName("debug") {
-      isDebuggable = true
-      applicationIdSuffix = ".dev"
-      manifestPlaceholders += mapOf(
-        "appName" to "@string/app_name_dev"
-      )
+    signingConfigs {
+        create("release") {
+            val propertiesFile = rootProject.file("keystore.properties")
+            val properties = Properties()
+            properties.load(propertiesFile.inputStream())
+            storeFile = file(properties["STORE_FILE"] as String)
+            storePassword = properties["STORE_PASSWORD"] as String
+            keyAlias = properties["KEY_ALIAS"] as String
+            keyPassword = properties["KEY_PASSWORD"] as String
+        }
     }
 
-    getByName("release") {
-      isDebuggable = false
-      signingConfig = signingConfigs.getByName("release")
-      manifestPlaceholders += mapOf(
-        "appName" to "@string/app_name"
-      )
-    }
-  }
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name_dev",
+            )
+        }
 
-  buildFeatures {
-    buildConfig = true
-  }
+        getByName("release") {
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name",
+            )
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
-  implementations(
-    projects.core.data,
-    projects.core.datastore,
-    projects.core.designsystem,
-    projects.core.domain,
-    projects.core.network,
-    projects.core.ui,
-    projects.core.common,
-    projects.feature.complete,
-    projects.feature.home,
-    projects.feature.onboarding,
-    projects.feature.splash,
+    implementations(
+        projects.core.data,
+        projects.core.datastore,
+        projects.core.designsystem,
+        projects.core.domain,
+        projects.core.network,
+        projects.core.ui,
+        projects.core.common,
+        projects.feature.complete,
+        projects.feature.home,
+        projects.feature.onboarding,
+        projects.feature.splash,
 
-    libs.androidx.activity.compose,
-    libs.androidx.splash,
-    libs.androidx.startup,
-    libs.androidx.core,
-    libs.androidx.navigation.compose,
-    libs.androidx.hilt.navigation.compose,
-    libs.timber,
-  )
+        libs.androidx.activity.compose,
+        libs.androidx.splash,
+        libs.androidx.startup,
+        libs.androidx.core,
+        libs.androidx.navigation.compose,
+        libs.androidx.hilt.navigation.compose,
+        libs.timber,
+    )
 }

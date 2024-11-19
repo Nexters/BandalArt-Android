@@ -6,34 +6,34 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 pluginManagement {
-  repositories {
-    google()
-    mavenCentral()
-    gradlePluginPortal()
-  }
-  includeBuild("build-logic")
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    includeBuild("build-logic")
 }
 
 buildCache {
-  local {
-    removeUnusedEntriesAfterDays = 7
-  }
+    local {
+        removeUnusedEntriesAfterDays = 7
+    }
 }
 
 include(
-  ":app",
+    ":app",
 
-  ":core:data",
-  ":core:datastore",
-  ":core:database",
-  ":core:designsystem",
-  ":core:domain",
-  ":core:network",
-  ":core:ui",
-  ":core:common",
+    ":core:data",
+    ":core:datastore",
+    ":core:database",
+    ":core:designsystem",
+    ":core:domain",
+    ":core:network",
+    ":core:ui",
+    ":core:common",
 
-  ":feature:complete",
-  ":feature:home",
-  ":feature:onboarding",
-  ":feature:splash",
+    ":feature:complete",
+    ":feature:home",
+    ":feature:onboarding",
+    ":feature:splash",
 )

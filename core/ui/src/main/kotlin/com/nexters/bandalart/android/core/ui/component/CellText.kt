@@ -18,43 +18,43 @@ import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 val cellLineBreak = LineBreak(
-  strategy = LineBreak.Strategy.Simple,
-  strictness = LineBreak.Strictness.Normal,
-  wordBreak = LineBreak.WordBreak.Phrase,
+    strategy = LineBreak.Strategy.Simple,
+    strictness = LineBreak.Strictness.Normal,
+    wordBreak = LineBreak.WordBreak.Phrase,
 )
 
 @Composable
 fun CellText(
-  cellText: String,
-  cellTextColor: Color,
-  fontWeight: FontWeight,
-  modifier: Modifier = Modifier,
-  textAlpha: Float = 1f,
+    cellText: String,
+    cellTextColor: Color,
+    fontWeight: FontWeight,
+    modifier: Modifier = Modifier,
+    textAlpha: Float = 1f,
 ) {
-  Text(
-    text = cellText,
-    modifier = modifier
-        .padding(horizontal = 4.dp, vertical = 6.dp)
-        .alpha(textAlpha),
-    color = cellTextColor,
-    fontFamily = pretendard,
-    fontWeight = fontWeight,
-    fontSize = 12.sp,
-    lineHeight = 16.8.sp,
-    letterSpacing = (-0.24).sp,
-    textAlign = TextAlign.Center,
-    style = TextStyle(lineBreak = cellLineBreak),
-  )
+    Text(
+        text = cellText,
+        modifier = modifier
+            .padding(horizontal = 4.dp, vertical = 6.dp)
+            .alpha(textAlpha),
+        color = cellTextColor,
+        fontFamily = pretendard,
+        fontWeight = fontWeight,
+        fontSize = 12.sp,
+        lineHeight = 16.8.sp,
+        letterSpacing = (-0.24).sp,
+        textAlign = TextAlign.Center,
+        style = TextStyle(lineBreak = cellLineBreak),
+    )
 }
 
 @ComponentPreview
 @Composable
 fun CellTextPreview() {
-  BandalartTheme {
-    CellText(
-      cellText = "완벽한 2024년",
-      cellTextColor = Gray900,
-      fontWeight = FontWeight.W700,
-    )
-  }
+    BandalartTheme {
+        CellText(
+            cellText = "완벽한 2024년",
+            cellTextColor = Gray900,
+            fontWeight = FontWeight.W700,
+        )
+    }
 }

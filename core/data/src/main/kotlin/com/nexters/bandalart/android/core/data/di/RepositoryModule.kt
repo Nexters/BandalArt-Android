@@ -16,21 +16,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal abstract class RepositoryModule {
 
-  @Binds
-  @Singleton
-  abstract fun bindGuestLoginTokenRepository(
-    guestLoginTokenRepositoryImpl: GuestLoginTokenRepositoryImpl,
-  ): GuestLoginTokenRepository
+    @Binds
+    @Singleton
+    abstract fun bindGuestLoginTokenRepository(
+        guestLoginTokenRepositoryImpl: GuestLoginTokenRepositoryImpl,
+    ): GuestLoginTokenRepository
 
-  @Binds
-  @Singleton
-  abstract fun bindBandalartRepository(
-    bandalartRepositoryImpl: BandalartRepositoryImpl,
-  ): BandalartRepository
+    @Binds
+    @Singleton
+    abstract fun bindBandalartRepository(
+        bandalartRepositoryImpl: BandalartRepositoryImpl,
+    ): BandalartRepository
 
-  @Binds
-  @Singleton
-  abstract fun bindOnboardingRepository(
-    onboardingRepositoryImpl: OnboardingRepositoryImpl,
-  ): OnboardingRepository
+    @Binds
+    @Singleton
+    abstract fun bindOnboardingRepository(
+        onboardingRepositoryImpl: OnboardingRepositoryImpl,
+    ): OnboardingRepository
 }

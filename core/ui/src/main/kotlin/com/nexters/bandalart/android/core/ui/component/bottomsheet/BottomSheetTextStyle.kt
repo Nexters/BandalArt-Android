@@ -9,10 +9,10 @@ import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 
 @Composable
 fun BottomSheetTextStyle() = TextStyle(
-  color = Gray900,
-  fontFamily = pretendard,
-  fontWeight = FontWeight.W600,
-  fontSize = 16.sp,
-  letterSpacing = -(0.32).sp,
-  lineHeight = 22.4.sp,
+    color = Gray900,
+    fontFamily = pretendard,
+    fontWeight = FontWeight.W600,
+    fontSize = 16.sp,
+    letterSpacing = -(0.32).sp,
+    lineHeight = 22.4.sp,
 )

@@ -1,84 +1,84 @@
 {
-  "project_info": {
-    "project_number": "197590766195",
-    "project_id": "bandalart-e0288",
-    "storage_bucket": "bandalart-e0288.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:197590766195:android:6e7a024f76678038179006",
-        "android_client_info": {
-          "package_name": "com.nexters.bandalart.android"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "197590766195-gu7oadddf14doo77tnbecgji41c43sil.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.nexters.bandalart.android",
-            "certificate_hash": "f815bf3587470a6d12ccc191569e579132a87a68"
-          }
-        },
-        {
-          "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAzAhCCMGscA_wEWQNEi_d-NxiuJSmJg_E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+    "project_info": {
+        "project_number": "197590766195",
+        "project_id": "bandalart-e0288",
+        "storage_bucket": "bandalart-e0288.appspot.com"
     },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:197590766195:android:61e8f68629de40aa179006",
-        "android_client_info": {
-          "package_name": "com.nexters.bandalart.android.dev"
-        }
-      },
-      "oauth_client": [
+    "client": [
         {
-          "client_id": "197590766195-0eviun3t4blk2hutntp17qd6njt2v14u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.nexters.bandalart.android.dev",
-            "certificate_hash": "f815bf3587470a6d12ccc191569e579132a87a68"
-          }
+            "client_info": {
+                "mobilesdk_app_id": "1:197590766195:android:6e7a024f76678038179006",
+                "android_client_info": {
+                    "package_name": "com.nexters.bandalart.android"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "197590766195-gu7oadddf14doo77tnbecgji41c43sil.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.nexters.bandalart.android",
+                        "certificate_hash": "f815bf3587470a6d12ccc191569e579132a87a68"
+                    }
+                },
+                {
+                    "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAzAhCCMGscA_wEWQNEi_d-NxiuJSmJg_E"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
         },
         {
-          "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAzAhCCMGscA_wEWQNEi_d-NxiuJSmJg_E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
-              "client_type": 3
+            "client_info": {
+                "mobilesdk_app_id": "1:197590766195:android:61e8f68629de40aa179006",
+                "android_client_info": {
+                    "package_name": "com.nexters.bandalart.android.dev"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "197590766195-0eviun3t4blk2hutntp17qd6njt2v14u.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.nexters.bandalart.android.dev",
+                        "certificate_hash": "f815bf3587470a6d12ccc191569e579132a87a68"
+                    }
+                },
+                {
+                    "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAzAhCCMGscA_wEWQNEi_d-NxiuJSmJg_E"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "197590766195-qikbkeakavvvd0qvucr4j78siktfv647.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
             }
-          ]
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    ],
+    "configuration_version": "1"
 }

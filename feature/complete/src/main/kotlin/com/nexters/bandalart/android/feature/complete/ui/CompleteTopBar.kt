@@ -19,32 +19,32 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun CompleteTopBar(
-  onNavigateBack: () -> Unit,
-  modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
-  Row(
-    modifier = modifier
-      .fillMaxWidth()
-      .padding(horizontal = 16.dp),
-  ) {
-    IconButton(
-      onClick = onNavigateBack,
-      modifier = Modifier
-        .width(32.dp)
-        .aspectRatio(1f),
+    val context = LocalContext.current
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
     ) {
-      Icon(
-        imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
-        contentDescription = context.getString(R.string.arrow_forward_descrption),
-        tint = Gray900,
-      )
+        IconButton(
+            onClick = onNavigateBack,
+            modifier = Modifier
+                .width(32.dp)
+                .aspectRatio(1f),
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
+                contentDescription = context.getString(R.string.arrow_forward_descrption),
+                tint = Gray900,
+            )
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun CompleteTopBarPreview() {
-  CompleteTopBar(onNavigateBack = {})
+    CompleteTopBar(onNavigateBack = {})
 }

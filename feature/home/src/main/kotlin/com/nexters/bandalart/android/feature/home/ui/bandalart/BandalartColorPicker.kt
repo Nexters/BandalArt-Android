@@ -29,57 +29,57 @@ import com.nexters.bandalart.android.core.ui.allColor
 
 @Composable
 fun BandalartColorPicker(
-  initColor: ThemeColor,
-  onResult: (ThemeColor) -> Unit,
-  modifier: Modifier = Modifier,
+    initColor: ThemeColor,
+    onResult: (ThemeColor) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  Row(
-    modifier = modifier
-      .fillMaxWidth()
-      .height(45.dp),
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.SpaceEvenly,
-  ) {
-    var initSelected by remember { mutableStateOf(initColor) }
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(45.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+    ) {
+        var initSelected by remember { mutableStateOf(initColor) }
 
-    allColor.forEach {
-      Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.weight(1f),
-      ) {
-        if (it.mainColor == initSelected.mainColor) {
-          Card(
-            border = BorderStroke(width = 1.5.dp, color = Gray900),
-            modifier = Modifier
-              .height(45.dp)
-              .aspectRatio(1f),
-            shape = RoundedCornerShape(90.dp),
-            colors = CardDefaults.cardColors(White),
-          ) { }
+        allColor.forEach {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.weight(1f),
+            ) {
+                if (it.mainColor == initSelected.mainColor) {
+                    Card(
+                        border = BorderStroke(width = 1.5.dp, color = Gray900),
+                        modifier = Modifier
+                            .height(45.dp)
+                            .aspectRatio(1f),
+                        shape = RoundedCornerShape(90.dp),
+                        colors = CardDefaults.cardColors(White),
+                    ) { }
+                }
+                Card(
+                    modifier = Modifier
+                        .height(36.dp)
+                        .aspectRatio(1f)
+                        .noRippleClickable {
+                            initSelected = it
+                            onResult(initSelected)
+                        },
+                    shape = RoundedCornerShape(90.dp),
+                    colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
+                ) { }
+            }
         }
-        Card(
-          modifier = Modifier
-            .height(36.dp)
-            .aspectRatio(1f)
-            .noRippleClickable {
-              initSelected = it
-              onResult(initSelected)
-            },
-          shape = RoundedCornerShape(90.dp),
-          colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
-        ) { }
-      }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartColorPickerPreview() {
-  BandalartTheme {
-    BandalartColorPicker(
-      initColor = ThemeColor("#3FFFBA", "#111827"),
-      onResult = {},
-    )
-  }
+    BandalartTheme {
+        BandalartColorPicker(
+            initColor = ThemeColor("#3FFFBA", "#111827"),
+            onResult = {},
+        )
+    }
 }

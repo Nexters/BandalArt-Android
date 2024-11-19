@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.nexters.bandalart.android.feature.onboarding
 
 import android.content.res.Configuration
@@ -51,194 +49,194 @@ import java.util.Locale
 
 @Composable
 internal fun OnBoardingRoute(
-  navigateToHome: (NavOptions) -> Unit,
-  modifier: Modifier = Modifier,
-  viewModel: OnboardingViewModel = hiltViewModel(),
+    navigateToHome: (NavOptions) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
-  ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-    when (event) {
-      is OnBoardingUiEvent.NavigateToHome -> {
-        val options = NavOptions.Builder()
-          .setPopUpTo(ONBOARDING_NAVIGATION_ROUTE, inclusive = true)
-          .build()
-        navigateToHome(options)
-      }
+    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
+        when (event) {
+            is OnBoardingUiEvent.NavigateToHome -> {
+                val options = NavOptions.Builder()
+                    .setPopUpTo(ONBOARDING_NAVIGATION_ROUTE, inclusive = true)
+                    .build()
+                navigateToHome(options)
+            }
+        }
     }
-  }
 
-  OnBoardingScreen(
-    setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
-    modifier = modifier,
-  )
+    OnBoardingScreen(
+        setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
+        modifier = modifier,
+    )
 }
 
 @Composable
 internal fun OnBoardingScreen(
-  setOnboardingCompletedStatus: (Boolean) -> Unit,
-  modifier: Modifier = Modifier,
+    setOnboardingCompletedStatus: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
-  val currentLocale = context.getCurrentLocale()
-  val configuration = LocalConfiguration.current
+    val context = LocalContext.current
+    val currentLocale = context.getCurrentLocale()
+    val configuration = LocalConfiguration.current
 
-  val composition by rememberLottieComposition(
-    spec = LottieCompositionSpec.RawRes(
-      when (currentLocale.language) {
-        Locale.KOREAN.language -> {
-          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_kr
-        }
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(
+            when (currentLocale.language) {
+                Locale.KOREAN.language -> {
+                    com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_kr
+                }
 
-        Locale.ENGLISH.language -> {
-          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
-        }
+                Locale.ENGLISH.language -> {
+                    com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
+                }
 
-        else -> {
-          com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
-        }
-      },
-    ),
-  )
-  val progress by animateLottieCompositionAsState(
-    composition = composition,
-    iterations = LottieConstants.IterateForever,
-  )
+                else -> {
+                    com.nexters.bandalart.android.core.designsystem.R.raw.lottie_onboarding_en
+                }
+            },
+        ),
+    )
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+    )
 
-  Surface(
-    modifier = modifier.fillMaxSize(),
-    color = Gray50,
-  ) {
-    val pageCount = 2
-    val pagerState = rememberPagerState(pageCount = { pageCount })
-
-    Column(
-      modifier = Modifier.fillMaxSize(),
-      horizontalAlignment = Alignment.CenterHorizontally,
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = Gray50,
     ) {
-      Spacer(modifier = Modifier.height(16.dp))
-      PagerIndicator(
-        pageCount = pageCount,
-        pagerState = pagerState,
-      )
-      HorizontalPager(
-        state = pagerState,
-        modifier = Modifier.fillMaxSize(),
-      ) { page ->
-        when (page) {
-          0 -> {
-            Column(
-              modifier = Modifier.fillMaxSize(),
-              horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-              Spacer(modifier = Modifier.height(50.dp))
-              TitleText(text = context.getString(R.string.onboarding_first_title))
-              Spacer(modifier = Modifier.height(50.dp))
-              Card(
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.padding(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-              ) {
-                Box(
-                  modifier = Modifier
-                    .aspectRatioBasedOnOrientation(1f)
-                    .background(Gray50),
-                  contentAlignment = Alignment.Center,
-                ) {
-                  when (currentLocale.language) {
-                    Locale.KOREAN.language -> {
-                      Image(
-                        imageVector = ImageVector.vectorResource(
-                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_kr,
-                        ),
-                        contentDescription = context.getString(R.string.delete_descrption),
-                        modifier = Modifier.fillMaxSize(),
-                      )
-                    }
+        val pageCount = 2
+        val pagerState = rememberPagerState(pageCount = { pageCount })
 
-                    Locale.ENGLISH.language -> {
-                      Image(
-                        imageVector = ImageVector.vectorResource(
-                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_en,
-                        ),
-                        contentDescription = context.getString(R.string.delete_descrption),
-                        modifier = Modifier.fillMaxSize(),
-                      )
-                    }
-
-                    else -> {
-                      Image(
-                        imageVector = ImageVector.vectorResource(
-                          id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_en,
-                        ),
-                        contentDescription = context.getString(R.string.delete_descrption),
-                        modifier = Modifier.fillMaxSize(),
-                      )
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          1 -> {
-            Box {
-              Column(
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            PagerIndicator(
+                pageCount = pageCount,
+                pagerState = pagerState,
+            )
+            HorizontalPager(
+                state = pagerState,
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-              ) {
-                Spacer(modifier = Modifier.height(50.dp))
-                TitleText(text = context.getString(R.string.onboarding_second_title))
-                Spacer(modifier = Modifier.height(50.dp))
-                Card(
-                  shape = RoundedCornerShape(16.dp),
-                  modifier = Modifier.padding(16.dp),
-                ) {
-                  Box(
-                    modifier = Modifier
-                      .aspectRatioBasedOnOrientation(1f)
-                      .background(Gray50),
-                    contentAlignment = Alignment.Center,
-                  ) {
-                    LottieAnimation(
-                      composition = composition,
-                      progress = { progress },
-                      modifier = Modifier.fillMaxSize(),
-                    )
-                  }
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Spacer(modifier = Modifier.height(50.dp))
+                            TitleText(text = context.getString(R.string.onboarding_first_title))
+                            Spacer(modifier = Modifier.height(50.dp))
+                            Card(
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier.padding(16.dp),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .aspectRatioBasedOnOrientation(1f)
+                                        .background(Gray50),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    when (currentLocale.language) {
+                                        Locale.KOREAN.language -> {
+                                            Image(
+                                                imageVector = ImageVector.vectorResource(
+                                                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_kr,
+                                                ),
+                                                contentDescription = context.getString(R.string.delete_descrption),
+                                                modifier = Modifier.fillMaxSize(),
+                                            )
+                                        }
+
+                                        Locale.ENGLISH.language -> {
+                                            Image(
+                                                imageVector = ImageVector.vectorResource(
+                                                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_en,
+                                                ),
+                                                contentDescription = context.getString(R.string.delete_descrption),
+                                                modifier = Modifier.fillMaxSize(),
+                                            )
+                                        }
+
+                                        else -> {
+                                            Image(
+                                                imageVector = ImageVector.vectorResource(
+                                                    id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_onboarding_en,
+                                                ),
+                                                contentDescription = context.getString(R.string.delete_descrption),
+                                                modifier = Modifier.fillMaxSize(),
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    1 -> {
+                        Box {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Spacer(modifier = Modifier.height(50.dp))
+                                TitleText(text = context.getString(R.string.onboarding_second_title))
+                                Spacer(modifier = Modifier.height(50.dp))
+                                Card(
+                                    shape = RoundedCornerShape(16.dp),
+                                    modifier = Modifier.padding(16.dp),
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .aspectRatioBasedOnOrientation(1f)
+                                            .background(Gray50),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        LottieAnimation(
+                                            composition = composition,
+                                            progress = { progress },
+                                            modifier = Modifier.fillMaxSize(),
+                                        )
+                                    }
+                                }
+                            }
+                            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                BandalartButton(
+                                    onClick = { setOnboardingCompletedStatus(true) },
+                                    text = context.getString(R.string.onboarding_start),
+                                    modifier = Modifier
+                                        .wrapContentWidth()
+                                        .align(Alignment.BottomEnd)
+                                        .padding(bottom = 32.dp),
+                                )
+                            } else {
+                                BandalartButton(
+                                    onClick = { setOnboardingCompletedStatus(true) },
+                                    text = context.getString(R.string.onboarding_start),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 32.dp),
+                                )
+                            }
+                        }
+                    }
                 }
-              }
-              if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                BandalartButton(
-                  onClick = { setOnboardingCompletedStatus(true) },
-                  text = context.getString(R.string.onboarding_start),
-                  modifier = Modifier
-                    .wrapContentWidth()
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 32.dp),
-                )
-              } else {
-                BandalartButton(
-                  onClick = { setOnboardingCompletedStatus(true) },
-                  text = context.getString(R.string.onboarding_start),
-                  modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 32.dp),
-                )
-              }
             }
-          }
         }
-      }
     }
-  }
 }
 
 @DevicePreview
 @Composable
 fun OnBoardingScreenPreview() {
-  BandalartTheme {
-    OnBoardingScreen(
-      setOnboardingCompletedStatus = {},
-    )
-  }
+    BandalartTheme {
+        OnBoardingScreen(
+            setOnboardingCompletedStatus = {},
+        )
+    }
 }

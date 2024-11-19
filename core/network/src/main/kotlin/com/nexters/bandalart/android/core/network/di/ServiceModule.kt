@@ -13,19 +13,19 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal object ServiceModule {
 
-  @Singleton
-  @Provides
-  internal fun provideBandalartService(
-    @BandalartApi retrofit: Retrofit,
-  ): BandalartService {
-    return retrofit.create(BandalartService::class.java)
-  }
+    @Singleton
+    @Provides
+    internal fun provideBandalartService(
+        @BandalartApi retrofit: Retrofit,
+    ): BandalartService {
+        return retrofit.create(BandalartService::class.java)
+    }
 
-  @Singleton
-  @Provides
-  internal fun provideGuestLoginService(
-    @LoginApi retrofit: Retrofit,
-  ): GuestLoginService {
-    return retrofit.create(GuestLoginService::class.java)
-  }
+    @Singleton
+    @Provides
+    internal fun provideGuestLoginService(
+        @LoginApi retrofit: Retrofit,
+    ): GuestLoginService {
+        return retrofit.create(GuestLoginService::class.java)
+    }
 }

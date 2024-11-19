@@ -30,46 +30,46 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun SaveImageButton(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier
-      .clickable(onClick = {})
-      .offset(y = (-110).dp),
-  ) {
-    Column {
-      Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-          imageVector = ImageVector.vectorResource(
-            id = R.drawable.ic_gallery,
-          ),
-          contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.clear_descrption),
-        )
-        Text(
-          text = buildAnnotatedString {
-            withStyle(
-              style = SpanStyle(
-                textDecoration = TextDecoration.Underline,
-              ),
-            ) {
-              append(stringResource(com.nexters.bandalart.android.core.ui.R.string.save_image))
+    Box(
+        modifier = modifier
+            .clickable(onClick = {})
+            .offset(y = (-110).dp),
+    ) {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    imageVector = ImageVector.vectorResource(
+                        id = R.drawable.ic_gallery,
+                    ),
+                    contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.clear_descrption),
+                )
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                textDecoration = TextDecoration.Underline,
+                            ),
+                        ) {
+                            append(stringResource(com.nexters.bandalart.android.core.ui.R.string.save_image))
+                        }
+                    },
+                    color = Gray400,
+                    fontFamily = pretendard,
+                    fontWeight = FontWeight.W600,
+                    fontSize = 16.sp,
+                    letterSpacing = -(0.32).sp,
+                )
             }
-          },
-          color = Gray400,
-          fontFamily = pretendard,
-          fontWeight = FontWeight.W600,
-          fontSize = 16.sp,
-          letterSpacing = -(0.32).sp,
-        )
-      }
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun SaveImageButtonPreview() {
-  BandalartTheme {
-    SaveImageButton()
-  }
+    BandalartTheme {
+        SaveImageButton()
+    }
 }

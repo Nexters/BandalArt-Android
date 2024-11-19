@@ -33,87 +33,87 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun NetworkErrorAlertDialog(
-  title: String,
-  message: String,
-  onConfirmClick: () -> Unit,
-  modifier: Modifier = Modifier,
+    title: String,
+    message: String,
+    onConfirmClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
+    val context = LocalContext.current
 
-  Dialog(onDismissRequest = {}) {
-    Surface(
-      shape = RoundedCornerShape(16.dp),
-      color = White,
-    ) {
-      Column(
-        modifier = modifier
-          .fillMaxWidth()
-          .padding(top = 24.dp),
-      ) {
-        Image(
-          imageVector = ImageVector.vectorResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_circle_cross),
-          contentDescription = context.getString(R.string.delete_descrption),
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-          text = title,
-          color = Gray900,
-          fontSize = 20.sp,
-          fontWeight = FontWeight.W700,
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-          textAlign = TextAlign.Center,
-          lineHeight = 30.sp,
-          letterSpacing = (-0.4).sp,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-          text = message,
-          color = Gray400,
-          fontSize = 14.sp,
-          fontWeight = FontWeight.W500,
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-          textAlign = TextAlign.Center,
-          letterSpacing = (-0.28).sp,
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        Row(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
-            .align(Alignment.CenterHorizontally),
-          horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically,
+    Dialog(onDismissRequest = {}) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = White,
         ) {
-          Button(
-            modifier = Modifier
-              .weight(1f)
-              .height(56.dp),
-            onClick = onConfirmClick,
-            colors = ButtonDefaults.buttonColors(containerColor = Gray900),
-          ) {
-            Text(
-              text = context.getString(R.string.network_error_retry_message),
-              fontSize = 16.sp,
-              fontWeight = FontWeight.W600,
-              color = White,
-            )
-          }
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+            ) {
+                Image(
+                    imageVector = ImageVector.vectorResource(com.nexters.bandalart.android.core.designsystem.R.drawable.ic_circle_cross),
+                    contentDescription = context.getString(R.string.delete_descrption),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = title,
+                    color = Gray900,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.W700,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
+                    lineHeight = 30.sp,
+                    letterSpacing = (-0.4).sp,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = message,
+                    color = Gray400,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W500,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
+                    letterSpacing = (-0.28).sp,
+                )
+                Spacer(modifier = Modifier.height(30.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .align(Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp),
+                        onClick = onConfirmClick,
+                        colors = ButtonDefaults.buttonColors(containerColor = Gray900),
+                    ) {
+                        Text(
+                            text = context.getString(R.string.network_error_retry_message),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W600,
+                            color = White,
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
         }
-        Spacer(modifier = Modifier.height(20.dp))
-      }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun NetworkErrorAlertDialogPreview() {
-  BandalartTheme {
-    NetworkErrorAlertDialog(
-      title = "네트워크 문제로 표를\n불러오지 못했어요",
-      message = "다시 시도해주시기 바랍니다.",
-      onConfirmClick = {},
-    )
-  }
+    BandalartTheme {
+        NetworkErrorAlertDialog(
+            title = "네트워크 문제로 표를\n불러오지 못했어요",
+            message = "다시 시도해주시기 바랍니다.",
+            onConfirmClick = {},
+        )
+    }
 }

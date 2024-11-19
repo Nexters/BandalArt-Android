@@ -1,7 +1,7 @@
 plugins {
-  alias(libs.plugins.bandalart.jvm.kotlin)
+    alias(libs.plugins.bandalart.jvm.kotlin)
 }
 
 dependencies {
-  implementation(libs.javax.inject)
+    implementation(libs.javax.inject)
 }

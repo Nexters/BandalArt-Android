@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BandalartShareResponse(
-  @SerialName("shareUrl")
-  val shareUrl: String,
-  @SerialName("key")
-  val key: String,
-  @SerialName("endDate")
-  val endDate: String,
+    @SerialName("shareUrl")
+    val shareUrl: String,
+    @SerialName("key")
+    val key: String,
+    @SerialName("endDate")
+    val endDate: String,
 )

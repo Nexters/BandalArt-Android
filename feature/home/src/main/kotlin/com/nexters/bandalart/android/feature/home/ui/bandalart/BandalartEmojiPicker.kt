@@ -40,121 +40,121 @@ import com.nexters.bandalart.android.core.ui.component.EmojiText
 import kotlinx.coroutines.launch
 
 private val emojiList = listOf(
-  "🔥", "😀", "😃", "😄", "😆", "🥹",
-  "🥰", "😍", "😂", "🥲", "☺️", "😎",
-  "🥳", "🤩", "⭐", "🌟", "✨", "💥",
-  "❤️", "🧡", "💛", "💚", "💙", "❤️‍🔥",
+    "🔥", "😀", "😃", "😄", "😆", "🥹",
+    "🥰", "😍", "😂", "🥲", "☺️", "😎",
+    "🥳", "🤩", "⭐", "🌟", "✨", "💥",
+    "❤️", "🧡", "💛", "💚", "💙", "❤️‍🔥",
 )
 
 @Composable
 fun BandalartEmojiPicker(
-  currentEmoji: String?,
-  isBottomSheet: Boolean,
-  onResult: (String?, Boolean) -> Unit,
-  emojiPickerState: SheetState,
-  modifier: Modifier = Modifier,
+    currentEmoji: String?,
+    isBottomSheet: Boolean,
+    onResult: (String?, Boolean) -> Unit,
+    emojiPickerState: SheetState,
+    modifier: Modifier = Modifier,
 ) {
-  val scope = rememberCoroutineScope()
-  var selectedEmoji by remember { mutableStateOf(currentEmoji) }
-  var prevSelectedEmoji by remember { mutableStateOf(currentEmoji) }
+    val scope = rememberCoroutineScope()
+    var selectedEmoji by remember { mutableStateOf(currentEmoji) }
+    var prevSelectedEmoji by remember { mutableStateOf(currentEmoji) }
 
 
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .background(White)
-      .padding(
-        top = if (isBottomSheet) 16.dp else 0.dp,
-      ),
-  ) {
-    var emojiIndex = 0
     Column(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(
-          top = if (isBottomSheet) 15.dp else 0.dp,
-          start = if (isBottomSheet) 15.dp else 0.dp,
-          end = if (isBottomSheet) 23.dp else 8.dp,
-          bottom = if (isBottomSheet) 26.dp else 0.dp,
-        ),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.SpaceEvenly,
-    ) {
-      repeat(4) {
-        Row(
-          modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(top = 8.dp),
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.SpaceEvenly,
+            .background(White)
+            .padding(
+                top = if (isBottomSheet) 16.dp else 0.dp,
+            ),
+    ) {
+        var emojiIndex = 0
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = if (isBottomSheet) 15.dp else 0.dp,
+                    start = if (isBottomSheet) 15.dp else 0.dp,
+                    end = if (isBottomSheet) 23.dp else 8.dp,
+                    bottom = if (isBottomSheet) 26.dp else 0.dp,
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
-          repeat(6) {
-            val emojiItem = emojiList[emojiIndex++]
-            Card(
-              modifier = Modifier
-                .padding(start = 8.dp)
-                .weight(1f),
-              shape = RoundedCornerShape(12.dp),
-              border = when (emojiItem) {
-                selectedEmoji -> {
-                  BorderStroke(
-                    width = 1.dp,
-                    color = Gray400,
-                  )
-                }
+            repeat(4) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                ) {
+                    repeat(6) {
+                        val emojiItem = emojiList[emojiIndex++]
+                        Card(
+                            modifier = Modifier
+                                .padding(start = 8.dp)
+                                .weight(1f),
+                            shape = RoundedCornerShape(12.dp),
+                            border = when (emojiItem) {
+                                selectedEmoji -> {
+                                    BorderStroke(
+                                        width = 1.dp,
+                                        color = Gray400,
+                                    )
+                                }
 
-                prevSelectedEmoji -> {
-                  BorderStroke(
-                    width = 1.dp,
-                    color = Color.Transparent,
-                  )
-                }
+                                prevSelectedEmoji -> {
+                                    BorderStroke(
+                                        width = 1.dp,
+                                        color = Color.Transparent,
+                                    )
+                                }
 
-                else -> null
-              },
-            ) {
-              Box(
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .aspectRatio(1f)
-                  .background(color = Gray100)
-                  .clickable {
-                    if (selectedEmoji == emojiItem) selectedEmoji = null
-                    else {
-                      prevSelectedEmoji = selectedEmoji
-                      selectedEmoji = emojiItem
+                                else -> null
+                            },
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1f)
+                                    .background(color = Gray100)
+                                    .clickable {
+                                        if (selectedEmoji == emojiItem) selectedEmoji = null
+                                        else {
+                                            prevSelectedEmoji = selectedEmoji
+                                            selectedEmoji = emojiItem
+                                        }
+                                        scope
+                                            .launch { emojiPickerState.hide() }
+                                            .invokeOnCompletion {
+                                                if (!emojiPickerState.isVisible) onResult(selectedEmoji, false)
+                                            }
+                                    },
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                EmojiText(
+                                    emojiText = emojiItem,
+                                    fontSize = 24.sp,
+                                )
+                            }
+                        }
                     }
-                    scope
-                      .launch { emojiPickerState.hide() }
-                      .invokeOnCompletion {
-                        if (!emojiPickerState.isVisible) onResult(selectedEmoji, false)
-                      }
-                  },
-                contentAlignment = Alignment.Center,
-              ) {
-                EmojiText(
-                  emojiText = emojiItem,
-                  fontSize = 24.sp,
-                )
-              }
+                }
             }
-          }
         }
-      }
+        Spacer(modifier = Modifier.height(NavigationBarHeightDp))
     }
-    Spacer(modifier = Modifier.height(NavigationBarHeightDp))
-  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartEmojiPickerPreview() {
-  BandalartTheme {
-    BandalartEmojiPicker(
-      currentEmoji = "😎",
-      isBottomSheet = false,
-      onResult = { _, _ -> },
-      emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-    )
-  }
+    BandalartTheme {
+        BandalartEmojiPicker(
+            currentEmoji = "😎",
+            isBottomSheet = false,
+            onResult = { _, _ -> },
+            emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        )
+    }
 }

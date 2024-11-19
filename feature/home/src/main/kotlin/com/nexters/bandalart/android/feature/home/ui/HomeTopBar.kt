@@ -33,82 +33,82 @@ import com.nexters.bandalart.android.core.ui.component.AppTitle
 
 @Composable
 internal fun HomeTopBar(
-  bandalartCount: Int,
-  onShowBandalartList: () -> Unit,
-  modifier: Modifier = Modifier,
+    bandalartCount: Int,
+    onShowBandalartList: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier
-      .fillMaxWidth()
-      .height(62.dp)
-      .background(White),
-    contentAlignment = Alignment.CenterStart,
-  ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-      AppTitle(
-        modifier = Modifier
-          .align(Alignment.CenterVertically)
-          .padding(start = 20.dp, top = 2.dp),
-      )
-      Spacer(modifier = Modifier.weight(1f))
-      Box(
-        modifier = Modifier
-          .padding(end = 20.dp)
-          .clickable(onClick = onShowBandalartList),
-      ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-          if (bandalartCount > 1) {
-            Image(
-              imageVector = ImageVector.vectorResource(
-                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_hamburger,
-              ),
-              contentDescription = stringResource(R.string.hamburger_descrption),
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(62.dp)
+            .background(White),
+        contentAlignment = Alignment.CenterStart,
+    ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            AppTitle(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 20.dp, top = 2.dp),
             )
-            Text(
-              text = stringResource(R.string.home_list),
-              color = Gray600,
-              fontSize = 16.sp,
-              fontWeight = FontWeight.W700,
-              fontFamily = pretendard,
-            )
-          } else {
-            Icon(
-              imageVector = Icons.Default.Add,
-              contentDescription = stringResource(R.string.add_descrption),
-              tint = Gray600,
-              modifier = Modifier.size(20.dp),
-            )
-            Text(
-              text = stringResource(R.string.home_add),
-              color = Gray600,
-              fontSize = 16.sp,
-              fontWeight = FontWeight.W700,
-            )
-          }
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .padding(end = 20.dp)
+                    .clickable(onClick = onShowBandalartList),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (bandalartCount > 1) {
+                        Image(
+                            imageVector = ImageVector.vectorResource(
+                                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_hamburger,
+                            ),
+                            contentDescription = stringResource(R.string.hamburger_descrption),
+                        )
+                        Text(
+                            text = stringResource(R.string.home_list),
+                            color = Gray600,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W700,
+                            fontFamily = pretendard,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.add_descrption),
+                            tint = Gray600,
+                            modifier = Modifier.size(20.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.home_add),
+                            color = Gray600,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W700,
+                        )
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun HomeTopBarSingleBandalartPreview() {
-  BandalartTheme {
-    HomeTopBar(
-      bandalartCount = 1,
-      onShowBandalartList = {},
-    )
-  }
+    BandalartTheme {
+        HomeTopBar(
+            bandalartCount = 1,
+            onShowBandalartList = {},
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun HomeTopBarMultipleBandalartPreview() {
-  BandalartTheme {
-    HomeTopBar(
-      bandalartCount = 2,
-      onShowBandalartList = {},
-    )
-  }
+    BandalartTheme {
+        HomeTopBar(
+            bandalartCount = 2,
+            onShowBandalartList = {},
+        )
+    }
 }

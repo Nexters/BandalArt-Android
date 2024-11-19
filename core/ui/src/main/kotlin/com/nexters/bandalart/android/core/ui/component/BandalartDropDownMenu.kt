@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Error
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
@@ -31,97 +32,99 @@ import com.nexters.bandalart.android.core.ui.R
 
 @Composable
 fun BandalartDropDownMenu(
-  openDropDownMenu: (Boolean) -> Unit,
-  isDropDownMenuOpened: Boolean,
-  onDeleteClicked: () -> Unit,
-  modifier: Modifier = Modifier,
+    openDropDownMenu: (Boolean) -> Unit,
+    isDropDownMenuOpened: Boolean,
+    onDeleteClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
-  MaterialTheme(
-    shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
-  ) {
-    DropdownMenu(
-      modifier = modifier
-        .wrapContentSize()
-        .background(White),
-      expanded = isDropDownMenuOpened,
-      onDismissRequest = { openDropDownMenu(false) },
-      offset = DpOffset(
-        x = (-18).dp,
-        y = 0.dp,
-      ),
+    val context = LocalContext.current
+    MaterialTheme(
+        shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
     ) {
-//      // TODO MVP 에서 제외, 구현해도 좋을듯
-//      DropdownMenuItem(
-//        modifier = Modifier
-//          .wrapContentSize()
-//          .padding(horizontal = 7.dp),
-//        text = {
-//          Row {
-//            Image(
-//              imageVector = ImageVector.vectorResource(id = R.drawable.ic_image),
-//              contentDescription = "Image Icon",
-//              modifier = Modifier
-//                .height(14.dp)
-//                .align(CenterVertically),
+        DropdownMenu(
+            modifier = modifier
+                .wrapContentSize()
+                .background(White),
+            expanded = isDropDownMenuOpened,
+            onDismissRequest = { openDropDownMenu(false) },
+            offset = DpOffset(
+                x = (-18).dp,
+                y = 0.dp,
+            ),
+        ) {
+//            // TODO MVP 에서 제외, 구현해도 좋을듯
+//            DropdownMenuItem(
+//                modifier = Modifier
+//                    .wrapContentSize()
+//                    .padding(horizontal = 7.dp),
+//                text = {
+//                    Row {
+//                        Image(
+//                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_image),
+//                            contentDescription = "Image Icon",
+//                            modifier = Modifier
+//                                .height(14.dp)
+//                                .align(CenterVertically),
+//                        )
+//                        Text(
+//                            text = "이미지 내보내기",
+//                            color = Gray800,
+//                            fontSize = 14.sp,
+//                            fontWeight = FontWeight.W500,
+//                            modifier = Modifier
+//                                .fillMaxHeight()
+//                                .padding(start = 13.dp)
+//                                .align(CenterVertically),
+//                            fontFamily = pretendard,
+//                        )
+//                    }
+//                },
+//                onClick = { openDropDownMenu(false) },
 //            )
-//            Text(
-//              text = "이미지 내보내기",
-//              color = Gray800,
-//              fontSize = 14.sp,
-//              fontWeight = FontWeight.W500,
-//              modifier = Modifier
-//                .fillMaxHeight()
-//                .padding(start = 13.dp)
-//                .align(CenterVertically),
-//              fontFamily = pretendard,
-//            )
-//          }
-//        },
-//        onClick = { openDropDownMenu(false)}
-//      )
-//      Spacer(modifier = Modifier.height(2.dp))
-      DropdownMenuItem(
-        modifier = Modifier
-          .wrapContentSize()
-          .padding(horizontal = 7.dp),
-        text = {
-          Row {
-            Image(
-              imageVector = ImageVector.vectorResource(
-                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
-              ),
-              contentDescription = context.getString(R.string.delete_descrption),
-              modifier = Modifier
-                .height(14.dp)
-                .align(CenterVertically),
-              colorFilter = ColorFilter.tint(Error),
+//            Spacer(modifier = Modifier.height(2.dp))
+            DropdownMenuItem(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(horizontal = 7.dp),
+                text = {
+                    Row {
+                        Image(
+                            imageVector = ImageVector.vectorResource(
+                                id = com.nexters.bandalart.android.core.designsystem.R.drawable.ic_delete,
+                            ),
+                            contentDescription = context.getString(R.string.delete_descrption),
+                            modifier = Modifier
+                                .height(14.dp)
+                                .align(CenterVertically),
+                            colorFilter = ColorFilter.tint(Error),
+                        )
+                        Text(
+                            text = context.getString(R.string.dropdown_delete),
+                            color = Error,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W500,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(start = 13.dp)
+                                .align(CenterVertically),
+                            fontFamily = pretendard,
+                        )
+                    }
+                },
+                onClick = onDeleteClicked,
             )
-            Text(
-              text = context.getString(R.string.dropdown_delete),
-              color = Error,
-              fontSize = 14.sp,
-              fontWeight = FontWeight.W500,
-              modifier = Modifier
-                .fillMaxHeight()
-                .padding(start = 13.dp)
-                .align(CenterVertically),
-              fontFamily = pretendard,
-            )
-          }
-        },
-        onClick = onDeleteClicked,
-      )
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartDropDownMenuPreview() {
-  BandalartDropDownMenu(
-    openDropDownMenu = {},
-    isDropDownMenuOpened = true,
-    onDeleteClicked = {},
-  )
+    BandalartTheme {
+        BandalartDropDownMenu(
+            openDropDownMenu = {},
+            isDropDownMenuOpened = true,
+            onDeleteClicked = {},
+        )
+    }
 }

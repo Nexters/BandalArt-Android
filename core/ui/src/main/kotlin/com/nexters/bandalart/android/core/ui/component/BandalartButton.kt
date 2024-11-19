@@ -19,40 +19,43 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.common.extension.clickableSingle
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 
 @Composable
 fun BandalartButton(
-  onClick: () -> Unit,
-  text: String,
-  modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    text: String,
+    modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier
-      .padding(horizontal = 24.dp, vertical = 16.dp)
-      .height(56.dp)
-      .clip(shape = RoundedCornerShape(50.dp))
-      .clickableSingle(onClick = onClick)
-      .background(color = Gray900),
-    contentAlignment = Alignment.Center,
-  ) {
-    Text(
-      text = text,
-      color = White,
-      fontSize = 16.sp,
-      fontWeight = FontWeight.W700,
-      modifier = Modifier.padding(horizontal = 32.dp),
-      fontFamily = pretendard,
-      letterSpacing = (-0.32).sp,
-    )
-  }
+    Box(
+        modifier = modifier
+            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .height(56.dp)
+            .clip(shape = RoundedCornerShape(50.dp))
+            .clickableSingle(onClick = onClick)
+            .background(color = Gray900),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = text,
+            color = White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W700,
+            modifier = Modifier.padding(horizontal = 32.dp),
+            fontFamily = pretendard,
+            letterSpacing = (-0.32).sp,
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartButtonPreview() {
-  BandalartButton(
-    onClick = {},
-    text = "시작하기",
-    modifier = Modifier.fillMaxWidth(),
-  )
+    BandalartTheme {
+        BandalartButton(
+            onClick = {},
+            text = "시작하기",
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

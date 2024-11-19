@@ -10,24 +10,24 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun EmojiText(
-  emojiText: String?,
-  fontSize: TextUnit,
-  modifier: Modifier = Modifier,
+    emojiText: String?,
+    fontSize: TextUnit,
+    modifier: Modifier = Modifier,
 ) {
-  Text(
-    text = emojiText ?: "",
-    modifier = modifier,
-    fontSize = fontSize,
-  )
+    Text(
+        text = emojiText ?: "",
+        modifier = modifier,
+        fontSize = fontSize,
+    )
 }
 
 @ComponentPreview
 @Composable
 fun EmojiTextPreview() {
-  BandalartTheme {
-    EmojiText(
-      emojiText = "😎",
-      fontSize = 22.sp,
-    )
-  }
+    BandalartTheme {
+        EmojiText(
+            emojiText = "😎",
+            fontSize = 22.sp,
+        )
+    }
 }

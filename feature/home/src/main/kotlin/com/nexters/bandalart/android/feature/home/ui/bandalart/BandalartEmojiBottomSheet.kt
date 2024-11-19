@@ -14,52 +14,52 @@ import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiMode
 
 @Composable
 fun BandalartEmojiBottomSheet(
-  bandalartId: Long,
-  cellId: Long,
-  currentEmoji: String?,
-  updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
-  onResult: (
-    bottomSheetState: Boolean,
-    bottomSheetDataChangedState: Boolean,
-  ) -> Unit,
-  modifier: Modifier = Modifier,
+    bandalartId: Long,
+    cellId: Long,
+    currentEmoji: String?,
+    updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
+    onResult: (
+        bottomSheetState: Boolean,
+        bottomSheetDataChangedState: Boolean,
+    ) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  ModalBottomSheet(
-    onDismissRequest = {
-      onResult(false, false)
-    },
-    modifier = modifier.wrapContentSize(),
-    sheetState = bottomSheetState,
-    dragHandle = null,
-  ) {
-    Column {
-      BandalartEmojiPicker(
-        currentEmoji = currentEmoji,
-        isBottomSheet = true,
-        onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
-          updateBandalartEmoji(
-            bandalartId,
-            cellId,
-            UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
-          )
-          onResult(false, true)
+    ModalBottomSheet(
+        onDismissRequest = {
+            onResult(false, false)
         },
-        emojiPickerState = bottomSheetState,
-      )
+        modifier = modifier.wrapContentSize(),
+        sheetState = bottomSheetState,
+        dragHandle = null,
+    ) {
+        Column {
+            BandalartEmojiPicker(
+                currentEmoji = currentEmoji,
+                isBottomSheet = true,
+                onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
+                    updateBandalartEmoji(
+                        bandalartId,
+                        cellId,
+                        UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
+                    )
+                    onResult(false, true)
+                },
+                emojiPickerState = bottomSheetState,
+            )
+        }
     }
-  }
 }
 
 @ComponentPreview
 @Composable
 fun BandalartEmojiBottomSheetPreview() {
-  BandalartEmojiBottomSheet(
-    bandalartId = 0L,
-    cellId = 0L,
-    currentEmoji = "😎",
-    updateBandalartEmoji = { _, _, _ -> },
-    onResult = { _, _ -> },
-  )
+    BandalartEmojiBottomSheet(
+        bandalartId = 0L,
+        cellId = 0L,
+        currentEmoji = "😎",
+        updateBandalartEmoji = { _, _, _ -> },
+        onResult = { _, _ -> },
+    )
 }

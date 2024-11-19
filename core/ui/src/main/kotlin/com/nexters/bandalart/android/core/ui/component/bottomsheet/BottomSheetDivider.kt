@@ -7,23 +7,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 
 @Composable
 fun BottomSheetDivider(
-  modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier
-      .height(1.dp)
-      .fillMaxWidth()
-      .background(Gray300),
-  )
+    Box(
+        modifier = modifier
+            .height(1.dp)
+            .fillMaxWidth()
+            .background(Gray300),
+    )
 }
 
 @ComponentPreview
 @Composable
 fun BottomSheetDividerPreview() {
-  BottomSheetDivider()
+    BandalartTheme {
+        BottomSheetDivider()
+    }
 }

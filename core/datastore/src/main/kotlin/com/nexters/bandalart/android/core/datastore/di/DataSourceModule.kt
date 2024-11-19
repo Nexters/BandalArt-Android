@@ -17,28 +17,27 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class DataSourceModule {
+    @Binds
+    @Singleton
+    abstract fun bindGuestLoginLocalDataSource(
+        guestLoginLocalDataSourceImpl: GuestLoginLocalDataSourceImpl,
+    ): GuestLoginLocalDataSource
 
-  @Binds
-  @Singleton
-  abstract fun bindGuestLoginLocalDataSource(
-    guestLoginLocalDataSourceImpl: GuestLoginLocalDataSourceImpl,
-  ): GuestLoginLocalDataSource
+    @Binds
+    @Singleton
+    abstract fun bindRecentBandalartIdDataSource(
+        recentBandalartIdDataSourceImpl: RecentBandalartIdDataSourceImpl,
+    ): RecentBandalartIdDataSource
 
-  @Binds
-  @Singleton
-  abstract fun bindRecentBandalartIdDataSource(
-    recentBandalartIdDataSourceImpl: RecentBandalartIdDataSourceImpl,
-  ): RecentBandalartIdDataSource
+    @Binds
+    @Singleton
+    abstract fun bindCompletedBandalartIdDataSource(
+        completedBandalartIdDataStoreImpl: CompletedBandalartIdDataStoreImpl,
+    ): CompletedBandalartIdDataSource
 
-  @Binds
-  @Singleton
-  abstract fun bindCompletedBandalartIdDataSource(
-    completedBandalartIdDataStoreImpl: CompletedBandalartIdDataStoreImpl,
-  ): CompletedBandalartIdDataSource
-
-  @Binds
-  @Singleton
-  abstract fun bindOnboardingDataSource(
-    onboardingDataSourceImpl: OnboardingDataSourceImpl,
-  ): OnboardingDataSource
+    @Binds
+    @Singleton
+    abstract fun bindOnboardingDataSource(
+        onboardingDataSourceImpl: OnboardingDataSourceImpl,
+    ): OnboardingDataSource
 }

@@ -18,11 +18,10 @@ private val Context.bandalartDataStore: DataStore<Preferences> by preferencesDat
 @Module
 @InstallIn(SingletonComponent::class)
 internal object DataStoreModule {
+    @Provides
+    @Singleton
+    fun providePreferencesDataStore(@ApplicationContext context: Context) = context.bandalartDataStore
 
-  @Provides
-  @Singleton
-  fun providePreferencesDataStore(@ApplicationContext context: Context) = context.bandalartDataStore
-
-  @Provides
-  fun provideDataStore(dataStore: DataStore<Preferences>) = DataStoreProvider(dataStore)
+    @Provides
+    fun provideDataStore(dataStore: DataStore<Preferences>) = DataStoreProvider(dataStore)
 }

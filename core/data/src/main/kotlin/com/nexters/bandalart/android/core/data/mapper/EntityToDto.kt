@@ -10,27 +10,27 @@ import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartSubCellEn
 import com.nexters.bandalart.android.core.domain.entity.UpdateBandalartTaskCellEntity
 
 fun UpdateBandalartMainCellEntity.toDto(): UpdateBandalartMainCellDto = UpdateBandalartMainCellDto(
-  title = title,
-  description = description,
-  dueDate = dueDate,
-  profileEmoji = profileEmoji,
-  mainColor = mainColor,
-  subColor = subColor
+    title = title,
+    description = description,
+    dueDate = dueDate,
+    profileEmoji = profileEmoji,
+    mainColor = mainColor,
+    subColor = subColor,
 )
 
 fun UpdateBandalartSubCellEntity.toDto(): UpdateBandalartSubCellDto = UpdateBandalartSubCellDto(
-  title = title,
-  description = description,
-  dueDate = dueDate
+    title = title,
+    description = description,
+    dueDate = dueDate,
 )
 
 fun UpdateBandalartTaskCellEntity.toDto(): UpdateBandalartTaskCellDto = UpdateBandalartTaskCellDto(
-  title = title,
-  description = description,
-  dueDate = dueDate,
-  isCompleted = isCompleted
+    title = title,
+    description = description,
+    dueDate = dueDate,
+    isCompleted = isCompleted,
 )
 
 fun UpdateBandalartEmojiEntity.toDto(): UpdateBandalartEmojiDto = UpdateBandalartEmojiDto(
-  profileEmoji = profileEmoji
+    profileEmoji = profileEmoji,
 )
