@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -36,7 +36,7 @@ fun CompleteTopBar(
                 .aspectRatio(1f),
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = context.getString(R.string.arrow_forward_descrption),
                 tint = Gray900,
             )

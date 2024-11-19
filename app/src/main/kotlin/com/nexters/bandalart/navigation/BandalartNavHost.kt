@@ -3,6 +3,7 @@ package com.nexters.bandalart.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.nexters.bandalart.feature.complete.navigation.completeScreen
 import com.nexters.bandalart.feature.complete.navigation.navigateToComplete
 import com.nexters.bandalart.feature.home.navigation.homeScreen
@@ -11,15 +12,14 @@ import com.nexters.bandalart.feature.onboarding.navigation.navigateToOnBoarding
 import com.nexters.bandalart.feature.onboarding.navigation.onBoardingScreen
 import com.nexters.bandalart.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 import com.nexters.bandalart.feature.splash.navigation.splashScreen
-import com.nexters.bandalart.ui.BandalartAppState
 
 @Composable
 fun BandalartNavHost(
     modifier: Modifier = Modifier,
-    appState: BandalartAppState,
     onShowSnackbar: suspend (String) -> Boolean,
 ) {
-    val navController = appState.navController
+    val navController = rememberNavController()
+
     NavHost(
         modifier = modifier,
         navController = navController,

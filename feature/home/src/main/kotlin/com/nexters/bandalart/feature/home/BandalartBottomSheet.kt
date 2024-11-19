@@ -31,7 +31,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -434,7 +434,7 @@ fun BandalartBottomSheetContent(
                                     .align(Alignment.CenterEnd)
                                     .height(21.dp)
                                     .aspectRatio(1f),
-                                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                 contentDescription = stringResource(R.string.arrow_forward_descrption),
                                 tint = Gray400,
                             )

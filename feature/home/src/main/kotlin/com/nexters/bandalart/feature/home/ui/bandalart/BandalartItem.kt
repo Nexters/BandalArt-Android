@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -170,7 +170,7 @@ fun BandalartItem(
         if (currentBandalartId != bandalartItem.id) {
             Box(modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = stringResource(R.string.arrow_forward_descrption),
                     tint = Gray400,
                     modifier = Modifier.size(16.dp),

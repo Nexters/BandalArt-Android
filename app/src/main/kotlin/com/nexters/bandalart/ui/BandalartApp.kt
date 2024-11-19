@@ -27,9 +27,7 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.navigation.BandalartNavHost
 
 @Composable
-fun BandalartApp(
-    appState: BandalartAppState = rememberBandalartAppState(),
-) {
+fun BandalartApp() {
     val snackbarHostState = remember { SnackbarHostState() }
     val height = LocalConfiguration.current.screenHeightDp
 
@@ -66,7 +64,6 @@ fun BandalartApp(
     ) { innerPadding ->
         BandalartNavHost(
             modifier = Modifier.padding(innerPadding),
-            appState = appState,
             onShowSnackbar = { message ->
                 snackbarHostState.showSnackbar(
                     message = message,
