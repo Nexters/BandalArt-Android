@@ -60,7 +60,6 @@ import com.nexters.bandalart.core.ui.R
 
 private const val SnackbarDuration = 1000L
 
-// TODO Share 로직 변경 (드로이드카이기 방식으로)
 // TODO 서브셀을 지울 때 진짜 지우면 안됨 빈 값으로 초기화 하는게 맞을듯, 그 하위 셀들도 마찬가지
 // TODO 현재 테스크 셀 들을 전부 완료 했을 때, 서브셀이 완료되지 않고 있는 듯
 @Composable
@@ -101,7 +100,9 @@ internal fun HomeRoute(
                 Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
             }
 
-            is HomeUiEvent.ShareBandalart -> context.externalShareForBitmap(event.bitmap)
+            is HomeUiEvent.ShareBandalart -> {
+                context.externalShareForBitmap(event.bitmap)
+            }
         }
     }
 
@@ -182,18 +183,6 @@ internal fun HomeScreen(
         if (uiState.isShared) {
             shareBandalart(graphicsLayer.toImageBitmap())
         }
-//        if (uiState.shareUrl.isNotEmpty()) {
-//            val sendIntent: Intent = Intent().apply {
-//                action = Intent.ACTION_SEND
-//                putExtra(
-//                    Intent.EXTRA_TEXT,
-//                    context.getString(R.string.home_share_url, uiState.shareUrl),
-//                )
-//                type = context.getString(R.string.home_share_type)
-//            }
-//            val shareIntent = Intent.createChooser(sendIntent, null)
-//            context.startActivity(shareIntent)
-//        }
     }
 
     if (uiState.isBandalartListBottomSheetOpened) {
