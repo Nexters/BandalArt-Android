@@ -182,7 +182,7 @@ fun BandalartItem(
 
 @ComponentPreview
 @Composable
-fun BandalartItemPreview() {
+private fun BandalartItemPreview() {
     BandalartTheme {
         BandalartItem(
             bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),

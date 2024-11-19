@@ -30,11 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.android.core.common.extension.toColor
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray500
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
+import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.CellText
@@ -58,7 +60,6 @@ data class SubCell(
     val taskCells: List<BandalartCellUiModel>,
 )
 
-// TODO Preview
 @Composable
 fun BandalartCell(
     bandalartId: Long,
@@ -213,5 +214,25 @@ fun BandalartCell(
                 },
             )
         }
+    }
+}
+
+@ComponentPreview
+@Composable
+private fun BandalartCellPreview() {
+    BandalartTheme {
+        BandalartCell(
+            bandalartId = 0L,
+            themeColor = ThemeColor(
+                mainColor = "0xFF3FFFBA",
+                subColor = "0xFF111827",
+            ),
+            isMainCell = true,
+            cellData = BandalartCellUiModel(
+                title = "메인 목표",
+                isCompleted = false,
+            ),
+            bottomSheetDataChanged = {},
+        )
     }
 }

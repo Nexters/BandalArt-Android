@@ -82,7 +82,7 @@ fun CompletionRatioProgressBar(
 
 @ComponentPreview
 @Composable
-fun CompletionRatioProgressBarPreview() {
+private fun CompletionRatioProgressBarPreview() {
     BandalartTheme {
         CompletionRatioProgressBar(
             completionRatio = 66,

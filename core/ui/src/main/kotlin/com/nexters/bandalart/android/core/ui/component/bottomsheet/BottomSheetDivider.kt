@@ -25,7 +25,7 @@ fun BottomSheetDivider(
 
 @ComponentPreview
 @Composable
-fun BottomSheetDividerPreview() {
+private fun BottomSheetDividerPreview() {
     BandalartTheme {
         BottomSheetDivider()
     }

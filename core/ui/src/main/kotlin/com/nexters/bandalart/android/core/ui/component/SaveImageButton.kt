@@ -68,7 +68,7 @@ fun SaveImageButton(
 
 @ComponentPreview
 @Composable
-fun SaveImageButtonPreview() {
+private fun SaveImageButtonPreview() {
     BandalartTheme {
         SaveImageButton()
     }

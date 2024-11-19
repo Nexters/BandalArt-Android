@@ -204,7 +204,7 @@ fun HomeHeader(
 
 @ComponentPreview
 @Composable
-fun HomeHeaderPreview() {
+private fun HomeHeaderPreview() {
     BandalartTheme {
         HomeHeader(
             bandalartDetailData = dummyBandalartDetailData,

@@ -125,7 +125,7 @@ fun BandalartChart(
 
 @ComponentPreview
 @Composable
-fun BandalartChartPreview() {
+private fun BandalartChartPreview() {
     BandalartTheme {
         BandalartChart(
             bandalartId = 0L,

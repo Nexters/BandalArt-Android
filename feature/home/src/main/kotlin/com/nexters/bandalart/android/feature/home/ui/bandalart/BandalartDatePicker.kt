@@ -258,7 +258,7 @@ fun selectedDateWithValidate(year: String, month: String, day: String): LocalDat
 
 @ComponentPreview
 @Composable
-fun BandalartDatePickerPreview() {
+private fun BandalartDatePickerPreview() {
     BandalartTheme {
         BandalartDatePicker(
             onResult = { _, _ -> },
@@ -270,7 +270,7 @@ fun BandalartDatePickerPreview() {
 
 @ComponentPreview
 @Composable
-fun DateSelectionSectionPreview() {
+private fun DateSelectionSectionPreview() {
     BandalartTheme {
         DateSelectionSection(
             onYearChosen = {},
@@ -285,7 +285,7 @@ fun DateSelectionSectionPreview() {
 
 @ComponentPreview
 @Composable
-fun InfiniteYearItemsPickerPreview() {
+private fun InfiniteYearItemsPickerPreview() {
     BandalartTheme {
         InfiniteItemsPicker(
             items = years.toImmutableList(),
@@ -299,7 +299,7 @@ fun InfiniteYearItemsPickerPreview() {
 
 @ComponentPreview
 @Composable
-fun InfiniteMonthItemsPickerPreview() {
+private fun InfiniteMonthItemsPickerPreview() {
     BandalartTheme {
         InfiniteItemsPicker(
             items = monthsNumber.toImmutableList(),
@@ -313,7 +313,7 @@ fun InfiniteMonthItemsPickerPreview() {
 
 @ComponentPreview
 @Composable
-fun InfiniteDayItemsPickerPreview() {
+private fun InfiniteDayItemsPickerPreview() {
     BandalartTheme {
         InfiniteItemsPicker(
             items = days.toImmutableList(),

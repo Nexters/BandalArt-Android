@@ -609,7 +609,7 @@ fun BandalartBottomSheetContent(
 
 @ComponentPreview
 @Composable
-fun BandalartMainCellBottomSheetPreview() {
+private fun BandalartMainCellBottomSheetPreview() {
     BandalartBottomSheetContent(
         uiState = BottomSheetUiState(
             cellData = dummyBandalartCellData,
@@ -641,7 +641,7 @@ fun BandalartMainCellBottomSheetPreview() {
 
 @ComponentPreview
 @Composable
-fun BandalartSubCellBottomSheetPreview() {
+private fun BandalartSubCellBottomSheetPreview() {
     BandalartTheme {
         BandalartBottomSheetContent(
             uiState = BottomSheetUiState(
@@ -675,7 +675,7 @@ fun BandalartSubCellBottomSheetPreview() {
 
 @ComponentPreview
 @Composable
-fun BandalartTaskCellBottomSheetPreview() {
+private fun BandalartTaskCellBottomSheetPreview() {
     BandalartTheme {
         BandalartBottomSheetContent(
             uiState = BottomSheetUiState(

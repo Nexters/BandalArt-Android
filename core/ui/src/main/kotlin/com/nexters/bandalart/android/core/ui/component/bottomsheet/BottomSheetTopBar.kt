@@ -69,7 +69,7 @@ fun BottomSheetTopBar(
 
 @ComponentPreview
 @Composable
-fun BottomSheetMainCellTopBarPreview() {
+private fun BottomSheetMainCellTopBarPreview() {
     BandalartTheme {
         BottomSheetTopBar(
             isMainCell = true,
@@ -84,7 +84,7 @@ fun BottomSheetMainCellTopBarPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetSubCellTopBarPreview() {
+private fun BottomSheetSubCellTopBarPreview() {
     BandalartTheme {
         BottomSheetTopBar(
             isMainCell = false,
@@ -99,7 +99,7 @@ fun BottomSheetSubCellTopBarPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetBlankCellTopBarPreview() {
+private fun BottomSheetBlankCellTopBarPreview() {
     BandalartTheme {
         BottomSheetTopBar(
             isMainCell = false,

@@ -50,7 +50,7 @@ fun BandalartButton(
 
 @ComponentPreview
 @Composable
-fun BandalartButtonPreview() {
+private fun BandalartButtonPreview() {
     BandalartTheme {
         BandalartButton(
             onClick = {},

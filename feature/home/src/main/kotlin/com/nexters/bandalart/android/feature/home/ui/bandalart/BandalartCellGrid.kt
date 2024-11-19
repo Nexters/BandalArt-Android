@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
+import com.nexters.bandalart.android.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.allColor
-import com.nexters.bandalart.android.feature.home.model.dummyBandalartChartData
+import com.nexters.bandalart.android.feature.home.mapper.toUiModel
 
-// TODO Preview
 @Composable
 fun BandalartCellGrid(
     bandalartId: Long,
@@ -58,5 +58,57 @@ fun BandalartCellGrid(
                 }
             }
         }
+    }
+}
+
+@ComponentPreview
+@Composable
+private fun BandalartCellGridPreview() {
+    BandalartTheme {
+        val subCellData = BandalartCellEntity(
+            id = 1L,
+            bandalartId = 0L,
+            title = "서브 목표",
+            description = "서브 목표 설명",
+            dueDate = null,
+            isCompleted = false,
+            completionRatio = 0,
+            profileEmoji = null,
+            mainColor = "0xFF3FFFBA",
+            subColor = "0xFF111827",
+            parentId = 0L,
+        )
+
+        val taskCells = List(8) { index ->
+            BandalartCellEntity(
+                id = (index + 2).toLong(),  // id는 2부터 시작 (서브셀이 1)
+                bandalartId = 0L,
+                title = "하위 목표 ${index + 1}",
+                description = "하위 목표 ${index + 1} 설명",
+                dueDate = null,
+                isCompleted = false,
+                completionRatio = 0,
+                profileEmoji = null,
+                mainColor = null,
+                subColor = null,
+                parentId = 1L,  // 서브셀의 id를 parentId로
+            )
+        }
+
+        BandalartCellGrid(
+            bandalartId = 0L,
+            themeColor = allColor[0],
+            subCell = SubCell(
+                rowCnt = 3,
+                colCnt = 3,
+                subCellRowIndex = 1,
+                subCellColIndex = 1,
+                subCellData = subCellData.toUiModel(),
+                taskCells = taskCells.map { it.toUiModel() },
+            ),
+            rows = 3,
+            cols = 3,
+            bottomSheetDataChanged = {},
+        )
     }
 }

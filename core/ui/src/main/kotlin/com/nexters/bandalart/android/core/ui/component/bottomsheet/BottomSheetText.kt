@@ -113,7 +113,7 @@ fun BottomSheetButtonText(
 
 @ComponentPreview
 @Composable
-fun BottomSheetMainCellTitleTextPreview() {
+private fun BottomSheetMainCellTitleTextPreview() {
     BandalartTheme {
         BottomSheetTitleText(
             isMainCell = true,
@@ -125,7 +125,7 @@ fun BottomSheetMainCellTitleTextPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetSubCellTitleTextPreview() {
+private fun BottomSheetSubCellTitleTextPreview() {
     BandalartTheme {
         BottomSheetTitleText(
             isMainCell = false,
@@ -137,7 +137,7 @@ fun BottomSheetSubCellTitleTextPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetBlankCellTitleTextPreview() {
+private fun BottomSheetBlankCellTitleTextPreview() {
     BandalartTheme {
         BottomSheetTitleText(
             isMainCell = false,
@@ -149,7 +149,7 @@ fun BottomSheetBlankCellTitleTextPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetSubTitleTextPreview() {
+private fun BottomSheetSubTitleTextPreview() {
     BandalartTheme {
         BottomSheetSubTitleText(text = "목표 이름 (필수)")
     }
@@ -157,7 +157,7 @@ fun BottomSheetSubTitleTextPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetContentPlaceholderPreview() {
+private fun BottomSheetContentPlaceholderPreview() {
     BandalartTheme {
         BottomSheetContentPlaceholder(text = "15자 이내로 입력해주세요")
     }
@@ -165,7 +165,7 @@ fun BottomSheetContentPlaceholderPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetContentTextPreview() {
+private fun BottomSheetContentTextPreview() {
     BandalartTheme {
         BottomSheetContentText(text = "달성")
     }
@@ -173,7 +173,7 @@ fun BottomSheetContentTextPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetButtonTextPreview() {
+private fun BottomSheetButtonTextPreview() {
     BandalartTheme {
         BottomSheetButtonText(
             text = "완료",

@@ -148,7 +148,7 @@ fun BandalartEmojiPicker(
 
 @ComponentPreview
 @Composable
-fun BandalartEmojiPickerPreview() {
+private fun BandalartEmojiPickerPreview() {
     BandalartTheme {
         BandalartEmojiPicker(
             currentEmoji = "😎",

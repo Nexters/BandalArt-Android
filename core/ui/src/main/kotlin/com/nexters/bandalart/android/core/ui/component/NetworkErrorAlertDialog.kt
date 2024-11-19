@@ -108,7 +108,7 @@ fun NetworkErrorAlertDialog(
 
 @ComponentPreview
 @Composable
-fun NetworkErrorAlertDialogPreview() {
+private fun NetworkErrorAlertDialogPreview() {
     BandalartTheme {
         NetworkErrorAlertDialog(
             title = "네트워크 문제로 표를\n불러오지 못했어요",

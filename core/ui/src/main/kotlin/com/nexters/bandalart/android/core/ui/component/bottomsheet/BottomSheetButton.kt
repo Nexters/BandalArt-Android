@@ -55,7 +55,7 @@ fun BottomSheetCompleteButton(
 
 @ComponentPreview
 @Composable
-fun BottomSheetDeleteButtonPreview() {
+private fun BottomSheetDeleteButtonPreview() {
     BandalartTheme {
         BottomSheetDeleteButton(
             onClick = {},
@@ -68,7 +68,7 @@ fun BottomSheetDeleteButtonPreview() {
 
 @ComponentPreview
 @Composable
-fun BottomSheetCompleteButtonPreview() {
+private fun BottomSheetCompleteButtonPreview() {
     BandalartTheme {
         BottomSheetCompleteButton(
             isBlankCell = false,

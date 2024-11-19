@@ -61,7 +61,7 @@ fun HomeShareButton(
 
 @ComponentPreview
 @Composable
-fun HomeShareButtonPreview() {
+private fun HomeShareButtonPreview() {
     BandalartTheme {
         HomeShareButton(
             shareBandalart = {},

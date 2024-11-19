@@ -51,7 +51,7 @@ fun PagerIndicator(
 
 @ComponentPreview
 @Composable
-fun PagerIndicatorPreview() {
+private fun PagerIndicatorPreview() {
     val pageCount = 2
     val pagerState = rememberPagerState(pageCount = { pageCount })
 

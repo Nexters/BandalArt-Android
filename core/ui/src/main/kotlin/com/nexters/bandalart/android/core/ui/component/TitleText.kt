@@ -30,7 +30,7 @@ fun TitleText(
 
 @ComponentPreview
 @Composable
-fun TitleTextPreview() {
+private fun TitleTextPreview() {
     BandalartTheme {
         TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
     }

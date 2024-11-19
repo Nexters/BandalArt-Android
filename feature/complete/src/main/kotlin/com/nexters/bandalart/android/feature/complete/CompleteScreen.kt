@@ -30,6 +30,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.android.core.common.ObserveAsEvents
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.R
@@ -175,15 +176,17 @@ internal fun CompleteScreen(
 
 @DevicePreview
 @Composable
-fun CompleteScreenPreview() {
-    CompleteScreen(
-        uiState = CompleteUiState(
-            id = 0L,
-            title = "발전하는 예진",
-            profileEmoji = "😎",
-            shareUrl = "",
-        ),
-        navigateToHome = {},
-        shareBandalart = {},
-    )
+private fun CompleteScreenPreview() {
+    BandalartTheme {
+        CompleteScreen(
+            uiState = CompleteUiState(
+                id = 0L,
+                title = "발전하는 예진",
+                profileEmoji = "😎",
+                shareUrl = "",
+            ),
+            navigateToHome = {},
+            shareBandalart = {},
+        )
+    }
 }

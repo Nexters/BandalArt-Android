@@ -93,7 +93,7 @@ internal fun HomeTopBar(
 
 @ComponentPreview
 @Composable
-fun HomeTopBarSingleBandalartPreview() {
+private fun HomeTopBarSingleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 1,
@@ -104,7 +104,7 @@ fun HomeTopBarSingleBandalartPreview() {
 
 @ComponentPreview
 @Composable
-fun HomeTopBarMultipleBandalartPreview() {
+private fun HomeTopBarMultipleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 2,

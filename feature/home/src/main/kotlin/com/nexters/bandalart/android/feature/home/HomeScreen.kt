@@ -33,6 +33,7 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray50
 import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.common.ObserveAsEvents
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.ThemeColor
 import com.nexters.bandalart.android.core.ui.component.BandalartDeleteAlertDialog
@@ -327,58 +328,62 @@ private fun updateBandalartListTitles(
 
 @DevicePreview
 @Composable
-fun HomeScreenSingleBandalartPreview() {
-    HomeScreen(
-        uiState = HomeUiState(
-            bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
-            bandalartDetailData = dummyBandalartDetailData,
-            bandalartCellData = dummyBandalartChartData,
-        ),
-        bandalartCount = listOf(dummyBandalartList[0]).size,
-        navigateToComplete = {},
-        getBandalartList = {},
-        getBandalartDetail = {},
-        createBandalart = {},
-        deleteBandalart = {},
-        showSkeletonChanged = {},
-        openDropDownMenu = {},
-        openEmojiBottomSheet = {},
-        updateBandalartEmoji = { _, _, _ -> },
-        openBandalartDeleteAlertDialog = {},
-        openCellBottomSheet = {},
-        bottomSheetDataChanged = {},
-        openBandalartListBottomSheet = {},
-        setRecentBandalartId = {},
-        shareBandalart = {},
-        checkCompletedBandalartId = { _ -> false },
-    )
+private fun HomeScreenSingleBandalartPreview() {
+    BandalartTheme {
+        HomeScreen(
+            uiState = HomeUiState(
+                bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
+                bandalartDetailData = dummyBandalartDetailData,
+                bandalartCellData = dummyBandalartChartData,
+            ),
+            bandalartCount = listOf(dummyBandalartList[0]).size,
+            navigateToComplete = {},
+            getBandalartList = {},
+            getBandalartDetail = {},
+            createBandalart = {},
+            deleteBandalart = {},
+            showSkeletonChanged = {},
+            openDropDownMenu = {},
+            openEmojiBottomSheet = {},
+            updateBandalartEmoji = { _, _, _ -> },
+            openBandalartDeleteAlertDialog = {},
+            openCellBottomSheet = {},
+            bottomSheetDataChanged = {},
+            openBandalartListBottomSheet = {},
+            setRecentBandalartId = {},
+            shareBandalart = {},
+            checkCompletedBandalartId = { _ -> false },
+        )
+    }
 }
 
 @DevicePreview
 @Composable
-fun HomeScreenMultipleBandalartPreview() {
-    HomeScreen(
-        uiState = HomeUiState(
-            bandalartList = dummyBandalartList.toImmutableList(),
-            bandalartDetailData = dummyBandalartDetailData,
-            bandalartCellData = dummyBandalartChartData,
-        ),
-        bandalartCount = dummyBandalartList.size,
-        navigateToComplete = {},
-        getBandalartList = {},
-        getBandalartDetail = {},
-        createBandalart = {},
-        deleteBandalart = {},
-        showSkeletonChanged = {},
-        openDropDownMenu = {},
-        openEmojiBottomSheet = {},
-        updateBandalartEmoji = { _, _, _ -> },
-        openBandalartDeleteAlertDialog = {},
-        openCellBottomSheet = {},
-        bottomSheetDataChanged = {},
-        openBandalartListBottomSheet = {},
-        setRecentBandalartId = {},
-        shareBandalart = {},
-        checkCompletedBandalartId = { _ -> false },
-    )
+private fun HomeScreenMultipleBandalartPreview() {
+    BandalartTheme {
+        HomeScreen(
+            uiState = HomeUiState(
+                bandalartList = dummyBandalartList.toImmutableList(),
+                bandalartDetailData = dummyBandalartDetailData,
+                bandalartCellData = dummyBandalartChartData,
+            ),
+            bandalartCount = dummyBandalartList.size,
+            navigateToComplete = {},
+            getBandalartList = {},
+            getBandalartDetail = {},
+            createBandalart = {},
+            deleteBandalart = {},
+            showSkeletonChanged = {},
+            openDropDownMenu = {},
+            openEmojiBottomSheet = {},
+            updateBandalartEmoji = { _, _, _ -> },
+            openBandalartDeleteAlertDialog = {},
+            openCellBottomSheet = {},
+            bottomSheetDataChanged = {},
+            openBandalartListBottomSheet = {},
+            setRecentBandalartId = {},
+            shareBandalart = {},
+            checkCompletedBandalartId = { _ -> false },
+        )
+    }
 }

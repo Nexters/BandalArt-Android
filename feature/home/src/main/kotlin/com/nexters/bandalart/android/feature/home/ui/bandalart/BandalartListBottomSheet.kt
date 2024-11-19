@@ -173,7 +173,7 @@ fun BandalartListBottomSheet(
 
 @ComponentPreview
 @Composable
-fun BandalartListBottomSheetPreview() {
+private fun BandalartListBottomSheetPreview() {
     BandalartTheme {
         BandalartListBottomSheet(
             bandalartList = dummyBandalartList.toImmutableList(),

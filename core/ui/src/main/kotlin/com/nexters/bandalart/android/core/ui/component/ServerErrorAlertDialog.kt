@@ -108,7 +108,7 @@ fun ServerErrorAlertDialog(
 
 @ComponentPreview
 @Composable
-fun ServerErrorAlertDialogPreview() {
+private fun ServerErrorAlertDialogPreview() {
     BandalartTheme {
         NetworkErrorAlertDialog(
             title = "서버 문제로 표를\n불러오지 못했어요",

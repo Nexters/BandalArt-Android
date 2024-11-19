@@ -141,7 +141,7 @@ fun BandalartDeleteAlertDialog(
 
 @ComponentPreview
 @Composable
-fun BandalartDeleteAlertDialogPreview() {
+private fun BandalartDeleteAlertDialogPreview() {
     BandalartTheme {
         BandalartDeleteAlertDialog(
             title = "반다라트를 삭제하시겠어요?",

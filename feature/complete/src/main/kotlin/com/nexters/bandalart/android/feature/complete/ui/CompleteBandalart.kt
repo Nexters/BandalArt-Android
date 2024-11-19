@@ -114,7 +114,7 @@ fun CompleteBandalart(
 
 @ComponentPreview
 @Composable
-fun CompleteBandalartPreview() {
+private fun CompleteBandalartPreview() {
     BandalartTheme {
         CompleteBandalart(
             profileEmoji = "😎",

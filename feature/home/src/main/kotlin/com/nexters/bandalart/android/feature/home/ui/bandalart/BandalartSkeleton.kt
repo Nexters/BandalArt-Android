@@ -80,7 +80,7 @@ fun BandalartSkeleton(
 
 @ComponentPreview
 @Composable
-fun BandalartSkeletonPreview() {
+private fun BandalartSkeletonPreview() {
     BandalartTheme {
         BandalartSkeleton()
     }

@@ -75,7 +75,7 @@ fun BandalartColorPicker(
 
 @ComponentPreview
 @Composable
-fun BandalartColorPickerPreview() {
+private fun BandalartColorPickerPreview() {
     BandalartTheme {
         BandalartColorPicker(
             initColor = ThemeColor("#3FFFBA", "#111827"),

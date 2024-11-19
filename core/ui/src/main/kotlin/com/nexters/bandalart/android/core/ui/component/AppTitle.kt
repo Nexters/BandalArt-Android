@@ -71,7 +71,7 @@ fun AppEnglishTitle(
 
 @ComponentPreview
 @Composable
-fun AppTitlePreview() {
+private fun AppTitlePreview() {
     BandalartTheme {
         AppTitle()
     }
@@ -80,7 +80,7 @@ fun AppTitlePreview() {
 
 @ComponentPreview
 @Composable
-fun AppKoreanTitlePreview() {
+private fun AppKoreanTitlePreview() {
     BandalartTheme {
         AppKoreanTitle()
     }
@@ -88,7 +88,7 @@ fun AppKoreanTitlePreview() {
 
 @ComponentPreview
 @Composable
-fun AppEnglishTitlePreview() {
+private fun AppEnglishTitlePreview() {
     BandalartTheme {
         AppEnglishTitle()
     }

@@ -49,7 +49,7 @@ fun CellText(
 
 @ComponentPreview
 @Composable
-fun CellTextPreview() {
+private fun CellTextPreview() {
     BandalartTheme {
         CellText(
             cellText = "완벽한 2024년",

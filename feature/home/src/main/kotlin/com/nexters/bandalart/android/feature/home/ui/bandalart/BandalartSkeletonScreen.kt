@@ -406,7 +406,7 @@ fun SkeletonCell(
 
 @DevicePreview
 @Composable
-fun BandalartSkeletonScreenPreview() {
+private fun BandalartSkeletonScreenPreview() {
     val shimmerMainColors = listOf(
         Gray200,
         Gray300,

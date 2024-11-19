@@ -9,6 +9,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.feature.home.model.UpdateBandalartEmojiModel
 
@@ -54,12 +55,14 @@ fun BandalartEmojiBottomSheet(
 
 @ComponentPreview
 @Composable
-fun BandalartEmojiBottomSheetPreview() {
-    BandalartEmojiBottomSheet(
-        bandalartId = 0L,
-        cellId = 0L,
-        currentEmoji = "😎",
-        updateBandalartEmoji = { _, _, _ -> },
-        onResult = { _, _ -> },
-    )
+private fun BandalartEmojiBottomSheetPreview() {
+    BandalartTheme {
+        BandalartEmojiBottomSheet(
+            bandalartId = 0L,
+            cellId = 0L,
+            currentEmoji = "😎",
+            updateBandalartEmoji = { _, _, _ -> },
+            onResult = { _, _ -> },
+        )
+    }
 }

@@ -69,7 +69,7 @@ fun LoadingIndicator(
 
 @ComponentPreview
 @Composable
-fun LoadingIndicatorPreview() {
+private fun LoadingIndicatorPreview() {
     BandalartTheme {
         LoadingIndicator()
     }

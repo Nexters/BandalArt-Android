@@ -119,7 +119,7 @@ fun BandalartDropDownMenu(
 
 @ComponentPreview
 @Composable
-fun BandalartDropDownMenuPreview() {
+private fun BandalartDropDownMenuPreview() {
     BandalartTheme {
         BandalartDropDownMenu(
             openDropDownMenu = {},

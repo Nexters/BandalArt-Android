@@ -85,7 +85,7 @@ internal fun SplashScreen(
 
 @DevicePreview
 @Composable
-fun SplashScreenPreview() {
+private fun SplashScreenPreview() {
     BandalartTheme {
         SplashScreen()
     }

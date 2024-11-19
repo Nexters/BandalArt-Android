@@ -233,7 +233,7 @@ internal fun OnBoardingScreen(
 
 @DevicePreview
 @Composable
-fun OnBoardingScreenPreview() {
+private fun OnBoardingScreenPreview() {
     BandalartTheme {
         OnBoardingScreen(
             setOnboardingCompletedStatus = {},

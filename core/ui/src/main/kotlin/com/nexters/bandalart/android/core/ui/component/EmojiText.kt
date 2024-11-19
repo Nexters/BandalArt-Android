@@ -23,7 +23,7 @@ fun EmojiText(
 
 @ComponentPreview
 @Composable
-fun EmojiTextPreview() {
+private fun EmojiTextPreview() {
     BandalartTheme {
         EmojiText(
             emojiText = "😎",
