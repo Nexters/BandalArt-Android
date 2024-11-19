@@ -43,8 +43,9 @@ internal class BandalartRepositoryImpl @Inject constructor(
         return bandalartDao.getBandalartMainCell(bandalartId).cell.toEntity()
     }
 
-    override suspend fun getBandalartCell(bandalartId: Long, cellId: Long): BandalartCellEntity {
-        return bandalartDao.getBandalartCell(cellId).cell.toEntity()
+    override suspend fun getChildCells(parentId: Long): List<BandalartCellEntity> {
+        val childCells = bandalartDao.getChildCells(parentId)
+        return childCells.map { it.toEntity() }
     }
 
     override suspend fun updateBandalartMainCell(

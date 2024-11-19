@@ -43,12 +43,11 @@ interface BandalartRepository {
     suspend fun getBandalartMainCell(bandalartId: Long): BandalartCellEntity?
 
     /**
-     * 반다라트 셀 조회
+     * 반다라트 하위 셀 조회
      *
-     * @param bandalartId 반다라트 고유 id
-     * @param cellId 셀 고유 id
+     * @param parentId 부모 셀의 고유 id
      */
-    suspend fun getBandalartCell(bandalartId: Long, cellId: Long): BandalartCellEntity?
+    suspend fun getChildCells(parentId: Long): List<BandalartCellEntity>
 
     /**
      * 반다라트 메인 셀 수정

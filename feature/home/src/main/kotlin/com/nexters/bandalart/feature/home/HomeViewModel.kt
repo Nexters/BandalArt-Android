@@ -158,15 +158,59 @@ class HomeViewModel @Inject constructor(
 
     private fun getBandalartMainCell(bandalartId: Long) {
         viewModelScope.launch {
-            bandalartRepository.getBandalartMainCell(bandalartId)?.let { mainCell ->
-                _uiState.update {
-                    it.copy(
-                        bandalartCellData = mainCell.toUiModel(),
-                        isShowSkeleton = false,
-                    )
-                }
-                bottomSheetDataChanged(flag = false)
+            val mainCell = bandalartRepository.getBandalartMainCell(bandalartId)
+            val subCells = bandalartRepository.getChildCells(mainCell?.id ?: 0L)
+
+            val children = subCells.map { subCell ->
+                val taskCells = bandalartRepository.getChildCells(subCell.id)
+                BandalartCellUiModel(
+                    id = subCell.id,
+                    title = subCell.title,
+                    description = subCell.description,
+                    dueDate = subCell.dueDate,
+                    isCompleted = subCell.isCompleted,
+                    completionRatio = subCell.completionRatio,
+                    profileEmoji = subCell.profileEmoji,
+                    mainColor = subCell.mainColor,
+                    subColor = subCell.subColor,
+                    parentId = subCell.parentId,
+                    children = taskCells.map { taskCell ->
+                        BandalartCellUiModel(
+                            id = taskCell.id,
+                            title = taskCell.title,
+                            description = taskCell.description,
+                            dueDate = taskCell.dueDate,
+                            isCompleted = taskCell.isCompleted,
+                            completionRatio = taskCell.completionRatio,
+                            profileEmoji = taskCell.profileEmoji,
+                            mainColor = taskCell.mainColor,
+                            subColor = taskCell.subColor,
+                            parentId = taskCell.parentId,
+                            children = emptyList()
+                        )
+                    }
+                )
             }
+
+            _uiState.update {
+                it.copy(
+                    bandalartCellData = BandalartCellUiModel(
+                        id = mainCell?.id ?: 0L,
+                        title = mainCell?.title,
+                        description = mainCell?.description,
+                        dueDate = mainCell?.dueDate,
+                        isCompleted = mainCell?.isCompleted ?: false,
+                        completionRatio = mainCell?.completionRatio ?: 0,
+                        profileEmoji = mainCell?.profileEmoji,
+                        mainColor = mainCell?.mainColor,
+                        subColor = mainCell?.subColor,
+                        parentId = mainCell?.parentId,
+                        children = children
+                    ),
+                    isShowSkeleton = false,
+                )
+            }
+            bottomSheetDataChanged(flag = false)
         }
     }
 
