@@ -7,6 +7,7 @@ internal object Plugins {
     const val KOTLIN_ANDROID = "org.jetbrains.kotlin.android"
     const val KOTLINX_SERIALIZATION = "org.jetbrains.kotlin.plugin.serialization"
     const val KOTLIN_COMPOSE = "org.jetbrains.kotlin.plugin.compose"
+    const val KOTLIN_PARCELIZE = "org.jetbrains.kotlin.plugin.parcelize"
 
     const val ANDROID_APPLICATION = "com.android.application"
     const val ANDROID_LIBRARY = "com.android.library"

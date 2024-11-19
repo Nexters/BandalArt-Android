@@ -7,6 +7,10 @@ fun DependencyHandler.implementation(dependencyNotation: Any): Dependency? {
     return add("implementation", dependencyNotation)
 }
 
+fun DependencyHandler.api(dependencyNotation: Any): Dependency? {
+    return add("api", dependencyNotation)
+}
+
 fun DependencyHandler.ksp(dependencyNotation: Any): Dependency? {
     return add("ksp", dependencyNotation)
 }
