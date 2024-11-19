@@ -224,8 +224,8 @@ private fun BandalartCellPreview() {
         BandalartCell(
             bandalartId = 0L,
             themeColor = ThemeColor(
-                mainColor = "0xFF3FFFBA",
-                subColor = "0xFF111827",
+                mainColor = "#FF3FFFBA",
+                subColor = "#FF111827",
             ),
             isMainCell = true,
             cellData = BandalartCellUiModel(

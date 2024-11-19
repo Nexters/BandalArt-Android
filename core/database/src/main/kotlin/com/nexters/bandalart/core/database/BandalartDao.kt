@@ -46,36 +46,41 @@ interface BandalartDao {
         // 1. 기본 반다라트 생성
         val bandalartId = createBandalart(
             BandalartDBEntity(
-                mainColor = "0xFF3FFFBA",
-                subColor = "0xFF111827",
+                mainColor = "#FF3FFFBA",
+                subColor = "#FF111827",
             ),
         )
 
         // 2. 메인 셀 생성
         val mainCell = BandalartCellDBEntity(
             bandalartId = bandalartId,
-            mainColor = "0xFF3FFFBA",
-            subColor = "0xFF111827",
+            title = "메인 목표",
+            mainColor = "#FF3FFFBA",
+            subColor = "#FF111827",
         )
         val mainCellId = insertCell(mainCell)
 
-        // 3. 4개의 서브 목표 셀 생성 및 삽입
-        repeat(4) {
-            val subCell = BandalartCellDBEntity(
+        // 3. 정확히 4개의 서브 목표 셀 생성 및 삽입
+        val subCells = List(4) {
+            BandalartCellDBEntity(
                 bandalartId = bandalartId,
                 parentId = mainCellId,
-                mainColor = "0xFF3FFFBA",
-                subColor = "0xFF111827",
+                mainColor = "#FF3FFFBA",
+                subColor = "#FF111827"
             )
+        }
+
+        // 4. 각 서브 목표마다 정확히 5개의 하위 목표 생성 및 삽입
+        subCells.forEach { subCell ->
             val subCellId = insertCell(subCell)
 
-            // 4. 각 서브 목표마다 5개의 하위 목표 생성 및 삽입
+            // 각 서브셀마다 정확히 5개의 태스크셀 생성
             repeat(5) {
                 insertCell(
                     BandalartCellDBEntity(
                         bandalartId = bandalartId,
-                        parentId = subCellId,
-                    ),
+                        parentId = subCellId
+                    )
                 )
             }
         }
@@ -84,8 +89,8 @@ interface BandalartDao {
         insertBandalartDetail(
             BandalartDetailDBEntity(
                 id = bandalartId,
-                mainColor = "0xFF3FFFBA",
-                subColor = "0xFF111827",
+                mainColor = "#FF3FFFBA",
+                subColor = "#FF111827",
                 cellId = mainCellId,
             ),
         )

@@ -74,8 +74,8 @@ private fun BandalartCellGridPreview() {
             isCompleted = false,
             completionRatio = 0,
             profileEmoji = null,
-            mainColor = "0xFF3FFFBA",
-            subColor = "0xFF111827",
+            mainColor = "#FF3FFFBA",
+            subColor = "#FF111827",
             parentId = 0L,
         )
 

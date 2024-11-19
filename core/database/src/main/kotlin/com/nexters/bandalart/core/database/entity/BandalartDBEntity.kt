@@ -11,10 +11,10 @@ data class BandalartDBEntity(
     val id: Long? = null,
 
     @ColumnInfo(name = "mainColor")
-    val mainColor: String = "0xFF3FFFBA",
+    val mainColor: String = "#FF3FFFBA",
 
     @ColumnInfo(name = "subColor")
-    val subColor: String = "0xFF111827",
+    val subColor: String = "#FF111827",
 
     @ColumnInfo(name = "profileEmoji")
     val profileEmoji: String? = null,

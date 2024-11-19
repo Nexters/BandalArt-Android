@@ -44,8 +44,8 @@ import com.nexters.bandalart.core.ui.R
 
 data class HomeUiState(
     val bandalartList: ImmutableList<BandalartDetailUiModel> = persistentListOf(),
-    val bandalartDetailData: BandalartDetailUiModel? = BandalartDetailUiModel(),
-    val bandalartCellData: BandalartCellUiModel? = BandalartCellUiModel(),
+    val bandalartDetailData: BandalartDetailUiModel? = null,
+    val bandalartCellData: BandalartCellUiModel? = null,
     val isBandalartDeleted: Boolean = false,
     val isDropDownMenuOpened: Boolean = false,
     val isBandalartDeleteAlertDialogOpened: Boolean = false,
@@ -179,7 +179,7 @@ class HomeViewModel @Inject constructor(
 
             _uiState.update { it.copy(isShowSkeleton = true) }
 
-            val bandalart = bandalartRepository.createBandalart()?.let { bandalart ->
+            bandalartRepository.createBandalart()?.let { bandalart ->
                 _uiState.update {
                     it.copy(isBandalartListBottomSheetOpened = false)
                 }

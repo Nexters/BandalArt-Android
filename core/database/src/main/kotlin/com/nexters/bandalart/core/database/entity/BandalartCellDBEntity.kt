@@ -48,10 +48,10 @@ data class BandalartCellDBEntity(
     val profileEmoji: String? = null,
 
     @ColumnInfo(name = "mainColor")
-    val mainColor: String? = "0xFF3FFFBA",
+    val mainColor: String? = "#FF3FFFBA",
 
     @ColumnInfo(name = "subColor")
-    val subColor: String? = "0xFF111827",
+    val subColor: String? = "#FF111827",
 
     @ColumnInfo(name = "parentId")
     val parentId: Long? = null,  // 계층 구조를 위한 self-referencing
