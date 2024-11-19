@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.bandalart.android.feature.onboarding"
+    namespace = "com.nexters.bandalart.feature.onboarding"
 
     buildFeatures {
         buildConfig = true

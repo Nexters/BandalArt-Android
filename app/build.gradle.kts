@@ -11,7 +11,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.bandalart.android"
+    namespace = "com.nexters.bandalart"
 
     signingConfigs {
         create("release") {

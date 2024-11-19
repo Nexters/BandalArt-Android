@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.bandalart.android.core.datastore"
+    namespace = "com.nexters.bandalart.core.datastore"
 
     buildFeatures {
         buildConfig = true

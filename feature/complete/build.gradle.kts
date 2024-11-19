@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.bandalart.android.feature.complete"
+    namespace = "com.nexters.bandalart.feature.complete"
 
     buildFeatures {
         buildConfig = true

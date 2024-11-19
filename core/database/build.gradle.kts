@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.bandalart.android.core.database"
+    namespace = "com.nexters.bandalart.core.database"
 }
 
 dependencies {

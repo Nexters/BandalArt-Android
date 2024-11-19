@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".BandalartApplication"
+        android:name="com.nexters.bandalart.BandalartApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
@@ -21,17 +21,17 @@
             tools:node="merge">
 
             <meta-data
-                android:name="com.nexters.bandalart.android.initialize.TimberInitializer"
+                android:name="com.nexters.bandalart.initialize.TimberInitializer"
                 android:value="androidx.startup" />
 
             <meta-data
-                android:name="com.nexters.bandalart.android.initialize.FirebaseCrashlyticsInitializer"
+                android:name="com.nexters.bandalart.initialize.FirebaseCrashlyticsInitializer"
                 android:value="androidx.startup" />
 
         </provider>
 
         <activity
-            android:name="com.nexters.bandalart.android.MainActivity"
+            android:name="com.nexters.bandalart.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Bandalart.Splash">
 

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.bandalart.android.core.designsystem"
+    namespace = "com.nexters.bandalart.core.designsystem"
 
     buildFeatures {
         buildConfig = true
