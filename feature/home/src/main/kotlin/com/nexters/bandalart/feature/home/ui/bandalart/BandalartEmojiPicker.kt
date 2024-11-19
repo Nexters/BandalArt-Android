@@ -58,7 +58,6 @@ fun BandalartEmojiPicker(
     var selectedEmoji by remember { mutableStateOf(currentEmoji) }
     var prevSelectedEmoji by remember { mutableStateOf(currentEmoji) }
 
-
     Column(
         modifier = modifier
             .fillMaxWidth()

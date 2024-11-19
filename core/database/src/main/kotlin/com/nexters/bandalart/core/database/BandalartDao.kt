@@ -46,18 +46,18 @@ interface BandalartDao {
         // 1. 기본 반다라트 생성
         val bandalartId = createBandalart(
             BandalartDBEntity(
-                mainColor = "#FF3FFFBA",
-                subColor = "#FF111827"
-            )
+                mainColor = "#3FFFBA",
+                subColor = "#111827",
+            ),
         )
 
         // 2. 메인 목표에 대한 상세 정보 생성
         insertBandalartDetail(
             BandalartDetailDBEntity(
                 id = bandalartId,
-                mainColor = "#FF3FFFBA",
-                subColor = "#FF111827"
-            )
+                mainColor = "#3FFFBA",
+                subColor = "#111827",
+            ),
         )
 
         // 3. 메인 셀 생성
@@ -65,9 +65,9 @@ interface BandalartDao {
             BandalartCellDBEntity(
                 bandalartId = bandalartId,
                 title = "",
-                mainColor = "#FF3FFFBA",
-                subColor = "#FF111827"
-            )
+                mainColor = "#3FFFBA",
+                subColor = "#111827",
+            ),
         )
 
         // 4. 4개의 서브 셀 생성
@@ -76,9 +76,9 @@ interface BandalartDao {
                 BandalartCellDBEntity(
                     bandalartId = bandalartId,
                     parentId = mainCellId,
-                    mainColor = "#FF3FFFBA",
-                    subColor = "#FF111827"
-                )
+                    mainColor = "#3FFFBA",
+                    subColor = "#111827",
+                ),
             )
 
             // 5. 각 서브 셀마다 5개의 태스크 셀 생성
@@ -86,8 +86,10 @@ interface BandalartDao {
                 insertCell(
                     BandalartCellDBEntity(
                         bandalartId = bandalartId,
-                        parentId = subCellId
-                    )
+                        parentId = subCellId,
+                        mainColor = "#3FFFBA",
+                        subColor = "#111827",
+                    ),
                 )
             }
         }

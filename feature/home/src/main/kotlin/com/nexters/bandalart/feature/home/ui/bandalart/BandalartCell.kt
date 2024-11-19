@@ -57,7 +57,6 @@ data class SubCell(
     val subCellRowIndex: Int,
     val subCellColIndex: Int,
     val subCellData: BandalartCellUiModel?,
-    val taskCells: List<BandalartCellUiModel>,
 )
 
 @Composable

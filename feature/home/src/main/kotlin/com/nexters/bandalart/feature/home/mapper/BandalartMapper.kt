@@ -25,19 +25,22 @@ internal fun BandalartDetailEntity.toUiModel() =
         isGeneratedTitle = false,
     )
 
-fun BandalartCellEntity.toUiModel() = BandalartCellUiModel(
-    id = id ?: 0,
-    title = title,
-    description = description,
-    dueDate = dueDate,
-    isCompleted = isCompleted,
-    completionRatio = completionRatio,
-    profileEmoji = profileEmoji,
-    mainColor = mainColor,
-    subColor = subColor,
-    parentId = parentId,
-)
-
+// 재귀 호출이라 반환 타입 명시하지 않으면 에러 발생
+fun BandalartCellEntity.toUiModel(): BandalartCellUiModel {
+    return BandalartCellUiModel(
+        id = id,
+        title = title,
+        description = description,
+        dueDate = dueDate,
+        isCompleted = isCompleted,
+        completionRatio = completionRatio,
+        profileEmoji = profileEmoji,
+        mainColor = mainColor,
+        subColor = subColor,
+        parentId = parentId,
+        children = children.map { childEntity -> childEntity.toUiModel() }
+    )
+}
 internal fun UpdateBandalartMainCellModel.toEntity() =
     UpdateBandalartMainCellEntity(
         title = title,

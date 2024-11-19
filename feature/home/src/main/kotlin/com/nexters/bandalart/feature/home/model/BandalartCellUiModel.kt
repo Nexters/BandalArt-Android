@@ -11,6 +11,7 @@ data class BandalartCellUiModel(
     val mainColor: String? = "",
     val subColor: String? = "",
     val parentId: Long? = 0L,
+    val children: List<BandalartCellUiModel> = emptyList()
 ) {
     fun copy(): BandalartCellUiModel = BandalartCellUiModel(
         id = id,
@@ -23,5 +24,6 @@ data class BandalartCellUiModel(
         mainColor = mainColor,
         subColor = subColor,
         parentId = parentId,
+        children = children
     )
 }

@@ -9,11 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.allColor
-import com.nexters.bandalart.feature.home.mapper.toUiModel
+import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
 
 @Composable
 fun BandalartCellGrid(
@@ -52,7 +51,7 @@ fun BandalartCellGrid(
                             rowCnt = rows,
                         ),
                         cellData = if (isSubCell) subCell.subCellData!!
-                        else subCell.taskCells[taskIndex++],
+                        else subCell.subCellData!!.children[taskIndex++],
                         bottomSheetDataChanged = bottomSheetDataChanged,
                     )
                 }
@@ -64,48 +63,18 @@ fun BandalartCellGrid(
 @ComponentPreview
 @Composable
 private fun BandalartCellGridPreview() {
+    val subCellList = listOf(
+        SubCell(2, 3, 1, 1, dummyBandalartChartData.children[0]),
+        SubCell(3, 2, 1, 0, dummyBandalartChartData.children[1]),
+        SubCell(3, 2, 1, 1, dummyBandalartChartData.children[2]),
+        SubCell(2, 3, 0, 1, dummyBandalartChartData.children[3]),
+    )
+
     BandalartTheme {
-        val subCellData = BandalartCellEntity(
-            id = 1L,
-            bandalartId = 0L,
-            title = "서브 목표",
-            description = "서브 목표 설명",
-            dueDate = null,
-            isCompleted = false,
-            completionRatio = 0,
-            profileEmoji = null,
-            mainColor = "#FF3FFFBA",
-            subColor = "#FF111827",
-            parentId = 0L,
-        )
-
-        val taskCells = List(8) { index ->
-            BandalartCellEntity(
-                id = (index + 2).toLong(),  // id는 2부터 시작 (서브셀이 1)
-                bandalartId = 0L,
-                title = "하위 목표 ${index + 1}",
-                description = "하위 목표 ${index + 1} 설명",
-                dueDate = null,
-                isCompleted = false,
-                completionRatio = 0,
-                profileEmoji = null,
-                mainColor = null,
-                subColor = null,
-                parentId = 1L,  // 서브셀의 id를 parentId로
-            )
-        }
-
         BandalartCellGrid(
             bandalartId = 0L,
             themeColor = allColor[0],
-            subCell = SubCell(
-                rowCnt = 3,
-                colCnt = 3,
-                subCellRowIndex = 1,
-                subCellColIndex = 1,
-                subCellData = subCellData.toUiModel(),
-                taskCells = taskCells.map { it.toUiModel() },
-            ),
+            subCell = subCellList[1],
             rows = 3,
             cols = 3,
             bottomSheetDataChanged = {},

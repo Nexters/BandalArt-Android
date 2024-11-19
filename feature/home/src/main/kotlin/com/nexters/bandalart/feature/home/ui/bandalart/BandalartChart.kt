@@ -40,15 +40,11 @@ fun BandalartChart(
         screenWidthDp - (15.dp * 2)
     }
 
-    val taskCells = remember(bandalartCellData.id) {
-        listOf<BandalartCellUiModel>()
-    }
-
     val subCellList = listOf(
-        SubCell(2, 3, 1, 1, taskCells.getOrNull(0), taskCells.subList(0, 5)),
-        SubCell(3, 2, 1, 0, taskCells.getOrNull(1), taskCells.subList(5, 10)),
-        SubCell(3, 2, 1, 1, taskCells.getOrNull(2), taskCells.subList(10, 15)),
-        SubCell(2, 3, 0, 1, taskCells.getOrNull(3), taskCells.subList(15, 20)),
+        SubCell(2, 3, 1, 1, bandalartCellData.children[0]),
+        SubCell(3, 2, 1, 0, bandalartCellData.children[1]),
+        SubCell(3, 2, 1, 1, bandalartCellData.children[2]),
+        SubCell(2, 3, 0, 1, bandalartCellData.children[3]),
     )
 
     Layout(

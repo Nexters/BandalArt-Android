@@ -26,8 +26,8 @@ fun BandalartDetailDBEntity.toEntity() = BandalartDetailEntity(
     completionRatio = completionRatio,
 )
 
-fun BandalartCellDBEntity.toEntity(): BandalartCellEntity = BandalartCellEntity(
-    id = id,
+fun BandalartCellDBEntity.toEntity() = BandalartCellEntity(
+    id = id ?: 0L,
     bandalartId = bandalartId,
     title = title,
     description = description,
