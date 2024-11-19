@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Black
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
@@ -31,7 +33,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 
 @Composable
 fun CompleteBandalart(
@@ -45,7 +46,7 @@ fun CompleteBandalart(
     modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    FixedSizeText(
+    Text(
       text = context.getString(R.string.complete_chart),
       color = Gray400,
       fontWeight = FontWeight.W600,
@@ -55,14 +56,14 @@ fun CompleteBandalart(
     Spacer(modifier = Modifier.height(10.dp))
     Box(
       modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 33.dp)
-        .clip(RoundedCornerShape(12.dp))
-        .border(
-          width = 2.dp,
-          color = Gray300,
-          shape = RoundedCornerShape(12.dp),
-        ),
+          .fillMaxWidth()
+          .padding(horizontal = 33.dp)
+          .clip(RoundedCornerShape(12.dp))
+          .border(
+              width = 2.dp,
+              color = Gray300,
+              shape = RoundedCornerShape(12.dp),
+          ),
     ) {
       Column(
         modifier = Modifier.fillMaxWidth(),
@@ -76,9 +77,9 @@ fun CompleteBandalart(
           Column {
             Box(
               modifier = Modifier
-                .width(52.dp)
-                .aspectRatio(1f)
-                .background(Gray100),
+                  .width(52.dp)
+                  .aspectRatio(1f)
+                  .background(Gray100),
               contentAlignment = Alignment.Center,
             ) {
               if (profileEmoji == context.getString(R.string.home_default_emoji)) {
@@ -98,7 +99,7 @@ fun CompleteBandalart(
           }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        FixedSizeText(
+        Text(
           text = title,
           color = Black,
           fontSize = 16.sp,
@@ -114,8 +115,10 @@ fun CompleteBandalart(
 @ComponentPreview
 @Composable
 fun CompleteBandalartPreview() {
-  CompleteBandalart(
-    profileEmoji = "😎",
-    title = "발전하는 예진",
-  )
+  BandalartTheme {
+    CompleteBandalart(
+      profileEmoji = "😎",
+      title = "발전하는 예진",
+    )
+  }
 }

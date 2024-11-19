@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +61,7 @@ fun BandalartDeleteAlertDialog(
             .align(Alignment.CenterHorizontally),
         )
         Spacer(modifier = Modifier.height(18.dp))
-        FixedSizeText(
+        Text(
           text = title,
           color = Gray900,
           fontSize = 20.sp,
@@ -72,7 +73,7 @@ fun BandalartDeleteAlertDialog(
         )
         if (message != null) {
           Spacer(modifier = Modifier.height(8.dp))
-          FixedSizeText(
+          Text(
             text = message,
             color = Gray400,
             fontSize = 14.sp,
@@ -103,7 +104,7 @@ fun BandalartDeleteAlertDialog(
               disabledContentColor = Gray900,
             ),
           ) {
-            FixedSizeText(
+            Text(
               text = context.getString(R.string.delete_bandalart_cancel),
               fontSize = 16.sp,
               fontWeight = FontWeight.W600,
@@ -123,7 +124,7 @@ fun BandalartDeleteAlertDialog(
               disabledContentColor = White,
             ),
           ) {
-            FixedSizeText(
+            Text(
               text = context.getString(R.string.delete_bandalart_delete),
               color = White,
               fontSize = 16.sp,

@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
@@ -34,8 +35,8 @@ fun CellText(
   Text(
     text = cellText,
     modifier = modifier
-      .padding(horizontal = 4.dp, vertical = 6.dp)
-      .alpha(textAlpha),
+        .padding(horizontal = 4.dp, vertical = 6.dp)
+        .alpha(textAlpha),
     color = cellTextColor,
     fontFamily = pretendard,
     fontWeight = fontWeight,
@@ -50,9 +51,11 @@ fun CellText(
 @ComponentPreview
 @Composable
 fun CellTextPreview() {
-  CellText(
-    cellText = "완벽한 2024년",
-    cellTextColor = Gray900,
-    fontWeight = FontWeight.W700,
-  )
+  BandalartTheme {
+    CellText(
+      cellText = "완벽한 2024년",
+      cellTextColor = Gray900,
+      fontWeight = FontWeight.W700,
+    )
+  }
 }

@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.common.extension.toColor
+import com.nexters.bandalart.android.core.common.extension.toFormatDate
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
@@ -41,9 +44,6 @@ import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBar
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.common.extension.toFormatDate
-import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
@@ -106,9 +106,8 @@ fun HomeHeader(
           .fillMaxWidth()
           .wrapContentHeight(),
       ) {
-        FixedSizeText(
-          text = bandalartDetailData.title
-            ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
+        Text(
+          text = bandalartDetailData.title ?: stringResource(com.nexters.bandalart.android.core.ui.R.string.home_empty_title),
           color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
           fontSize = 20.sp,
           fontWeight = FontWeight.W700,
@@ -141,11 +140,8 @@ fun HomeHeader(
       modifier = Modifier.fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      FixedSizeText(
-        text = stringResource(
-          com.nexters.bandalart.android.core.ui.R.string.home_complete_ratio,
-          bandalartDetailData.completionRatio,
-        ),
+      Text(
+        text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete_ratio, bandalartDetailData.completionRatio),
         color = Gray600,
         fontSize = 12.sp,
         fontWeight = FontWeight.W500,
@@ -159,7 +155,7 @@ fun HomeHeader(
           thickness = 1.dp,
           color = Gray300,
         )
-        FixedSizeText(
+        Text(
           text = bandalartDetailData.dueDate.toFormatDate(),
           color = Gray600,
           fontSize = 12.sp,
@@ -185,7 +181,7 @@ fun HomeHeader(
               tint = Gray900,
               modifier = Modifier.size(13.dp),
             )
-            FixedSizeText(
+            Text(
               text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_complete),
               color = Gray900,
               fontSize = 10.sp,

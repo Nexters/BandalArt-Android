@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +40,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import kotlinx.collections.immutable.ImmutableList
@@ -73,7 +73,7 @@ fun BandalartDatePicker(
           bottom = 14.dp,
         ),
     ) {
-      FixedSizeText(
+      Text(
         text = "초기화",
         color = Gray900,
         fontSize = 16.sp,
@@ -92,7 +92,7 @@ fun BandalartDatePicker(
           },
         fontFamily = pretendard,
       )
-      FixedSizeText(
+      Text(
         text = stringResource(id = R.string.bottomsheet_done),
         color = Gray900,
         fontSize = 16.sp,
@@ -216,7 +216,7 @@ fun InfiniteItemsPicker(
               currentValue.value = items[index].toString()
             }
             Spacer(modifier = Modifier.height(6.dp))
-            FixedSizeText(
+            Text(
               text = if (isYear) stringResource(R.string.datepicker_year, items[index].toString())
               else if (isMonth) stringResource(R.string.datepicker_month, items[index].toString())
               else stringResource(R.string.datepicker_day, items[index].toString()),

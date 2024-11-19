@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -50,7 +51,7 @@ fun BandalartDropDownMenu(
         y = 0.dp,
       ),
     ) {
-//      // MVP 에서 제외
+//      // TODO MVP 에서 제외, 구현해도 좋을듯
 //      DropdownMenuItem(
 //        modifier = Modifier
 //          .wrapContentSize()
@@ -64,7 +65,7 @@ fun BandalartDropDownMenu(
 //                .height(14.dp)
 //                .align(CenterVertically),
 //            )
-//            FixedSizeText(
+//            Text(
 //              text = "이미지 내보내기",
 //              color = Gray800,
 //              fontSize = 14.sp,
@@ -96,7 +97,7 @@ fun BandalartDropDownMenu(
                 .align(CenterVertically),
               colorFilter = ColorFilter.tint(Error),
             )
-            FixedSizeText(
+            Text(
               text = context.getString(R.string.dropdown_delete),
               color = Error,
               fontSize = 14.sp,

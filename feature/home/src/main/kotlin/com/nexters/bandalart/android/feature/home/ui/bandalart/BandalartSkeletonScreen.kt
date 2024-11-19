@@ -27,6 +27,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -59,7 +60,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.neurimboGothicRegul
 import com.nexters.bandalart.android.core.ui.DevicePreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.CompletionRatioProgressBar
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.feature.home.model.BandalartCellUiModel
 
 data class SkeletonSubCell(
@@ -96,7 +96,7 @@ fun BandalartSkeletonScreen(
           contentAlignment = Alignment.CenterStart,
         ) {
           Row(modifier = Modifier.fillMaxWidth()) {
-            FixedSizeText(
+            Text(
               text = stringResource(R.string.bandalart),
               color = Gray900,
               fontSize = 28.sp,
@@ -154,7 +154,7 @@ fun BandalartSkeletonScreen(
                   .fillMaxWidth()
                   .wrapContentHeight(),
               ) {
-                FixedSizeText(
+                Text(
                   text = stringResource(R.string.skeleton_title),
                   color = Gray900,
                   fontSize = 20.sp,
@@ -179,7 +179,7 @@ fun BandalartSkeletonScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            FixedSizeText(
+            Text(
               text = stringResource(R.string.skeleton_complete_ratio),
               color = Gray600,
               fontSize = 12.sp,
@@ -221,7 +221,7 @@ fun BandalartSkeletonScreen(
               ),
               contentDescription = stringResource(R.string.share_descrption),
             )
-            FixedSizeText(
+            Text(
               text = stringResource(R.string.home_share),
               color = Gray900,
               fontSize = 12.sp,

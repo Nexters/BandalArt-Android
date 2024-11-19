@@ -1,5 +1,6 @@
 package com.nexters.bandalart.android.core.ui.component
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,7 +40,7 @@ fun AppTitle(
 fun AppKoreanTitle(
   modifier: Modifier = Modifier,
 ) {
-  FixedSizeText(
+  Text(
     text = stringResource(R.string.bandalart),
     color = Gray900,
     fontSize = 28.sp,
@@ -55,7 +56,7 @@ fun AppKoreanTitle(
 fun AppEnglishTitle(
   modifier: Modifier = Modifier,
 ) {
-  FixedSizeText(
+  Text(
     text = stringResource(R.string.bandalart),
     color = Gray900,
     fontSize = 18.sp,

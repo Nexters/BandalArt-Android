@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
@@ -31,5 +32,7 @@ fun TitleText(
 @ComponentPreview
 @Composable
 fun TitleTextPreview() {
-  TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
+  BandalartTheme {
+    TitleText(text = "반다라트의 모든 목표를 달성했어요.\n정말 대단해요!")
+  }
 }

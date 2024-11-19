@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.nexters.bandalart.android.core.ui.component
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray300
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 import com.nexters.bandalart.android.core.ui.ComponentPreview
@@ -57,8 +55,10 @@ fun PagerIndicatorPreview() {
   val pageCount = 2
   val pagerState = rememberPagerState(pageCount = { pageCount })
 
-  PagerIndicator(
-    pageCount = 2,
-    pagerState = pagerState,
-  )
+  BandalartTheme {
+    PagerIndicator(
+      pageCount = 2,
+      pagerState = pagerState,
+    )
+  }
 }

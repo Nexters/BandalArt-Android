@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.designsystem.theme.White
@@ -54,7 +56,7 @@ fun NetworkErrorAlertDialog(
           modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(modifier = Modifier.height(8.dp))
-        FixedSizeText(
+        Text(
           text = title,
           color = Gray900,
           fontSize = 20.sp,
@@ -65,7 +67,7 @@ fun NetworkErrorAlertDialog(
           letterSpacing = (-0.4).sp,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        FixedSizeText(
+        Text(
           text = message,
           color = Gray400,
           fontSize = 14.sp,
@@ -90,7 +92,7 @@ fun NetworkErrorAlertDialog(
             onClick = onConfirmClick,
             colors = ButtonDefaults.buttonColors(containerColor = Gray900),
           ) {
-            FixedSizeText(
+            Text(
               text = context.getString(R.string.network_error_retry_message),
               fontSize = 16.sp,
               fontWeight = FontWeight.W600,
@@ -107,9 +109,11 @@ fun NetworkErrorAlertDialog(
 @ComponentPreview
 @Composable
 fun NetworkErrorAlertDialogPreview() {
-  NetworkErrorAlertDialog(
-    title = "네트워크 문제로 표를\n불러오지 못했어요",
-    message = "다시 시도해주시기 바랍니다.",
-    onConfirmClick = {},
-  )
+  BandalartTheme {
+    NetworkErrorAlertDialog(
+      title = "네트워크 문제로 표를\n불러오지 못했어요",
+      message = "다시 시도해주시기 바랍니다.",
+      onConfirmClick = {},
+    )
+  }
 }

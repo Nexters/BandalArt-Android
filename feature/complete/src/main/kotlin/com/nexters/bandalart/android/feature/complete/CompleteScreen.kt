@@ -156,7 +156,7 @@ internal fun CompleteScreen(
               title = uiState.title,
               modifier = Modifier.align(Alignment.Center),
             )
-            // MVP 제외
+            // TODO MVP 제외, 이번에 추가해도 좋을듯
             // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
             BandalartButton(
               onClick = shareBandalart,

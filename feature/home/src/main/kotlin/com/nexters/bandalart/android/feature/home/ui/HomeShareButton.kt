@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,15 +18,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.common.extension.clickableSingle
 import com.nexters.bandalart.android.core.designsystem.R
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray100
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.ComponentPreview
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
-import com.nexters.bandalart.android.core.common.extension.clickableSingle
-import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 
 @Composable
 fun HomeShareButton(
@@ -50,7 +48,7 @@ fun HomeShareButton(
         ),
         contentDescription = stringResource(com.nexters.bandalart.android.core.ui.R.string.share_descrption),
       )
-      FixedSizeText(
+      Text(
         text = stringResource(com.nexters.bandalart.android.core.ui.R.string.home_share),
         color = Gray900,
         fontSize = 12.sp,

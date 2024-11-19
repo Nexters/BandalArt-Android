@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.nonScaleSp
 
@@ -24,8 +25,10 @@ fun EmojiText(
 @ComponentPreview
 @Composable
 fun EmojiTextPreview() {
-  EmojiText(
-    emojiText = "😎",
-    fontSize = 22.sp,
-  )
+  BandalartTheme {
+    EmojiText(
+      emojiText = "😎",
+      fontSize = 22.sp,
+    )
+  }
 }

@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,7 +44,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.Gray900
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.EmojiText
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartDetailData
 import kotlinx.coroutines.launch
@@ -126,7 +126,7 @@ fun BandalartItem(
               tint = Gray900,
               modifier = Modifier.size(13.dp),
             )
-            FixedSizeText(
+            Text(
               text = stringResource(R.string.home_complete),
               color = Gray900,
               fontWeight = FontWeight.W600,
@@ -146,7 +146,7 @@ fun BandalartItem(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
           ) {
-            FixedSizeText(
+            Text(
               text = stringResource(
                 R.string.home_complete_ratio,
                 bandalartItem.completionRatio,
@@ -159,7 +159,7 @@ fun BandalartItem(
           }
         }
       }
-      FixedSizeText(
+      Text(
         text = bandalartItem.title ?: "",
         color = if (bandalartItem.isGeneratedTitle) Gray300 else Gray900,
         fontSize = 16.sp,

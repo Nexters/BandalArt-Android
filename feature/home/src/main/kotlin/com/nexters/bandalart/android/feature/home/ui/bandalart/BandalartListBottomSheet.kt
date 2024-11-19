@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray200
 import com.nexters.bandalart.android.core.designsystem.theme.Gray600
 import com.nexters.bandalart.android.core.designsystem.theme.Gray800
@@ -45,7 +47,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.android.core.ui.R
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.android.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.android.feature.home.model.dummyBandalartList
@@ -69,24 +70,24 @@ fun BandalartListBottomSheet(
 
   ModalBottomSheet(
     modifier = Modifier
-      .wrapContentSize()
-      .statusBarsPadding(),
+        .wrapContentSize()
+        .statusBarsPadding(),
     onDismissRequest = onCancelClicked,
     sheetState = bottomSheetState,
     dragHandle = null,
   ) {
     Column(
       modifier = Modifier
-        .background(White)
-        .navigationBarsPadding(),
+          .background(White)
+          .navigationBarsPadding(),
     ) {
       Spacer(modifier = Modifier.height(20.dp))
       Box(
         modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 16.dp),
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
       ) {
-        FixedSizeText(
+        Text(
           text = stringResource(R.string.bandalart_list_title),
           color = Gray900,
           fontSize = 16.sp,
@@ -96,9 +97,9 @@ fun BandalartListBottomSheet(
         )
         IconButton(
           modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .height(21.dp)
-            .aspectRatio(1f),
+              .align(Alignment.CenterEnd)
+              .height(21.dp)
+              .aspectRatio(1f),
           onClick = {
             scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
               if (!bottomSheetState.isVisible) onCancelClicked()
@@ -141,9 +142,9 @@ fun BandalartListBottomSheet(
           Row {
             Button(
               modifier = Modifier
-                .weight(1f)
-                .height(56.dp)
-                .padding(horizontal = 24.dp),
+                  .weight(1f)
+                  .height(56.dp)
+                  .padding(horizontal = 24.dp),
               onClick = createBandalart,
               colors = ButtonDefaults.buttonColors(containerColor = Gray200),
             ) {
@@ -155,7 +156,7 @@ fun BandalartListBottomSheet(
                   modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.padding(start = 4.dp))
-                FixedSizeText(
+                Text(
                   text = stringResource(R.string.bandalart_list_add),
                   color = Gray800,
                   fontSize = 16.sp,
@@ -173,13 +174,15 @@ fun BandalartListBottomSheet(
 @ComponentPreview
 @Composable
 fun BandalartListBottomSheetPreview() {
-  BandalartListBottomSheet(
-    bandalartList = dummyBandalartList.toImmutableList(),
-    currentBandalartId = 0L,
-    getBandalartDetail = {},
-    setRecentBandalartId = {},
-    showSkeletonChanged = {},
-    onCancelClicked = {},
-    createBandalart = {},
-  )
+  BandalartTheme {
+    BandalartListBottomSheet(
+      bandalartList = dummyBandalartList.toImmutableList(),
+      currentBandalartId = 0L,
+      getBandalartDetail = {},
+      setRecentBandalartId = {},
+      showSkeletonChanged = {},
+      onCancelClicked = {},
+      createBandalart = {},
+    )
+  }
 }

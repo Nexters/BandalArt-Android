@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +30,6 @@ import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 import com.nexters.bandalart.android.core.ui.R
 import com.nexters.bandalart.android.core.ui.component.AppTitle
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 
 @Composable
 internal fun HomeTopBar(
@@ -64,7 +64,7 @@ internal fun HomeTopBar(
               ),
               contentDescription = stringResource(R.string.hamburger_descrption),
             )
-            FixedSizeText(
+            Text(
               text = stringResource(R.string.home_list),
               color = Gray600,
               fontSize = 16.sp,
@@ -78,7 +78,7 @@ internal fun HomeTopBar(
               tint = Gray600,
               modifier = Modifier.size(20.dp),
             )
-            FixedSizeText(
+            Text(
               text = stringResource(R.string.home_add),
               color = Gray600,
               fontSize = 16.sp,

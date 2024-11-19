@@ -13,6 +13,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.component.FixedSizeText
 import com.nexters.bandalart.android.core.designsystem.theme.Gray700
 import com.nexters.bandalart.android.core.designsystem.theme.White
 import com.nexters.bandalart.android.navigation.BandalartNavHost
@@ -50,7 +50,7 @@ fun BandalartApp(
             elevation = CardDefaults.cardElevation(8.dp),
           ) {
             Box(Modifier.fillMaxSize()) {
-              FixedSizeText(
+              Text(
                 text = it.visuals.message,
                 color = Gray700,
                 fontSize = 12.sp,
