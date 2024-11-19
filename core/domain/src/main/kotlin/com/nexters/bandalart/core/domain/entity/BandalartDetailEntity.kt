@@ -19,7 +19,6 @@ data class BandalartDetailEntity(
     val subColor: String,
     val profileEmoji: String?,
     val title: String?,
-    val cellId: Long,  // non-null (항상 메인셀 존재)
     val dueDate: String?,
     val isCompleted: Boolean,
     val completionRatio: Int,

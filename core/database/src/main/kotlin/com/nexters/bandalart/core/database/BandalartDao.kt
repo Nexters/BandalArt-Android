@@ -47,34 +47,41 @@ interface BandalartDao {
         val bandalartId = createBandalart(
             BandalartDBEntity(
                 mainColor = "#FF3FFFBA",
-                subColor = "#FF111827",
-            ),
+                subColor = "#FF111827"
+            )
         )
 
-        // 2. 메인 셀 생성
-        val mainCell = BandalartCellDBEntity(
-            bandalartId = bandalartId,
-            title = "메인 목표",
-            mainColor = "#FF3FFFBA",
-            subColor = "#FF111827",
-        )
-        val mainCellId = insertCell(mainCell)
-
-        // 3. 정확히 4개의 서브 목표 셀 생성 및 삽입
-        val subCells = List(4) {
-            BandalartCellDBEntity(
-                bandalartId = bandalartId,
-                parentId = mainCellId,
+        // 2. 메인 목표에 대한 상세 정보 생성
+        insertBandalartDetail(
+            BandalartDetailDBEntity(
+                id = bandalartId,
                 mainColor = "#FF3FFFBA",
                 subColor = "#FF111827"
             )
-        }
+        )
 
-        // 4. 각 서브 목표마다 정확히 5개의 하위 목표 생성 및 삽입
-        subCells.forEach { subCell ->
-            val subCellId = insertCell(subCell)
+        // 3. 메인 셀 생성
+        val mainCellId = insertCell(
+            BandalartCellDBEntity(
+                bandalartId = bandalartId,
+                title = "",
+                mainColor = "#FF3FFFBA",
+                subColor = "#FF111827"
+            )
+        )
 
-            // 각 서브셀마다 정확히 5개의 태스크셀 생성
+        // 4. 4개의 서브 셀 생성
+        repeat(4) {
+            val subCellId = insertCell(
+                BandalartCellDBEntity(
+                    bandalartId = bandalartId,
+                    parentId = mainCellId,
+                    mainColor = "#FF3FFFBA",
+                    subColor = "#FF111827"
+                )
+            )
+
+            // 5. 각 서브 셀마다 5개의 태스크 셀 생성
             repeat(5) {
                 insertCell(
                     BandalartCellDBEntity(
@@ -84,16 +91,6 @@ interface BandalartDao {
                 )
             }
         }
-
-        // 5. 상세 정보 생성 및 삽입
-        insertBandalartDetail(
-            BandalartDetailDBEntity(
-                id = bandalartId,
-                mainColor = "#FF3FFFBA",
-                subColor = "#FF111827",
-                cellId = mainCellId,
-            ),
-        )
 
         return bandalartId
     }
@@ -108,7 +105,7 @@ interface BandalartDao {
 
     /** 특정 반다라트의 상세 정보 조회 */
     @Query("SELECT * FROM bandalart_details WHERE id = :bandalartId")
-    suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailDBEntity
+    suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailDBEntity?
 
     // Read - 셀
     /** 특정 반다라트의 메인 셀(최상위 셀) 조회 */

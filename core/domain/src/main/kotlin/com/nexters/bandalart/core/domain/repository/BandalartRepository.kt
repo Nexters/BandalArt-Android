@@ -19,7 +19,7 @@ interface BandalartRepository {
     /**
      * 반다라트 목록 조회
      */
-    suspend fun getBandalartList(): List<BandalartDetailEntity>?
+    suspend fun getBandalartList(): List<BandalartDetailEntity>
 
     /**
      * 반다라트 상세 조회

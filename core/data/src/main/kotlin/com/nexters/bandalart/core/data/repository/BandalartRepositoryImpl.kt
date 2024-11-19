@@ -29,8 +29,8 @@ internal class BandalartRepositoryImpl @Inject constructor(
         return bandalartDao.getBandalartList().map { it.toEntity() }
     }
 
-    override suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailEntity {
-        return bandalartDao.getBandalartDetail(bandalartId).toEntity()
+    override suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailEntity? {
+        return bandalartDao.getBandalartDetail(bandalartId)?.toEntity()
     }
 
     override suspend fun deleteBandalart(bandalartId: Long) {

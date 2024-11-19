@@ -87,7 +87,7 @@ class HomeViewModel @Inject constructor(
 
     fun getBandalartList(bandalartId: Long? = null) {
         viewModelScope.launch {
-            val bandalartList = bandalartRepository.getBandalartList()?.map { it.toUiModel() } ?: emptyList()
+            val bandalartList = bandalartRepository.getBandalartList().map { it.toUiModel() }
             _uiState.update {
                 it.copy(bandalartList = bandalartList.toImmutableList())
             }

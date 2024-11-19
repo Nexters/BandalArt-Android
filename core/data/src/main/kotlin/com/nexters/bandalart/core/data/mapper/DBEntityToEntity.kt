@@ -21,7 +21,6 @@ fun BandalartDetailDBEntity.toEntity() = BandalartDetailEntity(
     subColor = subColor,
     profileEmoji = profileEmoji,
     title = title,
-    cellId = cellId,
     dueDate = dueDate,
     isCompleted = isCompleted,
     completionRatio = completionRatio,

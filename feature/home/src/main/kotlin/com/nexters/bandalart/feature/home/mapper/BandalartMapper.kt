@@ -15,7 +15,6 @@ import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
 internal fun BandalartDetailEntity.toUiModel() =
     BandalartDetailUiModel(
         id = id,
-        cellId = cellId,
         mainColor = mainColor,
         subColor = subColor,
         profileEmoji = profileEmoji,
