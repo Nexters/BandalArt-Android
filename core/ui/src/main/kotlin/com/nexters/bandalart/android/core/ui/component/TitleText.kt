@@ -8,7 +8,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 
@@ -23,8 +22,8 @@ fun TitleText(
     color = Gray900,
     fontFamily = pretendard,
     fontWeight = FontWeight.W700,
-    fontSize = 22.sp.nonScaleSp,
-    lineHeight = 30.8.sp.nonScaleSp,
+    fontSize = 22.sp,
+    lineHeight = 30.8.sp,
     textAlign = TextAlign.Center,
   )
 }

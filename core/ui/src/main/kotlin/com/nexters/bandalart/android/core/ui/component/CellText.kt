@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.designsystem.theme.Gray900
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.ui.ComponentPreview
 
@@ -40,9 +39,9 @@ fun CellText(
     color = cellTextColor,
     fontFamily = pretendard,
     fontWeight = fontWeight,
-    fontSize = 12.sp.nonScaleSp,
-    lineHeight = 16.8.sp.nonScaleSp,
-    letterSpacing = (-0.24).sp.nonScaleSp,
+    fontSize = 12.sp,
+    lineHeight = 16.8.sp,
+    letterSpacing = (-0.24).sp,
     textAlign = TextAlign.Center,
     style = TextStyle(lineBreak = cellLineBreak),
   )

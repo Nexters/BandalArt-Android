@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 import com.nexters.bandalart.android.core.designsystem.theme.Gray400
 import com.nexters.bandalart.android.core.designsystem.theme.pretendard
 import com.nexters.bandalart.android.core.designsystem.R
@@ -59,8 +58,8 @@ fun SaveImageButton(
           color = Gray400,
           fontFamily = pretendard,
           fontWeight = FontWeight.W600,
-          fontSize = 16.sp.nonScaleSp,
-          letterSpacing = -(0.32).sp.nonScaleSp,
+          fontSize = 16.sp,
+          letterSpacing = -(0.32).sp,
         )
       }
     }

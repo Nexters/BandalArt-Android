@@ -7,7 +7,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.android.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.android.core.ui.ComponentPreview
-import com.nexters.bandalart.android.core.ui.nonScaleSp
 
 @Composable
 fun EmojiText(
@@ -18,7 +17,7 @@ fun EmojiText(
   Text(
     text = emojiText ?: "",
     modifier = modifier,
-    fontSize = fontSize.nonScaleSp,
+    fontSize = fontSize,
   )
 }
 
