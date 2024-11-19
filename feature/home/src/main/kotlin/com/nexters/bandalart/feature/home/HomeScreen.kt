@@ -56,7 +56,8 @@ import com.nexters.bandalart.core.ui.R
 private const val SnackbarDuration = 1000L
 
 // TODO Share 로직 변경 (드로이드카이기 방식으로)
-// TODO createBandalart 로직 쪽 재확인
+// TODO 서브셀을 지울 때 진짜 지우면 안됨 빈 값으로 초기화 하는게 맞을듯, 그 하위 셀들도 마찬가지
+// TODO 현재 테스크 셀 들을 전부 완료 했을 때, 서브셀이 완료되지 않고 있는 듯
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String) -> Unit,
