@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.Gray100
+import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.MainColor
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
@@ -57,7 +57,7 @@ fun BandalartChart(
                     modifier
                         .layoutId(stringResource(R.string.home_layout_id, index + 1))
                         .clip(RoundedCornerShape(12.dp))
-                        .background(color = Gray100),
+                        .background(color = Gray300),
                     content = {
                         BandalartCellGrid(
                             bandalartId = bandalartId,

@@ -24,7 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.Gray100
+import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.MainColor
 import com.nexters.bandalart.core.ui.ComponentPreview
 
@@ -65,7 +65,7 @@ fun CompletionRatioProgressBar(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(5.dp))
-                    .background(Gray100),
+                    .background(Gray200),
             )
             // for the progress of the ProgressBar
             Box(

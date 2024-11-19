@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray500
+import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.ui.ComponentPreview
@@ -77,7 +77,7 @@ fun BandalartCell(
         isMainCell -> themeColor.mainColor.toColor()
         cellInfo.isSubCell and cellData.isCompleted -> themeColor.subColor.toColor().copy(alpha = 0.6f)
         cellInfo.isSubCell and !cellData.isCompleted -> themeColor.subColor.toColor()
-        cellData.isCompleted -> Gray200
+        cellData.isCompleted -> Gray400
         else -> White
     }
     Box(
@@ -158,7 +158,7 @@ fun BandalartCell(
             }
         } else {
             // 테스크
-            val cellTextColor = if (cellData.isCompleted) Gray400 else Gray900
+            val cellTextColor = if (cellData.isCompleted) Gray600 else Gray900
             val fontWeight = FontWeight.W500
 
             // 테스크가 비어있는 경우
