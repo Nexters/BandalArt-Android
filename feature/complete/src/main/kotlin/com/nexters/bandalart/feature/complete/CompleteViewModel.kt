@@ -7,6 +7,9 @@ import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.feature.complete.navigation.BANDALART_ID
 import com.nexters.bandalart.feature.complete.navigation.BANDALART_PROFILE_EMOJI
 import com.nexters.bandalart.feature.complete.navigation.BANDALART_TITLE
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,25 +19,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-/**
- * CompleteUiState
- *
- * @param id 반다라트 고유 id
- * @param title 반다라트 제목
- * @param profileEmoji 반다라트 프로필 이모지
- * @param shareUrl 공유 링크
- */
-data class CompleteUiState(
-    val id: Long = 0L,
-    val title: String = "",
-    val profileEmoji: String = "",
-    val shareUrl: String = "",
-)
-
-sealed interface CompleteUiEvent {
-    data object NavigateToHome : CompleteUiEvent
-}
 
 @HiltViewModel
 class CompleteViewModel @Inject constructor(
@@ -61,6 +45,13 @@ class CompleteViewModel @Inject constructor(
         }
     }
 
+    fun onAction(action: CompleteUiAction) {
+        when (action) {
+            is CompleteUiAction.OnShareButtonClick -> shareBandalart()
+            is CompleteUiAction.OnBackButtonClick -> navigateBack()
+        }
+    }
+
     private fun initComplete() {
         _uiState.update {
             it.copy(
@@ -71,11 +62,11 @@ class CompleteViewModel @Inject constructor(
         }
     }
 
-    fun shareBandalart() {}
+    private fun shareBandalart() {}
 
-    fun navigateToHome() {
+    private fun navigateBack() {
         viewModelScope.launch {
-            _uiEvent.send(CompleteUiEvent.NavigateToHome)
+            _uiEvent.send(CompleteUiEvent.NavigateBack)
         }
     }
 }

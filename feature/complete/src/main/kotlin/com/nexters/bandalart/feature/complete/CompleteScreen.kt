@@ -39,6 +39,9 @@ import com.nexters.bandalart.core.ui.component.EmojiText
 import com.nexters.bandalart.core.ui.component.TitleText
 import com.nexters.bandalart.feature.complete.ui.CompleteBandalart
 import com.nexters.bandalart.feature.complete.ui.CompleteTopBar
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 
 // TODO Share 로직 변경 (드로이드카이기 방식으로), 어떻게 구현 해야 할지 고민
 @Composable
@@ -52,16 +55,18 @@ internal fun CompleteRoute(
 
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {
-            is CompleteUiEvent.NavigateToHome -> {
+            is CompleteUiEvent.NavigateBack -> {
                 onNavigateBack()
+            }
+            is CompleteUiEvent.ShareBandalart -> {
+                // 홈 화면에서 완료된 반타라트 비트맵 들고 만들고, 완료 화면에서 공유하는식으로 구현하는건 어떨까?
             }
         }
     }
 
     CompleteScreen(
         uiState = uiState,
-        navigateToHome = viewModel::navigateToHome,
-        shareBandalart = viewModel::shareBandalart,
+        onAction = viewModel::onAction,
         modifier = modifier,
     )
 }
@@ -69,8 +74,7 @@ internal fun CompleteRoute(
 @Composable
 internal fun CompleteScreen(
     uiState: CompleteUiState,
-    navigateToHome: () -> Unit,
-    shareBandalart: () -> Unit,
+    onAction: (CompleteUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -114,7 +118,7 @@ internal fun CompleteScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    CompleteTopBar(onNavigateBack = navigateToHome)
+                    CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
                     TitleText(text = context.getString(R.string.complete_title))
                     Spacer(modifier = Modifier.height(32.dp))
                     EmojiText(emojiText = "🥳", fontSize = 100.sp)
@@ -128,7 +132,7 @@ internal fun CompleteScreen(
                     // MVP 제외
                     // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
                     BandalartButton(
-                        onClick = shareBandalart,
+                        onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
                         text = context.getString(R.string.complete_share),
                         modifier = Modifier
                             .width(328.dp)
@@ -148,7 +152,7 @@ internal fun CompleteScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    CompleteTopBar(onNavigateBack = navigateToHome)
+                    CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
                     Spacer(modifier = Modifier.height(40.dp))
                     TitleText(text = context.getString(R.string.complete_title))
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -160,7 +164,7 @@ internal fun CompleteScreen(
                         // TODO MVP 제외, 이번에 추가해도 좋을듯
                         // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
                         BandalartButton(
-                            onClick = shareBandalart,
+                            onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
                             text = context.getString(R.string.complete_share),
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -185,8 +189,7 @@ private fun CompleteScreenPreview() {
                 profileEmoji = "😎",
                 shareUrl = "",
             ),
-            navigateToHome = {},
-            shareBandalart = {},
+            onAction = {},
         )
     }
 }
