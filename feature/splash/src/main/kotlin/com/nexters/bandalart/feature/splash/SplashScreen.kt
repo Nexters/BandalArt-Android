@@ -16,13 +16,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
-import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.AppTitle
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
-import com.nexters.bandalart.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
+import com.nexters.bandalart.core.navigation.Route
+import com.nexters.bandalart.core.ui.DevicePreview
+import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.core.ui.component.AppTitle
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
@@ -36,14 +36,14 @@ internal fun SplashRoute(
         when (event) {
             is SplashUiEvent.NavigateToOnBoarding -> {
                 val options = NavOptions.Builder()
-                    .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
+                    .setPopUpTo(Route.Splash, inclusive = true)
                     .build()
                 navigateToOnBoarding(options)
             }
 
             is SplashUiEvent.NavigateToHome -> {
                 val options = NavOptions.Builder()
-                    .setPopUpTo(SPLASH_NAVIGATION_ROUTE, inclusive = true)
+                    .setPopUpTo(Route.Splash, inclusive = true)
                     .build()
                 navigateToHome(options)
             }

@@ -45,11 +45,11 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
-import com.nexters.bandalart.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -63,7 +63,7 @@ internal fun OnBoardingRoute(
         when (event) {
             is OnBoardingUiEvent.NavigateToHome -> {
                 val options = NavOptions.Builder()
-                    .setPopUpTo(ONBOARDING_NAVIGATION_ROUTE, inclusive = true)
+                    .setPopUpTo(Route.Onboarding, inclusive = true)
                     .build()
                 navigateToHome(options)
             }

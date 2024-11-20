@@ -3,10 +3,9 @@ package com.nexters.bandalart.feature.complete
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
-import com.nexters.bandalart.feature.complete.navigation.BANDALART_ID
-import com.nexters.bandalart.feature.complete.navigation.BANDALART_PROFILE_EMOJI
-import com.nexters.bandalart.feature.complete.navigation.BANDALART_TITLE
+import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
@@ -25,9 +24,9 @@ class CompleteViewModel @Inject constructor(
     private val bandalartRepository: BandalartRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val id = savedStateHandle[BANDALART_ID] ?: 0L
-    private val title = savedStateHandle[BANDALART_TITLE] ?: ""
-    private val profileEmoji = savedStateHandle[BANDALART_PROFILE_EMOJI] ?: ""
+    private val id = savedStateHandle.toRoute<Route.Complete>().bandalartId
+    private val title = savedStateHandle.toRoute<Route.Complete>().bandalartTitle
+    private val profileEmoji = savedStateHandle.toRoute<Route.Complete>().bandalartProfileEmoji ?: ""
 
     private val _uiState = MutableStateFlow(CompleteUiState())
     val uiState: StateFlow<CompleteUiState> = this._uiState.asStateFlow()

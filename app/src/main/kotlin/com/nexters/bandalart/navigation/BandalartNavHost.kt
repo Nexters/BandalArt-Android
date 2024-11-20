@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.feature.complete.navigation.completeScreen
 import com.nexters.bandalart.feature.complete.navigation.navigateToComplete
 import com.nexters.bandalart.feature.home.navigation.homeScreen
 import com.nexters.bandalart.feature.home.navigation.navigateToHome
 import com.nexters.bandalart.feature.onboarding.navigation.navigateToOnBoarding
 import com.nexters.bandalart.feature.onboarding.navigation.onBoardingScreen
-import com.nexters.bandalart.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
 import com.nexters.bandalart.feature.splash.navigation.splashScreen
 
 // TODO Type Safe Navigation migration
@@ -24,7 +24,7 @@ fun BandalartNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = SPLASH_NAVIGATION_ROUTE,
+        startDestination = Route.Splash,
     ) {
         splashScreen(
             navigateToOnBoarding = navController::navigateToOnBoarding,

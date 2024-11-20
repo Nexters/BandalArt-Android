@@ -13,5 +13,9 @@ sealed interface Route {
     data object Home: Route
 
     @Serializable
-    data object Complete: Route
+    data class Complete(
+        val bandalartId: Long,
+        val bandalartTitle: String,
+        val bandalartProfileEmoji: String?,
+    ): Route
 }

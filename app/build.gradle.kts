@@ -57,6 +57,8 @@ dependencies {
         projects.core.network,
         projects.core.ui,
         projects.core.common,
+        projects.core.navigation,
+
         projects.feature.complete,
         projects.feature.home,
         projects.feature.onboarding,
