@@ -48,7 +48,10 @@ class HomeViewModel @Inject constructor(
         when (action) {
             is HomeUiAction.OnCreateClick -> createBandalart()
             is HomeUiAction.OnListClick -> toggleBandalartListBottomSheet(true)
-            is HomeUiAction.OnDeleteClick -> deleteBandalart(action.bandalartId)
+            is HomeUiAction.OnDeleteClick -> {
+                toggleBandalartDeleteAlertDialog(true)
+                toggleDropDownMenu(false)
+            }
             is HomeUiAction.UpdateEmojiClick -> updateBandalartEmoji(
                 action.bandalartId,
                 action.cellId,
@@ -64,14 +67,13 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeUiAction.OnShareButtonClick -> updateShareState()
-            is HomeUiAction.OnDropDownMenuClick -> toggleDropDownMenu(true)
-            is HomeUiAction.OpenDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(true)
-            is HomeUiAction.OnEmojiBoxClick -> toggleEmojiBottomSheet(true)
-            is HomeUiAction.OpenCellBottomSheet -> toggleCellBottomSheet(true)
+            is HomeUiAction.ToggleDropDownMenu -> toggleDropDownMenu(action.flag)
+            is HomeUiAction.ToggleDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(action.flag)
+            is HomeUiAction.ToggleEmojiBottomSheet -> toggleEmojiBottomSheet(action.flag)
+            is HomeUiAction.ToggleCellBottomSheet -> toggleCellBottomSheet(action.flag)
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)
-            is HomeUiAction.OpenHomeListBottomSheet -> toggleBandalartListBottomSheet(true)
-            is HomeUiAction.NavigateToComplete -> {}
+            is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
         }
     }
 
@@ -293,11 +295,11 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isDropDownMenuOpened = flag) }
     }
 
-    fun toggleBandalartDeleteAlertDialog(flag: Boolean) {
+    private fun toggleBandalartDeleteAlertDialog(flag: Boolean) {
         _uiState.update { it.copy(isBandalartDeleteAlertDialogOpened = flag) }
     }
 
-    fun toggleEmojiBottomSheet(flag: Boolean) {
+    private fun toggleEmojiBottomSheet(flag: Boolean) {
         _uiState.update { it.copy(isEmojiBottomSheetOpened = flag) }
     }
 

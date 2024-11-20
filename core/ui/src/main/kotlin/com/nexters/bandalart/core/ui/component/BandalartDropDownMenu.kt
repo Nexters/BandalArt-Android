@@ -33,8 +33,8 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartDropDownMenu(
-    toggleDropDownMenu: (Boolean) -> Unit,
     isDropDownMenuOpened: Boolean,
+    toggleDropDownMenu: (Boolean) -> Unit,
     onDeleteClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

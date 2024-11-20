@@ -52,9 +52,6 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 fun HomeHeader(
     bandalartDetailData: BandalartDetailUiModel,
     isDropDownMenuOpened: Boolean,
-    toggleDropDownMenu: (Boolean) -> Unit,
-    toggleBandalartDeleteAlertDialog: (Boolean) -> Unit,
-    toggleCellBottomSheet: (Boolean) -> Unit,
     onAction: (HomeUiAction) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -71,7 +68,7 @@ fun HomeHeader(
                             .width(52.dp)
                             .aspectRatio(1f)
                             .background(Gray100)
-                            .clickable { onAction(HomeUiAction.OnEmojiBoxClick) },
+                            .clickable { onAction(HomeUiAction.ToggleEmojiBottomSheet(true)) },
                         contentAlignment = Alignment.Center,
                     ) {
                         if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
@@ -112,7 +109,7 @@ fun HomeHeader(
                     fontWeight = FontWeight.W700,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .clickable { toggleCellBottomSheet(true) },
+                        .clickable { onAction(HomeUiAction.ToggleCellBottomSheet(true)) },
                     letterSpacing = (-0.4).sp,
                 )
                 Image(
@@ -122,15 +119,12 @@ fun HomeHeader(
                     contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable(onClick = { toggleDropDownMenu(true) }),
+                        .clickable(onClick = { onAction(HomeUiAction.ToggleDropDownMenu(true)) }),
                 )
                 BandalartDropDownMenu(
-                    toggleDropDownMenu = toggleDropDownMenu,
+                    toggleDropDownMenu = { flag -> onAction(HomeUiAction.ToggleDropDownMenu(flag)) },
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onDeleteClicked = {
-                        toggleBandalartDeleteAlertDialog(true)
-                        toggleDropDownMenu(false)
-                    },
+                    onDeleteClicked = { onAction(HomeUiAction.OnDeleteClick)},
                 )
             }
         }
@@ -208,9 +202,6 @@ private fun HomeHeaderPreview() {
         HomeHeader(
             bandalartDetailData = dummyBandalartDetailData,
             isDropDownMenuOpened = false,
-            toggleDropDownMenu = {},
-            toggleBandalartDeleteAlertDialog = {},
-            toggleCellBottomSheet = {},
         )
     }
 }
