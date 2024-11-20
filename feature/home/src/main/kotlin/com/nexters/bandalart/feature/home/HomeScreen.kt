@@ -1,8 +1,5 @@
-@file:SuppressLint("StringFormatInvalid")
-
 package com.nexters.bandalart.feature.home
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -38,7 +35,6 @@ import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
@@ -64,6 +60,7 @@ import kotlinx.coroutines.launch
 
 private const val SnackbarDuration = 1000L
 
+// TODO 헤더와 반다라트 변경사항 동기화 필요(title 을 변경하면 Color 가 초기화되는 문제 해결)
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String) -> Unit,
