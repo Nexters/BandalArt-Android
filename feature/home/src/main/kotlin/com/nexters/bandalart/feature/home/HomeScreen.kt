@@ -67,7 +67,6 @@ import kotlinx.coroutines.launch
 private const val SnackbarDuration = 1000L
 
 // TODO 하위 셀을 달성했을 때, 달성율이 갱신되지 않는 문제 해결
-// TODO 현재 테스크 셀 들을 전부 완료 했을 때, 서브셀이 완료되지 않고 있는 듯
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String) -> Unit,

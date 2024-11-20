@@ -186,6 +186,9 @@ interface BandalartDao {
             isCompleted = updateDto.isCompleted ?: originalCell.isCompleted,
         )
         updateCell(updatedCell)
+
+        // 태스크 셀이 업데이트되면 전체 완료 상태 업데이트
+        updateCompletionStatus(updatedCell.bandalartId)
     }
 
     /** 셀의 이모지 업데이트 */
