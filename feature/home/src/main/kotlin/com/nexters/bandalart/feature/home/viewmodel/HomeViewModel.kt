@@ -282,7 +282,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateBandalartEmoji(
+    private fun updateBandalartEmoji(
         bandalartId: Long,
         cellId: Long,
         updateBandalartEmojiModel: com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel,
@@ -296,7 +296,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isShared = true) }
     }
 
-    fun shareBandalart(bitmap: ImageBitmap) {
+    private fun shareBandalart(bitmap: ImageBitmap) {
         viewModelScope.launch {
             _uiState.update { it.copy(isShared = false) }
             _uiEvent.send(HomeUiEvent.ShareBandalart(bitmap))
@@ -315,7 +315,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isEmojiBottomSheetOpened = flag) }
     }
 
-    fun toggleCellBottomSheet(flag: Boolean) {
+    private fun toggleCellBottomSheet(flag: Boolean) {
         _uiState.update { it.copy(isCellBottomSheetOpened = flag) }
     }
 
@@ -327,7 +327,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isShowSkeleton = flag) }
     }
 
-    fun toggleBandalartListBottomSheet(flag: Boolean) {
+    private fun toggleBandalartListBottomSheet(flag: Boolean) {
         _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
     }
 

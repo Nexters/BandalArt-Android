@@ -31,6 +31,7 @@ include(
     ":core:network",
     ":core:ui",
     ":core:common",
+    ":core:navigation",
 
     ":feature:complete",
     ":feature:home",
