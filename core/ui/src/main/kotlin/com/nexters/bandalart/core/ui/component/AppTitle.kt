@@ -6,14 +6,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.core.common.extension.getCurrentLocale
+import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.common.extension.getCurrentLocale
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import java.util.Locale
 
 @Composable
@@ -78,7 +79,7 @@ private fun AppTitlePreview() {
 }
 
 
-@ComponentPreview
+@Preview(locale = "ko-rKR", showBackground = true)
 @Composable
 private fun AppKoreanTitlePreview() {
     BandalartTheme {
@@ -86,7 +87,7 @@ private fun AppKoreanTitlePreview() {
     }
 }
 
-@ComponentPreview
+@Preview(locale = "en-rUS", showBackground = true)
 @Composable
 private fun AppEnglishTitlePreview() {
     BandalartTheme {
