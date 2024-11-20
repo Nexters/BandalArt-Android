@@ -104,6 +104,8 @@ import java.time.LocalDateTime
 import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
+// TODO onResult 지우고 싶다.
+// TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
@@ -115,7 +117,6 @@ fun BandalartBottomSheet(
         bottomSheetState: Boolean,
         bottomSheetDataChangedState: Boolean,
     ) -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -143,7 +144,6 @@ fun BandalartBottomSheet(
         updateBandalartMainCell = viewModel::updateBandalartMainCell,
         updateBandalartSubCell = viewModel::updateBandalartSubCell,
         updateBandalartTaskCell = viewModel::updateBandalartTaskCell,
-        modifier = modifier,
     )
 }
 
