@@ -5,19 +5,13 @@ val dummyBandalartChartData = BandalartCellUiModel(
     title = "넥스터즈 1등하기",
     description = null,
     isCompleted = false,
-    completionRatio = 65,
     parentId = null,
-    mainColor = "#3FFFBA",
-    subColor = "#111827",
     children = listOf(
         BandalartCellUiModel(
             id = 1L,
             title = "iOS 출시",
             description = null,
             isCompleted = false,
-            completionRatio = 65,
-            mainColor = "#3FFFBA",
-            subColor = "#111827",
             parentId = 0L,
             children = listOf(
                 BandalartCellUiModel(
@@ -25,9 +19,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "개발자 계정 만들기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 1L,
                 ),
                 BandalartCellUiModel(
@@ -35,9 +26,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "MVP 개발",
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 1L,
                 ),
                 BandalartCellUiModel(
@@ -45,9 +33,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = null,
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 1L,
                 ),
                 BandalartCellUiModel(
@@ -55,9 +40,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "코딩 컨벤션 정하기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 1L,
                 ),
                 BandalartCellUiModel(
@@ -65,9 +47,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "1일 1커밋",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 1L,
                 ),
             ),
@@ -77,9 +56,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
             title = "Android 출시",
             description = null,
             isCompleted = true,
-            completionRatio = 0,
-            mainColor = "#3FFFBA",
-            subColor = "#111827",
             parentId = 0L,
             children = listOf(
                 BandalartCellUiModel(
@@ -87,9 +63,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "매일 밤새기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 2L,
                 ),
                 BandalartCellUiModel(
@@ -97,9 +70,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "개발자 계정 만들기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 2L,
                 ),
                 BandalartCellUiModel(
@@ -107,9 +77,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "MVP 개발",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 2L,
                 ),
                 BandalartCellUiModel(
@@ -117,9 +84,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "코딩 컨벤션 정하기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 2L,
                 ),
                 BandalartCellUiModel(
@@ -127,9 +91,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "하나라도 더 만들기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 2L,
                 ),
             ),
@@ -139,9 +100,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
             title = "PM 말듣기",
             description = null,
             isCompleted = false,
-            completionRatio = 0,
-            mainColor = "#3FFFBA",
-            subColor = "#111827",
             parentId = 0L,
             children = listOf(
                 BandalartCellUiModel(
@@ -149,7 +107,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "화식",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
                     parentId = 3L,
                 ),
                 BandalartCellUiModel(
@@ -157,9 +114,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "클라이밍",
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 3L,
                 ),
                 BandalartCellUiModel(
@@ -167,9 +121,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "카페",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 3L,
                 ),
                 BandalartCellUiModel(
@@ -177,9 +128,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "산책",
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 3L,
                 ),
                 BandalartCellUiModel(
@@ -187,9 +135,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = null,
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 3L,
                 ),
             ),
@@ -199,9 +144,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
             title = "넥나잇 준비",
             description = null,
             isCompleted = false,
-            completionRatio = 0,
-            mainColor = "#3FFFBA",
-            subColor = "#111827",
             parentId = 0L,
             children = listOf(
                 BandalartCellUiModel(
@@ -209,9 +151,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "세면도구 챙기기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 4L,
                 ),
                 BandalartCellUiModel(
@@ -219,9 +158,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "라꾸라꾸 구매",
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 4L,
                 ),
                 BandalartCellUiModel(
@@ -229,9 +165,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "노트북 충전기 챙기기",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 4L,
                 ),
                 BandalartCellUiModel(
@@ -239,9 +172,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "담뇨 챙기기",
                     description = null,
                     isCompleted = false,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 4L,
                 ),
                 BandalartCellUiModel(
@@ -249,9 +179,6 @@ val dummyBandalartChartData = BandalartCellUiModel(
                     title = "커피 준비",
                     description = null,
                     isCompleted = true,
-                    completionRatio = 0,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                     parentId = 4L,
                 ),
             ),

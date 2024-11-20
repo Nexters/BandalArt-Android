@@ -6,10 +6,6 @@ data class BandalartCellUiModel(
     val description: String? = null,
     val dueDate: String? = null,
     val isCompleted: Boolean = false,
-    val completionRatio: Int = 0,
-    val profileEmoji: String? = "",
-    val mainColor: String? = "",
-    val subColor: String? = "",
     val parentId: Long? = 0L,
     val children: List<BandalartCellUiModel> = emptyList()
 ) {
@@ -19,10 +15,6 @@ data class BandalartCellUiModel(
         description = description,
         dueDate = dueDate,
         isCompleted = isCompleted,
-        completionRatio = completionRatio,
-        profileEmoji = profileEmoji,
-        mainColor = mainColor,
-        subColor = subColor,
         parentId = parentId,
         children = children
     )

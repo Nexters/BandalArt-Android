@@ -13,7 +13,6 @@ import com.nexters.bandalart.feature.onboarding.navigation.navigateToOnBoarding
 import com.nexters.bandalart.feature.onboarding.navigation.onBoardingScreen
 import com.nexters.bandalart.feature.splash.navigation.splashScreen
 
-// TODO Type Safe Navigation migration
 @Composable
 fun BandalartNavHost(
     modifier: Modifier = Modifier,

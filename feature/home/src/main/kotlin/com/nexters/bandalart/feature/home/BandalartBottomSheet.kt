@@ -295,14 +295,14 @@ fun BandalartBottomSheetContent(
                                             },
                                         contentAlignment = Alignment.Center,
                                     ) {
-                                        if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
+                                        if (uiState.bandalartData.profileEmoji.isNullOrEmpty()) {
                                             Image(
                                                 imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
                                                 contentDescription = stringResource(R.string.empty_emoji_description),
                                             )
                                         } else {
                                             Text(
-                                                text = uiState.cellData.profileEmoji,
+                                                text = uiState.bandalartData.profileEmoji,
                                                 fontSize = 22.sp,
                                             )
                                         }
@@ -362,7 +362,7 @@ fun BandalartBottomSheetContent(
                                             easing = LinearOutSlowInEasing,
                                         ),
                                     ),
-                                currentEmoji = uiState.cellData.profileEmoji,
+                                currentEmoji = uiState.bandalartData.profileEmoji,
                                 isBottomSheet = false,
                                 onResult = { currentEmojiResult, openEmojiPushResult ->
                                     if (currentEmojiResult != null) {
@@ -379,8 +379,8 @@ fun BandalartBottomSheetContent(
                         BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
                         BandalartColorPicker(
                             initColor = ThemeColor(
-                                mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
-                                subColor = uiState.cellData.subColor ?: allColor[0].subColor,
+                                mainColor = uiState.bandalartData.mainColor,
+                                subColor = uiState.bandalartData.subColor,
                             ),
                             onResult = {
                                 colorChanged(
@@ -523,9 +523,9 @@ fun BandalartBottomSheetContent(
                                                 title = uiState.cellData.title?.trim(),
                                                 description = uiState.cellData.description,
                                                 dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                                                profileEmoji = uiState.cellData.profileEmoji,
-                                                mainColor = uiState.cellData.mainColor ?: allColor[0].mainColor,
-                                                subColor = uiState.cellData.subColor ?: allColor[0].subColor,
+                                                profileEmoji = uiState.bandalartData.profileEmoji,
+                                                mainColor = uiState.bandalartData.mainColor,
+                                                subColor = uiState.bandalartData.subColor,
                                             ),
                                         )
                                     }

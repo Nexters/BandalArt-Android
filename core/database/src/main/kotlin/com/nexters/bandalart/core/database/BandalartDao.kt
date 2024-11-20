@@ -112,7 +112,7 @@ interface BandalartDao {
     @Update
     suspend fun updateBandalart(bandalart: BandalartDBEntity)
 
-    // 업데이트 관련 함수들 - 셀
+    // Update - 셀
     /** 메인 셀 정보 업데이트 */
     @Transaction
     suspend fun updateMainCellWithDto(
@@ -120,9 +120,10 @@ interface BandalartDao {
         updateDto: UpdateBandalartMainCellDto,
     ) {
         val bandalartCell = getBandalartCell(cellId)
+        val currentBandalart = getBandalart(bandalartCell.cell.bandalartId)
 
         updateBandalart(
-            getBandalart(bandalartCell.cell.bandalartId).copy(
+            currentBandalart.copy(
                 title = updateDto.title,
                 description = updateDto.description,
                 dueDate = updateDto.dueDate,
@@ -131,6 +132,12 @@ interface BandalartDao {
                 subColor = updateDto.subColor,
             )
         )
+
+        updateCell(bandalartCell.cell.copy(
+            title = updateDto.title,
+            description = updateDto.description,
+            dueDate = updateDto.dueDate
+        ))
     }
 
     /** 서브 셀 정보 업데이트 */
@@ -148,7 +155,7 @@ interface BandalartDao {
         updateCompletionStatus(cell.bandalartId)
     }
 
-    /** 작업 셀 정보 업데이트 */
+    /** 태스크 셀 정보 업데이트 */
     @Transaction
     suspend fun updateTaskCellWithDto(
         cellId: Long,

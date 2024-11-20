@@ -77,7 +77,17 @@ class BottomSheetViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel.toEntity())
-            _uiState.update { it.copy(isCellUpdated = true) }
+            bandalartRepository.getBandalart(bandalartId).let { bandalart ->
+                _uiState.update {
+                    it.copy(
+                        bandalartData = it.bandalartData.copy(
+                            mainColor = bandalart.mainColor,
+                            subColor = bandalart.subColor
+                        ),
+                        isCellUpdated = true
+                    )
+                }
+            }
         }
     }
 
@@ -123,7 +133,7 @@ class BottomSheetViewModel @Inject constructor(
 
     fun emojiSelected(profileEmoji: String?) {
         _uiState.update {
-            it.copy(cellData = it.cellData.copy(profileEmoji = profileEmoji))
+            it.copy(bandalartData = it.bandalartData.copy(profileEmoji = profileEmoji))
         }
     }
 
@@ -134,7 +144,7 @@ class BottomSheetViewModel @Inject constructor(
     fun colorChanged(mainColor: String, subColor: String) {
         _uiState.update {
             it.copy(
-                cellData = it.cellData.copy(
+                bandalartData = it.bandalartData.copy(
                     mainColor = mainColor,
                     subColor = subColor,
                 ),

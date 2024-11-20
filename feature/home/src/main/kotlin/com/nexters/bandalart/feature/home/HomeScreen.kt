@@ -176,7 +176,7 @@ internal fun HomeScreen(
                 BandalartEmojiBottomSheet(
                     bandalartId = bandalart.id,
                     cellId = cell.id,
-                    currentEmoji = cell.profileEmoji,
+                    currentEmoji = bandalart.profileEmoji,
                     onEmojiSelected = { bandalartId, cellId, emoji -> onHomeUiAction(HomeUiAction.OnEmojiSelected(bandalartId, cellId, emoji)) },
                     onResult = { bottomSheetState, bottomSheetDataChangedState ->
                         onHomeUiAction(HomeUiAction.ToggleEmojiBottomSheet(bottomSheetState))
