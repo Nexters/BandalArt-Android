@@ -18,7 +18,7 @@ fun BandalartEmojiBottomSheet(
     bandalartId: Long,
     cellId: Long,
     currentEmoji: String?,
-    updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
+    onEmojiSelected: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
     onResult: (
         bottomSheetState: Boolean,
         bottomSheetDataChangedState: Boolean,
@@ -41,7 +41,7 @@ fun BandalartEmojiBottomSheet(
                 currentEmoji = currentEmoji,
                 isBottomSheet = true,
                 onResult = { currentEmojiResult, openEmojiBottomSheetResult ->
-                    updateBandalartEmoji(
+                    onEmojiSelected(
                         bandalartId,
                         cellId,
                         UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
@@ -62,7 +62,7 @@ private fun BandalartEmojiBottomSheetPreview() {
             bandalartId = 0L,
             cellId = 0L,
             currentEmoji = "😎",
-            updateBandalartEmoji = { _, _, _ -> },
+            onEmojiSelected = { _, _, _ -> },
             onResult = { _, _ -> },
             onBottomSheetUiAction = {},
         )

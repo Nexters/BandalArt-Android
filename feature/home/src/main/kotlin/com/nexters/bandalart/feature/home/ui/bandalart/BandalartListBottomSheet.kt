@@ -61,8 +61,8 @@ fun BandalartListBottomSheet(
     getBandalartDetail: (Long) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
     showSkeletonChanged: (Boolean) -> Unit,
-    onCancelClicked: () -> Unit,
-    createBandalart: () -> Unit,
+    onDismissRequest: () -> Unit,
+    onAddClick: () -> Unit,
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,7 +73,7 @@ fun BandalartListBottomSheet(
         modifier = Modifier
             .wrapContentSize()
             .statusBarsPadding(),
-        onDismissRequest = onCancelClicked,
+        onDismissRequest = onDismissRequest,
         sheetState = bottomSheetState,
         dragHandle = null,
     ) {
@@ -103,7 +103,7 @@ fun BandalartListBottomSheet(
                         .aspectRatio(1f),
                     onClick = {
                         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                            if (!bottomSheetState.isVisible) onCancelClicked()
+                            if (!bottomSheetState.isVisible) onDismissRequest()
                         }
                     },
                 ) {
@@ -135,7 +135,7 @@ fun BandalartListBottomSheet(
                             showSkeletonChanged(true)
                             getBandalartDetail(key)
                         },
-                        onCancelClicked = onCancelClicked,
+                        onCancelClicked = onDismissRequest,
                     )
                 }
                 item {
@@ -146,7 +146,7 @@ fun BandalartListBottomSheet(
                                 .weight(1f)
                                 .height(56.dp)
                                 .padding(horizontal = 24.dp),
-                            onClick = createBandalart,
+                            onClick = onAddClick,
                             colors = ButtonDefaults.buttonColors(containerColor = Gray200),
                         ) {
                             Row {
@@ -182,8 +182,8 @@ private fun BandalartListBottomSheetPreview() {
             getBandalartDetail = {},
             setRecentBandalartId = {},
             showSkeletonChanged = {},
-            onCancelClicked = {},
-            createBandalart = {},
+            onDismissRequest = {},
+            onAddClick = {},
             onBottomSheetUiAction = {},
         )
     }

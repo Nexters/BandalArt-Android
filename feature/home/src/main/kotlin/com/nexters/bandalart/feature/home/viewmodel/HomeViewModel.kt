@@ -52,11 +52,21 @@ class HomeViewModel @Inject constructor(
                 toggleBandalartDeleteAlertDialog(true)
                 toggleDropDownMenu(false)
             }
-            is HomeUiAction.UpdateEmojiClick -> updateBandalartEmoji(
+
+            is HomeUiAction.OnEmojiSelected -> updateBandalartEmoji(
                 action.bandalartId,
                 action.cellId,
                 action.updateBandalartEmojiModel,
             )
+
+            is HomeUiAction.OnConfirmClick -> {
+                when (action.modalType) {
+                    ModalType.CELL -> {}
+                    ModalType.DELETE_DIALOG -> _uiState.value.bandalartDetailData?.let { deleteBandalart(it.id) }
+                    else -> {}
+                }
+            }
+
             is HomeUiAction.OnCancelClick -> {
                 when (action.modalType) {
                     ModalType.CELL -> toggleCellBottomSheet(false)
@@ -67,10 +77,12 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeUiAction.OnShareButtonClick -> updateShareState()
+            is HomeUiAction.OnAddClick -> createBandalart()
             is HomeUiAction.ToggleDropDownMenu -> toggleDropDownMenu(action.flag)
             is HomeUiAction.ToggleDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(action.flag)
             is HomeUiAction.ToggleEmojiBottomSheet -> toggleEmojiBottomSheet(action.flag)
             is HomeUiAction.ToggleCellBottomSheet -> toggleCellBottomSheet(action.flag)
+            is HomeUiAction.ShareBandalart -> shareBandalart(action.bitmap)
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)
             is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
@@ -231,7 +243,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun createBandalart() {
+    private fun createBandalart() {
         viewModelScope.launch {
             if (_uiState.value.bandalartList.size + 1 > 5) {
                 _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
@@ -255,7 +267,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun deleteBandalart(bandalartId: Long) {
+    private fun deleteBandalart(bandalartId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isShowSkeleton = true) }
 

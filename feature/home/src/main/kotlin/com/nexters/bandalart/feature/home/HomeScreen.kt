@@ -120,13 +120,9 @@ internal fun HomeRoute(
         onBottomSheetUiAction = bottomSheetViewModel::onAction,
         getBandalartList = homeViewModel::getBandalartList,
         getBandalartDetail = homeViewModel::getBandalartDetail,
-        createBandalart = homeViewModel::createBandalart,
-        deleteBandalart = homeViewModel::deleteBandalart,
         showSkeletonChanged = homeViewModel::updateSkeletonState,
-        updateBandalartEmoji = homeViewModel::updateBandalartEmoji,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         setRecentBandalartId = homeViewModel::setRecentBandalartId,
-        shareBandalart = homeViewModel::shareBandalart,
         modifier = modifier,
     )
 }
@@ -139,13 +135,9 @@ internal fun HomeScreen(
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     getBandalartList: (Long?) -> Unit,
     getBandalartDetail: (Long) -> Unit,
-    createBandalart: () -> Unit,
-    deleteBandalart: (Long) -> Unit,
     showSkeletonChanged: (Boolean) -> Unit,
-    updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
-    shareBandalart: (ImageBitmap) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -163,7 +155,7 @@ internal fun HomeScreen(
 
     LaunchedEffect(key1 = uiState.isShared) {
         if (uiState.isShared) {
-            shareBandalart(graphicsLayer.toImageBitmap())
+            onHomeUiAction(HomeUiAction.ShareBandalart(graphicsLayer.toImageBitmap()))
         }
     }
 
@@ -175,8 +167,8 @@ internal fun HomeScreen(
                 getBandalartDetail = getBandalartDetail,
                 setRecentBandalartId = setRecentBandalartId,
                 showSkeletonChanged = showSkeletonChanged,
-                onCancelClicked = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
-                createBandalart = createBandalart,
+                onDismissRequest = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
+                onAddClick = { onHomeUiAction(HomeUiAction.OnAddClick) },
                 onBottomSheetUiAction = onBottomSheetUiAction,
             )
         }
@@ -189,7 +181,7 @@ internal fun HomeScreen(
                     bandalartId = detailData.id,
                     cellId = cellData.id,
                     currentEmoji = cellData.profileEmoji,
-                    updateBandalartEmoji = updateBandalartEmoji,
+                    onEmojiSelected = { bandalartId, cellId, emoji -> onHomeUiAction(HomeUiAction.OnEmojiSelected(bandalartId, cellId, emoji)) },
                     onResult = { bottomSheetState, bottomSheetDataChangedState ->
                         onHomeUiAction(HomeUiAction.ToggleEmojiBottomSheet(bottomSheetState))
                         bottomSheetDataChanged(bottomSheetDataChangedState)
@@ -227,7 +219,7 @@ internal fun HomeScreen(
                     stringResource(R.string.delete_bandalart_dialog_title, detailData.title)
                 },
                 message = stringResource(R.string.delete_bandalart_dialog_message),
-                onDeleteClicked = { deleteBandalart(detailData.id) },
+                onDeleteClicked = { onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG)) },
                 onCancelClicked = { onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG)) },
             )
         }
@@ -326,13 +318,9 @@ private fun HomeScreenSingleBandalartPreview() {
             onBottomSheetUiAction = {},
             getBandalartList = {},
             getBandalartDetail = {},
-            createBandalart = {},
-            deleteBandalart = {},
             showSkeletonChanged = {},
-            updateBandalartEmoji = { _, _, _ -> },
             bottomSheetDataChanged = {},
             setRecentBandalartId = {},
-            shareBandalart = {},
         )
     }
 }
@@ -352,13 +340,9 @@ private fun HomeScreenMultipleBandalartPreview() {
             onBottomSheetUiAction = {},
             getBandalartList = {},
             getBandalartDetail = {},
-            createBandalart = {},
-            deleteBandalart = {},
             showSkeletonChanged = {},
-            updateBandalartEmoji = { _, _, _ -> },
             bottomSheetDataChanged = {},
             setRecentBandalartId = {},
-            shareBandalart = {},
         )
     }
 }
