@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,7 +37,6 @@ import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
-import com.nexters.bandalart.core.ui.component.EmojiText
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
@@ -132,8 +132,8 @@ fun BandalartEmojiPicker(
                                     },
                                 contentAlignment = Alignment.Center,
                             ) {
-                                EmojiText(
-                                    emojiText = emojiItem,
+                                Text(
+                                    text = emojiItem,
                                     fontSize = 24.sp,
                                 )
                             }

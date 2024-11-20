@@ -61,6 +61,8 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
+import kotlinx.collections.immutable.persistentListOf
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 data class SkeletonSubCell(
     val rowCnt: Int,
@@ -131,18 +133,16 @@ fun BandalartSkeletonScreen(
                                         contentAlignment = Alignment.Center,
                                     ) {
                                         Image(
-                                            imageVector = ImageVector.vectorResource(
-                                                id = com.nexters.bandalart.core.designsystem.R.drawable.ic_empty_emoji,
-                                            ),
-                                            contentDescription = stringResource(R.string.empty_emoji_descrption),
+                                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
+                                            contentDescription = stringResource(R.string.empty_emoji_description),
                                         )
                                     }
                                 }
                                 Image(
                                     imageVector = ImageVector.vectorResource(
-                                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_edit,
+                                        id = DesignR.drawable.ic_edit,
                                     ),
-                                    contentDescription = stringResource(R.string.edit_descrption),
+                                    contentDescription = stringResource(R.string.edit_description),
                                     modifier = Modifier
                                         .align(Alignment.BottomEnd)
                                         .offset(x = 4.dp, y = 4.dp),
@@ -165,10 +165,8 @@ fun BandalartSkeletonScreen(
                                     letterSpacing = (-0.4).sp,
                                 )
                                 Image(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_option,
-                                    ),
-                                    contentDescription = stringResource(R.string.option_descrption),
+                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_option),
+                                    contentDescription = stringResource(R.string.option_description),
                                     modifier = Modifier.align(Alignment.CenterEnd),
                                 )
                             }
@@ -216,10 +214,8 @@ fun BandalartSkeletonScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
-                            imageVector = ImageVector.vectorResource(
-                                id = com.nexters.bandalart.core.designsystem.R.drawable.ic_share,
-                            ),
-                            contentDescription = stringResource(R.string.share_descrption),
+                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_share),
+                            contentDescription = stringResource(R.string.share_description),
                         )
                         Text(
                             text = stringResource(R.string.home_share),
@@ -248,7 +244,7 @@ fun BandalartSkeletonChart(
         screenWidthDp - (15.dp * 2)
     }
 
-    val subCellList = listOf(
+    val subCellList = persistentListOf(
         SkeletonSubCell(2, 3, 1, 1, null),
         SkeletonSubCell(3, 2, 1, 0, null),
         SkeletonSubCell(3, 2, 1, 1, null),

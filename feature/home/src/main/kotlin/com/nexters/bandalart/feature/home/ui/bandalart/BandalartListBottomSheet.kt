@@ -109,7 +109,7 @@ fun BandalartListBottomSheet(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = stringResource(R.string.clear_descrption),
+                        contentDescription = stringResource(R.string.clear_description),
                         tint = Gray900,
                     )
                 }
@@ -152,7 +152,7 @@ fun BandalartListBottomSheet(
                             Row {
                                 Icon(
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(R.string.add_descrption),
+                                    contentDescription = stringResource(R.string.add_description),
                                     tint = Gray600,
                                     modifier = Modifier.size(20.dp),
                                 )

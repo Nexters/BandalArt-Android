@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +32,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartDeleteAlertDialog(
@@ -41,7 +42,6 @@ fun BandalartDeleteAlertDialog(
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     Dialog(onDismissRequest = { onCancelClicked() }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -53,10 +53,8 @@ fun BandalartDeleteAlertDialog(
                     .padding(top = 24.dp),
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(
-                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_delete,
-                    ),
-                    contentDescription = context.getString(R.string.delete_descrption),
+                    imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_delete),
+                    contentDescription = stringResource(R.string.delete_description),
                     modifier = Modifier
                         .height(28.dp)
                         .align(Alignment.CenterHorizontally),
@@ -106,7 +104,7 @@ fun BandalartDeleteAlertDialog(
                         ),
                     ) {
                         Text(
-                            text = context.getString(R.string.delete_bandalart_cancel),
+                            text = stringResource(R.string.delete_bandalart_cancel),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W600,
                             color = Gray900,
@@ -126,7 +124,7 @@ fun BandalartDeleteAlertDialog(
                         ),
                     ) {
                         Text(
-                            text = context.getString(R.string.delete_bandalart_delete),
+                            text = stringResource(R.string.delete_bandalart_delete),
                             color = White,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W600,

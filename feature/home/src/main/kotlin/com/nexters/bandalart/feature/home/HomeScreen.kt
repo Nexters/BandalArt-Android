@@ -42,6 +42,7 @@ import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.model.dummyBandalartDetailData
 import com.nexters.bandalart.feature.home.model.dummyBandalartList
@@ -58,6 +59,7 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
+import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -121,12 +123,12 @@ internal fun HomeRoute(
         createBandalart = homeViewModel::createBandalart,
         deleteBandalart = homeViewModel::deleteBandalart,
         showSkeletonChanged = homeViewModel::updateSkeletonState,
-        openEmojiBottomSheet = homeViewModel::toggleEmojiBottomSheet,
+        toggleEmojiBottomSheet = homeViewModel::toggleEmojiBottomSheet,
         updateBandalartEmoji = homeViewModel::updateBandalartEmoji,
-        openBandalartDeleteAlertDialog = homeViewModel::toggleBandalartDeleteAlertDialog,
-        openCellBottomSheet = homeViewModel::toggleCellBottomSheet,
+        toggleBandalartDeleteAlertDialog = homeViewModel::toggleBandalartDeleteAlertDialog,
+        toggleCellBottomSheet = homeViewModel::toggleCellBottomSheet,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
-        openBandalartListBottomSheet = homeViewModel::toggleBandalartListBottomSheet,
+        toggleBandalartListBottomSheet = homeViewModel::toggleBandalartListBottomSheet,
         setRecentBandalartId = homeViewModel::setRecentBandalartId,
         shareBandalart = homeViewModel::shareBandalart,
         modifier = modifier,
@@ -144,12 +146,12 @@ internal fun HomeScreen(
     createBandalart: () -> Unit,
     deleteBandalart: (Long) -> Unit,
     showSkeletonChanged: (Boolean) -> Unit,
-    openEmojiBottomSheet: (Boolean) -> Unit,
-    updateBandalartEmoji: (Long, Long, com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel) -> Unit,
-    openBandalartDeleteAlertDialog: (Boolean) -> Unit,
-    openCellBottomSheet: (Boolean) -> Unit,
+    toggleEmojiBottomSheet: (Boolean) -> Unit,
+    updateBandalartEmoji: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
+    toggleBandalartDeleteAlertDialog: (Boolean) -> Unit,
+    toggleCellBottomSheet: (Boolean) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
-    openBandalartListBottomSheet: (Boolean) -> Unit,
+    toggleBandalartListBottomSheet: (Boolean) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
     modifier: Modifier = Modifier,
@@ -181,7 +183,7 @@ internal fun HomeScreen(
                 getBandalartDetail = getBandalartDetail,
                 setRecentBandalartId = setRecentBandalartId,
                 showSkeletonChanged = showSkeletonChanged,
-                onCancelClicked = { openBandalartListBottomSheet(false) },
+                onCancelClicked = { toggleBandalartListBottomSheet(false) },
                 createBandalart = createBandalart,
                 onBottomSheetUiAction = onBottomSheetUiAction,
             )
@@ -197,7 +199,7 @@ internal fun HomeScreen(
                     currentEmoji = cellData.profileEmoji,
                     updateBandalartEmoji = updateBandalartEmoji,
                     onResult = { bottomSheetState, bottomSheetDataChangedState ->
-                        openEmojiBottomSheet(bottomSheetState)
+                        toggleEmojiBottomSheet(bottomSheetState)
                         bottomSheetDataChanged(bottomSheetDataChangedState)
                     },
                     onBottomSheetUiAction = onBottomSheetUiAction,
@@ -216,7 +218,7 @@ internal fun HomeScreen(
                     isBlankCell = cellData.title.isNullOrEmpty(),
                     cellData = cellData,
                     onResult = { bottomSheetState, bottomSheetDataChangedState ->
-                        openCellBottomSheet(bottomSheetState)
+                        toggleCellBottomSheet(bottomSheetState)
                         bottomSheetDataChanged(bottomSheetDataChangedState)
                     },
                 )
@@ -234,7 +236,7 @@ internal fun HomeScreen(
                 },
                 message = stringResource(R.string.delete_bandalart_dialog_message),
                 onDeleteClicked = { deleteBandalart(detailData.id) },
-                onCancelClicked = { openBandalartDeleteAlertDialog(false) },
+                onCancelClicked = { onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG)) },
             )
         }
     }
@@ -252,7 +254,7 @@ internal fun HomeScreen(
             ) {
                 HomeTopBar(
                     bandalartCount = bandalartCount,
-                    onShowBandalartList = { openBandalartListBottomSheet(true) },
+                    onListClick = { onHomeUiAction(HomeUiAction.OnListClick) },
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -269,10 +271,10 @@ internal fun HomeScreen(
                         HomeHeader(
                             bandalartDetailData = detail,
                             isDropDownMenuOpened = uiState.isDropDownMenuOpened,
-                            openDropDownMenu = { onHomeUiAction(HomeUiAction.OnDropDownMenuClick) },
-                            openEmojiBottomSheet = openEmojiBottomSheet,
-                            openBandalartDeleteAlertDialog = openBandalartDeleteAlertDialog,
-                            openCellBottomSheet = openCellBottomSheet,
+                            toggleDropDownMenu = { onHomeUiAction(HomeUiAction.OnDropDownMenuClick) },
+                            toggleBandalartDeleteAlertDialog = toggleBandalartDeleteAlertDialog,
+                            toggleCellBottomSheet = toggleCellBottomSheet,
+                            onAction = onHomeUiAction,
                         )
                     }
                     if (uiState.bandalartCellData != null && uiState.bandalartDetailData != null) {
@@ -338,12 +340,12 @@ private fun HomeScreenSingleBandalartPreview() {
             createBandalart = {},
             deleteBandalart = {},
             showSkeletonChanged = {},
-            openEmojiBottomSheet = {},
+            toggleEmojiBottomSheet = {},
             updateBandalartEmoji = { _, _, _ -> },
-            openBandalartDeleteAlertDialog = {},
-            openCellBottomSheet = {},
+            toggleBandalartDeleteAlertDialog = {},
+            toggleCellBottomSheet = {},
             bottomSheetDataChanged = {},
-            openBandalartListBottomSheet = {},
+            toggleBandalartListBottomSheet = {},
             setRecentBandalartId = {},
             shareBandalart = {},
         )
@@ -368,12 +370,12 @@ private fun HomeScreenMultipleBandalartPreview() {
             createBandalart = {},
             deleteBandalart = {},
             showSkeletonChanged = {},
-            openEmojiBottomSheet = {},
+            toggleEmojiBottomSheet = {},
             updateBandalartEmoji = { _, _, _ -> },
-            openBandalartDeleteAlertDialog = {},
-            openCellBottomSheet = {},
+            toggleBandalartDeleteAlertDialog = {},
+            toggleCellBottomSheet = {},
             bottomSheetDataChanged = {},
-            openBandalartListBottomSheet = {},
+            toggleBandalartListBottomSheet = {},
             setRecentBandalartId = {},
             shareBandalart = {},
         )

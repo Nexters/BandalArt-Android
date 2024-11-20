@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -29,15 +29,15 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartDropDownMenu(
-    openDropDownMenu: (Boolean) -> Unit,
+    toggleDropDownMenu: (Boolean) -> Unit,
     isDropDownMenuOpened: Boolean,
     onDeleteClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     MaterialTheme(
         shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
     ) {
@@ -46,13 +46,13 @@ fun BandalartDropDownMenu(
                 .wrapContentSize()
                 .background(White),
             expanded = isDropDownMenuOpened,
-            onDismissRequest = { openDropDownMenu(false) },
+            onDismissRequest = { toggleDropDownMenu(false) },
             offset = DpOffset(
                 x = (-18).dp,
                 y = 0.dp,
             ),
         ) {
-//            // TODO MVP 에서 제외, 구현해도 좋을듯
+//            // TODO MVP 에서 제외, 이번에 구현해도 좋을듯
 //            DropdownMenuItem(
 //                modifier = Modifier
 //                    .wrapContentSize()
@@ -90,16 +90,16 @@ fun BandalartDropDownMenu(
                     Row {
                         Image(
                             imageVector = ImageVector.vectorResource(
-                                id = com.nexters.bandalart.core.designsystem.R.drawable.ic_delete,
+                                id = DesignR.drawable.ic_delete,
                             ),
-                            contentDescription = context.getString(R.string.delete_descrption),
+                            contentDescription = stringResource(R.string.delete_description),
                             modifier = Modifier
                                 .height(14.dp)
                                 .align(CenterVertically),
                             colorFilter = ColorFilter.tint(Error),
                         )
                         Text(
-                            text = context.getString(R.string.dropdown_delete),
+                            text = stringResource(R.string.dropdown_delete),
                             color = Error,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.W500,
@@ -122,7 +122,7 @@ fun BandalartDropDownMenu(
 private fun BandalartDropDownMenuPreview() {
     BandalartTheme {
         BandalartDropDownMenu(
-            openDropDownMenu = {},
+            toggleDropDownMenu = {},
             isDropDownMenuOpened = true,
             onDeleteClicked = {},
         )

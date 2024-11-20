@@ -70,6 +70,7 @@ fun BandalartSkeleton(
         start = Offset.Zero,
         end = Offset(x = translateAnim.value, y = translateAnim.value),
     )
+
     BandalartSkeletonScreen(
         taskBrush = taskBrush,
         subBrush = subBrush,

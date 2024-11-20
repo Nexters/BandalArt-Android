@@ -46,20 +46,27 @@ class HomeViewModel @Inject constructor(
 
     fun onAction(action: HomeUiAction) {
         when (action) {
-            is HomeUiAction.GetHomeList -> getBandalartList(action.bandalartId)
-            is HomeUiAction.GetHomeDetail -> getBandalartDetail(action.bandalartId, action.isBandalartCompleted)
-            is HomeUiAction.CreateHome -> createBandalart()
-            is HomeUiAction.DeleteHome -> deleteBandalart(action.bandalartId)
-            is HomeUiAction.UpdateHomeEmoji -> updateBandalartEmoji(
+            is HomeUiAction.OnCreateClick -> createBandalart()
+            is HomeUiAction.OnListClick -> toggleBandalartListBottomSheet(true)
+            is HomeUiAction.OnDeleteClick -> deleteBandalart(action.bandalartId)
+            is HomeUiAction.UpdateEmojiClick -> updateBandalartEmoji(
                 action.bandalartId,
                 action.cellId,
                 action.updateBandalartEmojiModel,
             )
+            is HomeUiAction.OnCancelClick -> {
+                when (action.modalType) {
+                    ModalType.CELL -> toggleCellBottomSheet(false)
+                    ModalType.EMOJI -> toggleEmojiBottomSheet(false)
+                    ModalType.BANDALART_LIST -> toggleBandalartListBottomSheet(false)
+                    ModalType.DELETE_DIALOG -> toggleBandalartDeleteAlertDialog(false)
+                }
+            }
 
             is HomeUiAction.OnShareButtonClick -> updateShareState()
             is HomeUiAction.OnDropDownMenuClick -> toggleDropDownMenu(true)
-            is HomeUiAction.OpenHomeDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(true)
-            is HomeUiAction.OpenEmojiBottomSheet -> toggleEmojiBottomSheet(true)
+            is HomeUiAction.OpenDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(true)
+            is HomeUiAction.OnEmojiBoxClick -> toggleEmojiBottomSheet(true)
             is HomeUiAction.OpenCellBottomSheet -> toggleCellBottomSheet(true)
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)

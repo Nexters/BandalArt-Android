@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,7 +32,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.EmojiText
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun CompleteBandalart(
@@ -40,14 +40,12 @@ fun CompleteBandalart(
     title: String,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = context.getString(R.string.complete_chart),
+            text = stringResource(R.string.complete_chart),
             color = Gray400,
             fontWeight = FontWeight.W600,
             fontSize = 14.sp,
@@ -82,16 +80,14 @@ fun CompleteBandalart(
                                 .background(Gray100),
                             contentAlignment = Alignment.Center,
                         ) {
-                            if (profileEmoji == context.getString(R.string.home_default_emoji)) {
+                            if (profileEmoji == stringResource(R.string.home_default_emoji)) {
                                 Image(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_empty_emoji,
-                                    ),
-                                    contentDescription = context.getString(R.string.empty_emoji_descrption),
+                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
+                                    contentDescription = stringResource(R.string.empty_emoji_description),
                                 )
                             } else {
-                                EmojiText(
-                                    emojiText = profileEmoji,
+                                Text(
+                                    text = profileEmoji,
                                     fontSize = 22.sp,
                                 )
                             }

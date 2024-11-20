@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.common.extension.toFormatDate
+import com.nexters.bandalart.core.designsystem.R
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
@@ -43,18 +44,18 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
-import com.nexters.bandalart.core.ui.component.EmojiText
 import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartDetailData
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 
 @Composable
 fun HomeHeader(
     bandalartDetailData: BandalartDetailUiModel,
     isDropDownMenuOpened: Boolean,
-    openDropDownMenu: (Boolean) -> Unit,
-    openEmojiBottomSheet: (Boolean) -> Unit,
-    openBandalartDeleteAlertDialog: (Boolean) -> Unit,
-    openCellBottomSheet: (Boolean) -> Unit,
+    toggleDropDownMenu: (Boolean) -> Unit,
+    toggleBandalartDeleteAlertDialog: (Boolean) -> Unit,
+    toggleCellBottomSheet: (Boolean) -> Unit,
+    onAction: (HomeUiAction) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -70,19 +71,17 @@ fun HomeHeader(
                             .width(52.dp)
                             .aspectRatio(1f)
                             .background(Gray100)
-                            .clickable { openEmojiBottomSheet(true) },
+                            .clickable { onAction(HomeUiAction.OnEmojiBoxClick) },
                         contentAlignment = Alignment.Center,
                     ) {
                         if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
                             Image(
-                                imageVector = ImageVector.vectorResource(
-                                    id = com.nexters.bandalart.core.designsystem.R.drawable.ic_empty_emoji,
-                                ),
-                                contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.empty_emoji_descrption),
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_empty_emoji,),
+                                contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.empty_emoji_description),
                             )
                         } else {
-                            EmojiText(
-                                emojiText = bandalartDetailData.profileEmoji,
+                            Text(
+                                text = bandalartDetailData.profileEmoji,
                                 fontSize = 22.sp,
                             )
                         }
@@ -91,9 +90,9 @@ fun HomeHeader(
                 if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
                     Image(
                         imageVector = ImageVector.vectorResource(
-                            id = com.nexters.bandalart.core.designsystem.R.drawable.ic_edit,
+                            id = R.drawable.ic_edit,
                         ),
-                        contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.edit_descrption),
+                        contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.edit_description),
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .offset(x = 4.dp, y = 4.dp),
@@ -113,24 +112,24 @@ fun HomeHeader(
                     fontWeight = FontWeight.W700,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .clickable { openCellBottomSheet(true) },
+                        .clickable { toggleCellBottomSheet(true) },
                     letterSpacing = (-0.4).sp,
                 )
                 Image(
                     imageVector = ImageVector.vectorResource(
-                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_option,
+                        id = R.drawable.ic_option,
                     ),
-                    contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.option_descrption),
+                    contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable(onClick = { openDropDownMenu(true) }),
+                        .clickable(onClick = { toggleDropDownMenu(true) }),
                 )
                 BandalartDropDownMenu(
-                    openDropDownMenu = openDropDownMenu,
+                    toggleDropDownMenu = toggleDropDownMenu,
                     isDropDownMenuOpened = isDropDownMenuOpened,
                     onDeleteClicked = {
-                        openBandalartDeleteAlertDialog(true)
-                        openDropDownMenu(false)
+                        toggleBandalartDeleteAlertDialog(true)
+                        toggleDropDownMenu(false)
                     },
                 )
             }
@@ -177,7 +176,7 @@ fun HomeHeader(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.check_descrption),
+                            contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.check_description),
                             tint = Gray900,
                             modifier = Modifier.size(13.dp),
                         )
@@ -209,10 +208,9 @@ private fun HomeHeaderPreview() {
         HomeHeader(
             bandalartDetailData = dummyBandalartDetailData,
             isDropDownMenuOpened = false,
-            openDropDownMenu = {},
-            openEmojiBottomSheet = {},
-            openBandalartDeleteAlertDialog = {},
-            openCellBottomSheet = {},
+            toggleDropDownMenu = {},
+            toggleBandalartDeleteAlertDialog = {},
+            toggleCellBottomSheet = {},
         )
     }
 }

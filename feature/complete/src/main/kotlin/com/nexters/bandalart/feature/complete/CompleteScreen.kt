@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,6 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,11 +36,11 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
+import com.nexters.bandalart.core.designsystem.theme.Gray900
+import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
-import com.nexters.bandalart.core.ui.component.EmojiText
-import com.nexters.bandalart.core.ui.component.TitleText
 import com.nexters.bandalart.feature.complete.ui.CompleteBandalart
 import com.nexters.bandalart.feature.complete.ui.CompleteTopBar
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
@@ -50,7 +54,6 @@ internal fun CompleteRoute(
     modifier: Modifier = Modifier,
     viewModel: CompleteViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
@@ -119,9 +122,19 @@ internal fun CompleteScreen(
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
-                    TitleText(text = context.getString(R.string.complete_title))
+                    Text(
+                        text = stringResource(R.string.complete_title),
+                        modifier = modifier,
+                        color = Gray900,
+                        fontFamily = pretendard,
+                        fontWeight = FontWeight.W700,
+                        fontSize = 22.sp,
+                        lineHeight = 30.8.sp,
+                        textAlign = TextAlign.Center,
+                    )
+
                     Spacer(modifier = Modifier.height(32.dp))
-                    EmojiText(emojiText = "🥳", fontSize = 100.sp)
+                    Text(text = "🥳", fontSize = 100.sp)
                     Spacer(modifier = Modifier.height(32.dp))
                     CompleteBandalart(
                         profileEmoji = uiState.profileEmoji,
@@ -133,7 +146,7 @@ internal fun CompleteScreen(
                     // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
                     BandalartButton(
                         onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                        text = context.getString(R.string.complete_share),
+                        text = stringResource(R.string.complete_share),
                         modifier = Modifier
                             .width(328.dp)
                             .padding(bottom = 32.dp),
@@ -154,7 +167,16 @@ internal fun CompleteScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
                     Spacer(modifier = Modifier.height(40.dp))
-                    TitleText(text = context.getString(R.string.complete_title))
+                    Text(
+                        text = stringResource(R.string.complete_title),
+                        modifier = modifier,
+                        color = Gray900,
+                        fontFamily = pretendard,
+                        fontWeight = FontWeight.W700,
+                        fontSize = 22.sp,
+                        lineHeight = 30.8.sp,
+                        textAlign = TextAlign.Center,
+                    )
                     Box(modifier = Modifier.fillMaxSize()) {
                         CompleteBandalart(
                             profileEmoji = uiState.profileEmoji,
@@ -165,7 +187,7 @@ internal fun CompleteScreen(
                         // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
                         BandalartButton(
                             onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                            text = context.getString(R.string.complete_share),
+                            text = stringResource(R.string.complete_share),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.BottomCenter)

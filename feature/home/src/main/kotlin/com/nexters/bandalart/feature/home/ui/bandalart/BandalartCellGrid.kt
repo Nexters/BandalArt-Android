@@ -13,6 +13,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.allColor
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartCellGrid(
@@ -63,7 +64,7 @@ fun BandalartCellGrid(
 @ComponentPreview
 @Composable
 private fun BandalartCellGridPreview() {
-    val subCellList = listOf(
+    val subCellList = persistentListOf(
         SubCell(2, 3, 1, 1, dummyBandalartChartData.children[0]),
         SubCell(3, 2, 1, 0, dummyBandalartChartData.children[1]),
         SubCell(3, 2, 1, 1, dummyBandalartChartData.children[2]),

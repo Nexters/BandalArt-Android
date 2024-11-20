@@ -43,10 +43,10 @@ import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.EmojiText
 import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartDetailData
 import kotlinx.coroutines.launch
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartItem(
@@ -91,14 +91,12 @@ fun BandalartItem(
                 ) {
                     if (bandalartItem.profileEmoji.isNullOrEmpty()) {
                         Image(
-                            imageVector = ImageVector.vectorResource(
-                                id = com.nexters.bandalart.core.designsystem.R.drawable.ic_empty_emoji,
-                            ),
-                            contentDescription = stringResource(R.string.empty_emoji_descrption),
+                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
+                            contentDescription = stringResource(R.string.empty_emoji_description),
                         )
                     } else {
-                        EmojiText(
-                            emojiText = bandalartItem.profileEmoji,
+                        Text(
+                            text = bandalartItem.profileEmoji,
                             fontSize = 22.sp,
                         )
                     }
@@ -122,7 +120,7 @@ fun BandalartItem(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(R.string.check_descrption),
+                            contentDescription = stringResource(R.string.check_description),
                             tint = Gray900,
                             modifier = Modifier.size(13.dp),
                         )
@@ -171,7 +169,7 @@ fun BandalartItem(
             Box(modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = stringResource(R.string.arrow_forward_descrption),
+                    contentDescription = stringResource(R.string.arrow_forward_description),
                     tint = Gray400,
                     modifier = Modifier.size(16.dp),
                 )

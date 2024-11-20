@@ -23,6 +23,7 @@ import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.feature.splash.navigation.SPLASH_NAVIGATION_ROUTE
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 internal fun SplashRoute(
@@ -68,9 +69,7 @@ internal fun SplashScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(
-                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_app,
-                    ),
+                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_app),
                     contentDescription = stringResource(R.string.app_icon_description),
                 )
                 Spacer(modifier = Modifier.width(10.dp))

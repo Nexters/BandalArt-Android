@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +31,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun NetworkErrorAlertDialog(
@@ -38,8 +40,6 @@ fun NetworkErrorAlertDialog(
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     Dialog(onDismissRequest = {}) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -51,8 +51,8 @@ fun NetworkErrorAlertDialog(
                     .padding(top = 24.dp),
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(com.nexters.bandalart.core.designsystem.R.drawable.ic_circle_cross),
-                    contentDescription = context.getString(R.string.delete_descrption),
+                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_circle_cross),
+                    contentDescription = stringResource(R.string.delete_description),
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -93,7 +93,7 @@ fun NetworkErrorAlertDialog(
                         colors = ButtonDefaults.buttonColors(containerColor = Gray900),
                     ) {
                         Text(
-                            text = context.getString(R.string.network_error_retry_message),
+                            text = stringResource(R.string.network_error_retry_message),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W600,
                             color = White,

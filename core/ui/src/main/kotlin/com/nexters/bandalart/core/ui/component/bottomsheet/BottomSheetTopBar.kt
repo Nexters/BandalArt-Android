@@ -60,7 +60,7 @@ fun BottomSheetTopBar(
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = stringResource(R.string.clear_descrption),
+                contentDescription = stringResource(R.string.clear_description),
                 tint = Gray900,
             )
         }

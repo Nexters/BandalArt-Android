@@ -47,15 +47,15 @@ class BottomSheetViewModel @Inject constructor(
             is BottomSheetUiAction.DeleteBandalartCell -> deleteBandalartCell(
                 cellId = 0L,
             )
-            is BottomSheetUiAction.OpenDeleteCellDialog -> openDeleteCellDialog(true)
-            is BottomSheetUiAction.OpenDatePicker -> openDatePicker(true)
-            is BottomSheetUiAction.OpenEmojiPicker -> openEmojiPicker(true)
-            is BottomSheetUiAction.EmojiSelected -> emojiSelected("")
+            is BottomSheetUiAction.OpenDeleteCellDialog -> toggleDeleteCellDialog(true)
+            is BottomSheetUiAction.OpenDatePicker -> toggleDatePicker(true)
+            is BottomSheetUiAction.OpenEmojiPicker -> toggleEmojiPicker(true)
+            is BottomSheetUiAction.OnModalConfirmClick -> {}
             is BottomSheetUiAction.TitleChanged -> titleChanged("")
-            is BottomSheetUiAction.ColorChanged -> colorChanged("", "")
-            is BottomSheetUiAction.DueDateChanged -> dueDateChanged("")
-            is BottomSheetUiAction.DescriptionChanged -> descriptionChanged("")
-            is BottomSheetUiAction.CompletionChanged -> completionChanged(false)
+            is BottomSheetUiAction.OnColorSelect -> colorChanged("", "")
+            is BottomSheetUiAction.OnDueDateChange -> dueDateChanged("")
+            is BottomSheetUiAction.OnDescriptionChange -> descriptionChanged("")
+            is BottomSheetUiAction.OnCompletionChange -> completionChanged(false)
             is BottomSheetUiAction.BottomSheetClosed -> bottomSheetClosed()
         }
     }
@@ -109,15 +109,15 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun openDeleteCellDialog(flag: Boolean) {
+    fun toggleDeleteCellDialog(flag: Boolean) {
         _uiState.update { it.copy(isDeleteCellDialogOpened = flag) }
     }
 
-    fun openDatePicker(flag: Boolean) {
+    fun toggleDatePicker(flag: Boolean) {
         _uiState.update { it.copy(isDatePickerOpened = flag) }
     }
 
-    fun openEmojiPicker(flag: Boolean) {
+    fun toggleEmojiPicker(flag: Boolean) {
         _uiState.update { it.copy(isEmojiPickerOpened = flag) }
     }
 

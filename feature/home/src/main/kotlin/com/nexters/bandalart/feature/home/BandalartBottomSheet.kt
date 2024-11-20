@@ -102,6 +102,7 @@ import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.Locale
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartBottomSheet(
@@ -130,9 +131,9 @@ fun BandalartBottomSheet(
         bottomSheetClosed = viewModel::bottomSheetClosed,
         copyCellData = viewModel::copyCellData,
         deleteBandalartCell = viewModel::deleteBandalartCell,
-        openDeleteCellDialog = viewModel::openDeleteCellDialog,
-        openEmojiPicker = viewModel::openEmojiPicker,
-        openDatePicker = viewModel::openDatePicker,
+        openDeleteCellDialog = viewModel::toggleDeleteCellDialog,
+        openEmojiPicker = viewModel::toggleEmojiPicker,
+        openDatePicker = viewModel::toggleDatePicker,
         titleChanged = viewModel::titleChanged,
         emojiSelected = viewModel::emojiSelected,
         colorChanged = viewModel::colorChanged,
@@ -296,10 +297,8 @@ fun BandalartBottomSheetContent(
                                     ) {
                                         if (uiState.cellData.profileEmoji.isNullOrEmpty()) {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(
-                                                    id = com.nexters.bandalart.core.designsystem.R.drawable.ic_empty_emoji,
-                                                ),
-                                                contentDescription = stringResource(R.string.empty_emoji_descrption),
+                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
+                                                contentDescription = stringResource(R.string.empty_emoji_description),
                                             )
                                         } else {
                                             Text(
@@ -310,10 +309,8 @@ fun BandalartBottomSheetContent(
                                     }
                                 }
                                 Image(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = com.nexters.bandalart.core.designsystem.R.drawable.ic_edit,
-                                    ),
-                                    contentDescription = stringResource(R.string.edit_descrption),
+                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
+                                    contentDescription = stringResource(R.string.edit_description),
                                     modifier = Modifier
                                         .align(Alignment.BottomEnd)
                                         .offset(x = 4.dp, y = 4.dp),
@@ -420,7 +417,7 @@ fun BandalartBottomSheetContent(
                                     .height(21.dp)
                                     .aspectRatio(1f),
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                                contentDescription = stringResource(R.string.arrow_forward_descrption),
+                                contentDescription = stringResource(R.string.arrow_forward_description),
                                 tint = Gray400,
                             )
                         }

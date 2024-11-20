@@ -116,17 +116,17 @@
   <string name="delete_bandalart">반다라트가 삭제되었어요.</string>
 
   <!-- image descrption -->
-  <string name="empty_emoji_descrption">Empty Emoji Icon</string>
-  <string name="edit_descrption">Edit Icon</string>
-  <string name="arrow_forward_descrption">Arrow Forward Icon</string>
-  <string name="option_descrption">Option Icon</string>
-  <string name="check_descrption">Check Icon</string>
-  <string name="share_descrption">Share Icon</string>
-  <string name="add_descrption">Add Icon</string>
-  <string name="complete_descrption">Complete Icon</string>
-  <string name="hamburger_descrption">Hamburger Icon</string>
-  <string name="clear_descrption">Clear Icon</string>
-  <string name="delete_descrption">Delete Icon</string>
+  <string name="empty_emoji_description">Empty Emoji Icon</string>
+  <string name="edit_description">Edit Icon</string>
+  <string name="arrow_forward_description">Arrow Forward Icon</string>
+  <string name="option_description">Option Icon</string>
+  <string name="check_description">Check Icon</string>
+  <string name="share_description">Share Icon</string>
+  <string name="add_description">Add Icon</string>
+  <string name="complete_description">Complete Icon</string>
+  <string name="hamburger_description">Hamburger Icon</string>
+  <string name="clear_description">Clear Icon</string>
+  <string name="delete_description">Delete Icon</string>
   <string name="app_icon_description">App Icon</string>
   <string name="gallery_icon">Gallery Icon</string>
 

@@ -9,11 +9,11 @@ sealed interface BottomSheetUiAction {
     data object OpenDeleteCellDialog : BottomSheetUiAction
     data object OpenDatePicker : BottomSheetUiAction
     data object OpenEmojiPicker : BottomSheetUiAction
-    data object EmojiSelected : BottomSheetUiAction
+    data object OnModalConfirmClick : BottomSheetUiAction
     data object TitleChanged : BottomSheetUiAction
-    data object ColorChanged : BottomSheetUiAction
-    data object DueDateChanged : BottomSheetUiAction
-    data object DescriptionChanged : BottomSheetUiAction
-    data object CompletionChanged : BottomSheetUiAction
+    data object OnColorSelect : BottomSheetUiAction
+    data object OnDueDateChange : BottomSheetUiAction
+    data object OnDescriptionChange : BottomSheetUiAction
+    data object OnCompletionChange : BottomSheetUiAction
     data object BottomSheetClosed : BottomSheetUiAction
 }

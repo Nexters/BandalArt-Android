@@ -25,6 +25,7 @@ import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.allColor
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartChart(
@@ -40,7 +41,7 @@ fun BandalartChart(
         screenWidthDp - (15.dp * 2)
     }
 
-    val subCellList = listOf(
+    val subCellList = persistentListOf(
         SubCell(2, 3, 1, 1, bandalartCellData.children[0]),
         SubCell(3, 2, 1, 0, bandalartCellData.children[1]),
         SubCell(3, 2, 1, 1, bandalartCellData.children[2]),

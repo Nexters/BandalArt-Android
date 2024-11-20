@@ -43,7 +43,7 @@ fun SaveImageButton(
                     imageVector = ImageVector.vectorResource(
                         id = R.drawable.ic_gallery,
                     ),
-                    contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.clear_descrption),
+                    contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.clear_description),
                 )
                 Text(
                     text = buildAnnotatedString {

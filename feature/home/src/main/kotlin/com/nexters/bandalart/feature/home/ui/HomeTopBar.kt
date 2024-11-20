@@ -30,11 +30,12 @@ import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 internal fun HomeTopBar(
     bandalartCount: Int,
-    onShowBandalartList: () -> Unit,
+    onListClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -54,15 +55,15 @@ internal fun HomeTopBar(
             Box(
                 modifier = Modifier
                     .padding(end = 20.dp)
-                    .clickable(onClick = onShowBandalartList),
+                    .clickable(onClick = onListClick),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (bandalartCount > 1) {
                         Image(
                             imageVector = ImageVector.vectorResource(
-                                id = com.nexters.bandalart.core.designsystem.R.drawable.ic_hamburger,
+                                id = DesignR.drawable.ic_hamburger,
                             ),
-                            contentDescription = stringResource(R.string.hamburger_descrption),
+                            contentDescription = stringResource(R.string.hamburger_description),
                         )
                         Text(
                             text = stringResource(R.string.home_list),
@@ -74,7 +75,7 @@ internal fun HomeTopBar(
                     } else {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add_descrption),
+                            contentDescription = stringResource(R.string.add_description),
                             tint = Gray600,
                             modifier = Modifier.size(20.dp),
                         )
@@ -97,7 +98,7 @@ private fun HomeTopBarSingleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 1,
-            onShowBandalartList = {},
+            onListClick = {},
         )
     }
 }
@@ -108,7 +109,7 @@ private fun HomeTopBarMultipleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 2,
-            onShowBandalartList = {},
+            onListClick = {},
         )
     }
 }

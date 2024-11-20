@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,8 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
@@ -33,18 +38,20 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.core.designsystem.theme.Gray50
-import com.nexters.bandalart.core.ui.DevicePreview
+import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
+import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
+import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
+import com.nexters.bandalart.core.designsystem.theme.Gray50
+import com.nexters.bandalart.core.designsystem.theme.Gray900
+import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
-import com.nexters.bandalart.core.ui.component.TitleText
-import com.nexters.bandalart.core.common.extension.getCurrentLocale
-import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.feature.onboarding.navigation.ONBOARDING_NAVIGATION_ROUTE
 import java.util.Locale
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 internal fun OnBoardingRoute(
@@ -127,7 +134,16 @@ internal fun OnBoardingScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Spacer(modifier = Modifier.height(50.dp))
-                            TitleText(text = context.getString(R.string.onboarding_first_title))
+                            Text(
+                                text = stringResource(R.string.onboarding_first_title),
+                                modifier = modifier,
+                                color = Gray900,
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight.W700,
+                                fontSize = 22.sp,
+                                lineHeight = 30.8.sp,
+                                textAlign = TextAlign.Center,
+                            )
                             Spacer(modifier = Modifier.height(50.dp))
                             Card(
                                 shape = RoundedCornerShape(16.dp),
@@ -143,30 +159,24 @@ internal fun OnBoardingScreen(
                                     when (currentLocale.language) {
                                         Locale.KOREAN.language -> {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(
-                                                    id = com.nexters.bandalart.core.designsystem.R.drawable.ic_onboarding_kr,
-                                                ),
-                                                contentDescription = context.getString(R.string.delete_descrption),
+                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_onboarding_kr),
+                                                contentDescription = stringResource(R.string.delete_description),
                                                 modifier = Modifier.fillMaxSize(),
                                             )
                                         }
 
                                         Locale.ENGLISH.language -> {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(
-                                                    id = com.nexters.bandalart.core.designsystem.R.drawable.ic_onboarding_en,
-                                                ),
-                                                contentDescription = context.getString(R.string.delete_descrption),
+                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_onboarding_en),
+                                                contentDescription = stringResource(R.string.delete_description),
                                                 modifier = Modifier.fillMaxSize(),
                                             )
                                         }
 
                                         else -> {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(
-                                                    id = com.nexters.bandalart.core.designsystem.R.drawable.ic_onboarding_en,
-                                                ),
-                                                contentDescription = context.getString(R.string.delete_descrption),
+                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_onboarding_en),
+                                                contentDescription = stringResource(R.string.delete_description),
                                                 modifier = Modifier.fillMaxSize(),
                                             )
                                         }
@@ -183,7 +193,16 @@ internal fun OnBoardingScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
                                 Spacer(modifier = Modifier.height(50.dp))
-                                TitleText(text = context.getString(R.string.onboarding_second_title))
+                                Text(
+                                    text = stringResource(R.string.onboarding_second_title),
+                                    modifier = modifier,
+                                    color = Gray900,
+                                    fontFamily = pretendard,
+                                    fontWeight = FontWeight.W700,
+                                    fontSize = 22.sp,
+                                    lineHeight = 30.8.sp,
+                                    textAlign = TextAlign.Center,
+                                )
                                 Spacer(modifier = Modifier.height(50.dp))
                                 Card(
                                     shape = RoundedCornerShape(16.dp),
@@ -206,7 +225,7 @@ internal fun OnBoardingScreen(
                             if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                                 BandalartButton(
                                     onClick = { setOnboardingCompletedStatus(true) },
-                                    text = context.getString(R.string.onboarding_start),
+                                    text = stringResource(R.string.onboarding_start),
                                     modifier = Modifier
                                         .wrapContentWidth()
                                         .align(Alignment.BottomEnd)
@@ -215,7 +234,7 @@ internal fun OnBoardingScreen(
                             } else {
                                 BandalartButton(
                                     onClick = { setOnboardingCompletedStatus(true) },
-                                    text = context.getString(R.string.onboarding_start),
+                                    text = stringResource(R.string.onboarding_start),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .align(Alignment.BottomCenter)

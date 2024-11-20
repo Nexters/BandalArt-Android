@@ -12,6 +12,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
@@ -23,7 +24,6 @@ fun CompleteTopBar(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -37,7 +37,7 @@ fun CompleteTopBar(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = context.getString(R.string.arrow_forward_descrption),
+                contentDescription = stringResource(R.string.arrow_forward_description),
                 tint = Gray900,
             )
         }

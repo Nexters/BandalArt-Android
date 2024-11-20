@@ -43,10 +43,8 @@ fun HomeShareButton(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(
-                    id = R.drawable.ic_share,
-                ),
-                contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.share_descrption),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_share),
+                contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.share_description),
             )
             Text(
                 text = stringResource(com.nexters.bandalart.core.ui.R.string.home_share),
