@@ -46,9 +46,9 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
-import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartList
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -56,9 +56,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartListBottomSheet(
-    bandalartList: ImmutableList<BandalartDetailUiModel>,
+    bandalartList: ImmutableList<BandalartUiModel>,
     currentBandalartId: Long,
-    getBandalartDetail: (Long) -> Unit,
+    getBandalart: (Long) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
     showSkeletonChanged: (Boolean) -> Unit,
     onDismissRequest: () -> Unit,
@@ -133,7 +133,7 @@ fun BandalartListBottomSheet(
                             // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
                             setRecentBandalartId(key)
                             showSkeletonChanged(true)
-                            getBandalartDetail(key)
+                            getBandalart(key)
                         },
                         onCancelClicked = onDismissRequest,
                     )
@@ -179,7 +179,7 @@ private fun BandalartListBottomSheetPreview() {
         BandalartListBottomSheet(
             bandalartList = dummyBandalartList.toImmutableList(),
             currentBandalartId = 0L,
-            getBandalartDetail = {},
+            getBandalart = {},
             setRecentBandalartId = {},
             showSkeletonChanged = {},
             onDismissRequest = {},

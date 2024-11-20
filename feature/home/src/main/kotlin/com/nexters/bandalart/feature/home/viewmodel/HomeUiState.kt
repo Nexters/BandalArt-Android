@@ -1,7 +1,7 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -9,8 +9,8 @@ import kotlinx.collections.immutable.persistentListOf
  * HomeUiState
  *
  * @param bandalartList 반다라트 목록
- * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
- * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
+ * @param bandalartData 반다라트 데이터,
+ * @param bandalartCellData 반다라트 각각의 셀의 데이터,
  * @param isBandalartDeleted 표가 삭제됨
  * @param isDropDownMenuOpened 드롭 다운 메뉴가 열림
  * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
@@ -24,8 +24,8 @@ import kotlinx.collections.immutable.persistentListOf
  */
 
 data class HomeUiState(
-    val bandalartList: ImmutableList<BandalartDetailUiModel> = persistentListOf(),
-    val bandalartDetailData: BandalartDetailUiModel? = null,
+    val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
+    val bandalartData: BandalartUiModel? = null,
     val bandalartCellData: BandalartCellUiModel? = null,
     val isBandalartDeleted: Boolean = false,
     val isDropDownMenuOpened: Boolean = false,

@@ -42,6 +42,7 @@ import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.component.CellText
 import com.nexters.bandalart.feature.home.BandalartBottomSheet
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 data class CellInfo(
@@ -63,7 +64,7 @@ data class SubCell(
 @Composable
 fun BandalartCell(
     bandalartId: Long,
-    themeColor: ThemeColor,
+    bandalartData: BandalartUiModel,
     isMainCell: Boolean,
     cellData: BandalartCellUiModel,
     bottomSheetDataChanged: (Boolean) -> Unit,
@@ -76,9 +77,9 @@ fun BandalartCell(
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
     val backgroundColor = when {
-        isMainCell -> themeColor.mainColor.toColor()
-        cellInfo.isSubCell and cellData.isCompleted -> themeColor.subColor.toColor().copy(alpha = 0.6f)
-        cellInfo.isSubCell and !cellData.isCompleted -> themeColor.subColor.toColor()
+        isMainCell -> bandalartData.mainColor.toColor()
+        cellInfo.isSubCell and cellData.isCompleted -> bandalartData.subColor.toColor().copy(alpha = 0.6f)
+        cellInfo.isSubCell and !cellData.isCompleted -> bandalartData.subColor.toColor()
         cellData.isCompleted -> Gray400
         else -> White
     }
@@ -99,7 +100,7 @@ fun BandalartCell(
     ) {
         when {
             isMainCell -> {
-                val cellTextColor = themeColor.subColor.toColor()
+                val cellTextColor = bandalartData.subColor.toColor()
                 // 메인 목표가 빈 경우
                 if (cellData.title.isNullOrEmpty()) {
                     Box(contentAlignment = Alignment.Center) {
@@ -129,7 +130,7 @@ fun BandalartCell(
             }
 
             cellInfo.isSubCell -> {
-                val cellTextColor = themeColor.mainColor.toColor()
+                val cellTextColor = bandalartData.mainColor.toColor()
                 val fontWeight = FontWeight.W700
                 // 서브 목표가 빈 경우
                 if (cellData.title.isNullOrEmpty()) {
@@ -227,7 +228,8 @@ private fun BandalartCellPreview() {
     BandalartTheme {
         BandalartCell(
             bandalartId = 0L,
-            themeColor = ThemeColor(
+            bandalartData = BandalartUiModel(
+                id = 0L,
                 mainColor = "#FF3FFFBA",
                 subColor = "#FF111827",
             ),

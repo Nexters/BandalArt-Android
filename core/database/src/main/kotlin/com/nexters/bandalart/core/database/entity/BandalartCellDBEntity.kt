@@ -49,18 +49,6 @@ data class BandalartCellDBEntity(
     @ColumnInfo(name = "isCompleted")
     val isCompleted: Boolean = false,
 
-    @ColumnInfo(name = "completionRatio")
-    val completionRatio: Int = 0,
-
-    @ColumnInfo(name = "profileEmoji")
-    val profileEmoji: String? = null,
-
-    @ColumnInfo(name = "mainColor")
-    val mainColor: String? = "#FF3FFFBA",
-
-    @ColumnInfo(name = "subColor")
-    val subColor: String? = "#FF111827",
-
     @ColumnInfo(name = "parentId")
     val parentId: Long? = null,  // 계층 구조를 위한 self-referencing
 )

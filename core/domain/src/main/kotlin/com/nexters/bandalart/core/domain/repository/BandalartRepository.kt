@@ -1,7 +1,6 @@
 package com.nexters.bandalart.core.domain.repository
 
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
@@ -18,14 +17,14 @@ interface BandalartRepository {
     /**
      * 반다라트 목록 조회
      */
-    suspend fun getBandalartList(): List<BandalartDetailEntity>
+    suspend fun getBandalartList(): List<BandalartEntity>
 
     /**
-     * 반다라트 상세 조회
+     * 반다라트 조회
      *
      * @param bandalartId 반다라트 고유 id
      */
-    suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailEntity?
+    suspend fun getBandalart(bandalartId: Long): BandalartEntity
 
     /**
      * 반다라트 삭제

@@ -34,8 +34,8 @@ class HomeViewModel @Inject constructor(
     private val _uiEvent = Channel<HomeUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val bandalartDetailFlow = uiState
-        .map { it.bandalartDetailData }
+    private val bandalartFlow = uiState
+        .map { it.bandalartData }
         .filterNotNull()
         .distinctUntilChanged()
 
@@ -62,7 +62,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.OnConfirmClick -> {
                 when (action.modalType) {
                     ModalType.CELL -> {}
-                    ModalType.DELETE_DIALOG -> _uiState.value.bandalartDetailData?.let { deleteBandalart(it.id) }
+                    ModalType.DELETE_DIALOG -> _uiState.value.bandalartData?.let { deleteBandalart(it.id) }
                     else -> {}
                 }
             }
@@ -91,7 +91,7 @@ class HomeViewModel @Inject constructor(
 
     private fun observeBandalartCompletion() {
         viewModelScope.launch {
-            bandalartDetailFlow.collect { bandalart ->
+            bandalartFlow.collect { bandalart ->
                 if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
                     val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
                     if (isBandalartCompleted) {
@@ -132,7 +132,7 @@ class HomeViewModel @Inject constructor(
 
             // 이번에 목표를 달성한 반다라트가 존재하는 경우
             if (completedKeys.isNotEmpty()) {
-                getBandalartDetail(completedKeys[0], isBandalartCompleted = true)
+                getBandalart(completedKeys[0], isBandalartCompleted = true)
                 return@launch
             }
 
@@ -144,7 +144,7 @@ class HomeViewModel @Inject constructor(
             // 생성한 반다라트 표를 화면에 띄우는 경우
             if (bandalartId != null) {
                 _uiState.update { it.copy(isShowSkeleton = true) }
-                getBandalartDetail(bandalartId)
+                getBandalart(bandalartId)
                 return@launch
             }
             // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
@@ -157,24 +157,24 @@ class HomeViewModel @Inject constructor(
                 val recentBandalartId = getRecentBandalartId()
                 // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
                 if (bandalartList.any { it.id == recentBandalartId }) {
-                    getBandalartDetail(recentBandalartId)
+                    getBandalart(recentBandalartId)
                 }
                 // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
                 else {
                     _uiState.update { it.copy(isShowSkeleton = true) }
                     // 목록에 가장 첫번째 표를 화면에 띄움
-                    getBandalartDetail(bandalartList[0].id)
+                    getBandalart(bandalartList[0].id)
                 }
             }
         }
     }
 
-    fun getBandalartDetail(bandalartId: Long, isBandalartCompleted: Boolean = false) {
+    fun getBandalart(bandalartId: Long, isBandalartCompleted: Boolean = false) {
         viewModelScope.launch {
-            bandalartRepository.getBandalartDetail(bandalartId)?.let { detail ->
+            bandalartRepository.getBandalart(bandalartId).let { bandalart ->
                 _uiState.update {
                     it.copy(
-                        bandalartDetailData = detail.toUiModel(),
+                        bandalartData = bandalart.toUiModel(),
                         isBandalartListBottomSheetOpened = false,
                         isBandalartCompleted = isBandalartCompleted,
                     )
@@ -198,10 +198,6 @@ class HomeViewModel @Inject constructor(
                     description = subCell.description,
                     dueDate = subCell.dueDate,
                     isCompleted = subCell.isCompleted,
-                    completionRatio = subCell.completionRatio,
-                    profileEmoji = subCell.profileEmoji,
-                    mainColor = subCell.mainColor,
-                    subColor = subCell.subColor,
                     parentId = subCell.parentId,
                     children = taskCells.map { taskCell ->
                         BandalartCellUiModel(
@@ -210,10 +206,6 @@ class HomeViewModel @Inject constructor(
                             description = taskCell.description,
                             dueDate = taskCell.dueDate,
                             isCompleted = taskCell.isCompleted,
-                            completionRatio = taskCell.completionRatio,
-                            profileEmoji = taskCell.profileEmoji,
-                            mainColor = taskCell.mainColor,
-                            subColor = taskCell.subColor,
                             parentId = taskCell.parentId,
                             children = emptyList(),
                         )
@@ -229,10 +221,6 @@ class HomeViewModel @Inject constructor(
                         description = mainCell?.description,
                         dueDate = mainCell?.dueDate,
                         isCompleted = mainCell?.isCompleted ?: false,
-                        completionRatio = mainCell?.completionRatio ?: 0,
-                        profileEmoji = mainCell?.profileEmoji,
-                        mainColor = mainCell?.mainColor,
-                        subColor = mainCell?.subColor,
                         parentId = mainCell?.parentId,
                         children = children,
                     ),

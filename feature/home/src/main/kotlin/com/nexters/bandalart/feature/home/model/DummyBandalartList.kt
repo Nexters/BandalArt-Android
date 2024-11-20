@@ -4,7 +4,7 @@ import com.nexters.bandalart.core.ui.allColor
 import kotlinx.datetime.Clock
 
 val dummyBandalartList = listOf(
-    BandalartDetailUiModel(
+    BandalartUiModel(
         id = 0L,
         mainColor = allColor[0].mainColor,
         subColor = allColor[0].subColor,
@@ -16,7 +16,7 @@ val dummyBandalartList = listOf(
         completionRatio = 88,
         isGeneratedTitle = false,
     ),
-    BandalartDetailUiModel(
+    BandalartUiModel(
         id = 0L,
         mainColor = allColor[1].mainColor,
         subColor = allColor[1].subColor,
@@ -28,7 +28,7 @@ val dummyBandalartList = listOf(
         completionRatio = 66,
         isGeneratedTitle = false,
     ),
-    BandalartDetailUiModel(
+    BandalartUiModel(
         id = 0L,
         mainColor = allColor[2].mainColor,
         subColor = allColor[2].subColor,
@@ -40,7 +40,7 @@ val dummyBandalartList = listOf(
         completionRatio = 44,
         isGeneratedTitle = false,
     ),
-    BandalartDetailUiModel(
+    BandalartUiModel(
         id = 0L,
         mainColor = allColor[3].mainColor,
         subColor = allColor[3].subColor,

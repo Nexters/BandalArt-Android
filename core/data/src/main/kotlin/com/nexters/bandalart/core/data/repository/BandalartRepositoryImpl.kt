@@ -6,7 +6,6 @@ import com.nexters.bandalart.core.database.BandalartDao
 import com.nexters.bandalart.core.datastore.datasource.CompletedBandalartIdDataSource
 import com.nexters.bandalart.core.datastore.datasource.RecentBandalartIdDataSource
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.core.domain.entity.BandalartDetailEntity
 import com.nexters.bandalart.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
@@ -25,12 +24,12 @@ internal class BandalartRepositoryImpl @Inject constructor(
         return bandalartDao.getBandalart(bandalartId).toEntity()
     }
 
-    override suspend fun getBandalartList(): List<BandalartDetailEntity> {
+    override suspend fun getBandalartList(): List<BandalartEntity> {
         return bandalartDao.getBandalartList().map { it.toEntity() }
     }
 
-    override suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailEntity? {
-        return bandalartDao.getBandalartDetail(bandalartId)?.toEntity()
+    override suspend fun getBandalart(bandalartId: Long): BandalartEntity {
+        return bandalartDao.getBandalart(bandalartId).toEntity()
     }
 
     override suspend fun deleteBandalart(bandalartId: Long) {

@@ -9,7 +9,6 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.nexters.bandalart.core.database.entity.BandalartCellDBEntity
 import com.nexters.bandalart.core.database.entity.BandalartCellWithChildrenDto
-import com.nexters.bandalart.core.database.entity.BandalartDetailDBEntity
 import com.nexters.bandalart.core.database.entity.BandalartDBEntity
 import com.nexters.bandalart.core.database.entity.UpdateBandalartEmojiDto
 import com.nexters.bandalart.core.database.entity.UpdateBandalartMainCellDto
@@ -22,10 +21,6 @@ interface BandalartDao {
     /** 새로운 반다라트 생성 */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createBandalart(bandalart: BandalartDBEntity): Long
-
-    /** 반다라트 상세 정보 삽입 */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBandalartDetail(detail: BandalartDetailDBEntity)
 
     /** 반다라트 셀 삽입 */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -51,44 +46,29 @@ interface BandalartDao {
             ),
         )
 
-        // 2. 메인 목표에 대한 상세 정보 생성
-        insertBandalartDetail(
-            BandalartDetailDBEntity(
-                id = bandalartId,
-                mainColor = "#3FFFBA",
-                subColor = "#111827",
-            ),
-        )
-
-        // 3. 메인 셀 생성
+        // 2. 메인 셀 생성
         val mainCellId = insertCell(
             BandalartCellDBEntity(
                 bandalartId = bandalartId,
                 title = "",
-                mainColor = "#3FFFBA",
-                subColor = "#111827",
             ),
         )
 
-        // 4. 4개의 서브 셀 생성
+        // 3. 4개의 서브 셀 생성
         repeat(4) {
             val subCellId = insertCell(
                 BandalartCellDBEntity(
                     bandalartId = bandalartId,
                     parentId = mainCellId,
-                    mainColor = "#3FFFBA",
-                    subColor = "#111827",
                 ),
             )
 
-            // 5. 각 서브 셀마다 5개의 태스크 셀 생성
+            // 4. 각 서브 셀마다 5개의 태스크 셀 생성
             repeat(5) {
                 insertCell(
                     BandalartCellDBEntity(
                         bandalartId = bandalartId,
                         parentId = subCellId,
-                        mainColor = "#3FFFBA",
-                        subColor = "#111827",
                     ),
                 )
             }
@@ -102,12 +82,8 @@ interface BandalartDao {
     suspend fun getBandalart(bandalartId: Long): BandalartDBEntity
 
     /** 모든 반다라트 목록 조회 */
-    @Query("SELECT * FROM bandalart_details")
-    suspend fun getBandalartList(): List<BandalartDetailDBEntity>
-
-    /** 특정 반다라트의 상세 정보 조회 */
-    @Query("SELECT * FROM bandalart_details WHERE id = :bandalartId")
-    suspend fun getBandalartDetail(bandalartId: Long): BandalartDetailDBEntity?
+    @Query("SELECT * FROM bandalarts")
+    suspend fun getBandalartList(): List<BandalartDBEntity>
 
     // Read - 셀
     /** 특정 반다라트의 메인 셀(최상위 셀) 조회 */
@@ -136,10 +112,6 @@ interface BandalartDao {
     @Update
     suspend fun updateBandalart(bandalart: BandalartDBEntity)
 
-    /** 반다라트 상세 정보 업데이트 */
-    @Update
-    suspend fun updateBandalartDetail(detail: BandalartDetailDBEntity)
-
     // 업데이트 관련 함수들 - 셀
     /** 메인 셀 정보 업데이트 */
     @Transaction
@@ -147,15 +119,18 @@ interface BandalartDao {
         cellId: Long,
         updateDto: UpdateBandalartMainCellDto,
     ) {
-        val cell = getBandalartCell(cellId).cell.copy(
-            title = updateDto.title,
-            description = updateDto.description,
-            dueDate = updateDto.dueDate,
-            profileEmoji = updateDto.profileEmoji,
-            mainColor = updateDto.mainColor,
-            subColor = updateDto.subColor,
+        val bandalartCell = getBandalartCell(cellId)
+
+        updateBandalart(
+            getBandalart(bandalartCell.cell.bandalartId).copy(
+                title = updateDto.title,
+                description = updateDto.description,
+                dueDate = updateDto.dueDate,
+                profileEmoji = updateDto.profileEmoji,
+                mainColor = updateDto.mainColor,
+                subColor = updateDto.subColor,
+            )
         )
-        updateCell(cell)
     }
 
     /** 서브 셀 정보 업데이트 */
@@ -170,6 +145,7 @@ interface BandalartDao {
             dueDate = updateDto.dueDate,
         )
         updateCell(cell)
+        updateCompletionStatus(cell.bandalartId)
     }
 
     /** 작업 셀 정보 업데이트 */
@@ -197,11 +173,12 @@ interface BandalartDao {
         cellId: Long,
         updateDto: UpdateBandalartEmojiDto,
     ) {
-        val originalCell = getBandalartCell(cellId).cell
-        val updatedCell = originalCell.copy(
-            profileEmoji = updateDto.profileEmoji,
+        val bandalartCell = getBandalartCell(cellId)
+        updateBandalart(
+            getBandalart(bandalartCell.cell.bandalartId).copy(
+                profileEmoji = updateDto.profileEmoji
+            )
         )
-        updateCell(updatedCell)
     }
 
     /** 셀 정보 업데이트 */
@@ -245,7 +222,6 @@ interface BandalartDao {
                 description = null,
                 dueDate = null,
                 isCompleted = false,
-                completionRatio = 0,
             ),
         )
 
@@ -258,10 +234,10 @@ interface BandalartDao {
                     description = null,
                     dueDate = null,
                     isCompleted = false,
-                    completionRatio = 0,
                 ),
             )
         }
+        updateCompletionStatus(subCell.bandalartId)
     }
 
     @Transaction
@@ -273,44 +249,14 @@ interface BandalartDao {
                 description = null,
                 dueDate = null,
                 isCompleted = false,
-                completionRatio = 0,
             ),
         )
+        updateCompletionStatus(taskCell.bandalartId)
     }
-
-    // 완료율 관련 함수들
-    /** 특정 반다라트의 모든 셀 완료율 조회 */
-    @Query("SELECT completionRatio FROM bandalart_cells WHERE bandalartId = :bandalartId")
-    suspend fun getCellCompletionRatios(bandalartId: Long): List<Int>
 
     /** 반다라트의 완료율 업데이트 */
     @Query("UPDATE bandalarts SET completionRatio = :newRatio WHERE id = :bandalartId")
     suspend fun updateRatio(bandalartId: Long, newRatio: Int)
-
-    /** 반다라트의 전체 완료율 계산 및 업데이트 */
-    @Transaction
-    suspend fun updateBandalartCompletionRatio(bandalartId: Long) {
-        val ratios = getCellCompletionRatios(bandalartId)
-        val newRatio = if (ratios.isEmpty()) 0 else ratios.average().toInt()
-        updateRatio(bandalartId, newRatio)
-    }
-
-    /** 셀의 완료율 업데이트 */
-    @Query("UPDATE bandalart_cells SET completionRatio = :newRatio WHERE id = :cellId")
-    suspend fun updateCellRatio(cellId: Long, newRatio: Int)
-
-    /** 셀의 완료율 계산 및 업데이트 (자식 셀들의 평균) */
-    @Transaction
-    suspend fun updateCellCompletionRatio(cellId: Long) {
-        val cell = getBandalartCell(cellId)
-        val childRatios = getChildCells(cellId).map { it.completionRatio }
-        val newRatio = if (childRatios.isEmpty()) {
-            if (cell.cell.isCompleted) 100 else 0
-        } else {
-            childRatios.average().toInt()
-        }
-        updateCellRatio(cellId, newRatio)
-    }
 
     /** 반다라트의 전체 완료율 계산 및 업데이트 */
     private suspend fun updateCompletionStatus(bandalartId: Long) {

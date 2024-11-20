@@ -20,6 +20,18 @@ data class BandalartDBEntity(
     @ColumnInfo(name = "profileEmoji")
     val profileEmoji: String? = null,
 
+    @ColumnInfo(name = "title")
+    val title: String? = null,
+
+    @ColumnInfo(name = "description")
+    val description: String? = null,
+
+    @ColumnInfo(name = "dueDate")
+    val dueDate: String? = null,
+
+    @ColumnInfo(name = "isCompleted")
+    val isCompleted: Boolean = false,
+
     @ColumnInfo(name = "completionRatio")
     val completionRatio: Int = 0,
 )

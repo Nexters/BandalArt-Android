@@ -43,15 +43,15 @@ import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartDetailData
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.dummyBandalartData
 import kotlinx.coroutines.launch
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartItem(
     bottomSheetState: SheetState,
-    bandalartItem: BandalartDetailUiModel,
+    bandalartItem: BandalartUiModel,
     currentBandalartId: Long,
     onClick: (Long) -> Unit,
     onCancelClicked: () -> Unit,
@@ -184,7 +184,7 @@ private fun BandalartItemPreview() {
     BandalartTheme {
         BandalartItem(
             bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            bandalartItem = dummyBandalartDetailData,
+            bandalartItem = dummyBandalartData,
             currentBandalartId = 0L,
             onClick = {},
             onCancelClicked = {},

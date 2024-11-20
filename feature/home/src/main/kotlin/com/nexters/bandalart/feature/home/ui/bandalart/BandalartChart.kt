@@ -24,14 +24,15 @@ import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.allColor
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartChart(
     bandalartId: Long,
+    bandalartData: BandalartUiModel,
     bandalartCellData: BandalartCellUiModel,
-    themeColor: ThemeColor,
     bottomSheetDataChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -62,7 +63,7 @@ fun BandalartChart(
                     content = {
                         BandalartCellGrid(
                             bandalartId = bandalartId,
-                            themeColor = themeColor,
+                            bandalartData = bandalartData,
                             subCell = subCellList[index],
                             rows = subCellList[index].rowCnt,
                             cols = subCellList[index].colCnt,
@@ -75,11 +76,11 @@ fun BandalartChart(
                 modifier
                     .layoutId(stringResource(R.string.home_main_id))
                     .clip(RoundedCornerShape(10.dp))
-                    .background(color = (bandalartCellData.mainColor?.toColor() ?: MainColor)),
+                    .background(color = bandalartData.mainColor.toColor()),
                 content = {
                     BandalartCell(
                         isMainCell = true,
-                        themeColor = themeColor,
+                        bandalartData = bandalartData,
                         cellData = bandalartCellData,
                         bandalartId = bandalartId,
                         bottomSheetDataChanged = bottomSheetDataChanged,
@@ -127,7 +128,11 @@ private fun BandalartChartPreview() {
         BandalartChart(
             bandalartId = 0L,
             bandalartCellData = dummyBandalartChartData,
-            themeColor = allColor[0],
+            bandalartData = BandalartUiModel(
+                id = 0L,
+                mainColor = "#3FFFBA",
+                subColor = "#111827"
+            ),
             bottomSheetDataChanged = {},
         )
     }

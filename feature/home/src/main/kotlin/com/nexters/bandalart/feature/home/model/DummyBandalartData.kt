@@ -3,7 +3,7 @@ package com.nexters.bandalart.feature.home.model
 import com.nexters.bandalart.core.ui.allColor
 import kotlinx.datetime.Clock
 
-val dummyBandalartDetailData = BandalartDetailUiModel(
+val dummyBandalartData = BandalartUiModel(
     id = 0L,
     mainColor = allColor[0].mainColor,
     subColor = allColor[0].subColor,

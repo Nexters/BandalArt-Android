@@ -44,13 +44,13 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
-import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartDetailData
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 
 @Composable
 fun HomeHeader(
-    bandalartDetailData: BandalartDetailUiModel,
+    bandalartData: BandalartUiModel,
     isDropDownMenuOpened: Boolean,
     onAction: (HomeUiAction) -> Unit = {},
     modifier: Modifier = Modifier,
@@ -71,20 +71,20 @@ fun HomeHeader(
                             .clickable { onAction(HomeUiAction.ToggleEmojiBottomSheet(true)) },
                         contentAlignment = Alignment.Center,
                     ) {
-                        if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+                        if (bandalartData.profileEmoji.isNullOrEmpty()) {
                             Image(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_empty_emoji,),
                                 contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.empty_emoji_description),
                             )
                         } else {
                             Text(
-                                text = bandalartDetailData.profileEmoji,
+                                text = bandalartData.profileEmoji,
                                 fontSize = 22.sp,
                             )
                         }
                     }
                 }
-                if (bandalartDetailData.profileEmoji.isNullOrEmpty()) {
+                if (bandalartData.profileEmoji.isNullOrEmpty()) {
                     Image(
                         imageVector = ImageVector.vectorResource(
                             id = R.drawable.ic_edit,
@@ -103,8 +103,8 @@ fun HomeHeader(
                     .wrapContentHeight(),
             ) {
                 Text(
-                    text = bandalartDetailData.title ?: stringResource(com.nexters.bandalart.core.ui.R.string.home_empty_title),
-                    color = if (bandalartDetailData.title.isNullOrEmpty()) Gray300 else Gray900,
+                    text = bandalartData.title ?: stringResource(com.nexters.bandalart.core.ui.R.string.home_empty_title),
+                    color = if (bandalartData.title.isNullOrEmpty()) Gray300 else Gray900,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
                     modifier = Modifier
@@ -134,13 +134,13 @@ fun HomeHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(com.nexters.bandalart.core.ui.R.string.home_complete_ratio, bandalartDetailData.completionRatio),
+                text = stringResource(com.nexters.bandalart.core.ui.R.string.home_complete_ratio, bandalartData.completionRatio),
                 color = Gray600,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W500,
                 letterSpacing = (-0.24).sp,
             )
-            if (!bandalartDetailData.dueDate.isNullOrEmpty()) {
+            if (!bandalartData.dueDate.isNullOrEmpty()) {
                 VerticalDivider(
                     modifier = Modifier
                         .height(8.dp)
@@ -149,7 +149,7 @@ fun HomeHeader(
                     color = Gray300,
                 )
                 Text(
-                    text = bandalartDetailData.dueDate.toFormatDate(),
+                    text = bandalartData.dueDate.toFormatDate(),
                     color = Gray600,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W500,
@@ -158,11 +158,11 @@ fun HomeHeader(
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
-            if (bandalartDetailData.isCompleted) {
+            if (bandalartData.isCompleted) {
                 Box(
                     modifier
                         .clip(RoundedCornerShape(24.dp))
-                        .background(color = bandalartDetailData.mainColor.toColor()),
+                        .background(color = bandalartData.mainColor.toColor()),
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 9.dp),
@@ -188,8 +188,8 @@ fun HomeHeader(
         }
         Spacer(modifier = Modifier.height(8.dp))
         CompletionRatioProgressBar(
-            completionRatio = bandalartDetailData.completionRatio,
-            progressColor = bandalartDetailData.mainColor.toColor(),
+            completionRatio = bandalartData.completionRatio,
+            progressColor = bandalartData.mainColor.toColor(),
         )
         Spacer(modifier = Modifier.height(18.dp))
     }
@@ -200,7 +200,7 @@ fun HomeHeader(
 private fun HomeHeaderPreview() {
     BandalartTheme {
         HomeHeader(
-            bandalartDetailData = dummyBandalartDetailData,
+            bandalartData = dummyBandalartData,
             isDropDownMenuOpened = false,
         )
     }

@@ -12,13 +12,14 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.allColor
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartCellGrid(
     bandalartId: Long,
-    themeColor: ThemeColor,
+    bandalartData: BandalartUiModel,
     subCell: SubCell,
     rows: Int,
     cols: Int,
@@ -42,7 +43,7 @@ fun BandalartCellGrid(
                     BandalartCell(
                         modifier = Modifier.weight(1f),
                         bandalartId = bandalartId,
-                        themeColor = themeColor,
+                        bandalartData = bandalartData,
                         isMainCell = false,
                         cellInfo = CellInfo(
                             isSubCell = isSubCell,
@@ -74,7 +75,11 @@ private fun BandalartCellGridPreview() {
     BandalartTheme {
         BandalartCellGrid(
             bandalartId = 0L,
-            themeColor = allColor[0],
+            bandalartData = BandalartUiModel(
+                id = 0L,
+                mainColor = "#3FFFBA",
+                subColor = "#111827"
+            ),
             subCell = subCellList[1],
             rows = 3,
             cols = 3,

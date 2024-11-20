@@ -24,7 +24,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -41,10 +40,9 @@ import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
-import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
-import com.nexters.bandalart.feature.home.model.dummyBandalartDetailData
+import com.nexters.bandalart.feature.home.model.dummyBandalartData
 import com.nexters.bandalart.feature.home.model.dummyBandalartList
 import com.nexters.bandalart.feature.home.ui.HomeHeader
 import com.nexters.bandalart.feature.home.ui.HomeShareButton
@@ -66,7 +64,6 @@ import kotlinx.coroutines.launch
 
 private const val SnackbarDuration = 1000L
 
-// TODO 하위 셀을 달성했을 때, 달성율이 갱신되지 않는 문제 해결
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String) -> Unit,
@@ -118,7 +115,7 @@ internal fun HomeRoute(
         onHomeUiAction = homeViewModel::onAction,
         onBottomSheetUiAction = bottomSheetViewModel::onAction,
         getBandalartList = homeViewModel::getBandalartList,
-        getBandalartDetail = homeViewModel::getBandalartDetail,
+        getBandalart = homeViewModel::getBandalart,
         showSkeletonChanged = homeViewModel::updateSkeletonState,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         setRecentBandalartId = homeViewModel::setRecentBandalartId,
@@ -133,7 +130,7 @@ internal fun HomeScreen(
     onHomeUiAction: (HomeUiAction) -> Unit,
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     getBandalartList: (Long?) -> Unit,
-    getBandalartDetail: (Long) -> Unit,
+    getBandalart: (Long) -> Unit,
     showSkeletonChanged: (Boolean) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
@@ -159,11 +156,11 @@ internal fun HomeScreen(
     }
 
     if (uiState.isBandalartListBottomSheetOpened) {
-        uiState.bandalartDetailData?.let { detailData ->
+        uiState.bandalartData?.let { bandalart ->
             BandalartListBottomSheet(
                 bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
-                currentBandalartId = detailData.id,
-                getBandalartDetail = getBandalartDetail,
+                currentBandalartId = bandalart.id,
+                getBandalart = getBandalart,
                 setRecentBandalartId = setRecentBandalartId,
                 showSkeletonChanged = showSkeletonChanged,
                 onDismissRequest = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
@@ -174,12 +171,12 @@ internal fun HomeScreen(
     }
 
     if (uiState.isEmojiBottomSheetOpened) {
-        uiState.bandalartDetailData?.let { detailData ->
-            uiState.bandalartCellData?.let { cellData ->
+        uiState.bandalartData?.let { bandalart ->
+            uiState.bandalartCellData?.let { cell ->
                 BandalartEmojiBottomSheet(
-                    bandalartId = detailData.id,
-                    cellId = cellData.id,
-                    currentEmoji = cellData.profileEmoji,
+                    bandalartId = bandalart.id,
+                    cellId = cell.id,
+                    currentEmoji = cell.profileEmoji,
                     onEmojiSelected = { bandalartId, cellId, emoji -> onHomeUiAction(HomeUiAction.OnEmojiSelected(bandalartId, cellId, emoji)) },
                     onResult = { bottomSheetState, bottomSheetDataChangedState ->
                         onHomeUiAction(HomeUiAction.ToggleEmojiBottomSheet(bottomSheetState))
@@ -192,14 +189,14 @@ internal fun HomeScreen(
     }
 
     if (uiState.isCellBottomSheetOpened) {
-        uiState.bandalartDetailData?.let { detailData ->
-            uiState.bandalartCellData?.let { cellData ->
+        uiState.bandalartData?.let { bandalart ->
+            uiState.bandalartCellData?.let { cell ->
                 BandalartBottomSheet(
-                    bandalartId = detailData.id,
+                    bandalartId = bandalart.id,
                     isSubCell = false,
                     isMainCell = true,
-                    isBlankCell = cellData.title.isNullOrEmpty(),
-                    cellData = cellData,
+                    isBlankCell = cell.title.isNullOrEmpty(),
+                    cellData = cell,
                     onResult = { bottomSheetState, bottomSheetDataChangedState ->
                         onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(bottomSheetState))
                         bottomSheetDataChanged(bottomSheetDataChangedState)
@@ -210,12 +207,12 @@ internal fun HomeScreen(
     }
 
     if (uiState.isBandalartDeleteAlertDialogOpened) {
-        uiState.bandalartDetailData?.let { detailData ->
+        uiState.bandalartData?.let { bandalart ->
             BandalartDeleteAlertDialog(
-                title = if (detailData.title.isNullOrEmpty()) {
+                title = if (bandalart.title.isNullOrEmpty()) {
                     stringResource(R.string.delete_bandalart_dialog_empty_title)
                 } else {
-                    stringResource(R.string.delete_bandalart_dialog_title, detailData.title)
+                    stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
                 },
                 message = stringResource(R.string.delete_bandalart_dialog_message),
                 onDeleteClicked = { onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG)) },
@@ -250,21 +247,18 @@ internal fun HomeScreen(
                             drawLayer(graphicsLayer)
                         },
                 ) {
-                    uiState.bandalartDetailData?.let { detail ->
+                    uiState.bandalartData?.let { bandalart ->
                         HomeHeader(
-                            bandalartDetailData = detail,
+                            bandalartData = bandalart,
                             isDropDownMenuOpened = uiState.isDropDownMenuOpened,
                             onAction = onHomeUiAction,
                         )
                     }
-                    if (uiState.bandalartCellData != null && uiState.bandalartDetailData != null) {
+                    if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
                         BandalartChart(
-                            bandalartId = uiState.bandalartDetailData.id,
+                            bandalartId = uiState.bandalartData.id,
+                            bandalartData = uiState.bandalartData,
                             bandalartCellData = uiState.bandalartCellData,
-                            themeColor = ThemeColor(
-                                mainColor = uiState.bandalartDetailData.mainColor,
-                                subColor = uiState.bandalartDetailData.subColor,
-                            ),
                             bottomSheetDataChanged = bottomSheetDataChanged,
                         )
                     }
@@ -284,9 +278,9 @@ internal fun HomeScreen(
 }
 
 private fun updateBandalartListTitles(
-    list: List<BandalartDetailUiModel>,
+    list: List<BandalartUiModel>,
     context: Context,
-): List<BandalartDetailUiModel> {
+): List<BandalartUiModel> {
     var counter = 1
     return list.map { item ->
         if (item.title.isNullOrEmpty()) {
@@ -309,14 +303,14 @@ private fun HomeScreenSingleBandalartPreview() {
         HomeScreen(
             uiState = HomeUiState(
                 bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
-                bandalartDetailData = dummyBandalartDetailData,
+                bandalartData = dummyBandalartData,
                 bandalartCellData = dummyBandalartChartData,
             ),
             bandalartCount = listOf(dummyBandalartList[0]).size,
             onHomeUiAction = {},
             onBottomSheetUiAction = {},
             getBandalartList = {},
-            getBandalartDetail = {},
+            getBandalart = {},
             showSkeletonChanged = {},
             bottomSheetDataChanged = {},
             setRecentBandalartId = {},
@@ -331,14 +325,14 @@ private fun HomeScreenMultipleBandalartPreview() {
         HomeScreen(
             uiState = HomeUiState(
                 bandalartList = dummyBandalartList.toImmutableList(),
-                bandalartDetailData = dummyBandalartDetailData,
+                bandalartData = dummyBandalartData,
                 bandalartCellData = dummyBandalartChartData,
             ),
             bandalartCount = dummyBandalartList.size,
             onHomeUiAction = {},
             onBottomSheetUiAction = {},
             getBandalartList = {},
-            getBandalartDetail = {},
+            getBandalart = {},
             showSkeletonChanged = {},
             bottomSheetDataChanged = {},
             setRecentBandalartId = {},

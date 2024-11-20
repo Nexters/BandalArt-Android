@@ -1,6 +1,6 @@
 package com.nexters.bandalart.feature.home.model
 
-data class BandalartDetailUiModel(
+data class BandalartUiModel(
     val id: Long = 0L,
     val mainColor: String = "#3FFFBA",
     val subColor: String = "#111827",
