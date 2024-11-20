@@ -64,7 +64,7 @@ import kotlinx.coroutines.launch
 
 private const val SnackbarDuration = 1000L
 
-// TODO 서브셀을 지울 때 진짜 지우면 안됨 빈 값으로 초기화 하는게 맞을듯, 그 하위 셀들도 마찬가지
+// TODO 하위 셀을 달성했을 때, 달성율이 갱신되지 않는 문제 해결
 // TODO 현재 테스크 셀 들을 전부 완료 했을 때, 서브셀이 완료되지 않고 있는 듯
 @Composable
 internal fun HomeRoute(
