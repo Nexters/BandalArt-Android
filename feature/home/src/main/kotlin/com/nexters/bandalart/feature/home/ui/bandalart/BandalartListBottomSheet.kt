@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.nexters.bandalart.feature.home.ui.bandalart
 
 import androidx.compose.foundation.background
@@ -48,12 +46,14 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartListBottomSheet(
     bandalartList: ImmutableList<BandalartDetailUiModel>,
@@ -63,6 +63,7 @@ fun BandalartListBottomSheet(
     showSkeletonChanged: (Boolean) -> Unit,
     onCancelClicked: () -> Unit,
     createBandalart: () -> Unit,
+    onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -183,6 +184,7 @@ private fun BandalartListBottomSheetPreview() {
             showSkeletonChanged = {},
             onCancelClicked = {},
             createBandalart = {},
+            onBottomSheetUiAction = {},
         )
     }
 }

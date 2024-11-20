@@ -34,8 +34,9 @@ internal class BandalartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteBandalart(bandalartId: Long) {
-        bandalartDao.getBandalart(bandalartId).let {
-            bandalartDao.deleteBandalart(it)
+        val mainCell = bandalartDao.getBandalartMainCell(bandalartId).cell
+        mainCell.id?.let { cellId ->
+            bandalartDao.deleteCellOrReset(cellId)
         }
     }
 
@@ -92,8 +93,8 @@ internal class BandalartRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun deleteBandalartCell(bandalartId: Long, cellId: Long) {
-        bandalartDao.deleteBandalartCell(cellId)
+    override suspend fun deleteBandalartCell(cellId: Long) {
+        bandalartDao.deleteCellOrReset(cellId)
     }
 
     override suspend fun setRecentBandalartId(recentBandalartId: Long) {
@@ -116,7 +117,7 @@ internal class BandalartRepositoryImpl @Inject constructor(
         return completedBandalartIdDataSource.checkCompletedBandalartId(bandalartId)
     }
 
-    override suspend fun deleteBandalartId(bandalartId: Long) {
+    override suspend fun deleteCompletedBandalartId(bandalartId: Long) {
         completedBandalartIdDataSource.deleteBandalartId(bandalartId)
     }
 }

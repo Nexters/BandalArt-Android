@@ -1,6 +1,5 @@
-package com.nexters.bandalart.feature.home
+package com.nexters.bandalart.feature.home.viewmodel
 
-import android.graphics.Bitmap
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +8,7 @@ import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.feature.home.mapper.toEntity
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.feature.home.model.BandalartDetailUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,55 +20,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import com.nexters.bandalart.core.ui.R
-
-/**
- * HomeUiState
- *
- * @param bandalartList 반다라트 목록
- * @param bandalartDetailData 반다라트 상세 데이터, 서버와의 통신을 성공하면 not null
- * @param bandalartCellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
- * @param isBandalartDeleted 표가 삭제됨
- * @param isDropDownMenuOpened 드롭 다운 메뉴가 열림
- * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
- * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
- * @param isCellBottomSheetOpened 반다라트 셀 바텀시트가 열림
- * @param isEmojiBottomSheetOpened 반다라트 이모지 바텀시트가 열림
- * @param isBottomSheetDataChanged 바텀시트의 데이터가 변경됨
- * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
- * @param isBandalartCompleted 반다라트 목표를 달성함
- * @param isLoading 로딩 상태
- * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
- */
-
-data class HomeUiState(
-    val bandalartList: ImmutableList<BandalartDetailUiModel> = persistentListOf(),
-    val bandalartDetailData: BandalartDetailUiModel? = null,
-    val bandalartCellData: BandalartCellUiModel? = null,
-    val isBandalartDeleted: Boolean = false,
-    val isDropDownMenuOpened: Boolean = false,
-    val isBandalartDeleteAlertDialogOpened: Boolean = false,
-    val isBandalartListBottomSheetOpened: Boolean = false,
-    val isCellBottomSheetOpened: Boolean = false,
-    val isEmojiBottomSheetOpened: Boolean = false,
-    val isBottomSheetDataChanged: Boolean = false,
-    val isBottomSheetMainCellChanged: Boolean = false,
-    val isBandalartCompleted: Boolean = false,
-    val isLoading: Boolean = false,
-    val isShowSkeleton: Boolean = false,
-    val isShared: Boolean = false,
-)
-
-sealed interface HomeUiEvent {
-    data class NavigateToComplete(
-        val id: Long,
-        val title: String,
-        val profileEmoji: String,
-    ) : HomeUiEvent
-
-    data class ShowSnackbar(val message: UiText) : HomeUiEvent
-    data class ShowToast(val message: UiText) : HomeUiEvent
-    data class ShareBandalart(val bitmap: ImageBitmap): HomeUiEvent
-}
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -84,8 +34,63 @@ class HomeViewModel @Inject constructor(
     private val _uiEvent = Channel<HomeUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    private val bandalartDetailFlow = uiState
+        .map { it.bandalartDetailData }
+        .filterNotNull()
+        .distinctUntilChanged()
+
     init {
         _uiState.update { it.copy(isShowSkeleton = true) }
+        observeBandalartCompletion()
+    }
+
+    fun onAction(action: HomeUiAction) {
+        when (action) {
+            is HomeUiAction.GetHomeList -> getBandalartList(action.bandalartId)
+            is HomeUiAction.GetHomeDetail -> getBandalartDetail(action.bandalartId, action.isBandalartCompleted)
+            is HomeUiAction.CreateHome -> createBandalart()
+            is HomeUiAction.DeleteHome -> deleteBandalart(action.bandalartId)
+            is HomeUiAction.UpdateHomeEmoji -> updateBandalartEmoji(
+                action.bandalartId,
+                action.cellId,
+                action.updateBandalartEmojiModel,
+            )
+
+            is HomeUiAction.OnShareButtonClick -> updateShareState()
+            is HomeUiAction.OnDropDownMenuClick -> toggleDropDownMenu(true)
+            is HomeUiAction.OpenHomeDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(true)
+            is HomeUiAction.OpenEmojiBottomSheet -> toggleEmojiBottomSheet(true)
+            is HomeUiAction.OpenCellBottomSheet -> toggleCellBottomSheet(true)
+            is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
+            is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)
+            is HomeUiAction.OpenHomeListBottomSheet -> toggleBandalartListBottomSheet(true)
+            is HomeUiAction.NavigateToComplete -> {}
+        }
+    }
+
+    private fun observeBandalartCompletion() {
+        viewModelScope.launch {
+            bandalartDetailFlow.collect { bandalart ->
+                if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
+                    val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
+                    if (isBandalartCompleted) {
+                        navigateToComplete(bandalart.id, bandalart.title, bandalart.profileEmoji.orEmpty())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun navigateToComplete(bandalartId: Long, title: String, profileEmoji: String) {
+        viewModelScope.launch {
+            _uiEvent.send(
+                HomeUiEvent.NavigateToComplete(
+                    id = bandalartId,
+                    title = title,
+                    profileEmoji = profileEmoji,
+                ),
+            )
+        }
     }
 
     fun getBandalartList(bandalartId: Long? = null) {
@@ -189,9 +194,9 @@ class HomeViewModel @Inject constructor(
                             mainColor = taskCell.mainColor,
                             subColor = taskCell.subColor,
                             parentId = taskCell.parentId,
-                            children = emptyList()
+                            children = emptyList(),
                         )
-                    }
+                    },
                 )
             }
 
@@ -208,12 +213,12 @@ class HomeViewModel @Inject constructor(
                         mainColor = mainCell?.mainColor,
                         subColor = mainCell?.subColor,
                         parentId = mainCell?.parentId,
-                        children = children
+                        children = children,
                     ),
                     isShowSkeleton = false,
                 )
             }
-            bottomSheetDataChanged(flag = false)
+            updateBottomSheetData(flag = false)
         }
     }
 
@@ -249,7 +254,7 @@ class HomeViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isBandalartDeleted = true)
             }
-            openBandalartDeleteAlertDialog(false)
+            toggleBandalartDeleteAlertDialog(false)
             getBandalartList()
             deleteBandalartId(bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
@@ -266,7 +271,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onShareButtonClick() {
+    private fun updateShareState() {
         _uiState.update { it.copy(isShared = true) }
     }
 
@@ -277,31 +282,31 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun openDropDownMenu(flag: Boolean) {
+    private fun toggleDropDownMenu(flag: Boolean) {
         _uiState.update { it.copy(isDropDownMenuOpened = flag) }
     }
 
-    fun openBandalartDeleteAlertDialog(flag: Boolean) {
+    fun toggleBandalartDeleteAlertDialog(flag: Boolean) {
         _uiState.update { it.copy(isBandalartDeleteAlertDialogOpened = flag) }
     }
 
-    fun openEmojiBottomSheet(flag: Boolean) {
+    fun toggleEmojiBottomSheet(flag: Boolean) {
         _uiState.update { it.copy(isEmojiBottomSheetOpened = flag) }
     }
 
-    fun openCellBottomSheet(flag: Boolean) {
+    fun toggleCellBottomSheet(flag: Boolean) {
         _uiState.update { it.copy(isCellBottomSheetOpened = flag) }
     }
 
-    fun bottomSheetDataChanged(flag: Boolean) {
+    fun updateBottomSheetData(flag: Boolean) {
         _uiState.update { it.copy(isBottomSheetDataChanged = flag) }
     }
 
-    fun showSkeletonChanged(flag: Boolean) {
+    fun updateSkeletonState(flag: Boolean) {
         _uiState.update { it.copy(isShowSkeleton = flag) }
     }
 
-    fun openBandalartListBottomSheet(flag: Boolean) {
+    fun toggleBandalartListBottomSheet(flag: Boolean) {
         _uiState.update { it.copy(isBandalartListBottomSheetOpened = flag) }
     }
 
@@ -321,7 +326,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
+    private suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
         return withContext(viewModelScope.coroutineContext) {
             bandalartRepository.checkCompletedBandalartId(bandalartId)
         }
@@ -329,23 +334,7 @@ class HomeViewModel @Inject constructor(
 
     private fun deleteBandalartId(bandalartId: Long) {
         viewModelScope.launch {
-            bandalartRepository.deleteBandalartId(bandalartId)
-        }
-    }
-
-    fun navigateToComplete() {
-        viewModelScope.launch {
-            uiState.value.bandalartDetailData?.let { detail ->
-                detail.title?.let { title ->
-                    _uiEvent.send(
-                        HomeUiEvent.NavigateToComplete(
-                            id = detail.id,
-                            title = title,
-                            profileEmoji = detail.profileEmoji.orEmpty(),
-                        ),
-                    )
-                }
-            }
+            bandalartRepository.deleteCompletedBandalartId(bandalartId)
         }
     }
 }

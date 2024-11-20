@@ -1,4 +1,4 @@
-package com.nexters.bandalart.feature.home
+package com.nexters.bandalart.feature.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,37 +16,49 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * BottomSheetUiState
- *
- * @param cellData 반다라트 표의 데이터, 서버와의 통신을 성공하면 not null
- * @param cellDataForCheck 반다라트 표의 데이터 롼료 버튼 활성화를 위한 copy 데이터
- * @param isCellDataCopied 데이터 copy가 됐는지 판단함
- * @param isCellUpdated 반다라트 표의 특정 셀이 수정됨
- * @param isCellDeleted 반다라트의 표의 특정 셀의 삭제됨(비어있는 셀로 전환)
- * @param isDatePickerOpened 데이트 피커가 열림
- * @param isEmojiPickerOpened 이모지 피커가 열림
- * @param isDeleteCellDialogOpened 셀 삭제 시, 경고 창이 열림
- */
-
-data class BottomSheetUiState(
-    val cellData: BandalartCellUiModel = BandalartCellUiModel(),
-    val cellDataForCheck: BandalartCellUiModel = BandalartCellUiModel(),
-    val isCellDataCopied: Boolean = false,
-    val isCellUpdated: Boolean = false,
-    val isCellDeleted: Boolean = false,
-    val isDatePickerOpened: Boolean = false,
-    val isEmojiPickerOpened: Boolean = false,
-    val isDeleteCellDialogOpened: Boolean = false,
-)
-
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
     private val bandalartRepository: BandalartRepository,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(BottomSheetUiState())
     val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
+
+    fun onAction(action: BottomSheetUiAction) {
+        when (action) {
+            is BottomSheetUiAction.CopyCellData -> copyCellData(_uiState.value.cellData)
+            is BottomSheetUiAction.UpdateBandalartMainCell -> updateBandalartMainCell(
+                bandalartId = 0L,
+                cellId = 0L,
+                updateBandalartMainCellModel = UpdateBandalartMainCellModel(
+                    mainColor = "",
+                    subColor = "",
+                ),
+            )
+            is BottomSheetUiAction.UpdateBandalartSubCell -> updateBandalartSubCell(
+                bandalartId = 0L,
+                cellId = 0L,
+                updateBandalartSubCellModel = UpdateBandalartSubCellModel(),
+            )
+            is BottomSheetUiAction.UpdateBandalartTaskCell -> updateBandalartTaskCell(
+                bandalartId = 0L,
+                cellId = 0L,
+                updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(),
+            )
+            is BottomSheetUiAction.DeleteBandalartCell -> deleteBandalartCell(
+                cellId = 0L,
+            )
+            is BottomSheetUiAction.OpenDeleteCellDialog -> openDeleteCellDialog(true)
+            is BottomSheetUiAction.OpenDatePicker -> openDatePicker(true)
+            is BottomSheetUiAction.OpenEmojiPicker -> openEmojiPicker(true)
+            is BottomSheetUiAction.EmojiSelected -> emojiSelected("")
+            is BottomSheetUiAction.TitleChanged -> titleChanged("")
+            is BottomSheetUiAction.ColorChanged -> colorChanged("", "")
+            is BottomSheetUiAction.DueDateChanged -> dueDateChanged("")
+            is BottomSheetUiAction.DescriptionChanged -> descriptionChanged("")
+            is BottomSheetUiAction.CompletionChanged -> completionChanged(false)
+            is BottomSheetUiAction.BottomSheetClosed -> bottomSheetClosed()
+        }
+    }
 
     fun copyCellData(cellData: BandalartCellUiModel) {
         _uiState.update {
@@ -91,12 +103,9 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun deleteBandalartCell(
-        bandalartId: Long,
-        cellId: Long,
-    ) {
+    fun deleteBandalartCell(cellId: Long) {
         viewModelScope.launch {
-            bandalartRepository.deleteBandalartCell(bandalartId, cellId)
+            bandalartRepository.deleteBandalartCell(cellId)
         }
     }
 

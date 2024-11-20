@@ -97,6 +97,8 @@ import com.nexters.bandalart.feature.home.model.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiState
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.Locale
@@ -158,7 +160,7 @@ fun BandalartBottomSheetContent(
     ) -> Unit,
     bottomSheetClosed: () -> Unit,
     copyCellData: (BandalartCellUiModel) -> Unit,
-    deleteBandalartCell: (Long, Long) -> Unit,
+    deleteBandalartCell: (Long) -> Unit,
     openDeleteCellDialog: (Boolean) -> Unit,
     openEmojiPicker: (Boolean) -> Unit,
     openDatePicker: (Boolean) -> Unit,
@@ -217,10 +219,7 @@ fun BandalartBottomSheetContent(
             } else null,
             onDeleteClicked = {
                 scope.launch {
-                    deleteBandalartCell(
-                        bandalartId,
-                        uiState.cellData.id,
-                    )
+                    deleteBandalartCell(uiState.cellData.id)
                     openDeleteCellDialog(false)
                     bottomSheetState.hide()
                 }.invokeOnCompletion {
@@ -621,7 +620,7 @@ private fun BandalartMainCellBottomSheetPreview() {
         onResult = { _, _ -> },
         bottomSheetClosed = {},
         copyCellData = {},
-        deleteBandalartCell = { _, _ -> },
+        deleteBandalartCell = {},
         openDeleteCellDialog = {},
         openEmojiPicker = {},
         openDatePicker = {},
@@ -654,7 +653,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             onResult = { _, _ -> },
             bottomSheetClosed = {},
             copyCellData = {},
-            deleteBandalartCell = { _, _ -> },
+            deleteBandalartCell = {},
             openDeleteCellDialog = {},
             openEmojiPicker = {},
             openDatePicker = {},
@@ -688,7 +687,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             onResult = { _, _ -> },
             bottomSheetClosed = {},
             copyCellData = {},
-            deleteBandalartCell = { _, _ -> },
+            deleteBandalartCell = {},
             openDeleteCellDialog = {},
             openEmojiPicker = {},
             openDatePicker = {},

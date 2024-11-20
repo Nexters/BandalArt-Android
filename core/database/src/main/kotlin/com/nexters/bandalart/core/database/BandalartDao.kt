@@ -115,6 +115,10 @@ interface BandalartDao {
     @Query("SELECT * FROM bandalart_cells WHERE bandalartId = :bandalartId AND parentId IS NULL")
     suspend fun getBandalartMainCell(bandalartId: Long): BandalartCellWithChildrenDto
 
+    /** 특정 셀 조회 */
+    @Query("SELECT * FROM bandalart_cells WHERE id = :cellId")
+    suspend fun getCell(cellId: Long): BandalartCellDBEntity
+
     /** 특정 셀과 그 자식 셀들 조회 */
     @Transaction
     @Query("SELECT * FROM bandalart_cells WHERE id = :cellId")
@@ -210,8 +214,66 @@ interface BandalartDao {
     suspend fun deleteBandalart(bandalart: BandalartDBEntity)
 
     /** 특정 셀 삭제 */
-    @Query("DELETE FROM bandalart_cells WHERE id = :cellId")
-    suspend fun deleteBandalartCell(cellId: Long)
+    @Transaction
+    suspend fun deleteCellOrReset(cellId: Long) {
+        val cell = getCell(cellId)
+        when {
+            // MainCell (부모가 없는 경우)
+            cell.parentId == null -> {
+                // MainCell 의 경우 해당 반다라트 자체를 삭제
+                deleteBandalart(getBandalart(cell.bandalartId))
+            }
+
+            // TaskCell (부모의 부모가 있는 경우)
+            getCell(cell.parentId).parentId != null -> resetTaskCell(cellId)
+
+            // SubCell (부모가 있고, 그 부모가 MainCell인 경우)
+            else -> resetSubCellWithChildren(cellId)
+        }
+    }
+
+    @Transaction
+    suspend fun resetSubCellWithChildren(cellId: Long) {
+        val subCell = getCell(cellId)
+        // SubCell 초기화
+        updateCell(
+            subCell.copy(
+                title = "",
+                description = null,
+                dueDate = null,
+                isCompleted = false,
+                completionRatio = 0,
+            ),
+        )
+
+        // 자식 TaskCell 들도 초기화
+        val taskCells = getChildCells(cellId)
+        taskCells.forEach { taskCell ->
+            updateCell(
+                taskCell.copy(
+                    title = "",
+                    description = null,
+                    dueDate = null,
+                    isCompleted = false,
+                    completionRatio = 0,
+                ),
+            )
+        }
+    }
+
+    @Transaction
+    suspend fun resetTaskCell(cellId: Long) {
+        val taskCell = getCell(cellId)
+        updateCell(
+            taskCell.copy(
+                title = "",
+                description = null,
+                dueDate = null,
+                isCompleted = false,
+                completionRatio = 0,
+            ),
+        )
+    }
 
     // 완료율 관련 함수들
     /** 특정 반다라트의 모든 셀 완료율 조회 */

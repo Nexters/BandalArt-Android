@@ -10,7 +10,6 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 
 /** 반다라트 API */
 interface BandalartRepository {
-
     /**
      * 반다라트 생성
      */
@@ -99,10 +98,9 @@ interface BandalartRepository {
 
     /**
      * 반다라트 셀 삭제
-     * @param bandalartId 메인 셀 고유 id
      * @param cellId 셀 고유 id
      */
-    suspend fun deleteBandalartCell(bandalartId: Long, cellId: Long)
+    suspend fun deleteBandalartCell(cellId: Long)
 
     /**
      * 최근에 수정한 반다라트 고유 id 수정
@@ -114,12 +112,6 @@ interface BandalartRepository {
      * 최근에 수정한 반다라트 고유 id 조회
      */
     suspend fun getRecentBandalartId(): Long
-
-//  /**
-//   * 반다라트 공유
-//   * @param bandalartKey 반다라트 고유 id
-//   */
-//  suspend fun shareBandalart(bandalartKey: String): BandalartShareEntity?
 
     /**
      * 바로 직전 상태의 반다라트 id 와 목표달성 여부를 가진 목록을 조회
@@ -143,5 +135,5 @@ interface BandalartRepository {
      * 삭제한 반다라트를 제거
      * @param bandalartId 반다라트 고유 id
      */
-    suspend fun deleteBandalartId(bandalartId: Long)
+    suspend fun deleteCompletedBandalartId(bandalartId: Long)
 }
