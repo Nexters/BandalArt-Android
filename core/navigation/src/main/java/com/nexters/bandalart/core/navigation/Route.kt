@@ -17,5 +17,6 @@ sealed interface Route {
         val bandalartId: Long,
         val bandalartTitle: String,
         val bandalartProfileEmoji: String?,
+        val bandalartChartImageUri: String,
     ) : Route
 }

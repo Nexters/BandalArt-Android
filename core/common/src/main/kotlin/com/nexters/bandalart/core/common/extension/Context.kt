@@ -2,6 +2,7 @@ package com.nexters.bandalart.core.common.extension
 
 import android.content.Context
 import android.graphics.Bitmap.CompressFormat.PNG
+import android.net.Uri
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.ShareCompat
@@ -27,6 +28,29 @@ fun Context.externalShareForBitmap(bitmap: ImageBitmap) {
             .startChooser()
     } catch (e: Exception) {
         Timber.e("[externalShareFoBitmap] message: ${e.message}")
+    }
+}
+
+@Suppress("TooGenericExceptionCaught")
+fun Context.bitmapToFileUri(bitmap: ImageBitmap): Uri? {
+    return try {
+        val file = File(bitmap.saveToDisk(this))
+        FileProvider.getUriForFile(this, "$packageName.provider", file)
+    } catch (e: Exception) {
+        Timber.e("Failed to convert bitmap to URI: ${e.message}")
+        null
+    }
+}
+
+@Suppress("TooGenericExceptionCaught")
+fun Context.shareImage(imageUri: Uri) {
+    try {
+        ShareCompat.IntentBuilder(this)
+            .setStream(imageUri)
+            .setType("image/png")
+            .startChooser()
+    } catch (e: Exception) {
+        Timber.e("Failed to share image: ${e.message}")
     }
 }
 

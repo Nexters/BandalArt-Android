@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import com.nexters.bandalart.core.ui.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -50,7 +51,14 @@ class HomeViewModel @Inject constructor(
                 if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
                     val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
                     if (isBandalartCompleted) {
-                        navigateToComplete(bandalart.id, bandalart.title, bandalart.profileEmoji.orEmpty())
+                        updateCaptureState()
+                        delay(1000L)
+                        navigateToComplete(
+                            bandalart.id,
+                            bandalart.title,
+                            bandalart.profileEmoji.orEmpty(),
+                            _uiState.value.bandalartChartUrl.orEmpty(),
+                        )
                     }
                 }
             }
@@ -95,20 +103,20 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.ToggleDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(action.flag)
             is HomeUiAction.ToggleEmojiBottomSheet -> toggleEmojiBottomSheet(action.flag)
             is HomeUiAction.ToggleCellBottomSheet -> toggleCellBottomSheet(action.flag)
-            is HomeUiAction.ShareBandalart -> shareBandalart(action.bitmap)
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)
             is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
         }
     }
 
-    private fun navigateToComplete(bandalartId: Long, title: String, profileEmoji: String) {
+    private fun navigateToComplete(bandalartId: Long, title: String, profileEmoji: String, bandalartChart: String) {
         viewModelScope.launch {
             _uiEvent.send(
                 HomeUiEvent.NavigateToComplete(
                     id = bandalartId,
                     title = title,
                     profileEmoji = profileEmoji,
+                    bandalartChart = bandalartChart,
                 ),
             )
         }
@@ -247,9 +255,9 @@ class HomeViewModel @Inject constructor(
                 // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 id 를 전달
                 getBandalartList(bandalart.id)
                 // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
-                setRecentBandalartId(bandalart.id!!)
+                setRecentBandalartId(bandalart.id)
                 // 새로운 반다라트를 로컬에 저장
-                upsertBandalartId(bandalart.id!!)
+                upsertBandalartId(bandalart.id)
                 _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
             }
         }
@@ -284,10 +292,21 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isShared = true) }
     }
 
-    private fun shareBandalart(bitmap: ImageBitmap) {
+    fun shareBandalart(bitmap: ImageBitmap) {
         viewModelScope.launch {
             _uiState.update { it.copy(isShared = false) }
             _uiEvent.send(HomeUiEvent.ShareBandalart(bitmap))
+        }
+    }
+
+    private fun updateCaptureState() {
+        _uiState.update { it.copy(isCaptured = true) }
+    }
+
+    fun captureBandalart(bitmap: ImageBitmap) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isCaptured = false) }
+            _uiEvent.send(HomeUiEvent.CaptureBandalart(bitmap))
         }
     }
 
@@ -345,5 +364,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             bandalartRepository.deleteCompletedBandalartId(bandalartId)
         }
+    }
+
+    fun updateBandalartChartUrl(url: String) {
+        _uiState.update { it.copy(bandalartChartUrl = url) }
     }
 }

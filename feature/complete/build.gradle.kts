@@ -20,5 +20,8 @@ dependencies {
     implementations(
         libs.lottie.compose,
         libs.timber,
+        libs.coil.compose,
+
+        libs.bundles.landscapist,
     )
 }

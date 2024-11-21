@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
-import androidx.compose.ui.graphics.ImageBitmap
 import com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel
 
 sealed interface HomeUiAction {
@@ -22,7 +21,6 @@ sealed interface HomeUiAction {
     data class ToggleEmojiBottomSheet(val flag: Boolean) : HomeUiAction
     data class ToggleCellBottomSheet(val flag: Boolean) : HomeUiAction
     data class ToggleBandalartListBottomSheet(val flag: Boolean) : HomeUiAction
-    data class ShareBandalart(val bitmap: ImageBitmap) : HomeUiAction
     data object BottomSheetDataChanged : HomeUiAction
     data object ShowSkeletonChanged : HomeUiAction
 }

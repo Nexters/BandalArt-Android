@@ -1,6 +1,6 @@
 package com.nexters.bandalart.feature.complete
 
-import androidx.compose.ui.graphics.ImageBitmap
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +29,7 @@ class CompleteViewModel @Inject constructor(
     private val id = savedStateHandle.toRoute<Route.Complete>().bandalartId
     private val title = savedStateHandle.toRoute<Route.Complete>().bandalartTitle
     private val profileEmoji = savedStateHandle.toRoute<Route.Complete>().bandalartProfileEmoji ?: ""
+    private val bandalartChartImageUri = savedStateHandle.toRoute<Route.Complete>().bandalartChartImageUri
 
     private val _uiState = MutableStateFlow(CompleteUiState())
     val uiState: StateFlow<CompleteUiState> = this._uiState.asStateFlow()
@@ -36,20 +38,15 @@ class CompleteViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
+        Timber.d("imageUri: $bandalartChartImageUri")
         initComplete()
-        viewModelScope.launch {
-            bandalartRepository.upsertBandalartId(
-                bandalartId = id,
-                isCompleted = true,
-            )
-        }
+        addCompleteBandalartId()
     }
 
     fun onAction(action: CompleteUiAction) {
         when (action) {
-            is CompleteUiAction.OnShareButtonClick -> updateShareState()
+            is CompleteUiAction.OnShareButtonClick -> shareBandalart()
             is CompleteUiAction.OnBackButtonClick -> navigateBack()
-            is CompleteUiAction.ShareBandalart -> shareBandalart(action.bitmap)
         }
     }
 
@@ -59,18 +56,23 @@ class CompleteViewModel @Inject constructor(
                 id = id,
                 title = title,
                 profileEmoji = profileEmoji,
+                bandalartChartImageUri = bandalartChartImageUri,
             )
         }
     }
 
-    private fun updateShareState() {
-        _uiState.update { it.copy(isShared = true) }
+    private fun addCompleteBandalartId() {
+        viewModelScope.launch {
+            bandalartRepository.upsertBandalartId(
+                bandalartId = id,
+                isCompleted = true,
+            )
+        }
     }
 
-    private fun shareBandalart(bitmap: ImageBitmap) {
+    private fun shareBandalart() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isShared = false) }
-            _uiEvent.send(CompleteUiEvent.ShareBandalart(bitmap))
+            _uiEvent.send(CompleteUiEvent.ShareBandalart(Uri.parse(bandalartChartImageUri)))
         }
     }
 

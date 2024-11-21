@@ -12,7 +12,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.homeScreen(
-    navigateToComplete: (Long, String, String) -> Unit,
+    navigateToComplete: (Long, String, String, String) -> Unit,
     onShowSnackbar: suspend (String) -> Boolean,
 ) {
     composable<Route.Home> {

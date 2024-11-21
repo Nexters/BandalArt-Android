@@ -38,6 +38,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 fun CompleteBandalart(
     profileEmoji: String,
     title: String,
+    bandalartChartImageUri: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -103,6 +104,14 @@ fun CompleteBandalart(
                     letterSpacing = (-0.32).sp,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+                NetworkImage(
+                    imageUri = bandalartChartImageUri,
+                    contentDescription = "Complete Bandalart Chart Image",
+                    modifier = Modifier
+                        .width(328.dp)
+                        .height(328.dp),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -115,6 +124,7 @@ private fun CompleteBandalartPreview() {
         CompleteBandalart(
             profileEmoji = "😎",
             title = "발전하는 예진",
+            bandalartChartImageUri = "",
         )
     }
 }

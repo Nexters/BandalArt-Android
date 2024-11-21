@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.complete
 
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,13 +14,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -36,7 +31,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.core.common.extension.externalShareForBitmap
+import com.nexters.bandalart.core.common.extension.shareImage
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -68,7 +63,7 @@ internal fun CompleteRoute(
                 onNavigateBack()
             }
             is CompleteUiEvent.ShareBandalart -> {
-                context.externalShareForBitmap(event.bitmap)
+                context.shareImage(event.imageUri)
             }
         }
     }
@@ -87,7 +82,6 @@ internal fun CompleteScreen(
     modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
-    val graphicsLayer = rememberGraphicsLayer()
 
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(
@@ -98,12 +92,6 @@ internal fun CompleteScreen(
         composition = composition,
         iterations = LottieConstants.IterateForever,
     )
-
-    LaunchedEffect(key1 = uiState.isShared) {
-        if (uiState.isShared) {
-            onAction(CompleteUiAction.ShareBandalart(graphicsLayer.toImageBitmap()))
-        }
-    }
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -129,13 +117,13 @@ internal fun CompleteScreen(
                         lineHeight = 30.8.sp,
                         textAlign = TextAlign.Center,
                     )
-
                     Spacer(modifier = Modifier.height(32.dp))
                     Text(text = "🥳", fontSize = 100.sp)
                     Spacer(modifier = Modifier.height(32.dp))
                     CompleteBandalart(
                         profileEmoji = uiState.profileEmoji,
                         title = uiState.title,
+                        bandalartChartImageUri = uiState.bandalartChartImageUri,
                         modifier = Modifier.width(328.dp),
                     )
                     Spacer(modifier = Modifier.height(32.dp))
@@ -158,7 +146,9 @@ internal fun CompleteScreen(
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -178,25 +168,21 @@ internal fun CompleteScreen(
                         CompleteBandalart(
                             profileEmoji = uiState.profileEmoji,
                             title = uiState.title,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .drawWithContent {
-                                    graphicsLayer.record { this@drawWithContent.drawContent() }
-                                    drawLayer(graphicsLayer)
-                                },
-                        )
-                        // TODO MVP 제외, 이번에 추가해도 좋을듯
-                        // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
-                        BandalartButton(
-                            onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                            text = stringResource(R.string.complete_share),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = 32.dp),
+                            bandalartChartImageUri = uiState.bandalartChartImageUri,
+                            modifier = Modifier.align(Alignment.Center),
                         )
                     }
                 }
+                // TODO MVP 제외, 이번에 추가해도 좋을듯
+                // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
+                BandalartButton(
+                    onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
+                    text = stringResource(R.string.complete_share),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 32.dp),
+                )
             }
         }
     }

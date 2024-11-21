@@ -12,8 +12,9 @@ fun NavController.navigateToComplete(
     bandalartId: Long,
     bandalartTitle: String,
     bandalartProfileEmoji: String?,
+    bandalartChartImageUri: String,
 ) {
-    this.navigate(Route.Complete(bandalartId, bandalartTitle, bandalartProfileEmoji), navOptions)
+    this.navigate(Route.Complete(bandalartId, bandalartTitle, bandalartProfileEmoji, bandalartChartImageUri), navOptions)
 }
 
 fun NavGraphBuilder.completeScreen(

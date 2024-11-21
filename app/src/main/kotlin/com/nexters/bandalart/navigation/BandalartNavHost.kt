@@ -33,11 +33,12 @@ fun BandalartNavHost(
             navigateToHome = navController::navigateToHome,
         )
         homeScreen(
-            navigateToComplete = { id, title, emoji ->
+            navigateToComplete = { id, title, emoji, imageUri ->
                 navController.navigateToComplete(
                     bandalartId = id,
                     bandalartTitle = title,
                     bandalartProfileEmoji = emoji,
+                    bandalartChartImageUri = imageUri,
                 )
             },
             onShowSnackbar = onShowSnackbar,

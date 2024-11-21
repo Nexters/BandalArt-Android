@@ -38,4 +38,6 @@ data class HomeUiState(
     val isBandalartCompleted: Boolean = false,
     val isShowSkeleton: Boolean = false,
     val isShared: Boolean = false,
+    val isCaptured: Boolean = false,
+    val bandalartChartUrl: String? = null,
 )

@@ -47,13 +47,13 @@ fun BandalartChart(
     )
 
     Layout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp)),
         content = {
             for (index in subCellList.indices) {
                 Box(
-                    modifier
+                    modifier = Modifier
                         .layoutId(stringResource(R.string.home_layout_id, index + 1))
                         .clip(RoundedCornerShape(12.dp))
                         .background(color = Gray300),
@@ -70,7 +70,7 @@ fun BandalartChart(
                 )
             }
             Box(
-                modifier
+                modifier = Modifier
                     .layoutId(stringResource(R.string.home_main_id))
                     .clip(RoundedCornerShape(10.dp))
                     .background(color = bandalartData.mainColor.toColor()),

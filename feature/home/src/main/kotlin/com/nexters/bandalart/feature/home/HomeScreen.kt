@@ -2,6 +2,7 @@ package com.nexters.bandalart.feature.home
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
@@ -61,7 +64,7 @@ private const val SnackbarDuration = 1000L
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 @Composable
 internal fun HomeRoute(
-    navigateToComplete: (Long, String, String) -> Unit,
+    navigateToComplete: (Long, String, String, String) -> Unit,
     onShowSnackbar: suspend (String) -> Boolean,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
@@ -81,6 +84,7 @@ internal fun HomeRoute(
                     event.id,
                     event.title,
                     event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
+                    event.bandalartChart,
                 )
             }
 
@@ -101,6 +105,10 @@ internal fun HomeRoute(
             is HomeUiEvent.ShareBandalart -> {
                 context.externalShareForBitmap(event.bitmap)
             }
+
+            is HomeUiEvent.CaptureBandalart -> {
+                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+            }
         }
     }
 
@@ -114,6 +122,8 @@ internal fun HomeRoute(
         showSkeletonChanged = homeViewModel::updateSkeletonState,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         setRecentBandalartId = homeViewModel::setRecentBandalartId,
+        shareBandalart = homeViewModel::shareBandalart,
+        captureBandalart = homeViewModel::captureBandalart,
         modifier = modifier,
     )
 }
@@ -129,10 +139,13 @@ internal fun HomeScreen(
     showSkeletonChanged: (Boolean) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
+    shareBandalart: (ImageBitmap) -> Unit,
+    captureBandalart: (ImageBitmap) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val graphicsLayer = rememberGraphicsLayer()
+    val homeGraphicsLayer = rememberGraphicsLayer()
+    val completeGraphicsLayer = rememberGraphicsLayer()
 
     LaunchedEffect(key1 = Unit) {
         getBandalartList(null)
@@ -146,7 +159,13 @@ internal fun HomeScreen(
 
     LaunchedEffect(key1 = uiState.isShared) {
         if (uiState.isShared) {
-            onHomeUiAction(HomeUiAction.ShareBandalart(graphicsLayer.toImageBitmap()))
+            shareBandalart(homeGraphicsLayer.toImageBitmap())
+        }
+    }
+
+    LaunchedEffect(key1 = uiState.isBandalartCompleted) {
+        if (uiState.isBandalartCompleted) {
+            captureBandalart(completeGraphicsLayer.toImageBitmap())
         }
     }
 
@@ -238,8 +257,8 @@ internal fun HomeScreen(
                 Column(
                     modifier = Modifier
                         .drawWithContent {
-                            graphicsLayer.record { this@drawWithContent.drawContent() }
-                            drawLayer(graphicsLayer)
+                            homeGraphicsLayer.record { this@drawWithContent.drawContent() }
+                            drawLayer(homeGraphicsLayer)
                         },
                 ) {
                     uiState.bandalartData?.let { bandalart ->
@@ -255,6 +274,11 @@ internal fun HomeScreen(
                             bandalartData = uiState.bandalartData,
                             bandalartCellData = uiState.bandalartCellData,
                             bottomSheetDataChanged = bottomSheetDataChanged,
+                            modifier = Modifier
+                                .drawWithContent {
+                                    completeGraphicsLayer.record { this@drawWithContent.drawContent() }
+                                    drawLayer(completeGraphicsLayer)
+                                },
                         )
                     }
                     Spacer(modifier = Modifier.height(64.dp))
@@ -309,6 +333,8 @@ private fun HomeScreenSingleBandalartPreview() {
             showSkeletonChanged = {},
             bottomSheetDataChanged = {},
             setRecentBandalartId = {},
+            shareBandalart = {},
+            captureBandalart = {},
         )
     }
 }
@@ -331,6 +357,8 @@ private fun HomeScreenMultipleBandalartPreview() {
             showSkeletonChanged = {},
             bottomSheetDataChanged = {},
             setRecentBandalartId = {},
+            shareBandalart = {},
+            captureBandalart = {},
         )
     }
 }

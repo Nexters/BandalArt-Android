@@ -13,4 +13,5 @@ data class CompleteUiState(
     val title: String = "",
     val profileEmoji: String = "",
     val isShared: Boolean = false,
+    val bandalartChartImageUri: String = "",
 )
