@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -60,6 +62,7 @@ data class SubCell(
     val subCellData: BandalartCellUiModel?,
 )
 
+// TODO 메인 셀 달성할 때와 미달성일 때가 색상 변화가 티가 안나는 문제 해결
 @Composable
 fun BandalartCell(
     bandalartId: Long,
@@ -77,9 +80,15 @@ fun BandalartCell(
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
     val backgroundColor = when {
+        // 메인 목표 달성
+        isMainCell && cellData.isCompleted -> bandalartData.mainColor.toColor().copy(alpha = 0.6f)
+        // 메인 목표 미달성
         isMainCell -> bandalartData.mainColor.toColor()
+        // 서브 목표 달성
         cellInfo.isSubCell and cellData.isCompleted -> bandalartData.subColor.toColor().copy(alpha = 0.6f)
+        // 서브 목표 미달성
         cellInfo.isSubCell and !cellData.isCompleted -> bandalartData.subColor.toColor()
+        // 태스크 목표 달성
         cellData.isCompleted -> Gray400
         else -> White
     }
