@@ -1,9 +1,11 @@
 package com.nexters.bandalart.core.designsystem.theme
 
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.designsystem.R
 
 val pretendard = FontFamily(
@@ -24,4 +26,13 @@ val neurimboGothicRegular = FontFamily(
 
 val koronaOneRegular = FontFamily(
     Font(R.font.krona_one_regular, FontWeight.Normal, FontStyle.Normal),
+)
+
+val BottomSheetContent = TextStyle(
+    color = Gray900,
+    fontFamily = pretendard,
+    fontWeight = FontWeight.W600,
+    fontSize = 16.sp,
+    letterSpacing = -(0.32).sp,
+    lineHeight = 22.4.sp,
 )

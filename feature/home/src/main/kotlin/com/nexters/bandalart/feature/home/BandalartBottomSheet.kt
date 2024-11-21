@@ -66,6 +66,7 @@ import com.nexters.bandalart.core.common.extension.noRippleClickable
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.common.extension.toStringLocalDateTime
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
+import com.nexters.bandalart.core.designsystem.theme.BottomSheetContent
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
@@ -82,7 +83,6 @@ import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentTex
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDeleteButton
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDivider
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleText
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTextStyle
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
@@ -321,7 +321,7 @@ fun BandalartBottomSheetContent(
                                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                                 maxLines = 1,
-                                textStyle = BottomSheetTextStyle(),
+                                textStyle = BottomSheetContent,
                                 decorationBox = { innerTextField ->
                                     if (uiState.cellData.title.isNullOrEmpty()) {
                                         BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_title_placeholder))
@@ -436,7 +436,7 @@ fun BandalartBottomSheetContent(
                                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                                 maxLines = 1,
-                                textStyle = BottomSheetTextStyle(),
+                                textStyle = BottomSheetContent,
                                 decorationBox = { innerTextField ->
                                     if (uiState.cellData.description.isNullOrEmpty()) {
                                         BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
