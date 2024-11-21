@@ -47,7 +47,6 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartChart
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
@@ -60,7 +59,6 @@ import kotlinx.coroutines.launch
 
 private const val SnackbarDuration = 1000L
 
-// TODO 헤더와 반다라트 변경사항 동기화 필요(title 을 변경하면 Color 가 초기화되는 문제 해결)
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 @Composable
 internal fun HomeRoute(
@@ -68,7 +66,7 @@ internal fun HomeRoute(
     onShowSnackbar: suspend (String) -> Boolean,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    bottomSheetViewModel: BottomSheetViewModel = hiltViewModel(),
+    // bottomSheetViewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -111,7 +109,7 @@ internal fun HomeRoute(
         uiState = uiState,
         bandalartCount = bandalartCount,
         onHomeUiAction = homeViewModel::onAction,
-        onBottomSheetUiAction = bottomSheetViewModel::onAction,
+        // onBottomSheetUiAction = bottomSheetViewModel::onAction,
         getBandalartList = homeViewModel::getBandalartList,
         getBandalart = homeViewModel::getBandalart,
         showSkeletonChanged = homeViewModel::updateSkeletonState,
@@ -126,7 +124,7 @@ internal fun HomeScreen(
     uiState: HomeUiState,
     bandalartCount: Int,
     onHomeUiAction: (HomeUiAction) -> Unit,
-    onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
+    // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     getBandalartList: (Long?) -> Unit,
     getBandalart: (Long) -> Unit,
     showSkeletonChanged: (Boolean) -> Unit,
@@ -163,7 +161,7 @@ internal fun HomeScreen(
                 showSkeletonChanged = showSkeletonChanged,
                 onDismissRequest = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
                 onAddClick = { onHomeUiAction(HomeUiAction.OnAddClick) },
-                onBottomSheetUiAction = onBottomSheetUiAction,
+                // onBottomSheetUiAction = onBottomSheetUiAction,
             )
         }
     }
@@ -180,7 +178,7 @@ internal fun HomeScreen(
                         onHomeUiAction(HomeUiAction.ToggleEmojiBottomSheet(bottomSheetState))
                         bottomSheetDataChanged(bottomSheetDataChangedState)
                     },
-                    onBottomSheetUiAction = onBottomSheetUiAction,
+                    // onBottomSheetUiAction = onBottomSheetUiAction,
                 )
             }
         }
@@ -306,7 +304,7 @@ private fun HomeScreenSingleBandalartPreview() {
             ),
             bandalartCount = listOf(dummyBandalartList[0]).size,
             onHomeUiAction = {},
-            onBottomSheetUiAction = {},
+            // onBottomSheetUiAction = {},
             getBandalartList = {},
             getBandalart = {},
             showSkeletonChanged = {},
@@ -328,7 +326,7 @@ private fun HomeScreenMultipleBandalartPreview() {
             ),
             bandalartCount = dummyBandalartList.size,
             onHomeUiAction = {},
-            onBottomSheetUiAction = {},
+            // onBottomSheetUiAction = {},
             getBandalartList = {},
             getBandalart = {},
             showSkeletonChanged = {},

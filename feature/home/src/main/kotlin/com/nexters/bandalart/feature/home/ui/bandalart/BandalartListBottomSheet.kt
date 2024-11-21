@@ -63,7 +63,7 @@ fun BandalartListBottomSheet(
     showSkeletonChanged: (Boolean) -> Unit,
     onDismissRequest: () -> Unit,
     onAddClick: () -> Unit,
-    onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
+    // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -184,7 +184,7 @@ private fun BandalartListBottomSheetPreview() {
             showSkeletonChanged = {},
             onDismissRequest = {},
             onAddClick = {},
-            onBottomSheetUiAction = {},
+            // onBottomSheetUiAction = {},
         )
     }
 }

@@ -23,7 +23,7 @@ fun BandalartEmojiBottomSheet(
         bottomSheetState: Boolean,
         bottomSheetDataChangedState: Boolean,
     ) -> Unit,
-    onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
+    // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -64,7 +64,7 @@ private fun BandalartEmojiBottomSheetPreview() {
             currentEmoji = "😎",
             onEmojiSelected = { _, _, _ -> },
             onResult = { _, _ -> },
-            onBottomSheetUiAction = {},
+            // onBottomSheetUiAction = {},
         )
     }
 }

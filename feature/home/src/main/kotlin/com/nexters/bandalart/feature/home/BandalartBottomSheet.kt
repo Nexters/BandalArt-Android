@@ -44,12 +44,9 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.RectangleShape
@@ -78,7 +75,6 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
-import com.nexters.bandalart.core.ui.allColor
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetCompleteButton
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentPlaceholder
@@ -133,9 +129,9 @@ fun BandalartBottomSheet(
         bottomSheetClosed = viewModel::bottomSheetClosed,
         copyCellData = viewModel::copyCellData,
         deleteBandalartCell = viewModel::deleteBandalartCell,
-        openDeleteCellDialog = viewModel::toggleDeleteCellDialog,
-        openEmojiPicker = viewModel::toggleEmojiPicker,
-        openDatePicker = viewModel::toggleDatePicker,
+        toggleDeleteCellDialog = viewModel::toggleDeleteCellDialog,
+        toggleEmojiPicker = viewModel::toggleEmojiPicker,
+        toggleDatePicker = viewModel::toggleDatePicker,
         titleChanged = viewModel::titleChanged,
         emojiSelected = viewModel::emojiSelected,
         colorChanged = viewModel::colorChanged,
@@ -161,11 +157,11 @@ fun BandalartBottomSheetContent(
         bottomSheetDataChangedState: Boolean,
     ) -> Unit,
     bottomSheetClosed: () -> Unit,
-    copyCellData: (BandalartCellUiModel) -> Unit,
+    copyCellData: (Long, BandalartCellUiModel) -> Unit,
     deleteBandalartCell: (Long) -> Unit,
-    openDeleteCellDialog: (Boolean) -> Unit,
-    openEmojiPicker: (Boolean) -> Unit,
-    openDatePicker: (Boolean) -> Unit,
+    toggleDeleteCellDialog: (Boolean) -> Unit,
+    toggleEmojiPicker: (Boolean) -> Unit,
+    toggleDatePicker: (Boolean) -> Unit,
     titleChanged: (String) -> Unit,
     emojiSelected: (String) -> Unit,
     colorChanged: (String, String) -> Unit,
@@ -185,7 +181,7 @@ fun BandalartBottomSheetContent(
     val currentLocale = context.getCurrentLocale()
 
     LaunchedEffect(key1 = Unit) {
-        copyCellData(cellData)
+        copyCellData(bandalartId, cellData)
     }
 
     LaunchedEffect(key1 = uiState.isCellUpdated) {
@@ -213,7 +209,7 @@ fun BandalartBottomSheetContent(
             onDeleteClicked = {
                 scope.launch {
                     deleteBandalartCell(uiState.cellData.id)
-                    openDeleteCellDialog(false)
+                    toggleDeleteCellDialog(false)
                     bottomSheetState.hide()
                 }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
@@ -222,7 +218,7 @@ fun BandalartBottomSheetContent(
                     }
                 }
             },
-            onCancelClicked = { openDeleteCellDialog(false) },
+            onCancelClicked = { toggleDeleteCellDialog(false) },
         )
     }
 
@@ -280,8 +276,8 @@ fun BandalartBottomSheetContent(
                                             .aspectRatio(1f)
                                             .background(Gray100)
                                             .clickable {
-                                                openEmojiPicker(!uiState.isEmojiPickerOpened)
-                                                if (uiState.isDatePickerOpened) openDatePicker(false)
+                                                toggleEmojiPicker(!uiState.isEmojiPickerOpened)
+                                                if (uiState.isDatePickerOpened) toggleDatePicker(false)
                                             },
                                         contentAlignment = Alignment.Center,
                                     ) {
@@ -328,9 +324,7 @@ fun BandalartBottomSheetContent(
                                 textStyle = BottomSheetTextStyle(),
                                 decorationBox = { innerTextField ->
                                     if (uiState.cellData.title.isNullOrEmpty()) {
-                                        BottomSheetContentPlaceholder(
-                                            text = stringResource(R.string.bottomsheet_title_placeholder),
-                                        )
+                                        BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_title_placeholder))
                                     }
                                     innerTextField()
                                 },
@@ -357,7 +351,7 @@ fun BandalartBottomSheetContent(
                                     if (currentEmojiResult != null) {
                                         emojiSelected(currentEmojiResult)
                                     }
-                                    openEmojiPicker(openEmojiPushResult)
+                                    toggleEmojiPicker(openEmojiPushResult)
                                 },
                                 emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                             )
@@ -389,24 +383,22 @@ fun BandalartBottomSheetContent(
                                 .fillMaxWidth()
                                 .height(18.dp)
                                 .clickable {
-                                    openDatePicker(!uiState.isDatePickerOpened)
-                                    if (uiState.isEmojiPickerOpened) openEmojiPicker(false)
+                                    toggleDatePicker(!uiState.isDatePickerOpened)
+                                    if (uiState.isEmojiPickerOpened) toggleEmojiPicker(false)
                                 },
                         ) {
                             if (uiState.cellData.dueDate.isNullOrEmpty()) {
                                 BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
                             } else {
-                                BottomSheetContentText(
-                                    text = uiState.cellData.dueDate.toStringLocalDateTime(),
-                                )
+                                BottomSheetContentText(text = uiState.cellData.dueDate.toStringLocalDateTime())
                             }
                             Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = stringResource(R.string.arrow_forward_description),
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
                                     .height(21.dp)
                                     .aspectRatio(1f),
-                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                                contentDescription = stringResource(R.string.arrow_forward_description),
                                 tint = Gray400,
                             )
                         }
@@ -417,7 +409,7 @@ fun BandalartBottomSheetContent(
                         BandalartDatePicker(
                             onResult = { dueDateResult, openDatePickerPushResult ->
                                 dueDateChanged(dueDateResult.toString())
-                                openDatePicker(openDatePickerPushResult)
+                                toggleDatePicker(openDatePickerPushResult)
                             },
                             datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                             currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
@@ -429,10 +421,6 @@ fun BandalartBottomSheetContent(
                     Box {
                         Column {
                             BasicTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(18.dp)
-                                    .clearFocusOnKeyboardDismiss(),
                                 value = uiState.cellData.description ?: "",
                                 onValueChange = {
                                     // description 의 글자 수를 1000자 까지 허용
@@ -440,6 +428,10 @@ fun BandalartBottomSheetContent(
                                         descriptionChanged(description)
                                     }
                                 },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(18.dp)
+                                    .clearFocusOnKeyboardDismiss(),
                                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                                 maxLines = 1,
@@ -494,7 +486,7 @@ fun BandalartBottomSheetContent(
                     ) {
                         if (!isBlankCell) {
                             BottomSheetDeleteButton(
-                                onClick = { openDeleteCellDialog(!uiState.isDeleteCellDialogOpened) },
+                                onClick = { toggleDeleteCellDialog(!uiState.isDeleteCellDialogOpened) },
                                 modifier = Modifier.weight(1f),
                             )
                             Spacer(modifier = Modifier.width(9.dp))
@@ -598,11 +590,11 @@ private fun BandalartMainCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
             bottomSheetClosed = {},
-            copyCellData = {},
+            copyCellData = { _, _ -> },
             deleteBandalartCell = {},
-            openDeleteCellDialog = {},
-            openEmojiPicker = {},
-            openDatePicker = {},
+            toggleDeleteCellDialog = {},
+            toggleEmojiPicker = {},
+            toggleDatePicker = {},
             titleChanged = {},
             emojiSelected = {},
             colorChanged = { _, _ -> },
@@ -632,11 +624,11 @@ private fun BandalartSubCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
             bottomSheetClosed = {},
-            copyCellData = {},
+            copyCellData = { _, _ -> },
             deleteBandalartCell = {},
-            openDeleteCellDialog = {},
-            openEmojiPicker = {},
-            openDatePicker = {},
+            toggleDeleteCellDialog = {},
+            toggleEmojiPicker = {},
+            toggleDatePicker = {},
             titleChanged = {},
             emojiSelected = {},
             colorChanged = { _, _ -> },
@@ -666,11 +658,11 @@ private fun BandalartTaskCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
             bottomSheetClosed = {},
-            copyCellData = {},
+            copyCellData = { _, _ -> },
             deleteBandalartCell = {},
-            openDeleteCellDialog = {},
-            openEmojiPicker = {},
-            openDatePicker = {},
+            toggleDeleteCellDialog = {},
+            toggleEmojiPicker = {},
+            toggleDatePicker = {},
             titleChanged = {},
             emojiSelected = {},
             colorChanged = { _, _ -> },
