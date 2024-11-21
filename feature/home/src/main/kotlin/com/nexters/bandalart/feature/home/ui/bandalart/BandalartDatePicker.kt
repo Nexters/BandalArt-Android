@@ -8,8 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,17 +37,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexters.bandalart.core.common.extension.toLocalDateTime
+import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.common.extension.toLocalDateTime
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+
+private val years = (2000..2050).map { it }
+private val monthsNumber = (1..12).map { it }
+private val days = (1..31).map { it }
+
 
 @Composable
 fun BandalartDatePicker(
@@ -74,7 +81,7 @@ fun BandalartDatePicker(
                 ),
         ) {
             Text(
-                text = "초기화",
+                text = stringResource(R.string.bottomsheet_reset),
                 color = Gray900,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W700,
@@ -124,10 +131,6 @@ fun BandalartDatePicker(
         )
     }
 }
-
-val years = (2000..2050).map { it }
-val monthsNumber = (1..12).map { it }
-val days = (1..31).map { it }
 
 @Composable
 fun DateSelectionSection(
@@ -203,44 +206,48 @@ fun InfiniteItemsPicker(
         onItemSelected(currentValue.value)
         listState.animateScrollToItem(index = listState.firstVisibleItemIndex)
     }
+
     Box(modifier = modifier.height(180.dp)) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             state = listState,
-            content = {
-                items(
-                    count = Int.MAX_VALUE,
-                    itemContent = {
-                        val index = it % items.size
-                        if (it == listState.firstVisibleItemIndex + 2) {
-                            currentValue.value = items[index].toString()
-                        }
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = if (isYear) stringResource(R.string.datepicker_year, items[index].toString())
-                            else if (isMonth) stringResource(R.string.datepicker_month, items[index].toString())
-                            else stringResource(R.string.datepicker_day, items[index].toString()),
-                            color = Gray900,
-                            fontSize =
-                            if (it == listState.firstVisibleItemIndex + 1 ||
-                                it == listState.firstVisibleItemIndex + 2 ||
-                                it == listState.firstVisibleItemIndex + 3
-                            ) 20.sp
-                            else 17.sp,
-                            fontWeight =
-                            if (it == listState.firstVisibleItemIndex + 2) FontWeight.W500
-                            else FontWeight.W400,
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .alpha(if (it == listState.firstVisibleItemIndex + 2) 1f else 0.6f),
-                            textAlign = TextAlign.Center,
-                            fontFamily = pretendard,
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                    },
-                )
-            },
-        )
+            contentPadding = PaddingValues(vertical = 70.dp),
+            modifier = Modifier.fillMaxHeight(),
+        ) {
+            items(
+                count = Int.MAX_VALUE,
+            ) {
+                val index = it % items.size
+                if (it == listState.firstVisibleItemIndex + 2) {
+                    currentValue.value = items[index].toString()
+                }
+                Box(
+                    modifier = Modifier.height(40.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = when {
+                            isYear -> stringResource(R.string.datepicker_year, items[index].toString())
+                            isMonth -> stringResource(R.string.datepicker_month, items[index].toString())
+                            else -> stringResource(R.string.datepicker_day, items[index].toString())
+                        },
+                        color = Gray900,
+                        fontSize = if (it == listState.firstVisibleItemIndex - 1||
+                            it == listState.firstVisibleItemIndex ||
+                            it == listState.firstVisibleItemIndex + 1
+                        ) 20.sp
+                        else 17.sp,
+                        fontWeight = if (it == listState.firstVisibleItemIndex) FontWeight.W500
+                        else FontWeight.W400,
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .alpha(if (it == listState.firstVisibleItemIndex) 1f else 0.6f),
+                        textAlign = TextAlign.Center,
+                        fontFamily = pretendard,
+                    )
+                }
+            }
+        }
     }
 }
 
