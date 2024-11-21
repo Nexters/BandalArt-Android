@@ -44,6 +44,19 @@ class HomeViewModel @Inject constructor(
         observeBandalartCompletion()
     }
 
+    private fun observeBandalartCompletion() {
+        viewModelScope.launch {
+            bandalartFlow.collect { bandalart ->
+                if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
+                    val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
+                    if (isBandalartCompleted) {
+                        navigateToComplete(bandalart.id, bandalart.title, bandalart.profileEmoji.orEmpty())
+                    }
+                }
+            }
+        }
+    }
+
     fun onAction(action: HomeUiAction) {
         when (action) {
             is HomeUiAction.OnCreateClick -> createBandalart()
@@ -86,19 +99,6 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)
             is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
-        }
-    }
-
-    private fun observeBandalartCompletion() {
-        viewModelScope.launch {
-            bandalartFlow.collect { bandalart ->
-                if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
-                    val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
-                    if (isBandalartCompleted) {
-                        navigateToComplete(bandalart.id, bandalart.title, bandalart.profileEmoji.orEmpty())
-                    }
-                }
-            }
         }
     }
 

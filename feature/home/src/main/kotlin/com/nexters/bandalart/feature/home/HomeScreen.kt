@@ -61,6 +61,7 @@ import kotlinx.coroutines.launch
 private const val SnackbarDuration = 1000L
 
 // TODO 헤더와 반다라트 변경사항 동기화 필요(title 을 변경하면 Color 가 초기화되는 문제 해결)
+// TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String) -> Unit,

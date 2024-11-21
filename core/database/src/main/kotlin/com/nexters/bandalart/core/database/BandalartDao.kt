@@ -133,11 +133,15 @@ interface BandalartDao {
             )
         )
 
-        updateCell(bandalartCell.cell.copy(
+        val originalCell = bandalartCell.cell
+        updateCell(originalCell.copy(
             title = updateDto.title,
             description = updateDto.description,
-            dueDate = updateDto.dueDate
+            dueDate = updateDto.dueDate,
+            isCompleted = originalCell.isCompleted
         ))
+
+        updateCompletionStatus(originalCell.bandalartId)
     }
 
     /** 서브 셀 정보 업데이트 */
@@ -146,13 +150,15 @@ interface BandalartDao {
         cellId: Long,
         updateDto: UpdateBandalartSubCellDto,
     ) {
-        val cell = getBandalartCell(cellId).cell.copy(
+        val originalCell = getBandalartCell(cellId).cell
+        val updatedCell = originalCell.copy(
             title = updateDto.title,
             description = updateDto.description,
             dueDate = updateDto.dueDate,
+            isCompleted = originalCell.isCompleted  // 기존 상태 유지
         )
-        updateCell(cell)
-        updateCompletionStatus(cell.bandalartId)
+        updateCell(updatedCell)
+        updateCompletionStatus(updatedCell.bandalartId)
     }
 
     /** 태스크 셀 정보 업데이트 */
@@ -169,7 +175,6 @@ interface BandalartDao {
             isCompleted = updateDto.isCompleted ?: originalCell.isCompleted,
         )
         updateCell(updatedCell)
-
         // 태스크 셀이 업데이트되면 전체 완료 상태 업데이트
         updateCompletionStatus(updatedCell.bandalartId)
     }
@@ -267,30 +272,49 @@ interface BandalartDao {
 
     /** 반다라트의 전체 완료율 계산 및 업데이트 */
     private suspend fun updateCompletionStatus(bandalartId: Long) {
+        // 메인셀 조회
+        val mainCellWithChildren = getBandalartMainCell(bandalartId)
+        val mainCell = getCell(mainCellWithChildren.cell.id!!) // 실제 DB에서 메인셀 조회
+        val subGoals = getChildCells(mainCell.id!!)
+
+        // 서브셀 자동 완료 체크
+        subGoals.forEach { subGoal ->
+            val subGoalChildren = subGoal.id?.let { getChildCells(it) } ?: return@forEach
+            val allChildrenCompleted = subGoalChildren.all { it.isCompleted }
+            if (allChildrenCompleted && !subGoal.isCompleted) {
+                updateCell(subGoal.copy(isCompleted = true))
+            } else if (!allChildrenCompleted && subGoal.isCompleted) {
+                // 태스크셀이 하나라도 미완료면 서브셀도 미완료로 변경
+                updateCell(subGoal.copy(isCompleted = false))
+            }
+        }
+
+        // 메인셀
+        val updatedSubGoals = getChildCells(mainCell.id) // 업데이트된 서브셀들 다시 조회
+        val allSubGoalsCompleted = updatedSubGoals.all { it.isCompleted }
+        if (allSubGoalsCompleted && !mainCell.isCompleted) {
+            updateCell(mainCell.copy(isCompleted = true))
+        } else if (!allSubGoalsCompleted && mainCell.isCompleted) {
+            updateCell(mainCell.copy(isCompleted = false))
+        }
+
+        // 모든 자동 완료 처리가 끝난 후 최종 완료율 계산
         val allCells = getAllCellsInBandalart(bandalartId)
         val completedCells = allCells.count { it.isCompleted }
         val totalCompletionRatio = completedCells * 4  // 각 셀당 4%
 
+        // 현재 반다라트 가져오기
+        val currentBandalart = getBandalart(bandalartId)
+
         // 반다라트 전체 완료율 업데이트
         updateBandalartRatio(bandalartId, totalCompletionRatio)
 
-        // 각 서브 목표의 자동 완료 체크
-        val mainCell = getBandalartMainCell(bandalartId).cell
-        val subGoals = mainCell.id?.let { getChildCells(it) }
-
-        subGoals?.forEach { subGoal ->
-            val subGoalChildren = subGoal.id?.let { getChildCells(it) }
-            val allChildrenCompleted = subGoalChildren?.all { it.isCompleted }
-            if (allChildrenCompleted == true && !subGoal.isCompleted) {
-                updateCell(subGoal.copy(isCompleted = true))
-            }
-        }
-
-        // 메인 목표 자동 완료 체크
-        val allSubGoalsCompleted = subGoals?.all { it.isCompleted }
-        if (allSubGoalsCompleted == true && !mainCell.isCompleted) {
-            updateCell(mainCell.copy(isCompleted = true))
-        }
+        // bandalart 테이블 업데이트 - isCompleted와 completionRatio 모두 업데이트
+        updateBandalart(currentBandalart.copy(
+            // 메인셀의 완료 상태와 동일하게 설정
+            isCompleted = allSubGoalsCompleted,
+            completionRatio = totalCompletionRatio
+        ))
     }
 
     // Util function
