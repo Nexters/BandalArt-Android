@@ -131,17 +131,19 @@ interface BandalartDao {
             mainColor = updateDto.mainColor,
             subColor = updateDto.subColor,
             isCompleted = currentBandalart.isCompleted,
-            completionRatio = currentBandalart.completionRatio
+            completionRatio = currentBandalart.completionRatio,
         )
         updateBandalart(updatedBandalart)
 
         val originalCell = bandalartCell.cell
-        updateCell(originalCell.copy(
-            title = updateDto.title ?: originalCell.title,
-            description = updateDto.description ?: originalCell.description,
-            dueDate = updateDto.dueDate ?: originalCell.dueDate,
-            isCompleted = originalCell.isCompleted
-        ))
+        updateCell(
+            originalCell.copy(
+                title = updateDto.title ?: originalCell.title,
+                description = updateDto.description ?: originalCell.description,
+                dueDate = updateDto.dueDate ?: originalCell.dueDate,
+                isCompleted = originalCell.isCompleted,
+            ),
+        )
 
         updateCompletionStatus(originalCell.bandalartId)
     }
@@ -157,7 +159,8 @@ interface BandalartDao {
             title = updateDto.title,
             description = updateDto.description,
             dueDate = updateDto.dueDate,
-            isCompleted = originalCell.isCompleted  // 기존 상태 유지
+            // 기존 상태 유지
+            isCompleted = originalCell.isCompleted,
         )
         updateCell(updatedCell)
         updateCompletionStatus(updatedCell.bandalartId)
@@ -190,8 +193,8 @@ interface BandalartDao {
         val bandalartCell = getBandalartCell(cellId)
         updateBandalart(
             getBandalart(bandalartCell.cell.bandalartId).copy(
-                profileEmoji = updateDto.profileEmoji
-            )
+                profileEmoji = updateDto.profileEmoji,
+            ),
         )
     }
 
@@ -303,7 +306,7 @@ interface BandalartDao {
         // 모든 자동 완료 처리가 끝난 후 최종 완료율 계산
         val allCells = getAllCellsInBandalart(bandalartId)
         val completedCells = allCells.count { it.isCompleted }
-        val totalCompletionRatio = completedCells * 4  // 각 셀당 4%
+        val totalCompletionRatio = completedCells * 4 // 각 셀당 4%
 
         // 현재 반다라트 가져오기
         val currentBandalart = getBandalart(bandalartId)
@@ -312,11 +315,13 @@ interface BandalartDao {
         updateBandalartRatio(bandalartId, totalCompletionRatio)
 
         // bandalart 테이블 업데이트 - isCompleted와 completionRatio 모두 업데이트
-        updateBandalart(currentBandalart.copy(
-            // 메인셀의 완료 상태와 동일하게 설정
-            isCompleted = allSubGoalsCompleted,
-            completionRatio = totalCompletionRatio
-        ))
+        updateBandalart(
+            currentBandalart.copy(
+                // 메인셀의 완료 상태와 동일하게 설정
+                isCompleted = allSubGoalsCompleted,
+                completionRatio = totalCompletionRatio,
+            ),
+        )
     }
 
     // Util function
@@ -328,4 +333,3 @@ interface BandalartDao {
     @Query("SELECT EXISTS(SELECT 1 FROM bandalarts WHERE id = :bandalartId)")
     suspend fun bandalartExists(bandalartId: String): Boolean
 }
-

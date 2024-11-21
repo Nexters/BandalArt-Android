@@ -10,8 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.ThemeColor
-import com.nexters.bandalart.core.ui.allColor
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
 import kotlinx.collections.immutable.persistentListOf
@@ -78,7 +76,7 @@ private fun BandalartCellGridPreview() {
             bandalartData = BandalartUiModel(
                 id = 0L,
                 mainColor = "#3FFFBA",
-                subColor = "#111827"
+                subColor = "#111827",
             ),
             subCell = subCellList[1],
             rows = 3,

@@ -19,5 +19,5 @@ data class BandalartCellEntity(
     val dueDate: String?,
     val isCompleted: Boolean,
     val parentId: Long?,
-    val children: List<BandalartCellEntity> = emptyList()
+    val children: List<BandalartCellEntity> = emptyList(),
 )

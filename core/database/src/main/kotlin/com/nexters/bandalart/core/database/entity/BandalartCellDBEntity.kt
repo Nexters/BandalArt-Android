@@ -50,5 +50,5 @@ data class BandalartCellDBEntity(
     val isCompleted: Boolean = false,
 
     @ColumnInfo(name = "parentId")
-    val parentId: Long? = null,  // 계층 구조를 위한 self-referencing
+    val parentId: Long? = null,
 )

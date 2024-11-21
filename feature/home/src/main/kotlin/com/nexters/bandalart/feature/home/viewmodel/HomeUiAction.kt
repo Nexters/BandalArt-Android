@@ -16,7 +16,7 @@ sealed interface HomeUiAction {
     data class OnConfirmClick(val modalType: ModalType) : HomeUiAction
     data class OnCancelClick(val modalType: ModalType) : HomeUiAction
     data object OnShareButtonClick : HomeUiAction
-    data object OnAddClick: HomeUiAction
+    data object OnAddClick : HomeUiAction
     data class ToggleDropDownMenu(val flag: Boolean) : HomeUiAction
     data class ToggleDeleteAlertDialog(val flag: Boolean) : HomeUiAction
     data class ToggleEmojiBottomSheet(val flag: Boolean) : HomeUiAction
@@ -38,5 +38,5 @@ enum class ModalType {
     BANDALART_LIST,
 
     // 삭제 다이얼로그
-    DELETE_DIALOG
+    DELETE_DIALOG,
 }

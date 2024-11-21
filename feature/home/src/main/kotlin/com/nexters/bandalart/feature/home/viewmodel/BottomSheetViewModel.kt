@@ -87,9 +87,9 @@ class BottomSheetViewModel @Inject constructor(
                     it.copy(
                         bandalartData = it.bandalartData.copy(
                             mainColor = bandalart.mainColor,
-                            subColor = bandalart.subColor
+                            subColor = bandalart.subColor,
                         ),
-                        isCellUpdated = true
+                        isCellUpdated = true,
                     )
                 }
             }

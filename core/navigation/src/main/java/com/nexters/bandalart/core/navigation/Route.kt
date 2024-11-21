@@ -4,18 +4,18 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     @Serializable
-    data object Splash: Route
+    data object Splash : Route
 
     @Serializable
-    data object Onboarding: Route
+    data object Onboarding : Route
 
     @Serializable
-    data object Home: Route
+    data object Home : Route
 
     @Serializable
     data class Complete(
         val bandalartId: Long,
         val bandalartTitle: String,
         val bandalartProfileEmoji: String?,
-    ): Route
+    ) : Route
 }

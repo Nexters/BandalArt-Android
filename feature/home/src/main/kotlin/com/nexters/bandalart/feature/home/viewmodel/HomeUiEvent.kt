@@ -12,5 +12,5 @@ sealed interface HomeUiEvent {
 
     data class ShowSnackbar(val message: UiText) : HomeUiEvent
     data class ShowToast(val message: UiText) : HomeUiEvent
-    data class ShareBandalart(val bitmap: ImageBitmap): HomeUiEvent
+    data class ShareBandalart(val bitmap: ImageBitmap) : HomeUiEvent
 }

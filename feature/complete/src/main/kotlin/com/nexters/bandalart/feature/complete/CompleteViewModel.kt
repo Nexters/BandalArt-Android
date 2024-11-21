@@ -61,7 +61,9 @@ class CompleteViewModel @Inject constructor(
         }
     }
 
-    private fun shareBandalart() {}
+    private fun shareBandalart() {
+        // TODO
+    }
 
     private fun navigateBack() {
         viewModelScope.launch {

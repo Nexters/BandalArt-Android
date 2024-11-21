@@ -78,7 +78,6 @@ private fun AppTitlePreview() {
     }
 }
 
-
 @Preview(locale = "ko-rKR", showBackground = true)
 @Composable
 private fun AppKoreanTitlePreview() {

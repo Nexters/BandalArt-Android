@@ -15,6 +15,7 @@ fun Context.getCurrentLocale(): Locale {
     return this.resources.configuration.locales.get(0)
 }
 
+@Suppress("TooGenericExceptionCaught")
 fun Context.externalShareForBitmap(bitmap: ImageBitmap) {
     try {
         val file = File(bitmap.saveToDisk(this))

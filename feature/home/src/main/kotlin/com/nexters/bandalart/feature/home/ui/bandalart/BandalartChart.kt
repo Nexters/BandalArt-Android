@@ -18,11 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray300
-import com.nexters.bandalart.core.designsystem.theme.MainColor
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.ThemeColor
-import com.nexters.bandalart.core.ui.allColor
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartChartData

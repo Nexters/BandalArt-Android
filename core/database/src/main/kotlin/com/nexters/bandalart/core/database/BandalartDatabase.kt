@@ -13,7 +13,6 @@ import com.nexters.bandalart.core.database.entity.BandalartDBEntity
     version = 1,
     exportSchema = true,
 )
-
 abstract class BandalartDatabase : RoomDatabase() {
     abstract fun bandalartDao(): BandalartDao
 }

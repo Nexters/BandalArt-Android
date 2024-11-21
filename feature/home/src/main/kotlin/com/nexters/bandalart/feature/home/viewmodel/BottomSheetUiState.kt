@@ -27,4 +27,3 @@ data class BottomSheetUiState(
     val isEmojiPickerOpened: Boolean = false,
     val isDeleteCellDialogOpened: Boolean = false,
 )
-

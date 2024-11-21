@@ -14,7 +14,7 @@ fun BandalartDBEntity.toEntity() = BandalartEntity(
     description = description,
     dueDate = dueDate,
     isCompleted = isCompleted,
-    completionRatio = completionRatio
+    completionRatio = completionRatio,
 )
 
 fun BandalartCellDBEntity.toEntity() = BandalartCellEntity(

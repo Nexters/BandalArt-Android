@@ -22,4 +22,3 @@ fun BandalartCellEntity.toDBEntity() = BandalartCellDBEntity(
     isCompleted = isCompleted,
     parentId = parentId,
 )
-

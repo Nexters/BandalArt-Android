@@ -19,8 +19,7 @@ fun NavController.navigateToComplete(
 fun NavGraphBuilder.completeScreen(
     onNavigateBack: () -> Unit,
 ) {
-    composable<Route.Complete>(
-    ) {
+    composable<Route.Complete> {
         CompleteRoute(onNavigateBack = onNavigateBack)
     }
 }

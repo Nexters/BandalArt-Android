@@ -23,7 +23,6 @@ data class BandalartCellWithChildrenDto(
         // 자식 셀들의 parentId
         entityColumn = "parentId",
     )
-    // 하위 셀들
     val children: List<BandalartCellDBEntity>,
 )
 

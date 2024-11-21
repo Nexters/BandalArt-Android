@@ -73,7 +73,7 @@ fun HomeHeader(
                     ) {
                         if (bandalartData.profileEmoji.isNullOrEmpty()) {
                             Image(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_empty_emoji,),
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_empty_emoji),
                                 contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.empty_emoji_description),
                             )
                         } else {
@@ -124,7 +124,7 @@ fun HomeHeader(
                 BandalartDropDownMenu(
                     toggleDropDownMenu = { flag -> onAction(HomeUiAction.ToggleDropDownMenu(flag)) },
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onDeleteClicked = { onAction(HomeUiAction.OnDeleteClick)},
+                    onDeleteClicked = { onAction(HomeUiAction.OnDeleteClick) },
                 )
             }
         }

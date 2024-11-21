@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,7 +51,6 @@ import java.time.LocalDateTime
 private val years = (2000..2050).map { it }
 private val monthsNumber = (1..12).map { it }
 private val days = (1..31).map { it }
-
 
 @Composable
 fun BandalartDatePicker(
@@ -232,7 +230,7 @@ fun InfiniteItemsPicker(
                             else -> stringResource(R.string.datepicker_day, items[index].toString())
                         },
                         color = Gray900,
-                        fontSize = if (it == listState.firstVisibleItemIndex - 1||
+                        fontSize = if (it == listState.firstVisibleItemIndex - 1 ||
                             it == listState.firstVisibleItemIndex ||
                             it == listState.firstVisibleItemIndex + 1
                         ) 20.sp
