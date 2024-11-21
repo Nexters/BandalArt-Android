@@ -12,5 +12,5 @@ data class CompleteUiState(
     val id: Long = 0L,
     val title: String = "",
     val profileEmoji: String = "",
-    val shareUrl: String = "",
+    val isShared: Boolean = false,
 )

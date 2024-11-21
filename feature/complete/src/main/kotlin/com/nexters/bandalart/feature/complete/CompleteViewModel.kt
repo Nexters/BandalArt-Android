@@ -1,5 +1,6 @@
 package com.nexters.bandalart.feature.complete
 
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,8 +47,9 @@ class CompleteViewModel @Inject constructor(
 
     fun onAction(action: CompleteUiAction) {
         when (action) {
-            is CompleteUiAction.OnShareButtonClick -> shareBandalart()
+            is CompleteUiAction.OnShareButtonClick -> updateShareState()
             is CompleteUiAction.OnBackButtonClick -> navigateBack()
+            is CompleteUiAction.ShareBandalart -> shareBandalart(action.bitmap)
         }
     }
 
@@ -61,8 +63,15 @@ class CompleteViewModel @Inject constructor(
         }
     }
 
-    private fun shareBandalart() {
-        // TODO
+    private fun updateShareState() {
+        _uiState.update { it.copy(isShared = true) }
+    }
+
+    private fun shareBandalart(bitmap: ImageBitmap) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isShared = false) }
+            _uiEvent.send(CompleteUiEvent.ShareBandalart(bitmap))
+        }
     }
 
     private fun navigateBack() {

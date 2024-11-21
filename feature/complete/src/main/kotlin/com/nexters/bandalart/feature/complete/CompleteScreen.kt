@@ -19,6 +19,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -33,6 +36,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -48,6 +52,7 @@ import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 
 // TODO Share 로직 변경 (드로이드카이기 방식으로), 어떻게 구현 해야 할지 고민
+// TODO 달성 완료 반다라트 박스 안에 반다라트 표를 제공하자, 공유하면 그거 bitmap 으로 변환하면 되고
 @Composable
 internal fun CompleteRoute(
     onNavigateBack: () -> Unit,
@@ -55,6 +60,7 @@ internal fun CompleteRoute(
     viewModel: CompleteViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {
@@ -62,7 +68,7 @@ internal fun CompleteRoute(
                 onNavigateBack()
             }
             is CompleteUiEvent.ShareBandalart -> {
-                // 홈 화면에서 완료된 반타라트 비트맵 들고 만들고, 완료 화면에서 공유하는식으로 구현하는건 어떨까?
+                context.externalShareForBitmap(event.bitmap)
             }
         }
     }
@@ -80,8 +86,8 @@ internal fun CompleteScreen(
     onAction: (CompleteUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val configuration = LocalConfiguration.current
+    val graphicsLayer = rememberGraphicsLayer()
 
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(
@@ -93,18 +99,9 @@ internal fun CompleteScreen(
         iterations = LottieConstants.IterateForever,
     )
 
-    LaunchedEffect(key1 = uiState.shareUrl) {
-        if (uiState.shareUrl.isNotEmpty()) {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                    Intent.EXTRA_TEXT,
-                    context.getString(R.string.home_share_url, uiState.shareUrl),
-                )
-                type = context.getString(R.string.home_share_type)
-            }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            context.startActivity(shareIntent)
+    LaunchedEffect(key1 = uiState.isShared) {
+        if (uiState.isShared) {
+            onAction(CompleteUiAction.ShareBandalart(graphicsLayer.toImageBitmap()))
         }
     }
 
@@ -181,7 +178,12 @@ internal fun CompleteScreen(
                         CompleteBandalart(
                             profileEmoji = uiState.profileEmoji,
                             title = uiState.title,
-                            modifier = Modifier.align(Alignment.Center),
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .drawWithContent {
+                                    graphicsLayer.record { this@drawWithContent.drawContent() }
+                                    drawLayer(graphicsLayer)
+                                },
                         )
                         // TODO MVP 제외, 이번에 추가해도 좋을듯
                         // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
@@ -209,7 +211,6 @@ private fun CompleteScreenPreview() {
                 id = 0L,
                 title = "발전하는 예진",
                 profileEmoji = "😎",
-                shareUrl = "",
             ),
             onAction = {},
         )
