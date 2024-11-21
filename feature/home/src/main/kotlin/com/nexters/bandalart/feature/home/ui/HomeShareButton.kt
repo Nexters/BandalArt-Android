@@ -18,10 +18,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.core.designsystem.R
 import com.nexters.bandalart.core.common.extension.clickableSingle
+import com.nexters.bandalart.core.designsystem.R
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.Gray100
+import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 
@@ -34,7 +34,7 @@ fun HomeShareButton(
         modifier = modifier
             .wrapContentSize()
             .clip(RoundedCornerShape(18.dp))
-            .background(Gray100)
+            .background(Gray200)
             .clickableSingle { onShareButtonClick() },
         contentAlignment = Alignment.Center,
     ) {

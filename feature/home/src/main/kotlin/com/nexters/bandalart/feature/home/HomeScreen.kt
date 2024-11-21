@@ -259,7 +259,8 @@ internal fun HomeScreen(
                         .drawWithContent {
                             homeGraphicsLayer.record { this@drawWithContent.drawContent() }
                             drawLayer(homeGraphicsLayer)
-                        },
+                        }
+                        .background(Gray50),
                 ) {
                     uiState.bandalartData?.let { bandalart ->
                         HomeHeader(
@@ -278,7 +279,8 @@ internal fun HomeScreen(
                                 .drawWithContent {
                                     completeGraphicsLayer.record { this@drawWithContent.drawContent() }
                                     drawLayer(completeGraphicsLayer)
-                                },
+                                }
+                                .background(Gray50),
                         )
                     }
                     Spacer(modifier = Modifier.height(64.dp))

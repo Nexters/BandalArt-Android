@@ -104,14 +104,14 @@ fun CompleteBandalart(
                     letterSpacing = (-0.32).sp,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                NetworkImage(
-                    imageUri = bandalartChartImageUri,
-                    contentDescription = "Complete Bandalart Chart Image",
-                    modifier = Modifier
-                        .width(328.dp)
-                        .height(328.dp),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+//                NetworkImage(
+//                    imageUri = bandalartChartImageUri,
+//                    contentDescription = "Complete Bandalart Chart Image",
+//                    modifier = Modifier
+//                        .width(328.dp)
+//                        .height(328.dp),
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

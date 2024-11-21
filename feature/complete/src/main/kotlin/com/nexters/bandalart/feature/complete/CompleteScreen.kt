@@ -146,9 +146,7 @@ internal fun CompleteScreen(
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState()),
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -171,18 +169,18 @@ internal fun CompleteScreen(
                             bandalartChartImageUri = uiState.bandalartChartImageUri,
                             modifier = Modifier.align(Alignment.Center),
                         )
+                        // TODO MVP 제외, 이번에 추가해도 좋을듯
+                        // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
+                        BandalartButton(
+                            onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
+                            text = stringResource(R.string.complete_share),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 32.dp),
+                        )
                     }
                 }
-                // TODO MVP 제외, 이번에 추가해도 좋을듯
-                // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
-                BandalartButton(
-                    onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                    text = stringResource(R.string.complete_share),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 32.dp),
-                )
             }
         }
     }
