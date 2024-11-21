@@ -38,7 +38,6 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.component.CellText
 import com.nexters.bandalart.feature.home.BandalartBottomSheet
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
@@ -68,6 +67,7 @@ fun BandalartCell(
     isMainCell: Boolean,
     cellData: BandalartCellUiModel,
     bottomSheetDataChanged: (Boolean) -> Unit,
+    // onAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
     cellInfo: CellInfo = CellInfo(),
     outerPadding: Dp = 3.dp,

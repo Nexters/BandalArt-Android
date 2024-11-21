@@ -77,16 +77,15 @@ fun BandalartChart(
                     .layoutId(stringResource(R.string.home_main_id))
                     .clip(RoundedCornerShape(10.dp))
                     .background(color = bandalartData.mainColor.toColor()),
-                content = {
-                    BandalartCell(
-                        isMainCell = true,
-                        bandalartData = bandalartData,
-                        cellData = bandalartCellData,
-                        bandalartId = bandalartId,
-                        bottomSheetDataChanged = bottomSheetDataChanged,
-                    )
-                },
-            )
+            ) {
+                BandalartCell(
+                    isMainCell = true,
+                    bandalartData = bandalartData,
+                    cellData = bandalartCellData,
+                    bandalartId = bandalartId,
+                    bottomSheetDataChanged = bottomSheetDataChanged,
+                )
+            }
         },
     ) { measurables, constraints ->
         val sub1 = measurables.first { it.layoutId == context.getString(R.string.home_sub1_id) }
@@ -131,7 +130,7 @@ private fun BandalartChartPreview() {
             bandalartData = BandalartUiModel(
                 id = 0L,
                 mainColor = "#3FFFBA",
-                subColor = "#111827"
+                subColor = "#111827",
             ),
             bottomSheetDataChanged = {},
         )

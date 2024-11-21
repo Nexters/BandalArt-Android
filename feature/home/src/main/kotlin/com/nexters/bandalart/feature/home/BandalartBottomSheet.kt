@@ -305,10 +305,6 @@ fun BandalartBottomSheetContent(
                         }
                         Column(modifier = Modifier.padding(top = 10.dp)) {
                             BasicTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(18.dp)
-                                    .clearFocusOnKeyboardDismiss(),
                                 value = uiState.cellData.title ?: "",
                                 onValueChange = {
                                     // 영어 일 때는 title 의 글자 수를 24자 까지 허용
@@ -318,6 +314,10 @@ fun BandalartBottomSheetContent(
                                         else -> titleChanged(if (it.length > 24) uiState.cellData.title ?: "" else it)
                                     }
                                 },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(24.dp)
+                                    .clearFocusOnKeyboardDismiss(),
                                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                                 maxLines = 1,
@@ -381,11 +381,12 @@ fun BandalartBottomSheetContent(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(18.dp)
+                                .height(24.dp)
                                 .clickable {
                                     toggleDatePicker(!uiState.isDatePickerOpened)
                                     if (uiState.isEmojiPickerOpened) toggleEmojiPicker(false)
                                 },
+                            contentAlignment = Alignment.CenterStart,
                         ) {
                             if (uiState.cellData.dueDate.isNullOrEmpty()) {
                                 BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
@@ -430,7 +431,7 @@ fun BandalartBottomSheetContent(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(18.dp)
+                                    .height(24.dp)
                                     .clearFocusOnKeyboardDismiss(),
                                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
