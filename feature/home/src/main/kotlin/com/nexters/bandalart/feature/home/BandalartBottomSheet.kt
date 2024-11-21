@@ -106,6 +106,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 
 // TODO onResult 지우고 싶다.
 // TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
+// TODO 이모지나 컬러만 변경되어도 완료 버튼이 활성화 되도록
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
@@ -179,19 +180,12 @@ fun BandalartBottomSheetContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
     val currentLocale = context.getCurrentLocale()
 
     LaunchedEffect(key1 = Unit) {
         copyCellData(cellData)
-    }
-
-    LaunchedEffect(key1 = uiState.isCellDataCopied) {
-        if (uiState.isCellDataCopied && uiState.cellData.title.isNullOrEmpty()) {
-            focusRequester.requestFocus()
-        }
     }
 
     LaunchedEffect(key1 = uiState.isCellUpdated) {
@@ -265,11 +259,7 @@ fun BandalartBottomSheetContent(
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .verticalScroll(scrollState)
-                        .padding(
-                            start = 20.dp,
-                            top = 40.dp,
-                            end = 20.dp,
-                        ),
+                        .padding(start = 20.dp, top = 40.dp, end = 20.dp),
                 ) {
                     BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
                     Spacer(modifier = Modifier.height(11.dp))
@@ -322,7 +312,6 @@ fun BandalartBottomSheetContent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(18.dp)
-                                    .focusRequester(focusRequester)
                                     .clearFocusOnKeyboardDismiss(),
                                 value = uiState.cellData.title ?: "",
                                 onValueChange = {

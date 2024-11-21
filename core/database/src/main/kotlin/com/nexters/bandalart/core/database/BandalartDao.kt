@@ -122,22 +122,24 @@ interface BandalartDao {
         val bandalartCell = getBandalartCell(cellId)
         val currentBandalart = getBandalart(bandalartCell.cell.bandalartId)
 
-        updateBandalart(
-            currentBandalart.copy(
-                title = updateDto.title,
-                description = updateDto.description,
-                dueDate = updateDto.dueDate,
-                profileEmoji = updateDto.profileEmoji,
-                mainColor = updateDto.mainColor,
-                subColor = updateDto.subColor,
-            )
+        // 기존 값을 유지하면서 업데이트할 필드만 수정
+        val updatedBandalart = currentBandalart.copy(
+            title = updateDto.title ?: currentBandalart.title,
+            description = updateDto.description ?: currentBandalart.description,
+            dueDate = updateDto.dueDate ?: currentBandalart.dueDate,
+            profileEmoji = updateDto.profileEmoji ?: currentBandalart.profileEmoji,
+            mainColor = updateDto.mainColor,
+            subColor = updateDto.subColor,
+            isCompleted = currentBandalart.isCompleted,
+            completionRatio = currentBandalart.completionRatio
         )
+        updateBandalart(updatedBandalart)
 
         val originalCell = bandalartCell.cell
         updateCell(originalCell.copy(
-            title = updateDto.title,
-            description = updateDto.description,
-            dueDate = updateDto.dueDate,
+            title = updateDto.title ?: originalCell.title,
+            description = updateDto.description ?: originalCell.description,
+            dueDate = updateDto.dueDate ?: originalCell.dueDate,
             isCompleted = originalCell.isCompleted
         ))
 
