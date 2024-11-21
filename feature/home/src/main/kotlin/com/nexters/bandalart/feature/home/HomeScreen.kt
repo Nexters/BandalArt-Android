@@ -62,6 +62,7 @@ import kotlinx.coroutines.launch
 private const val SnackbarDuration = 1000L
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
+// TODO 반다라트 완료시 캡쳐 타이밍 이슈 해결(Dao 에서 바로 메인 셀까지 완료 시켜버리니까 다 체크된 순간이 캡쳐가 안됨)
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,

@@ -46,8 +46,6 @@ import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 
-// TODO Share 로직 변경 (드로이드카이기 방식으로), 어떻게 구현 해야 할지 고민
-// TODO 달성 완료 반다라트 박스 안에 반다라트 표를 제공하자, 공유하면 그거 bitmap 으로 변환하면 되고
 @Composable
 internal fun CompleteRoute(
     onNavigateBack: () -> Unit,
