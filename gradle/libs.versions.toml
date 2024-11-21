@@ -132,6 +132,9 @@ circuit-codegen-ksp = { group = "com.slack.circuit", name = "circuit-codegen", v
 circuitx-android = { group = "com.slack.circuit", name = "circuitx-android", version.ref = "circuit" }
 circuitx-overlay = { group = "com.slack.circuit", name = "circuitx-overlays", version.ref = "circuit" }
 
+test-kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "test-kotest" }
+test-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "test-kotest" }
+
 [plugins]
 
 gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
@@ -167,6 +170,7 @@ bandalart-android-hilt = { id = "bandalart.android.hilt", version = "unspecified
 bandalart-android-retrofit = { id = "bandalart.android.retrofit", version = "unspecified" }
 bandalart-android-room = { id = "bandalart.android.room", version = "unspecified" }
 bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
+bandalart-kotest = { id = "bandalart.kotest", version = "unspecified" }
 
 [bundles]
 

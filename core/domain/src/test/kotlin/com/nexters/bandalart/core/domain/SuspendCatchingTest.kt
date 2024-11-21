@@ -1,4 +1,4 @@
-package com.nexters.bandalart.android.core.domain
+package com.nexters.bandalart.core.domain
 
 import com.nexters.bandalart.core.domain.util.runSuspendCatching
 import io.kotest.assertions.throwables.shouldThrow
