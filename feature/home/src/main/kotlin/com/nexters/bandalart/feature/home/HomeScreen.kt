@@ -165,7 +165,7 @@ internal fun HomeScreen(
     }
 
     LaunchedEffect(key1 = uiState.isBandalartCompleted) {
-        if (uiState.isBandalartCompleted) {
+        if (uiState.isCaptured) {
             captureBandalart(completeGraphicsLayer.toImageBitmap())
         }
     }
