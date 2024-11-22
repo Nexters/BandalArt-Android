@@ -35,6 +35,8 @@
     <!-- BandalartCell.kt -->
     <string name="home_main_cell">Main Goal</string>
     <string name="home_sub_cell">Sub Goal</string>
+    <string name="please_input_main_goal">Please enter the main goal first.</string>
+    <string name="please_input_sub_goal">Please enter the sub goal first.</string>
 
     <!-- HomeTopbar.kt -->
     <string name="bandalart">BANDALART</string>

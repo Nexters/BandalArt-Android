@@ -1,5 +1,6 @@
 package com.nexters.bandalart.feature.home.ui.bandalart
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +51,7 @@ data class CellInfo(
     val rowIndex: Int = 2,
     val colCnt: Int = 1,
     val rowCnt: Int = 1,
+    val parentCell: BandalartCellUiModel? = null  // 상위 셀 정보 추가
 )
 
 data class SubCell(
@@ -66,7 +69,6 @@ fun BandalartCell(
     isMainCell: Boolean,
     cellData: BandalartCellUiModel,
     bottomSheetDataChanged: (Boolean) -> Unit,
-    // onAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
     cellInfo: CellInfo = CellInfo(),
     outerPadding: Dp = 3.dp,
@@ -74,6 +76,7 @@ fun BandalartCell(
     mainCellPadding: Dp = 1.dp,
 ) {
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Box(
         modifier = modifier
@@ -86,7 +89,20 @@ fun BandalartCell(
             .aspectRatio(1f)
             .clip(RoundedCornerShape(10.dp))
             .background(getCellBackgroundColor(bandalartData, isMainCell, cellData, cellInfo))
-            .clickable { openBottomSheet = !openBottomSheet },
+            .clickable {
+                when {
+                    // 메인셀이 비어있고, 서브나 태스크셀 클릭 시
+                    !isMainCell && bandalartData.title.isNullOrEmpty() -> {
+                        Toast.makeText(context, context.getString(R.string.please_input_main_goal), Toast.LENGTH_SHORT).show()
+                    }
+//                    // 태스크셀이고 상위 서브셀이 비어있을 때
+//                    !isMainCell && !cellInfo.isSubCell && cellInfo.parentCell?.title.isNullOrEmpty() -> {
+//                        Toast.makeText(context, context.getString(R.string.please_input_sub_goal), Toast.LENGTH_SHORT).show()
+//                    }
+                    // 그 외의 경우 바텀시트 열기
+                    else -> openBottomSheet = !openBottomSheet
+                }
+            },
         contentAlignment = Alignment.Center,
     ) {
         CellContent(
@@ -133,7 +149,7 @@ private fun MainCellContent(
     val cellTextColor = bandalartData.subColor.toColor()
 
     if (cellData.title.isNullOrEmpty()) {
-        EmptyCellContent(cellTextColor)
+        EmptyMainCellContent(cellTextColor)
     } else {
         FilledCellContent(
             title = cellData.title,
@@ -152,7 +168,7 @@ private fun SubCellContent(
     val cellTextColor = bandalartData.mainColor.toColor()
 
     if (cellData.title.isNullOrEmpty()) {
-        EmptyCellContent(cellTextColor)
+        EmptySubCellContent(cellTextColor)
     } else {
         FilledCellContent(
             title = cellData.title,
@@ -180,11 +196,32 @@ private fun TaskCellContent(cellData: BandalartCellUiModel) {
 }
 
 @Composable
-private fun EmptyCellContent(textColor: Color) {
+private fun EmptyMainCellContent(textColor: Color) {
     Box(contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
                 cellText = stringResource(R.string.home_main_cell),
+                cellTextColor = textColor,
+                fontWeight = FontWeight.W700,
+            )
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(R.string.add_description),
+                tint = textColor,
+                modifier = Modifier
+                    .size(20.dp)
+                    .offset(y = (-4).dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptySubCellContent(textColor: Color) {
+    Box(contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CellText(
+                cellText = stringResource(R.string.home_sub_cell),
                 cellTextColor = textColor,
                 fontWeight = FontWeight.W700,
             )

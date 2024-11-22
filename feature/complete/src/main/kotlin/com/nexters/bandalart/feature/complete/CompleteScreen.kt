@@ -121,7 +121,7 @@ internal fun CompleteScreen(
                     CompleteBandalart(
                         profileEmoji = uiState.profileEmoji,
                         title = uiState.title,
-                        bandalartChartImageUri = uiState.bandalartChartImageUri,
+                        // bandalartChartImageUri = uiState.bandalartChartImageUri,
                         modifier = Modifier.width(328.dp),
                     )
                     Spacer(modifier = Modifier.height(32.dp))
@@ -164,7 +164,7 @@ internal fun CompleteScreen(
                         CompleteBandalart(
                             profileEmoji = uiState.profileEmoji,
                             title = uiState.title,
-                            bandalartChartImageUri = uiState.bandalartChartImageUri,
+                            // bandalartChartImageUri = uiState.bandalartChartImageUri,
                             modifier = Modifier.align(Alignment.Center),
                         )
                         // TODO MVP 제외, 이번에 추가해도 좋을듯

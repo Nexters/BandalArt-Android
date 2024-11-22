@@ -124,7 +124,7 @@ private fun CompleteBandalartPreview() {
         CompleteBandalart(
             profileEmoji = "😎",
             title = "발전하는 예진",
-            bandalartChartImageUri = "",
+            // bandalartChartImageUri = "",
         )
     }
 }
