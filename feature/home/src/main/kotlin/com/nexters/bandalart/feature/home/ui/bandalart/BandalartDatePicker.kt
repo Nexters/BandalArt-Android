@@ -52,14 +52,15 @@ private val years = (2000..2050).map { it }
 private val monthsNumber = (1..12).map { it }
 private val days = (1..31).map { it }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartDatePicker(
     onResult: (LocalDateTime?, Boolean) -> Unit,
-    datePickerState: SheetState,
     currentDueDate: LocalDateTime,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
+    val datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -266,7 +267,6 @@ private fun BandalartDatePickerPreview() {
     BandalartTheme {
         BandalartDatePicker(
             onResult = { _, _ -> },
-            datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             currentDueDate = LocalDateTime.now(),
         )
     }

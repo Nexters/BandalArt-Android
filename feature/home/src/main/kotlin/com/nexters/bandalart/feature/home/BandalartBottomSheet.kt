@@ -245,7 +245,6 @@ fun BandalartBottomSheetContent(
                 isMainCell = isMainCell,
                 isSubCell = isSubCell,
                 isBlankCell = isBlankCell,
-                bottomSheetState = bottomSheetState,
                 onResult = onResult,
                 bottomSheetClosed = bottomSheetClosed,
             )
@@ -412,7 +411,6 @@ fun BandalartBottomSheetContent(
                                 dueDateChanged(dueDateResult.toString())
                                 toggleDatePicker(openDatePickerPushResult)
                             },
-                            datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                             currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
                         )
                     }

@@ -31,12 +31,12 @@ fun BottomSheetTopBar(
     isMainCell: Boolean,
     isSubCell: Boolean,
     isBlankCell: Boolean,
-    bottomSheetState: SheetState,
     onResult: (Boolean, Boolean) -> Unit,
     bottomSheetClosed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Box(
         modifier = modifier
@@ -75,7 +75,6 @@ private fun BottomSheetMainCellTopBarPreview() {
             isMainCell = true,
             isSubCell = false,
             isBlankCell = false,
-            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             onResult = { _, _ -> },
             bottomSheetClosed = {},
         )
@@ -90,7 +89,6 @@ private fun BottomSheetSubCellTopBarPreview() {
             isMainCell = false,
             isSubCell = true,
             isBlankCell = false,
-            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             onResult = { _, _ -> },
             bottomSheetClosed = {},
         )
@@ -105,7 +103,6 @@ private fun BottomSheetBlankCellTopBarPreview() {
             isMainCell = false,
             isSubCell = false,
             isBlankCell = true,
-            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             onResult = { _, _ -> },
             bottomSheetClosed = {},
         )
