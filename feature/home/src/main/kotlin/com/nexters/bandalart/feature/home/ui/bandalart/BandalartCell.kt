@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -62,7 +61,6 @@ data class SubCell(
     val subCellData: BandalartCellUiModel?,
 )
 
-// TODO 메인 셀 달성할 때와 미달성일 때가 색상 변화가 티가 안나는 문제 해결
 @Composable
 fun BandalartCell(
     bandalartId: Long,
@@ -79,20 +77,6 @@ fun BandalartCell(
 ) {
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
-    val backgroundColor = when {
-        // 메인 목표 달성
-        isMainCell && cellData.isCompleted -> bandalartData.mainColor.toColor().copy(alpha = 0.6f)
-        // 메인 목표 미달성
-        isMainCell -> bandalartData.mainColor.toColor()
-        // 서브 목표 달성
-        cellInfo.isSubCell and cellData.isCompleted -> bandalartData.subColor.toColor().copy(alpha = 0.6f)
-        // 서브 목표 미달성
-        cellInfo.isSubCell and !cellData.isCompleted -> bandalartData.subColor.toColor()
-        // 태스크 목표 달성
-        cellData.isCompleted -> Gray400
-        else -> White
-    }
-
     Box(
         modifier = modifier
             .padding(
@@ -103,118 +87,16 @@ fun BandalartCell(
             )
             .aspectRatio(1f)
             .clip(RoundedCornerShape(10.dp))
-            .background(backgroundColor)
+            .background(getCellBackgroundColor(bandalartData, isMainCell, cellData, cellInfo))
             .clickable { openBottomSheet = !openBottomSheet },
         contentAlignment = Alignment.Center,
     ) {
-        when {
-            isMainCell -> {
-                val cellTextColor = bandalartData.subColor.toColor()
-                // 메인 목표가 빈 경우
-                if (cellData.title.isNullOrEmpty()) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            CellText(
-                                cellText = stringResource(R.string.home_main_cell),
-                                cellTextColor = cellTextColor,
-                                fontWeight = FontWeight.W700,
-                            )
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.add_description),
-                                tint = cellTextColor,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .offset(y = (-4).dp),
-                            )
-                        }
-                    }
-                } else {
-                    CellText(
-                        cellText = cellData.title,
-                        cellTextColor = cellTextColor,
-                        fontWeight = FontWeight.W700,
-                    )
-                }
-            }
-
-            cellInfo.isSubCell -> {
-                val cellTextColor = bandalartData.mainColor.toColor()
-                val fontWeight = FontWeight.W700
-                // 서브 목표가 빈 경우
-                if (cellData.title.isNullOrEmpty()) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        CellText(
-                            cellText = stringResource(R.string.home_sub_cell),
-                            cellTextColor = cellTextColor,
-                            fontWeight = fontWeight,
-                        )
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add_description),
-                            tint = cellTextColor,
-                            modifier = Modifier
-                                .size(20.dp)
-                                .offset(y = (-4).dp),
-                        )
-                    }
-                } else {
-                    // 서브 목표를 달성할 경우
-                    CellText(
-                        cellText = cellData.title,
-                        cellTextColor = cellTextColor,
-                        fontWeight = fontWeight,
-                        textAlpha = if (cellData.isCompleted) 0.6f else 1f,
-                    )
-                }
-            }
-
-            else -> {
-                // 테스크
-                val cellTextColor = if (cellData.isCompleted) Gray600 else Gray900
-                val fontWeight = FontWeight.W500
-
-                // 테스크가 비어있는 경우
-                if (cellData.title.isNullOrEmpty()) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.add_description),
-                        tint = Gray500,
-                        modifier = Modifier.size(20.dp),
-                    )
-                } else {
-                    // 테스크의 목표를 달성한 경우
-                    if (cellData.isCompleted) {
-                        Box(
-                            modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            CellText(
-                                cellText = cellData.title,
-                                cellTextColor = cellTextColor,
-                                fontWeight = fontWeight,
-                            )
-                            Image(
-                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_cell_check),
-                                contentDescription = stringResource(R.string.complete_description),
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .offset(x = (-4).dp, y = (-4).dp),
-                            )
-                        }
-                    } else {
-                        CellText(
-                            cellText = cellData.title,
-                            cellTextColor = cellTextColor,
-                            fontWeight = fontWeight,
-                        )
-                    }
-                }
-            }
-        }
+        CellContent(
+            isMainCell = isMainCell,
+            isSubCell = cellInfo.isSubCell,
+            cellData = cellData,
+            bandalartData = bandalartData
+        )
     }
     if (openBottomSheet) {
         BandalartBottomSheet(
@@ -229,6 +111,156 @@ fun BandalartCell(
             },
         )
     }
+}
+
+@Composable
+private fun CellContent(
+    isMainCell: Boolean,
+    isSubCell: Boolean,
+    cellData: BandalartCellUiModel,
+    bandalartData: BandalartUiModel,
+) {
+    when {
+        isMainCell -> MainCellContent(cellData, bandalartData)
+        isSubCell -> SubCellContent(cellData, bandalartData)
+        else -> TaskCellContent(cellData)
+    }
+}
+
+@Composable
+private fun MainCellContent(
+    cellData: BandalartCellUiModel,
+    bandalartData: BandalartUiModel,
+) {
+    val cellTextColor = bandalartData.subColor.toColor()
+
+    if (cellData.title.isNullOrEmpty()) {
+        EmptyCellContent(cellTextColor)
+    } else {
+        FilledCellContent(
+            title = cellData.title,
+            isCompleted = cellData.isCompleted,
+            textColor = cellTextColor,
+            fontWeight = FontWeight.W700
+        )
+    }
+}
+
+@Composable
+private fun SubCellContent(
+    cellData: BandalartCellUiModel,
+    bandalartData: BandalartUiModel,
+) {
+    val cellTextColor = bandalartData.mainColor.toColor()
+
+    if (cellData.title.isNullOrEmpty()) {
+        EmptyCellContent(cellTextColor)
+    } else {
+        FilledCellContent(
+            title = cellData.title,
+            isCompleted = cellData.isCompleted,
+            textColor = cellTextColor,
+            fontWeight = FontWeight.W700
+        )
+    }
+}
+
+
+@Composable
+private fun TaskCellContent(cellData: BandalartCellUiModel) {
+    val cellTextColor = if (cellData.isCompleted) Gray600 else Gray900
+
+    if (cellData.title.isNullOrEmpty()) {
+        EmptyTaskContent()
+    } else {
+        FilledCellContent(
+            title = cellData.title,
+            isCompleted = cellData.isCompleted,
+            textColor = cellTextColor,
+            fontWeight = FontWeight.W500
+        )
+    }
+}
+
+@Composable
+private fun EmptyCellContent(textColor: Color) {
+    Box(contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CellText(
+                cellText = stringResource(R.string.home_main_cell),
+                cellTextColor = textColor,
+                fontWeight = FontWeight.W700,
+            )
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(R.string.add_description),
+                tint = textColor,
+                modifier = Modifier
+                    .size(20.dp)
+                    .offset(y = (-4).dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyTaskContent() {
+    Icon(
+        imageVector = Icons.Default.Add,
+        contentDescription = stringResource(R.string.add_description),
+        tint = Gray500,
+        modifier = Modifier.size(20.dp),
+    )
+}
+
+@Composable
+private fun FilledCellContent(
+    title: String,
+    isCompleted: Boolean,
+    textColor: Color,
+    fontWeight: FontWeight
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CellText(
+            cellText = title,
+            cellTextColor = textColor,
+            fontWeight = fontWeight,
+            textAlpha = if (isCompleted) 0.6f else 1f,
+        )
+
+        if (isCompleted) {
+            Icon(
+                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_cell_check),
+                contentDescription = stringResource(R.string.complete_description),
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = (-4).dp, y = (-4).dp),
+                tint = Color.Unspecified,
+            )
+        }
+    }
+}
+
+private fun getCellBackgroundColor(
+    bandalartData: BandalartUiModel,
+    isMainCell: Boolean,
+    cellData: BandalartCellUiModel,
+    cellInfo: CellInfo,
+): Color = when {
+    // 메인 목표 달성
+    isMainCell && cellData.isCompleted -> bandalartData.mainColor.toColor().copy(alpha = 0.6f)
+    // 메인 목표 미달성
+    isMainCell -> bandalartData.mainColor.toColor()
+    // 서브 목표 달성
+    cellInfo.isSubCell && cellData.isCompleted -> bandalartData.subColor.toColor().copy(alpha = 0.6f)
+    // 서브 목표 미달성
+    cellInfo.isSubCell -> bandalartData.subColor.toColor()
+    // 태스크 목표 달성
+    cellData.isCompleted -> Gray400
+    else -> White
 }
 
 @ComponentPreview
