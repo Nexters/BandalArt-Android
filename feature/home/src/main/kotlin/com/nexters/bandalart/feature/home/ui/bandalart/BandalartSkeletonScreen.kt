@@ -262,32 +262,30 @@ fun BandalartSkeletonChart(
                         .layoutId(stringResource(R.string.home_layout_id, index + 1))
                         .clip(RoundedCornerShape(12.dp))
                         .background(color = Gray200),
-                    content = {
-                        SkeletonCellGrid(
-                            rows = subCellList[index].rowCnt,
-                            cols = subCellList[index].colCnt,
-                            subCell = subCellList[index],
-                            taskBrush = taskBrush,
-                            subBrush = subBrush,
-                            mainBrush = mainBrush,
-                        )
-                    },
-                )
+                ) {
+                    SkeletonCellGrid(
+                        rows = subCellList[index].rowCnt,
+                        cols = subCellList[index].colCnt,
+                        subCell = subCellList[index],
+                        taskBrush = taskBrush,
+                        subBrush = subBrush,
+                        mainBrush = mainBrush,
+                    )
+                }
             }
             Box(
                 modifier
                     .layoutId(stringResource(R.string.home_main_id))
                     .clip(RoundedCornerShape(10.dp))
                     .background(brush = taskBrush),
-                content = {
-                    SkeletonCell(
-                        isMainCell = true,
-                        taskBrush = taskBrush,
-                        subBrush = subBrush,
-                        mainBrush = mainBrush,
-                    )
-                },
-            )
+            ) {
+                SkeletonCell(
+                    isMainCell = true,
+                    taskBrush = taskBrush,
+                    subBrush = subBrush,
+                    mainBrush = mainBrush,
+                )
+            }
         },
     ) { measurables, constraints ->
         val sub1 = measurables.first { it.layoutId == context.getString(R.string.home_sub1_id) }

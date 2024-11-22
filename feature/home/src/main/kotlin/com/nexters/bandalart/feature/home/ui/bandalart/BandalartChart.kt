@@ -57,17 +57,16 @@ fun BandalartChart(
                         .layoutId(stringResource(R.string.home_layout_id, index + 1))
                         .clip(RoundedCornerShape(12.dp))
                         .background(color = Gray300),
-                    content = {
-                        BandalartCellGrid(
-                            bandalartId = bandalartId,
-                            bandalartData = bandalartData,
-                            subCell = subCellList[index],
-                            rows = subCellList[index].rowCnt,
-                            cols = subCellList[index].colCnt,
-                            bottomSheetDataChanged = bottomSheetDataChanged,
-                        )
-                    },
-                )
+                ) {
+                    BandalartCellGrid(
+                        bandalartId = bandalartId,
+                        bandalartData = bandalartData,
+                        subCell = subCellList[index],
+                        rows = subCellList[index].rowCnt,
+                        cols = subCellList[index].colCnt,
+                        bottomSheetDataChanged = bottomSheetDataChanged,
+                    )
+                }
             }
             Box(
                 modifier = Modifier
