@@ -51,8 +51,9 @@ class HomeViewModel @Inject constructor(
                 if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
                     val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
                     if (isBandalartCompleted) {
+                        delay(500L)
                         updateCaptureState()
-                        delay(1000L)
+                        delay(500L)
                         navigateToComplete(
                             bandalart.id,
                             bandalart.title,
