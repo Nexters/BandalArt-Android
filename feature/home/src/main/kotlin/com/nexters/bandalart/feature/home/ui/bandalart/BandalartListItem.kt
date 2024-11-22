@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
-fun BandalartItem(
+fun BandalartListItem(
     bottomSheetState: SheetState,
     bandalartItem: BandalartUiModel,
     currentBandalartId: Long,
@@ -182,7 +182,7 @@ fun BandalartItem(
 @Composable
 private fun BandalartItemPreview() {
     BandalartTheme {
-        BandalartItem(
+        BandalartListItem(
             bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             bandalartItem = dummyBandalartData,
             currentBandalartId = 0L,

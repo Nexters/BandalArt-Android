@@ -124,7 +124,7 @@ fun BandalartListBottomSheet(
                     key = { index -> bandalartList[index].id },
                 ) { index ->
                     val bandalartItem = bandalartList[index]
-                    BandalartItem(
+                    BandalartListItem(
                         bottomSheetState = bottomSheetState,
                         bandalartItem = bandalartItem,
                         currentBandalartId = currentBandalartId,
