@@ -6,7 +6,7 @@
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-34-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 <br/>
 
-부담 없는 만다라트 계획표로 당신의 목표를 더욱 선명하게, 반다라트 [PlayStore](https://play.google.com/store/apps/details?id=com.nexters.bandalart.android&hl=en-KR)
+부담 없는 만다라트 계획표로 당신의 목표를 더욱 선명하게, 반다라트 [PlayStore](https://play.google.com/store/apps/details?id=com.nexters.bandalart)
 <br/>
 ![반다라트 그래픽이미지 2](https://github.com/Nexters/BandalArt-Android/assets/51016231/a357f7aa-d086-47de-bbac-d423cdaffdbe)
 <br/>
@@ -52,6 +52,7 @@
   - DataStore
   - StartUp
   - Splash
+  - Room
 
 - Kotlin Libraries (Coroutine, DateTime, Serialization)
 - Compose
@@ -65,23 +66,23 @@
 - Lottie
 - Facebook Shimmer
 - Firebase(Analytics, Crashlytics)
+- [Compose-Stable-Marker](https://github.com/skydoves/compose-stable-marker)
 
 #### Test & Code analysis
+- Kotest
 
 - Ktlint
 - Detekt
-- Kotest
 
 #### Gradle Dependency
 
 - Gradle Version Catalog
 
 ## Architecture
-Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
+Modularization Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
 
-<img width="760" alt="image" src="https://github.com/easyhooon/watcha-assignment/assets/51016231/2837a3b6-32f8-46aa-a102-3fb5b3e3826a">
-
-<img width="760" alt="image" src="https://github.com/easyhooon/watcha-assignment/assets/51016231/b29020a1-69aa-482b-8af4-ddb27122a440">
+## Module
+![image](https://github.com/user-attachments/assets/c45b3830-95b2-4b20-9280-7004fc812350)
 
 ## Package Structure
 ```
