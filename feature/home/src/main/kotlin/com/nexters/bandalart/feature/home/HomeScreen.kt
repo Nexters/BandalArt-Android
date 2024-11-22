@@ -62,6 +62,7 @@ import kotlinx.coroutines.launch
 private const val SnackbarDuration = 1000L
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
+// TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,
