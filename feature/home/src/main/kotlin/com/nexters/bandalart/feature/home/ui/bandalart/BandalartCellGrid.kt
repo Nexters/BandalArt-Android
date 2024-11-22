@@ -79,8 +79,8 @@ private fun BandalartCellGridPreview() {
                 subColor = "#111827",
             ),
             subCell = subCellList[1],
-            rows = 3,
-            cols = 3,
+            rows = subCellList[1].rowCnt,
+            cols = subCellList[1].colCnt,
             bottomSheetDataChanged = {},
         )
     }

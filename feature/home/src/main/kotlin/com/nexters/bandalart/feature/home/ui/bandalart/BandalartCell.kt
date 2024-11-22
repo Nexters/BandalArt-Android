@@ -95,7 +95,7 @@ fun BandalartCell(
                     !isMainCell && bandalartData.title.isNullOrEmpty() -> {
                         Toast.makeText(context, context.getString(R.string.please_input_main_goal), Toast.LENGTH_SHORT).show()
                     }
-//                    // 태스크셀이고 상위 서브셀이 비어있을 때
+//                    // 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
 //                    !isMainCell && !cellInfo.isSubCell && cellInfo.parentCell?.title.isNullOrEmpty() -> {
 //                        Toast.makeText(context, context.getString(R.string.please_input_sub_goal), Toast.LENGTH_SHORT).show()
 //                    }
