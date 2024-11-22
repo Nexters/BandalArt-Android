@@ -1,17 +1,17 @@
 package com.nexters.bandalart.core.datastore.datasource
 
-import com.nexters.bandalart.core.datastore.DataStoreProvider
+import com.nexters.bandalart.core.datastore.BandalartDataStore
 import javax.inject.Inject
 
 internal class RecentBandalartIdDataSourceImpl @Inject constructor(
-    private val datastoreProvider: DataStoreProvider,
+    private val datastoreBandalart: BandalartDataStore,
 ) : RecentBandalartIdDataSource {
 
     override suspend fun setRecentBandalartId(recentBandalartId: Long) {
-        datastoreProvider.setRecentBandalartId(recentBandalartId)
+        datastoreBandalart.setRecentBandalartId(recentBandalartId)
     }
 
     override suspend fun getRecentBandalartId(): Long {
-        return datastoreProvider.getRecentBandalartId()
+        return datastoreBandalart.getRecentBandalartId()
     }
 }

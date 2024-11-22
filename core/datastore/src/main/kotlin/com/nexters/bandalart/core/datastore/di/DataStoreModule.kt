@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.nexters.bandalart.core.datastore.DataStoreProvider
+import com.nexters.bandalart.core.datastore.BandalartDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +23,5 @@ internal object DataStoreModule {
     fun providePreferencesDataStore(@ApplicationContext context: Context) = context.bandalartDataStore
 
     @Provides
-    fun provideDataStore(dataStore: DataStore<Preferences>) = DataStoreProvider(dataStore)
+    fun provideDataStore(dataStore: DataStore<Preferences>) = BandalartDataStore(dataStore)
 }

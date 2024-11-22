@@ -1,24 +1,24 @@
 package com.nexters.bandalart.core.datastore.datasource
 
-import com.nexters.bandalart.core.datastore.DataStoreProvider
+import com.nexters.bandalart.core.datastore.BandalartDataStore
 import javax.inject.Inject
 
-internal class CompletedBandalartIdDataStoreImpl @Inject constructor(
-    private val datastoreProvider: DataStoreProvider,
+internal class CompletedBandalartIdDataSourceImpl @Inject constructor(
+    private val bandalartDataStore: BandalartDataStore,
 ) : CompletedBandalartIdDataSource {
     override suspend fun getPrevBandalartList(): List<Pair<Long, Boolean>> {
-        return datastoreProvider.getPrevBandalartList()
+        return bandalartDataStore.getPrevBandalartList()
     }
 
     override suspend fun upsertBandalartId(bandalartId: Long, isCompleted: Boolean) {
-        datastoreProvider.upsertBandalartId(bandalartId, isCompleted)
+        bandalartDataStore.upsertBandalartId(bandalartId, isCompleted)
     }
 
     override suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
-        return datastoreProvider.checkCompletedBandalartId(bandalartId)
+        return bandalartDataStore.checkCompletedBandalartId(bandalartId)
     }
 
     override suspend fun deleteBandalartId(bandalartId: Long) {
-        datastoreProvider.deleteBandalartId(bandalartId)
+        bandalartDataStore.deleteBandalartId(bandalartId)
     }
 }

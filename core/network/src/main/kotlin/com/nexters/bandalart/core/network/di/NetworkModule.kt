@@ -1,7 +1,7 @@
 package com.nexters.bandalart.core.network.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.nexters.bandalart.core.datastore.DataStoreProvider
+import com.nexters.bandalart.core.datastore.BandalartDataStore
 import com.nexters.bandalart.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -46,7 +46,7 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    internal fun provideKtorHttpClient(dataStoreProvider: DataStoreProvider): HttpClient {
+    internal fun provideKtorHttpClient(bandalartDataStore: BandalartDataStore): HttpClient {
         return HttpClient(engineFactory = CIO) {
             engine {
                 endpoint {
@@ -56,7 +56,7 @@ internal object NetworkModule {
             }
             defaultRequest {
                 val guestLoginToken = runBlocking {
-                    dataStoreProvider.getGuestLoginToken()
+                    bandalartDataStore.getGuestLoginToken()
                 }
                 url(BuildConfig.SERVER_BASE_URL)
                 contentType(ContentType.Application.Json)
@@ -113,7 +113,7 @@ internal object NetworkModule {
     @Singleton
     @Provides
     internal fun provideBandalartApiRetrofit(
-        dataStoreProvider: DataStoreProvider,
+        bandalartDataStore: BandalartDataStore,
         httpLoggingInterceptor: HttpLoggingInterceptor,
     ): Retrofit {
         val contentType = "application/json".toMediaType()
@@ -121,7 +121,7 @@ internal object NetworkModule {
             .connectTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
             .addInterceptor { chain: Interceptor.Chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("X-GUEST-KEY", runBlocking { dataStoreProvider.getGuestLoginToken() })
+                    .addHeader("X-GUEST-KEY", runBlocking { bandalartDataStore.getGuestLoginToken() })
                     .build()
                 chain.proceed(request)
             }

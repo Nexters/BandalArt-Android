@@ -4,7 +4,7 @@ import com.nexters.bandalart.core.datastore.datasource.CompletedBandalartIdDataS
 import com.nexters.bandalart.core.datastore.datasource.GuestLoginLocalDataSource
 import com.nexters.bandalart.core.datastore.datasource.OnboardingDataSource
 import com.nexters.bandalart.core.datastore.datasource.RecentBandalartIdDataSource
-import com.nexters.bandalart.core.datastore.datasource.CompletedBandalartIdDataStoreImpl
+import com.nexters.bandalart.core.datastore.datasource.CompletedBandalartIdDataSourceImpl
 import com.nexters.bandalart.core.datastore.datasource.GuestLoginLocalDataSourceImpl
 import com.nexters.bandalart.core.datastore.datasource.OnboardingDataSourceImpl
 import com.nexters.bandalart.core.datastore.datasource.RecentBandalartIdDataSourceImpl
@@ -32,7 +32,7 @@ internal abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun bindCompletedBandalartIdDataSource(
-        completedBandalartIdDataStoreImpl: CompletedBandalartIdDataStoreImpl,
+        completedBandalartIdDataSourceImpl: CompletedBandalartIdDataSourceImpl,
     ): CompletedBandalartIdDataSource
 
     @Binds
