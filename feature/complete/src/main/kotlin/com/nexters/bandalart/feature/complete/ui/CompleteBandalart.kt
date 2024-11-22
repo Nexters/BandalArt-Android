@@ -38,7 +38,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 fun CompleteBandalart(
     profileEmoji: String,
     title: String,
-    bandalartChartImageUri: String,
+    // bandalartChartImageUri: String,
     modifier: Modifier = Modifier,
 ) {
     Column(

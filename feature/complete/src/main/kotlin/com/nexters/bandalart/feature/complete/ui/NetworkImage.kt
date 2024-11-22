@@ -49,7 +49,7 @@ fun NetworkImage(
                 if (state is CoilImageState.Failure) {
                     Timber.e(state.reason)
                 }
-            }
+            },
         )
     }
 }

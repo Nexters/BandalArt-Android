@@ -1,9 +1,7 @@
 package com.nexters.bandalart.feature.home.ui.bandalart
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -95,7 +93,7 @@ fun BandalartCell(
             isMainCell = isMainCell,
             isSubCell = cellInfo.isSubCell,
             cellData = cellData,
-            bandalartData = bandalartData
+            bandalartData = bandalartData,
         )
     }
     if (openBottomSheet) {
@@ -141,7 +139,7 @@ private fun MainCellContent(
             title = cellData.title,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
-            fontWeight = FontWeight.W700
+            fontWeight = FontWeight.W700,
         )
     }
 }
@@ -160,11 +158,10 @@ private fun SubCellContent(
             title = cellData.title,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
-            fontWeight = FontWeight.W700
+            fontWeight = FontWeight.W700,
         )
     }
 }
-
 
 @Composable
 private fun TaskCellContent(cellData: BandalartCellUiModel) {
@@ -177,7 +174,7 @@ private fun TaskCellContent(cellData: BandalartCellUiModel) {
             title = cellData.title,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
-            fontWeight = FontWeight.W500
+            fontWeight = FontWeight.W500,
         )
     }
 }
@@ -218,7 +215,7 @@ private fun FilledCellContent(
     title: String,
     isCompleted: Boolean,
     textColor: Color,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
