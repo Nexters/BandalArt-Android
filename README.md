@@ -1,8 +1,8 @@
 # 반다라트 Android
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg)](https://kotlinlang.org)
-[![Gradle](https://img.shields.io/badge/gradle-8.0-green.svg)](https://gradle.org/)
-[![Android Studio](https://img.shields.io/badge/Android%20Studio-2022.3.1%20%28Giraff%29-green)](https://developer.android.com/studio)
-[![minSdkVersion](https://img.shields.io/badge/minSdkVersion-24-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-blue.svg)](https://kotlinlang.org)
+[![Gradle](https://img.shields.io/badge/gradle-8.7-green.svg)](https://gradle.org/)
+[![Android Studio](https://img.shields.io/badge/Android%20Studio-2024.2.1%20%28Ladybug%29-green)](https://developer.android.com/studio)
+[![minSdkVersion](https://img.shields.io/badge/minSdkVersion-26-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-34-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 <br/>
 
@@ -34,9 +34,9 @@
 
 ### Required
 
-- IDE : Android Studio Giraffe
+- IDE : Android Studio Ladybug
 - JDK : Java 17을 실행할 수 있는 JDK
-- Kotlin Language : 1.9
+- Kotlin Language : 2.0.21
 
 ### Language
 
