@@ -60,8 +60,8 @@
   - Navigation
 
 - Dagger Hilt
-- Ktor
-- Retrofit
+- ~Ktor~
+- ~Retrofit~
 - Timber
 - Lottie
 - Facebook Shimmer
