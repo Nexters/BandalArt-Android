@@ -73,9 +73,9 @@
     <string name="bottomsheet_done">Done</string>
 
     <!-- BandalartDatePicker.kt -->
-    <string name="datepicker_year">%1$s year</string>
-    <string name="datepicker_month">%1$s month</string>
-    <string name="datepicker_day">%1$s day</string>
+    <string name="datepicker_year">%1$s</string>
+    <string name="datepicker_month">%1$s</string>
+    <string name="datepicker_day">%1$s</string>
 
     <!-- BandalartDeleteAlertDialog -->
     <string name="delete_bandalart_dialog_empty_title">Do you want to delete\nthe Bandalart?</string>

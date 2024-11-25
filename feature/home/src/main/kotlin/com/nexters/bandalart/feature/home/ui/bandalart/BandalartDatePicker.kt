@@ -255,14 +255,18 @@ fun InfiniteItemsPicker(
 }
 
 fun selectedDateWithValidate(year: String, month: String, day: String): LocalDateTime {
-    return "$year-${month.padStart(2, '0')}-${
-        if (month == "2")
-            if (day == "31" || day == "30") "28"
-            else day.padStart(2, '0')
-        else if (month == "4" || month == "6" || month == "9" || month == "11")
-            if (day == "31") "30"
-            else day.padStart(2, '0')
-        else day.padStart(2, '0')
+    val yearNum = year.filter { it.isDigit() }
+    val monthNum = month.filter { it.isDigit() }
+    val dayNum = day.filter { it.isDigit() }
+
+    return "$yearNum-${monthNum.padStart(2, '0')}-${
+        if (monthNum == "2")
+            if (dayNum == "31" || dayNum == "30") "28"
+            else dayNum.padStart(2, '0')
+        else if (monthNum in listOf("4", "6", "9", "11"))
+            if (dayNum == "31") "30"
+            else dayNum.padStart(2, '0')
+        else dayNum.padStart(2, '0')
     }T00:00".toLocalDateTime()
 }
 
