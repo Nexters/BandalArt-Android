@@ -1,5 +1,7 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
+import java.util.Locale
+
 sealed interface BottomSheetUiAction {
     data object CopyCellData : BottomSheetUiAction
     data object UpdateBandalartMainCell : BottomSheetUiAction
@@ -11,10 +13,10 @@ sealed interface BottomSheetUiAction {
     data object OpenEmojiPicker : BottomSheetUiAction
     data class OnEmojiSelect(val emoji: String) : BottomSheetUiAction
     data object OnModalConfirmClick : BottomSheetUiAction
-    data object TitleChanged : BottomSheetUiAction
     data object OnColorSelect : BottomSheetUiAction
     data object OnDueDateChange : BottomSheetUiAction
-    data object OnDescriptionChange : BottomSheetUiAction
+    data class OnTitleUpdate(val title: String, val currentLocale: Locale): BottomSheetUiAction
+    data class OnDescriptionUpdate(val description: String) : BottomSheetUiAction
     data object OnCompletionChange : BottomSheetUiAction
     data object BottomSheetClosed : BottomSheetUiAction
 }

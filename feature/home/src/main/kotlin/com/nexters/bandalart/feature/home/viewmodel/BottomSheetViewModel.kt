@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,15 +35,16 @@ class BottomSheetViewModel @Inject constructor(
                 deleteBandalartCell(action.id)
                 toggleDeleteCellDialog(false)
             }
+
             is BottomSheetUiAction.OpenDeleteCellDialog -> toggleDeleteCellDialog(true)
             is BottomSheetUiAction.OpenDatePicker -> toggleDatePicker(true)
             is BottomSheetUiAction.OpenEmojiPicker -> toggleEmojiPicker(true)
-            is BottomSheetUiAction.OnEmojiSelect -> emojiSelected(action.emoji)
+            is BottomSheetUiAction.OnEmojiSelect -> updateEmoji(action.emoji)
             is BottomSheetUiAction.OnModalConfirmClick -> {}
-            is BottomSheetUiAction.TitleChanged -> titleChanged("")
             is BottomSheetUiAction.OnColorSelect -> colorChanged("", "")
             is BottomSheetUiAction.OnDueDateChange -> dueDateChanged("")
-            is BottomSheetUiAction.OnDescriptionChange -> descriptionChanged("")
+            is BottomSheetUiAction.OnTitleUpdate -> updateTitle(action.title, action.currentLocale)
+            is BottomSheetUiAction.OnDescriptionUpdate -> updateDescription(action.description)
             is BottomSheetUiAction.OnCompletionChange -> completionChanged(false)
             is BottomSheetUiAction.BottomSheetClosed -> bottomSheetClosed()
         }
@@ -123,12 +125,33 @@ class BottomSheetViewModel @Inject constructor(
         _uiState.update { it.copy(isEmojiPickerOpened = flag) }
     }
 
-    private fun emojiSelected(profileEmoji: String?) {
+    private fun updateEmoji(profileEmoji: String?) {
         _uiState.update { it.copy(bandalartData = it.bandalartData.copy(profileEmoji = profileEmoji)) }
     }
 
-    fun titleChanged(title: String) {
-        _uiState.update { it.copy(cellData = it.cellData.copy(title = title)) }
+    private fun updateTitle(newTitle: String, currentLocale: Locale) {
+        val validatedTitle = validateTitleLength(
+            newTitle = newTitle,
+            currentTitle = _uiState.value.cellData.title ?: "",
+            currentLocale = currentLocale
+        )
+
+        _uiState.update {
+            it.copy(cellData = it.cellData.copy(title = validatedTitle))
+        }
+    }
+
+    private fun validateTitleLength(
+        newTitle: String,
+        currentTitle: String,
+        currentLocale: Locale
+    ): String {
+        val maxLength = when (currentLocale.language) {
+            Locale.KOREAN.language -> 15
+            else -> 24
+        }
+
+        return if (newTitle.length > maxLength) currentTitle else newTitle
     }
 
     fun colorChanged(mainColor: String, subColor: String) {
@@ -146,8 +169,22 @@ class BottomSheetViewModel @Inject constructor(
         _uiState.update { it.copy(cellData = it.cellData.copy(dueDate = dueDate)) }
     }
 
-    fun descriptionChanged(description: String?) {
-        _uiState.update { it.copy(cellData = it.cellData.copy(description = description)) }
+    private fun updateDescription(newDescription: String?) {
+        val validatedDescription = validateDescriptionLength(
+            newDescription = newDescription,
+            currentDescription = _uiState.value.cellData.description
+        )
+
+        _uiState.update {
+            it.copy(cellData = it.cellData.copy(description = validatedDescription))
+        }
+    }
+
+    private fun validateDescriptionLength(
+        newDescription: String?,
+        currentDescription: String?
+    ): String? {
+        return if ((newDescription?.length ?: 0) > 1000) currentDescription else newDescription
     }
 
     fun completionChanged(flag: Boolean) {

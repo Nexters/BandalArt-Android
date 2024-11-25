@@ -132,10 +132,8 @@ fun BandalartBottomSheet(
         toggleDeleteCellDialog = viewModel::toggleDeleteCellDialog,
         toggleEmojiPicker = viewModel::toggleEmojiPicker,
         toggleDatePicker = viewModel::toggleDatePicker,
-        titleChanged = viewModel::titleChanged,
         colorChanged = viewModel::colorChanged,
         dueDateChanged = viewModel::dueDateChanged,
-        descriptionChanged = viewModel::descriptionChanged,
         completionChanged = viewModel::completionChanged,
         updateBandalartMainCell = viewModel::updateBandalartMainCell,
         updateBandalartSubCell = viewModel::updateBandalartSubCell,
@@ -161,10 +159,8 @@ fun BandalartBottomSheetContent(
     toggleDeleteCellDialog: (Boolean) -> Unit,
     toggleEmojiPicker: (Boolean) -> Unit,
     toggleDatePicker: (Boolean) -> Unit,
-    titleChanged: (String) -> Unit,
     colorChanged: (String, String) -> Unit,
     dueDateChanged: (String) -> Unit,
-    descriptionChanged: (String) -> Unit,
     completionChanged: (Boolean) -> Unit,
     updateBandalartMainCell: (Long, Long, UpdateBandalartMainCellModel) -> Unit,
     updateBandalartSubCell: (Long, Long, UpdateBandalartSubCellModel) -> Unit,
@@ -303,13 +299,8 @@ fun BandalartBottomSheetContent(
                         Column(modifier = Modifier.padding(top = 10.dp)) {
                             BasicTextField(
                                 value = uiState.cellData.title ?: "",
-                                onValueChange = {
-                                    // 영어 일 때는 title 의 글자 수를 24자 까지 허용
-                                    when (currentLocale.language) {
-                                        Locale.KOREAN.language -> titleChanged(if (it.length > 15) uiState.cellData.title ?: "" else it)
-                                        Locale.ENGLISH.language -> titleChanged(if (it.length > 24) uiState.cellData.title ?: "" else it)
-                                        else -> titleChanged(if (it.length > 24) uiState.cellData.title ?: "" else it)
-                                    }
+                                onValueChange = { title ->
+                                    onAction(BottomSheetUiAction.OnTitleUpdate(title, currentLocale))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -419,11 +410,8 @@ fun BandalartBottomSheetContent(
                         Column {
                             BasicTextField(
                                 value = uiState.cellData.description ?: "",
-                                onValueChange = {
-                                    // description 의 글자 수를 1000자 까지 허용
-                                    (if (it.length > 1000) uiState.cellData.description else it)?.let { description ->
-                                        descriptionChanged(description)
-                                    }
+                                onValueChange = { description ->
+                                    onAction(BottomSheetUiAction.OnDescriptionUpdate(description))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -591,10 +579,8 @@ private fun BandalartMainCellBottomSheetPreview() {
             toggleDeleteCellDialog = {},
             toggleEmojiPicker = {},
             toggleDatePicker = {},
-            titleChanged = {},
             colorChanged = { _, _ -> },
             dueDateChanged = {},
-            descriptionChanged = {},
             completionChanged = {},
             updateBandalartMainCell = { _, _, _ -> },
             updateBandalartSubCell = { _, _, _ -> },
@@ -624,10 +610,8 @@ private fun BandalartSubCellBottomSheetPreview() {
             toggleDeleteCellDialog = {},
             toggleEmojiPicker = {},
             toggleDatePicker = {},
-            titleChanged = {},
             colorChanged = { _, _ -> },
             dueDateChanged = {},
-            descriptionChanged = {},
             completionChanged = {},
             updateBandalartMainCell = { _, _, _ -> },
             updateBandalartSubCell = { _, _, _ -> },
@@ -657,10 +641,8 @@ private fun BandalartTaskCellBottomSheetPreview() {
             toggleDeleteCellDialog = {},
             toggleEmojiPicker = {},
             toggleDatePicker = {},
-            titleChanged = {},
             colorChanged = { _, _ -> },
             dueDateChanged = {},
-            descriptionChanged = {},
             completionChanged = {},
             updateBandalartMainCell = { _, _, _ -> },
             updateBandalartSubCell = { _, _, _ -> },
