@@ -179,6 +179,7 @@ class HomeViewModel @Inject constructor(
 
     fun getBandalart(bandalartId: Long, isBandalartCompleted: Boolean = false) {
         viewModelScope.launch {
+            updateSkeletonState(true)
             bandalartRepository.getBandalart(bandalartId).let { bandalart ->
                 _uiState.update {
                     it.copy(
