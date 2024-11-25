@@ -197,10 +197,10 @@ fun InfiniteItemsPicker(
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState(firstIndex)
-    val currentValue = remember { mutableStateOf(items[firstIndex % items.size].toString()) }  // 초기값 설정
+    val currentValue = remember { mutableStateOf(items[firstIndex % items.size].toString()) }
 
     LaunchedEffect(key1 = !listState.isScrollInProgress) {
-        if (currentValue.value.isNotEmpty()) {  // 값이 비어있지 않은 경우에만 처리
+        if (currentValue.value.isNotEmpty()) {
             onItemSelected(currentValue.value)
             listState.animateScrollToItem(index = listState.firstVisibleItemIndex)
         }

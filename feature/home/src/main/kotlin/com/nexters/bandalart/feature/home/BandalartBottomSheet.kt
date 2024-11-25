@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.nexters.bandalart.feature.home
 
 import androidx.compose.animation.AnimatedVisibility
@@ -128,6 +126,7 @@ fun BandalartBottomSheet(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartBottomSheetContent(
     uiState: BottomSheetUiState,

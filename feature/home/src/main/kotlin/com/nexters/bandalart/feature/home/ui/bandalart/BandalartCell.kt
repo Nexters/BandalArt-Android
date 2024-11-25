@@ -51,7 +51,8 @@ data class CellInfo(
     val rowIndex: Int = 2,
     val colCnt: Int = 1,
     val rowCnt: Int = 1,
-    val parentCell: BandalartCellUiModel? = null  // 상위 셀 정보 추가
+    // TODO 상위 셀 정보 추가 필요(서브 목표가 비어 있을 경우, 태스크 셀을 먼저 작성할 수 없도록 validation)
+    val parentCell: BandalartCellUiModel? = null,
 )
 
 data class SubCell(
@@ -93,7 +94,9 @@ fun BandalartCell(
                 when {
                     // 메인셀이 비어있고, 서브나 태스크셀 클릭 시
                     !isMainCell && bandalartData.title.isNullOrEmpty() -> {
-                        Toast.makeText(context, context.getString(R.string.please_input_main_goal), Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(context, context.getString(R.string.please_input_main_goal), Toast.LENGTH_SHORT)
+                            .show()
                     }
 //                    // 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
 //                    !isMainCell && !cellInfo.isSubCell && cellInfo.parentCell?.title.isNullOrEmpty() -> {

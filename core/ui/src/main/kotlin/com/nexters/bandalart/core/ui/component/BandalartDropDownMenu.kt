@@ -47,7 +47,7 @@ fun BandalartDropDownMenu(
             x = (-18).dp,
             y = 0.dp,
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
     ) {
 //            // TODO MVP 에서 제외, 이번에 구현해도 좋을듯
 //            DropdownMenuItem(
