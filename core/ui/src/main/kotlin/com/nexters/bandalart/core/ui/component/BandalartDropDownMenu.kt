@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -38,20 +37,18 @@ fun BandalartDropDownMenu(
     onDeleteClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MaterialTheme(
-        shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(12.dp)),
+    DropdownMenu(
+        modifier = modifier
+            .wrapContentSize()
+            .background(White),
+        expanded = isDropDownMenuOpened,
+        onDismissRequest = { toggleDropDownMenu(false) },
+        offset = DpOffset(
+            x = (-18).dp,
+            y = 0.dp,
+        ),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        DropdownMenu(
-            modifier = modifier
-                .wrapContentSize()
-                .background(White),
-            expanded = isDropDownMenuOpened,
-            onDismissRequest = { toggleDropDownMenu(false) },
-            offset = DpOffset(
-                x = (-18).dp,
-                y = 0.dp,
-            ),
-        ) {
 //            // TODO MVP 에서 제외, 이번에 구현해도 좋을듯
 //            DropdownMenuItem(
 //                modifier = Modifier
@@ -82,38 +79,37 @@ fun BandalartDropDownMenu(
 //                onClick = { openDropDownMenu(false) },
 //            )
 //            Spacer(modifier = Modifier.height(2.dp))
-            DropdownMenuItem(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(horizontal = 7.dp),
-                text = {
-                    Row {
-                        Image(
-                            imageVector = ImageVector.vectorResource(
-                                id = DesignR.drawable.ic_delete,
-                            ),
-                            contentDescription = stringResource(R.string.delete_description),
-                            modifier = Modifier
-                                .height(14.dp)
-                                .align(CenterVertically),
-                            colorFilter = ColorFilter.tint(Error),
-                        )
-                        Text(
-                            text = stringResource(R.string.dropdown_delete),
-                            color = Error,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W500,
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(start = 13.dp)
-                                .align(CenterVertically),
-                            fontFamily = pretendard,
-                        )
-                    }
-                },
-                onClick = onDeleteClicked,
-            )
-        }
+        DropdownMenuItem(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(horizontal = 7.dp),
+            text = {
+                Row {
+                    Image(
+                        imageVector = ImageVector.vectorResource(
+                            id = DesignR.drawable.ic_delete,
+                        ),
+                        contentDescription = stringResource(R.string.delete_description),
+                        modifier = Modifier
+                            .height(14.dp)
+                            .align(CenterVertically),
+                        colorFilter = ColorFilter.tint(Error),
+                    )
+                    Text(
+                        text = stringResource(R.string.dropdown_delete),
+                        color = Error,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W500,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(start = 13.dp)
+                            .align(CenterVertically),
+                        fontFamily = pretendard,
+                    )
+                }
+            },
+            onClick = onDeleteClicked,
+        )
     }
 }
 
