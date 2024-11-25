@@ -106,6 +106,10 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.ToggleCellBottomSheet -> toggleCellBottomSheet(action.flag)
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
+            is HomeUiAction.OnBandalartListItemClick -> {
+                setRecentBandalartId(action.key)
+                getBandalart(action.key)
+            }
         }
     }
 
@@ -151,7 +155,6 @@ class HomeViewModel @Inject constructor(
 
             // 생성한 반다라트 표를 화면에 띄우는 경우
             if (bandalartId != null) {
-                updateSkeletonState(true)
                 getBandalart(bandalartId)
                 return@launch
             }
@@ -169,7 +172,6 @@ class HomeViewModel @Inject constructor(
                 }
                 // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
                 else {
-                    updateSkeletonState(true)
                     // 목록에 가장 첫번째 표를 화면에 띄움
                     getBandalart(bandalartList[0].id)
                 }
@@ -177,7 +179,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getBandalart(bandalartId: Long, isBandalartCompleted: Boolean = false) {
+    private fun getBandalart(bandalartId: Long, isBandalartCompleted: Boolean = false) {
         viewModelScope.launch {
             updateSkeletonState(true)
             bandalartRepository.getBandalart(bandalartId).let { bandalart ->
@@ -341,7 +343,7 @@ class HomeViewModel @Inject constructor(
         return bandalartRepository.getRecentBandalartId()
     }
 
-    fun setRecentBandalartId(bandalartId: Long) {
+    private fun setRecentBandalartId(bandalartId: Long) {
         viewModelScope.launch {
             bandalartRepository.setRecentBandalartId(bandalartId)
         }

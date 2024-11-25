@@ -22,6 +22,7 @@ sealed interface HomeUiAction {
     data class ToggleCellBottomSheet(val flag: Boolean) : HomeUiAction
     data class ToggleBandalartListBottomSheet(val flag: Boolean) : HomeUiAction
     data object BottomSheetDataChanged : HomeUiAction
+    data class OnBandalartListItemClick(val key: Long) : HomeUiAction
 }
 
 enum class ModalType {

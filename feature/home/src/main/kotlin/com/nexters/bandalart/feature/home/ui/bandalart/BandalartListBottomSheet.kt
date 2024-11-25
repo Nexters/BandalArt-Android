@@ -57,10 +57,9 @@ import kotlinx.coroutines.launch
 fun BandalartListBottomSheet(
     bandalartList: ImmutableList<BandalartUiModel>,
     currentBandalartId: Long,
-    getBandalart: (Long) -> Unit,
-    setRecentBandalartId: (Long) -> Unit,
     onDismissRequest: () -> Unit,
     onAddClick: () -> Unit,
+    onBandalartListItemClick: (Long) -> Unit,
     // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -129,8 +128,7 @@ fun BandalartListBottomSheet(
                         currentBandalartId = currentBandalartId,
                         onClick = { key ->
                             // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
-                            setRecentBandalartId(key)
-                            getBandalart(key)
+                            onBandalartListItemClick(key)
                         },
                         onCancelClicked = onDismissRequest,
                     )
@@ -176,10 +174,9 @@ private fun BandalartListBottomSheetPreview() {
         BandalartListBottomSheet(
             bandalartList = dummyBandalartList.toImmutableList(),
             currentBandalartId = 0L,
-            getBandalart = {},
-            setRecentBandalartId = {},
             onDismissRequest = {},
             onAddClick = {},
+            onBandalartListItemClick = {},
             // onBottomSheetUiAction = {},
         )
     }

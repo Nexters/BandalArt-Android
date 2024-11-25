@@ -119,9 +119,7 @@ internal fun HomeRoute(
         onHomeUiAction = homeViewModel::onAction,
         // onBottomSheetUiAction = bottomSheetViewModel::onAction,
         getBandalartList = homeViewModel::getBandalartList,
-        getBandalart = homeViewModel::getBandalart,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
-        setRecentBandalartId = homeViewModel::setRecentBandalartId,
         shareBandalart = homeViewModel::shareBandalart,
         captureBandalart = homeViewModel::captureBandalart,
         modifier = modifier,
@@ -135,9 +133,7 @@ internal fun HomeScreen(
     onHomeUiAction: (HomeUiAction) -> Unit,
     // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     getBandalartList: (Long?) -> Unit,
-    getBandalart: (Long) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
-    setRecentBandalartId: (Long) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
     captureBandalart: (ImageBitmap) -> Unit,
     modifier: Modifier = Modifier,
@@ -173,10 +169,9 @@ internal fun HomeScreen(
             BandalartListBottomSheet(
                 bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
                 currentBandalartId = bandalart.id,
-                getBandalart = getBandalart,
-                setRecentBandalartId = setRecentBandalartId,
                 onDismissRequest = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
                 onAddClick = { onHomeUiAction(HomeUiAction.OnAddClick) },
+                onBandalartListItemClick = { key -> onHomeUiAction(HomeUiAction.OnBandalartListItemClick(key)) },
                 // onBottomSheetUiAction = onBottomSheetUiAction,
             )
         }
@@ -329,9 +324,7 @@ private fun HomeScreenSingleBandalartPreview() {
             onHomeUiAction = {},
             // onBottomSheetUiAction = {},
             getBandalartList = {},
-            getBandalart = {},
             bottomSheetDataChanged = {},
-            setRecentBandalartId = {},
             shareBandalart = {},
             captureBandalart = {},
         )
@@ -352,9 +345,7 @@ private fun HomeScreenMultipleBandalartPreview() {
             onHomeUiAction = {},
             // onBottomSheetUiAction = {},
             getBandalartList = {},
-            getBandalart = {},
             bottomSheetDataChanged = {},
-            setRecentBandalartId = {},
             shareBandalart = {},
             captureBandalart = {},
         )
