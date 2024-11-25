@@ -27,26 +27,22 @@ class BottomSheetViewModel @Inject constructor(
 
     fun onAction(action: BottomSheetUiAction) {
         when (action) {
-            is BottomSheetUiAction.CopyCellData -> {}
-            is BottomSheetUiAction.UpdateBandalartMainCell -> {}
-            is BottomSheetUiAction.UpdateBandalartSubCell -> {}
-            is BottomSheetUiAction.UpdateBandalartTaskCell -> {}
+            is BottomSheetUiAction.OnCompleteButtonClick -> updateCell(action.bandalartId, action.cellId, action.isMainCell, action.isSubCell)
+            is BottomSheetUiAction.OnDeleteButtonClick -> toggleDeleteCellDialog(!_uiState.value.isDeleteCellDialogOpened)
             is BottomSheetUiAction.OnDeleteDialogConfirmClick -> {
                 deleteBandalartCell(action.id)
                 toggleDeleteCellDialog(false)
             }
 
-            is BottomSheetUiAction.OpenDeleteCellDialog -> toggleDeleteCellDialog(true)
-            is BottomSheetUiAction.OpenDatePicker -> toggleDatePicker(true)
-            is BottomSheetUiAction.OpenEmojiPicker -> toggleEmojiPicker(true)
+            is BottomSheetUiAction.OnDeleteDialogCancelClick -> toggleDeleteCellDialog(false)
+            is BottomSheetUiAction.OnDatePickerClick -> toggleDatePicker(!_uiState.value.isDatePickerOpened)
+            is BottomSheetUiAction.OnEmojiPickerClick -> toggleEmojiPicker(!_uiState.value.isEmojiPickerOpened)
             is BottomSheetUiAction.OnEmojiSelect -> updateEmoji(action.emoji)
-            is BottomSheetUiAction.OnModalConfirmClick -> {}
-            is BottomSheetUiAction.OnColorSelect -> colorChanged("", "")
-            is BottomSheetUiAction.OnDueDateChange -> dueDateChanged("")
+            is BottomSheetUiAction.OnColorSelect -> updateThemeColor(action.mainColor, action.subColor)
+            is BottomSheetUiAction.OnDueDateSelect -> updateDueDate(action.dueDate)
             is BottomSheetUiAction.OnTitleUpdate -> updateTitle(action.title, action.currentLocale)
             is BottomSheetUiAction.OnDescriptionUpdate -> updateDescription(action.description)
-            is BottomSheetUiAction.OnCompletionChange -> completionChanged(false)
-            is BottomSheetUiAction.BottomSheetClosed -> bottomSheetClosed()
+            is BottomSheetUiAction.OnCompletionUpdate -> updateCompletion(action.isCompleted)
         }
     }
 
@@ -64,7 +60,60 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun updateBandalartMainCell(
+    private fun updateCell(
+        bandalartId: Long,
+        cellId: Long,
+        isMainCell: Boolean,
+        isSubCell: Boolean,
+    ) {
+        val trimmedTitle = _uiState.value.cellData.title?.trim()
+        val description = _uiState.value.cellData.description
+        val dueDate = _uiState.value.cellData.dueDate?.ifEmpty { null }
+
+        when {
+            isMainCell -> {
+                updateMainCell(
+                    bandalartId = bandalartId,
+                    cellId = cellId,
+                    updateBandalartMainCellModel = UpdateBandalartMainCellModel(
+                        title = trimmedTitle,
+                        description = description,
+                        dueDate = dueDate,
+                        profileEmoji = _uiState.value.bandalartData.profileEmoji,
+                        mainColor = _uiState.value.bandalartData.mainColor,
+                        subColor = _uiState.value.bandalartData.subColor,
+                    ),
+                )
+            }
+
+            isSubCell -> {
+                updateSubCell(
+                    bandalartId = bandalartId,
+                    cellId = cellId,
+                    UpdateBandalartSubCellModel(
+                        title = trimmedTitle,
+                        description = description,
+                        dueDate = dueDate,
+                    ),
+                )
+            }
+
+            else -> {
+                updateTaskCell(
+                    bandalartId = bandalartId,
+                    cellId = cellId,
+                    UpdateBandalartTaskCellModel(
+                        title = trimmedTitle,
+                        description = description,
+                        dueDate = dueDate,
+                        isCompleted = _uiState.value.cellData.isCompleted,
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun updateMainCell(
         bandalartId: Long,
         cellId: Long,
         updateBandalartMainCellModel: UpdateBandalartMainCellModel,
@@ -85,7 +134,7 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun updateBandalartSubCell(
+    private fun updateSubCell(
         bandalartId: Long,
         cellId: Long,
         updateBandalartSubCellModel: UpdateBandalartSubCellModel,
@@ -96,7 +145,7 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun updateBandalartTaskCell(
+    private fun updateTaskCell(
         bandalartId: Long,
         cellId: Long,
         updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
@@ -113,27 +162,29 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun toggleDeleteCellDialog(flag: Boolean) {
+    private fun toggleDeleteCellDialog(flag: Boolean) {
         _uiState.update { it.copy(isDeleteCellDialogOpened = flag) }
     }
 
-    fun toggleDatePicker(flag: Boolean) {
+    private fun toggleDatePicker(flag: Boolean) {
         _uiState.update { it.copy(isDatePickerOpened = flag) }
     }
 
-    fun toggleEmojiPicker(flag: Boolean) {
+    private fun toggleEmojiPicker(flag: Boolean) {
         _uiState.update { it.copy(isEmojiPickerOpened = flag) }
+        if (_uiState.value.isDatePickerOpened) toggleDatePicker(false)
     }
 
     private fun updateEmoji(profileEmoji: String?) {
         _uiState.update { it.copy(bandalartData = it.bandalartData.copy(profileEmoji = profileEmoji)) }
+        toggleEmojiPicker(false)
     }
 
     private fun updateTitle(newTitle: String, currentLocale: Locale) {
         val validatedTitle = validateTitleLength(
             newTitle = newTitle,
             currentTitle = _uiState.value.cellData.title ?: "",
-            currentLocale = currentLocale
+            currentLocale = currentLocale,
         )
 
         _uiState.update {
@@ -144,7 +195,7 @@ class BottomSheetViewModel @Inject constructor(
     private fun validateTitleLength(
         newTitle: String,
         currentTitle: String,
-        currentLocale: Locale
+        currentLocale: Locale,
     ): String {
         val maxLength = when (currentLocale.language) {
             Locale.KOREAN.language -> 15
@@ -154,7 +205,7 @@ class BottomSheetViewModel @Inject constructor(
         return if (newTitle.length > maxLength) currentTitle else newTitle
     }
 
-    fun colorChanged(mainColor: String, subColor: String) {
+    private fun updateThemeColor(mainColor: String, subColor: String) {
         _uiState.update {
             it.copy(
                 bandalartData = it.bandalartData.copy(
@@ -165,14 +216,15 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun dueDateChanged(dueDate: String?) {
+    private fun updateDueDate(dueDate: String?) {
         _uiState.update { it.copy(cellData = it.cellData.copy(dueDate = dueDate)) }
+        toggleDatePicker(false)
     }
 
     private fun updateDescription(newDescription: String?) {
         val validatedDescription = validateDescriptionLength(
             newDescription = newDescription,
-            currentDescription = _uiState.value.cellData.description
+            currentDescription = _uiState.value.cellData.description,
         )
 
         _uiState.update {
@@ -182,18 +234,14 @@ class BottomSheetViewModel @Inject constructor(
 
     private fun validateDescriptionLength(
         newDescription: String?,
-        currentDescription: String?
+        currentDescription: String?,
     ): String? {
         return if ((newDescription?.length ?: 0) > 1000) currentDescription else newDescription
     }
 
-    fun completionChanged(flag: Boolean) {
+    private fun updateCompletion(flag: Boolean) {
         _uiState.update {
             it.copy(cellData = it.cellData.copy(isCompleted = flag))
         }
-    }
-
-    fun bottomSheetClosed() {
-        _uiState.update { BottomSheetUiState() }
     }
 }

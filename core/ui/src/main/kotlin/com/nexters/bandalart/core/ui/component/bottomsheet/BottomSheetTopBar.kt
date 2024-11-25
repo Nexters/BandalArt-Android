@@ -32,7 +32,6 @@ fun BottomSheetTopBar(
     isSubCell: Boolean,
     isBlankCell: Boolean,
     onResult: (Boolean, Boolean) -> Unit,
-    bottomSheetClosed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -52,7 +51,6 @@ fun BottomSheetTopBar(
             onClick = {
                 scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
-                        bottomSheetClosed()
                         onResult(false, false)
                     }
                 }
@@ -76,7 +74,6 @@ private fun BottomSheetMainCellTopBarPreview() {
             isSubCell = false,
             isBlankCell = false,
             onResult = { _, _ -> },
-            bottomSheetClosed = {},
         )
     }
 }
@@ -90,7 +87,6 @@ private fun BottomSheetSubCellTopBarPreview() {
             isSubCell = true,
             isBlankCell = false,
             onResult = { _, _ -> },
-            bottomSheetClosed = {},
         )
     }
 }
@@ -104,7 +100,6 @@ private fun BottomSheetBlankCellTopBarPreview() {
             isSubCell = false,
             isBlankCell = true,
             onResult = { _, _ -> },
-            bottomSheetClosed = {},
         )
     }
 }

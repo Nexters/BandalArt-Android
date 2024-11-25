@@ -54,7 +54,7 @@ private val days = (1..31).map { it }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartDatePicker(
-    onResult: (LocalDateTime?, Boolean) -> Unit,
+    onDueDateSelect: (LocalDateTime?) -> Unit,
     currentDueDate: LocalDateTime,
     modifier: Modifier = Modifier,
 ) {
@@ -88,10 +88,7 @@ fun BandalartDatePicker(
                         scope.launch { datePickerState.hide() }
                             .invokeOnCompletion {
                                 if (!datePickerState.isVisible) {
-                                    onResult(
-                                        LocalDateTime.now(),
-                                        false,
-                                    )
+                                    onDueDateSelect(LocalDateTime.now())
                                 }
                             }
                     },
@@ -109,10 +106,7 @@ fun BandalartDatePicker(
                             .launch { datePickerState.hide() }
                             .invokeOnCompletion {
                                 if (!datePickerState.isVisible) {
-                                    onResult(
-                                        selectedDateWithValidate(chosenYear.value, chosenMonth.value, chosenDay.value),
-                                        false,
-                                    )
+                                    onDueDateSelect(selectedDateWithValidate(chosenYear.value, chosenMonth.value, chosenDay.value))
                                 }
                             }
                     },
@@ -275,7 +269,7 @@ fun selectedDateWithValidate(year: String, month: String, day: String): LocalDat
 private fun BandalartDatePickerPreview() {
     BandalartTheme {
         BandalartDatePicker(
-            onResult = { _, _ -> },
+            onDueDateSelect = {},
             currentDueDate = LocalDateTime.now(),
         )
     }

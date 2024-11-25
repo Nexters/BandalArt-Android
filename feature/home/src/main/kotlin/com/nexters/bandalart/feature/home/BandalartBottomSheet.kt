@@ -86,9 +86,6 @@ import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleTe
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartMainCellModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartSubCellModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartTaskCellModel
 import com.nexters.bandalart.feature.home.model.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
@@ -98,7 +95,6 @@ import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiState
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 // TODO onResult 지우고 싶다.
@@ -127,17 +123,7 @@ fun BandalartBottomSheet(
         isBlankCell = isBlankCell,
         cellData = cellData,
         onResult = onResult,
-        bottomSheetClosed = viewModel::bottomSheetClosed,
         copyCellData = viewModel::copyCellData,
-        toggleDeleteCellDialog = viewModel::toggleDeleteCellDialog,
-        toggleEmojiPicker = viewModel::toggleEmojiPicker,
-        toggleDatePicker = viewModel::toggleDatePicker,
-        colorChanged = viewModel::colorChanged,
-        dueDateChanged = viewModel::dueDateChanged,
-        completionChanged = viewModel::completionChanged,
-        updateBandalartMainCell = viewModel::updateBandalartMainCell,
-        updateBandalartSubCell = viewModel::updateBandalartSubCell,
-        updateBandalartTaskCell = viewModel::updateBandalartTaskCell,
         onAction = viewModel::onAction,
     )
 }
@@ -154,17 +140,7 @@ fun BandalartBottomSheetContent(
         bottomSheetState: Boolean,
         bottomSheetDataChangedState: Boolean,
     ) -> Unit,
-    bottomSheetClosed: () -> Unit,
     copyCellData: (Long, BandalartCellUiModel) -> Unit,
-    toggleDeleteCellDialog: (Boolean) -> Unit,
-    toggleEmojiPicker: (Boolean) -> Unit,
-    toggleDatePicker: (Boolean) -> Unit,
-    colorChanged: (String, String) -> Unit,
-    dueDateChanged: (String) -> Unit,
-    completionChanged: (Boolean) -> Unit,
-    updateBandalartMainCell: (Long, Long, UpdateBandalartMainCellModel) -> Unit,
-    updateBandalartSubCell: (Long, Long, UpdateBandalartSubCellModel) -> Unit,
-    updateBandalartTaskCell: (Long, Long, UpdateBandalartTaskCellModel) -> Unit,
     onAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -183,7 +159,6 @@ fun BandalartBottomSheetContent(
         if (uiState.isCellUpdated) {
             scope.launch {
                 bottomSheetState.hide()
-                bottomSheetClosed()
                 onResult(false, true)
             }
         }
@@ -207,18 +182,18 @@ fun BandalartBottomSheetContent(
                     bottomSheetState.hide()
                 }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
-                        bottomSheetClosed()
                         onResult(false, true)
                     }
                 }
             },
-            onCancelClicked = { toggleDeleteCellDialog(false) },
+            onCancelClicked = {
+                onAction(BottomSheetUiAction.OnDeleteDialogCancelClick)
+            },
         )
     }
 
     ModalBottomSheet(
         onDismissRequest = {
-            bottomSheetClosed()
             onResult(false, false)
         },
         modifier = modifier
@@ -240,7 +215,6 @@ fun BandalartBottomSheetContent(
                 isSubCell = isSubCell,
                 isBlankCell = isBlankCell,
                 onResult = onResult,
-                bottomSheetClosed = bottomSheetClosed,
             )
             Box {
                 Column(
@@ -269,8 +243,7 @@ fun BandalartBottomSheetContent(
                                             .aspectRatio(1f)
                                             .background(Gray100)
                                             .clickable {
-                                                toggleEmojiPicker(!uiState.isEmojiPickerOpened)
-                                                if (uiState.isDatePickerOpened) toggleDatePicker(false)
+                                                onAction(BottomSheetUiAction.OnEmojiPickerClick)
                                             },
                                         contentAlignment = Alignment.Center,
                                     ) {
@@ -335,11 +308,10 @@ fun BandalartBottomSheetContent(
                                     ),
                                 currentEmoji = uiState.bandalartData.profileEmoji,
                                 isBottomSheet = false,
-                                onResult = { currentEmojiResult, openEmojiPushResult ->
+                                onResult = { currentEmojiResult, _ ->
                                     if (currentEmojiResult != null) {
                                         onAction(BottomSheetUiAction.OnEmojiSelect(currentEmojiResult))
                                     }
-                                    toggleEmojiPicker(openEmojiPushResult)
                                 },
                                 emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                             )
@@ -353,11 +325,8 @@ fun BandalartBottomSheetContent(
                                 mainColor = uiState.bandalartData.mainColor,
                                 subColor = uiState.bandalartData.subColor,
                             ),
-                            onResult = {
-                                colorChanged(
-                                    it.mainColor,
-                                    it.subColor,
-                                )
+                            onColorSelect = {
+                                onAction(BottomSheetUiAction.OnColorSelect(it.mainColor, it.subColor))
                             },
                         )
                         Spacer(modifier = Modifier.height(3.dp))
@@ -371,8 +340,7 @@ fun BandalartBottomSheetContent(
                                 .fillMaxWidth()
                                 .height(24.dp)
                                 .clickable {
-                                    toggleDatePicker(!uiState.isDatePickerOpened)
-                                    if (uiState.isEmojiPickerOpened) toggleEmojiPicker(false)
+                                    onAction(BottomSheetUiAction.OnDatePickerClick)
                                 },
                             contentAlignment = Alignment.CenterStart,
                         ) {
@@ -396,10 +364,7 @@ fun BandalartBottomSheetContent(
                     }
                     AnimatedVisibility(visible = uiState.isDatePickerOpened) {
                         BandalartDatePicker(
-                            onResult = { dueDateResult, openDatePickerPushResult ->
-                                dueDateChanged(dueDateResult.toString())
-                                toggleDatePicker(openDatePickerPushResult)
-                            },
+                            onDueDateSelect = { dueDateResult -> onAction(BottomSheetUiAction.OnDueDateSelect(dueDateResult.toString())) },
                             currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
                         )
                     }
@@ -444,7 +409,9 @@ fun BandalartBottomSheetContent(
                             )
                             Switch(
                                 checked = uiState.cellData.isCompleted,
-                                onCheckedChange = { switchOn -> completionChanged(switchOn) },
+                                onCheckedChange = { isCompleted ->
+                                    onAction(BottomSheetUiAction.OnCompletionUpdate(isCompleted))
+                                },
                                 colors = SwitchDefaults.colors(
                                     uncheckedThumbColor = White,
                                     uncheckedTrackColor = Gray300,
@@ -471,7 +438,9 @@ fun BandalartBottomSheetContent(
                     ) {
                         if (!isBlankCell) {
                             BottomSheetDeleteButton(
-                                onClick = { toggleDeleteCellDialog(!uiState.isDeleteCellDialogOpened) },
+                                onClick = {
+                                    onAction(BottomSheetUiAction.OnDeleteButtonClick)
+                                },
                                 modifier = Modifier.weight(1f),
                             )
                             Spacer(modifier = Modifier.width(9.dp))
@@ -480,47 +449,7 @@ fun BandalartBottomSheetContent(
                             isBlankCell = uiState.cellData.title?.trim()
                                 .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
                             onClick = {
-                                when {
-                                    isMainCell -> {
-                                        updateBandalartMainCell(
-                                            bandalartId,
-                                            cellData.id,
-                                            UpdateBandalartMainCellModel(
-                                                title = uiState.cellData.title?.trim(),
-                                                description = uiState.cellData.description,
-                                                dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                                                profileEmoji = uiState.bandalartData.profileEmoji,
-                                                mainColor = uiState.bandalartData.mainColor,
-                                                subColor = uiState.bandalartData.subColor,
-                                            ),
-                                        )
-                                    }
-
-                                    isSubCell -> {
-                                        updateBandalartSubCell(
-                                            bandalartId,
-                                            cellData.id,
-                                            UpdateBandalartSubCellModel(
-                                                title = uiState.cellData.title?.trim(),
-                                                description = uiState.cellData.description,
-                                                dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                                            ),
-                                        )
-                                    }
-
-                                    else -> {
-                                        updateBandalartTaskCell(
-                                            bandalartId,
-                                            cellData.id,
-                                            UpdateBandalartTaskCellModel(
-                                                title = uiState.cellData.title?.trim(),
-                                                description = uiState.cellData.description,
-                                                dueDate = uiState.cellData.dueDate?.ifEmpty { null },
-                                                isCompleted = uiState.cellData.isCompleted,
-                                            ),
-                                        )
-                                    }
-                                }
+                                onAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, isMainCell, isSubCell))
                             },
                             modifier = Modifier.weight(1f),
                         )
@@ -574,17 +503,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             isBlankCell = false,
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
-            bottomSheetClosed = {},
             copyCellData = { _, _ -> },
-            toggleDeleteCellDialog = {},
-            toggleEmojiPicker = {},
-            toggleDatePicker = {},
-            colorChanged = { _, _ -> },
-            dueDateChanged = {},
-            completionChanged = {},
-            updateBandalartMainCell = { _, _, _ -> },
-            updateBandalartSubCell = { _, _, _ -> },
-            updateBandalartTaskCell = { _, _, _ -> },
             onAction = {},
         )
     }
@@ -605,18 +524,8 @@ private fun BandalartSubCellBottomSheetPreview() {
             isBlankCell = false,
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
-            bottomSheetClosed = {},
             copyCellData = { _, _ -> },
-            toggleDeleteCellDialog = {},
-            toggleEmojiPicker = {},
-            toggleDatePicker = {},
-            colorChanged = { _, _ -> },
-            dueDateChanged = {},
-            completionChanged = {},
-            updateBandalartMainCell = { _, _, _ -> },
-            updateBandalartSubCell = { _, _, _ -> },
-            updateBandalartTaskCell = { _, _, _ -> },
-            onAction = {}
+            onAction = {},
         )
     }
 }
@@ -636,18 +545,8 @@ private fun BandalartTaskCellBottomSheetPreview() {
             isBlankCell = true,
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
-            bottomSheetClosed = {},
             copyCellData = { _, _ -> },
-            toggleDeleteCellDialog = {},
-            toggleEmojiPicker = {},
-            toggleDatePicker = {},
-            colorChanged = { _, _ -> },
-            dueDateChanged = {},
-            completionChanged = {},
-            updateBandalartMainCell = { _, _, _ -> },
-            updateBandalartSubCell = { _, _, _ -> },
-            updateBandalartTaskCell = { _, _, _ -> },
-            onAction = {}
+            onAction = {},
         )
     }
 }

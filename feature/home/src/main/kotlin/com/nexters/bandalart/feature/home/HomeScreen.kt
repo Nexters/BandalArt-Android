@@ -69,7 +69,6 @@ internal fun HomeRoute(
     onShowSnackbar: suspend (String) -> Boolean,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    // bottomSheetViewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -117,7 +116,6 @@ internal fun HomeRoute(
         uiState = uiState,
         bandalartCount = bandalartCount,
         onHomeUiAction = homeViewModel::onAction,
-        // onBottomSheetUiAction = bottomSheetViewModel::onAction,
         getBandalartList = homeViewModel::getBandalartList,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         shareBandalart = homeViewModel::shareBandalart,
@@ -131,7 +129,6 @@ internal fun HomeScreen(
     uiState: HomeUiState,
     bandalartCount: Int,
     onHomeUiAction: (HomeUiAction) -> Unit,
-    // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     getBandalartList: (Long?) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
@@ -172,7 +169,6 @@ internal fun HomeScreen(
                 onDismissRequest = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
                 onAddClick = { onHomeUiAction(HomeUiAction.OnAddClick) },
                 onBandalartListItemClick = { key -> onHomeUiAction(HomeUiAction.OnBandalartListItemClick(key)) },
-                // onBottomSheetUiAction = onBottomSheetUiAction,
             )
         }
     }
@@ -189,7 +185,6 @@ internal fun HomeScreen(
                         onHomeUiAction(HomeUiAction.ToggleEmojiBottomSheet(bottomSheetState))
                         bottomSheetDataChanged(bottomSheetDataChangedState)
                     },
-                    // onBottomSheetUiAction = onBottomSheetUiAction,
                 )
             }
         }
@@ -322,7 +317,6 @@ private fun HomeScreenSingleBandalartPreview() {
             ),
             bandalartCount = listOf(dummyBandalartList[0]).size,
             onHomeUiAction = {},
-            // onBottomSheetUiAction = {},
             getBandalartList = {},
             bottomSheetDataChanged = {},
             shareBandalart = {},
@@ -343,7 +337,6 @@ private fun HomeScreenMultipleBandalartPreview() {
             ),
             bandalartCount = dummyBandalartList.size,
             onHomeUiAction = {},
-            // onBottomSheetUiAction = {},
             getBandalartList = {},
             bottomSheetDataChanged = {},
             shareBandalart = {},

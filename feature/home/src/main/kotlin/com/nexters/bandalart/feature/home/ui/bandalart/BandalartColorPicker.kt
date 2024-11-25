@@ -30,7 +30,7 @@ import com.nexters.bandalart.core.ui.allColor
 @Composable
 fun BandalartColorPicker(
     initColor: ThemeColor,
-    onResult: (ThemeColor) -> Unit,
+    onColorSelect: (ThemeColor) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -63,7 +63,7 @@ fun BandalartColorPicker(
                         .aspectRatio(1f)
                         .noRippleClickable {
                             initSelected = it
-                            onResult(initSelected)
+                            onColorSelect(initSelected)
                         },
                     shape = RoundedCornerShape(90.dp),
                     colors = CardDefaults.cardColors(containerColor = it.mainColor.toColor()),
@@ -79,7 +79,7 @@ private fun BandalartColorPickerPreview() {
     BandalartTheme {
         BandalartColorPicker(
             initColor = ThemeColor("#3FFFBA", "#111827"),
-            onResult = {},
+            onColorSelect = {},
         )
     }
 }
