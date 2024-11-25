@@ -59,7 +59,6 @@ fun BandalartListBottomSheet(
     currentBandalartId: Long,
     getBandalart: (Long) -> Unit,
     setRecentBandalartId: (Long) -> Unit,
-    showSkeletonChanged: (Boolean) -> Unit,
     onDismissRequest: () -> Unit,
     onAddClick: () -> Unit,
     // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
@@ -131,7 +130,6 @@ fun BandalartListBottomSheet(
                         onClick = { key ->
                             // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
                             setRecentBandalartId(key)
-                            showSkeletonChanged(true)
                             getBandalart(key)
                         },
                         onCancelClicked = onDismissRequest,
@@ -180,7 +178,6 @@ private fun BandalartListBottomSheetPreview() {
             currentBandalartId = 0L,
             getBandalart = {},
             setRecentBandalartId = {},
-            showSkeletonChanged = {},
             onDismissRequest = {},
             onAddClick = {},
             // onBottomSheetUiAction = {},

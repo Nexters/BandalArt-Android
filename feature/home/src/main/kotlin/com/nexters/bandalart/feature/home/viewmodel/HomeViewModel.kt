@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
         .distinctUntilChanged()
 
     init {
-        _uiState.update { it.copy(isShowSkeleton = true) }
+        updateSkeletonState(true)
         observeBandalartCompletion()
     }
 
@@ -105,7 +105,6 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.ToggleEmojiBottomSheet -> toggleEmojiBottomSheet(action.flag)
             is HomeUiAction.ToggleCellBottomSheet -> toggleCellBottomSheet(action.flag)
             is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
-            is HomeUiAction.ShowSkeletonChanged -> updateSkeletonState(true)
             is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
         }
     }
@@ -152,7 +151,7 @@ class HomeViewModel @Inject constructor(
 
             // 생성한 반다라트 표를 화면에 띄우는 경우
             if (bandalartId != null) {
-                _uiState.update { it.copy(isShowSkeleton = true) }
+                updateSkeletonState(true)
                 getBandalart(bandalartId)
                 return@launch
             }
@@ -170,7 +169,7 @@ class HomeViewModel @Inject constructor(
                 }
                 // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
                 else {
-                    _uiState.update { it.copy(isShowSkeleton = true) }
+                    updateSkeletonState(true)
                     // 목록에 가장 첫번째 표를 화면에 띄움
                     getBandalart(bandalartList[0].id)
                 }
@@ -190,8 +189,8 @@ class HomeViewModel @Inject constructor(
                 }
                 getBandalartMainCell(bandalartId)
             }
+            updateSkeletonState(false)
         }
-        _uiState.update { it.copy(isShowSkeleton = false) }
     }
 
     private fun getBandalartMainCell(bandalartId: Long) {
@@ -233,9 +232,9 @@ class HomeViewModel @Inject constructor(
                         parentId = mainCell?.parentId,
                         children = children,
                     ),
-                    isShowSkeleton = false,
                 )
             }
+            updateSkeletonState(false)
             updateBottomSheetData(flag = false)
         }
     }
@@ -247,8 +246,7 @@ class HomeViewModel @Inject constructor(
                 return@launch
             }
 
-            _uiState.update { it.copy(isShowSkeleton = true) }
-
+            updateSkeletonState(true)
             bandalartRepository.createBandalart()?.let { bandalart ->
                 _uiState.update {
                     it.copy(isBandalartListBottomSheetOpened = false)
@@ -266,8 +264,7 @@ class HomeViewModel @Inject constructor(
 
     private fun deleteBandalart(bandalartId: Long) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isShowSkeleton = true) }
-
+            updateSkeletonState(true)
             bandalartRepository.deleteBandalart(bandalartId)
             _uiState.update {
                 it.copy(isBandalartDeleted = true)
@@ -331,7 +328,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isBottomSheetDataChanged = flag) }
     }
 
-    fun updateSkeletonState(flag: Boolean) {
+    private fun updateSkeletonState(flag: Boolean) {
         _uiState.update { it.copy(isShowSkeleton = flag) }
     }
 
