@@ -24,42 +24,29 @@ class BottomSheetViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(BottomSheetUiState())
     val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
 
-//    fun onAction(action: BottomSheetUiAction) {
-//        when (action) {
-//            is BottomSheetUiAction.CopyCellData -> copyCellData(_uiState.value.cellData)
-//            is BottomSheetUiAction.UpdateBandalartMainCell -> updateBandalartMainCell(
-//                bandalartId = 0L,
-//                cellId = 0L,
-//                updateBandalartMainCellModel = UpdateBandalartMainCellModel(
-//                    mainColor = "",
-//                    subColor = "",
-//                ),
-//            )
-//            is BottomSheetUiAction.UpdateBandalartSubCell -> updateBandalartSubCell(
-//                bandalartId = 0L,
-//                cellId = 0L,
-//                updateBandalartSubCellModel = UpdateBandalartSubCellModel(),
-//            )
-//            is BottomSheetUiAction.UpdateBandalartTaskCell -> updateBandalartTaskCell(
-//                bandalartId = 0L,
-//                cellId = 0L,
-//                updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(),
-//            )
-//            is BottomSheetUiAction.DeleteBandalartCell -> deleteBandalartCell(
-//                cellId = 0L,
-//            )
-//            is BottomSheetUiAction.OpenDeleteCellDialog -> toggleDeleteCellDialog(true)
-//            is BottomSheetUiAction.OpenDatePicker -> toggleDatePicker(true)
-//            is BottomSheetUiAction.OpenEmojiPicker -> toggleEmojiPicker(true)
-//            is BottomSheetUiAction.OnModalConfirmClick -> {}
-//            is BottomSheetUiAction.TitleChanged -> titleChanged("")
-//            is BottomSheetUiAction.OnColorSelect -> colorChanged("", "")
-//            is BottomSheetUiAction.OnDueDateChange -> dueDateChanged("")
-//            is BottomSheetUiAction.OnDescriptionChange -> descriptionChanged("")
-//            is BottomSheetUiAction.OnCompletionChange -> completionChanged(false)
-//            is BottomSheetUiAction.BottomSheetClosed -> bottomSheetClosed()
-//        }
-//    }
+    fun onAction(action: BottomSheetUiAction) {
+        when (action) {
+            is BottomSheetUiAction.CopyCellData -> {}
+            is BottomSheetUiAction.UpdateBandalartMainCell -> {}
+            is BottomSheetUiAction.UpdateBandalartSubCell -> {}
+            is BottomSheetUiAction.UpdateBandalartTaskCell -> {}
+            is BottomSheetUiAction.OnDeleteDialogConfirmClick -> {
+                deleteBandalartCell(action.id)
+                toggleDeleteCellDialog(false)
+            }
+            is BottomSheetUiAction.OpenDeleteCellDialog -> toggleDeleteCellDialog(true)
+            is BottomSheetUiAction.OpenDatePicker -> toggleDatePicker(true)
+            is BottomSheetUiAction.OpenEmojiPicker -> toggleEmojiPicker(true)
+            is BottomSheetUiAction.OnEmojiSelect -> emojiSelected(action.emoji)
+            is BottomSheetUiAction.OnModalConfirmClick -> {}
+            is BottomSheetUiAction.TitleChanged -> titleChanged("")
+            is BottomSheetUiAction.OnColorSelect -> colorChanged("", "")
+            is BottomSheetUiAction.OnDueDateChange -> dueDateChanged("")
+            is BottomSheetUiAction.OnDescriptionChange -> descriptionChanged("")
+            is BottomSheetUiAction.OnCompletionChange -> completionChanged(false)
+            is BottomSheetUiAction.BottomSheetClosed -> bottomSheetClosed()
+        }
+    }
 
     fun copyCellData(bandalartId: Long, cellData: BandalartCellUiModel) {
         viewModelScope.launch {
@@ -118,7 +105,7 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun deleteBandalartCell(cellId: Long) {
+    private fun deleteBandalartCell(cellId: Long) {
         viewModelScope.launch {
             bandalartRepository.deleteBandalartCell(cellId)
         }
@@ -136,10 +123,8 @@ class BottomSheetViewModel @Inject constructor(
         _uiState.update { it.copy(isEmojiPickerOpened = flag) }
     }
 
-    fun emojiSelected(profileEmoji: String?) {
-        _uiState.update {
-            it.copy(bandalartData = it.bandalartData.copy(profileEmoji = profileEmoji))
-        }
+    private fun emojiSelected(profileEmoji: String?) {
+        _uiState.update { it.copy(bandalartData = it.bandalartData.copy(profileEmoji = profileEmoji)) }
     }
 
     fun titleChanged(title: String) {

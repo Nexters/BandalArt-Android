@@ -93,6 +93,7 @@ import com.nexters.bandalart.feature.home.model.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiState
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
 import kotlinx.coroutines.launch
@@ -128,12 +129,10 @@ fun BandalartBottomSheet(
         onResult = onResult,
         bottomSheetClosed = viewModel::bottomSheetClosed,
         copyCellData = viewModel::copyCellData,
-        deleteBandalartCell = viewModel::deleteBandalartCell,
         toggleDeleteCellDialog = viewModel::toggleDeleteCellDialog,
         toggleEmojiPicker = viewModel::toggleEmojiPicker,
         toggleDatePicker = viewModel::toggleDatePicker,
         titleChanged = viewModel::titleChanged,
-        emojiSelected = viewModel::emojiSelected,
         colorChanged = viewModel::colorChanged,
         dueDateChanged = viewModel::dueDateChanged,
         descriptionChanged = viewModel::descriptionChanged,
@@ -141,6 +140,7 @@ fun BandalartBottomSheet(
         updateBandalartMainCell = viewModel::updateBandalartMainCell,
         updateBandalartSubCell = viewModel::updateBandalartSubCell,
         updateBandalartTaskCell = viewModel::updateBandalartTaskCell,
+        onAction = viewModel::onAction,
     )
 }
 
@@ -158,12 +158,10 @@ fun BandalartBottomSheetContent(
     ) -> Unit,
     bottomSheetClosed: () -> Unit,
     copyCellData: (Long, BandalartCellUiModel) -> Unit,
-    deleteBandalartCell: (Long) -> Unit,
     toggleDeleteCellDialog: (Boolean) -> Unit,
     toggleEmojiPicker: (Boolean) -> Unit,
     toggleDatePicker: (Boolean) -> Unit,
     titleChanged: (String) -> Unit,
-    emojiSelected: (String) -> Unit,
     colorChanged: (String, String) -> Unit,
     dueDateChanged: (String) -> Unit,
     descriptionChanged: (String) -> Unit,
@@ -171,6 +169,7 @@ fun BandalartBottomSheetContent(
     updateBandalartMainCell: (Long, Long, UpdateBandalartMainCellModel) -> Unit,
     updateBandalartSubCell: (Long, Long, UpdateBandalartSubCellModel) -> Unit,
     updateBandalartTaskCell: (Long, Long, UpdateBandalartTaskCellModel) -> Unit,
+    onAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -208,8 +207,7 @@ fun BandalartBottomSheetContent(
             },
             onDeleteClicked = {
                 scope.launch {
-                    deleteBandalartCell(uiState.cellData.id)
-                    toggleDeleteCellDialog(false)
+                    onAction(BottomSheetUiAction.OnDeleteDialogConfirmClick(uiState.cellData.id))
                     bottomSheetState.hide()
                 }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
@@ -348,7 +346,7 @@ fun BandalartBottomSheetContent(
                                 isBottomSheet = false,
                                 onResult = { currentEmojiResult, openEmojiPushResult ->
                                     if (currentEmojiResult != null) {
-                                        emojiSelected(currentEmojiResult)
+                                        onAction(BottomSheetUiAction.OnEmojiSelect(currentEmojiResult))
                                     }
                                     toggleEmojiPicker(openEmojiPushResult)
                                 },
@@ -590,12 +588,10 @@ private fun BandalartMainCellBottomSheetPreview() {
             onResult = { _, _ -> },
             bottomSheetClosed = {},
             copyCellData = { _, _ -> },
-            deleteBandalartCell = {},
             toggleDeleteCellDialog = {},
             toggleEmojiPicker = {},
             toggleDatePicker = {},
             titleChanged = {},
-            emojiSelected = {},
             colorChanged = { _, _ -> },
             dueDateChanged = {},
             descriptionChanged = {},
@@ -603,6 +599,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             updateBandalartMainCell = { _, _, _ -> },
             updateBandalartSubCell = { _, _, _ -> },
             updateBandalartTaskCell = { _, _, _ -> },
+            onAction = {},
         )
     }
 }
@@ -624,12 +621,10 @@ private fun BandalartSubCellBottomSheetPreview() {
             onResult = { _, _ -> },
             bottomSheetClosed = {},
             copyCellData = { _, _ -> },
-            deleteBandalartCell = {},
             toggleDeleteCellDialog = {},
             toggleEmojiPicker = {},
             toggleDatePicker = {},
             titleChanged = {},
-            emojiSelected = {},
             colorChanged = { _, _ -> },
             dueDateChanged = {},
             descriptionChanged = {},
@@ -637,6 +632,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             updateBandalartMainCell = { _, _, _ -> },
             updateBandalartSubCell = { _, _, _ -> },
             updateBandalartTaskCell = { _, _, _ -> },
+            onAction = {}
         )
     }
 }
@@ -658,12 +654,10 @@ private fun BandalartTaskCellBottomSheetPreview() {
             onResult = { _, _ -> },
             bottomSheetClosed = {},
             copyCellData = { _, _ -> },
-            deleteBandalartCell = {},
             toggleDeleteCellDialog = {},
             toggleEmojiPicker = {},
             toggleDatePicker = {},
             titleChanged = {},
-            emojiSelected = {},
             colorChanged = { _, _ -> },
             dueDateChanged = {},
             descriptionChanged = {},
@@ -671,6 +665,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             updateBandalartMainCell = { _, _, _ -> },
             updateBandalartSubCell = { _, _, _ -> },
             updateBandalartTaskCell = { _, _, _ -> },
+            onAction = {}
         )
     }
 }

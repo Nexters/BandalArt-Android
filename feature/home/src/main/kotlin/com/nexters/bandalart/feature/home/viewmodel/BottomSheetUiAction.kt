@@ -5,10 +5,11 @@ sealed interface BottomSheetUiAction {
     data object UpdateBandalartMainCell : BottomSheetUiAction
     data object UpdateBandalartSubCell : BottomSheetUiAction
     data object UpdateBandalartTaskCell : BottomSheetUiAction
-    data object DeleteBandalartCell : BottomSheetUiAction
+    data class OnDeleteDialogConfirmClick(val id: Long) : BottomSheetUiAction
     data object OpenDeleteCellDialog : BottomSheetUiAction
     data object OpenDatePicker : BottomSheetUiAction
     data object OpenEmojiPicker : BottomSheetUiAction
+    data class OnEmojiSelect(val emoji: String) : BottomSheetUiAction
     data object OnModalConfirmClick : BottomSheetUiAction
     data object TitleChanged : BottomSheetUiAction
     data object OnColorSelect : BottomSheetUiAction
