@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -139,19 +138,25 @@ fun DateSelectionSection(
     currentYear: Int,
     currentMonth: Int,
     currentDay: Int,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(180.dp),
         contentAlignment = Alignment.Center,
     ) {
+        val yearOffset = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % years.size) + years.indexOf(currentYear)
+        val monthOffset = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % monthsNumber.size) + (currentMonth - 1)
+        val dayOffset = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % days.size) + (currentDay - 1)
+
         Box(
             modifier = Modifier
                 .height(40.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .background(Gray200),
+                .background(Gray200)
+                .align(Alignment.Center),
         )
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
@@ -164,7 +169,7 @@ fun DateSelectionSection(
                 items = years.toImmutableList(),
                 isYear = true,
                 isMonth = true,
-                firstIndex = Int.MAX_VALUE / 2 + (currentYear - 1963),
+                firstIndex = yearOffset,
                 onItemSelected = onYearChosen,
             )
             InfiniteItemsPicker(
@@ -172,7 +177,7 @@ fun DateSelectionSection(
                 items = monthsNumber.toImmutableList(),
                 isYear = false,
                 isMonth = true,
-                firstIndex = Int.MAX_VALUE / 2 - 6 + currentMonth,
+                firstIndex = monthOffset,
                 onItemSelected = onMonthChosen,
             )
             InfiniteItemsPicker(
@@ -180,7 +185,7 @@ fun DateSelectionSection(
                 items = days.toImmutableList(),
                 isYear = false,
                 isMonth = false,
-                firstIndex = Int.MAX_VALUE / 2 + (currentDay - 3),
+                firstIndex = dayOffset,
                 onItemSelected = onDayChosen,
             )
         }
@@ -190,19 +195,21 @@ fun DateSelectionSection(
 @SuppressLint("StringFormatInvalid")
 @Composable
 fun InfiniteItemsPicker(
-    modifier: Modifier = Modifier,
     items: ImmutableList<Int>,
     isYear: Boolean,
     isMonth: Boolean,
     firstIndex: Int,
     onItemSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState(firstIndex)
-    val currentValue = remember { mutableStateOf("") }
+    val currentValue = remember { mutableStateOf(items[firstIndex % items.size].toString()) }  // 초기값 설정
 
     LaunchedEffect(key1 = !listState.isScrollInProgress) {
-        onItemSelected(currentValue.value)
-        listState.animateScrollToItem(index = listState.firstVisibleItemIndex)
+        if (currentValue.value.isNotEmpty()) {  // 값이 비어있지 않은 경우에만 처리
+            onItemSelected(currentValue.value)
+            listState.animateScrollToItem(index = listState.firstVisibleItemIndex)
+        }
     }
 
     Box(modifier = modifier.height(180.dp)) {
@@ -212,34 +219,32 @@ fun InfiniteItemsPicker(
             contentPadding = PaddingValues(vertical = 70.dp),
             modifier = Modifier.fillMaxHeight(),
         ) {
-            items(
-                count = Int.MAX_VALUE,
-            ) {
-                val index = it % items.size
-                if (it == listState.firstVisibleItemIndex + 2) {
-                    currentValue.value = items[index].toString()
+            items(count = Int.MAX_VALUE) { index ->
+                val itemIndex = index % items.size
+                val visibleItemsInfo = listState.layoutInfo.visibleItemsInfo
+                val middleIndex = visibleItemsInfo.size / 2
+                val isMiddleItem = visibleItemsInfo.getOrNull(middleIndex)?.index == index
+
+                if (isMiddleItem) {
+                    currentValue.value = items[itemIndex].toString()
                 }
+
                 Box(
                     modifier = Modifier.height(40.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = when {
-                            isYear -> stringResource(R.string.datepicker_year, items[index].toString())
-                            isMonth -> stringResource(R.string.datepicker_month, items[index].toString())
-                            else -> stringResource(R.string.datepicker_day, items[index].toString())
+                            isYear -> stringResource(R.string.datepicker_year, items[itemIndex].toString())
+                            isMonth -> stringResource(R.string.datepicker_month, items[itemIndex].toString())
+                            else -> stringResource(R.string.datepicker_day, items[itemIndex].toString())
                         },
-                        color = Gray900,
-                        fontSize = if (it == listState.firstVisibleItemIndex - 1 ||
-                            it == listState.firstVisibleItemIndex ||
-                            it == listState.firstVisibleItemIndex + 1
-                        ) 20.sp
-                        else 17.sp,
-                        fontWeight = if (it == listState.firstVisibleItemIndex) FontWeight.W500
-                        else FontWeight.W400,
-                        modifier = modifier
+                        modifier = Modifier
                             .fillMaxWidth()
-                            .alpha(if (it == listState.firstVisibleItemIndex) 1f else 0.6f),
+                            .alpha(if (isMiddleItem) 1f else 0.6f),
+                        color = Gray900,
+                        fontSize = if (isMiddleItem) 20.sp else 17.sp,
+                        fontWeight = if (isMiddleItem) FontWeight.W500 else FontWeight.W400,
                         textAlign = TextAlign.Center,
                         fontFamily = pretendard,
                     )
@@ -280,7 +285,7 @@ private fun DateSelectionSectionPreview() {
             onYearChosen = {},
             onMonthChosen = {},
             onDayChosen = {},
-            currentYear = 2023,
+            currentYear = 2024,
             currentMonth = 12,
             currentDay = 31,
         )
@@ -295,7 +300,7 @@ private fun InfiniteYearItemsPickerPreview() {
             items = years.toImmutableList(),
             isYear = true,
             isMonth = false,
-            firstIndex = Int.MAX_VALUE / 2 + (2023 - 1963),
+            firstIndex = Int.MAX_VALUE / 2 + (2024 - years.first()),
             onItemSelected = {},
         )
     }
@@ -309,7 +314,7 @@ private fun InfiniteMonthItemsPickerPreview() {
             items = monthsNumber.toImmutableList(),
             isYear = false,
             isMonth = true,
-            firstIndex = Int.MAX_VALUE / 2 - 6 + 12,
+            firstIndex = Int.MAX_VALUE / 2 + (31 - 1),
             onItemSelected = {},
         )
     }
