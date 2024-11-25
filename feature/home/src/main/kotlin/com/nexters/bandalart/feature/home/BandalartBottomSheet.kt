@@ -406,7 +406,6 @@ fun BandalartBottomSheetContent(
                         BottomSheetDivider()
                     }
                     AnimatedVisibility(visible = uiState.isDatePickerOpened) {
-                        // TODO Locale 이 Korea 가 아니어도, 한국어로 보이는 문제
                         BandalartDatePicker(
                             onResult = { dueDateResult, openDatePickerPushResult ->
                                 dueDateChanged(dueDateResult.toString())

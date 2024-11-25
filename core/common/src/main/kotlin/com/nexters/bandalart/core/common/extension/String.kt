@@ -1,24 +1,31 @@
 package com.nexters.bandalart.core.common.extension
 
 import androidx.compose.ui.graphics.Color
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-// ISO 8601 형식의 날짜와 시간 문자열을 "~년 월 일" 형태로 변환
-// "2023-08-02T18:27:25.862Z" -> "~23년 8월 2일"
-fun String.toFormatDate(): String {
-    val instant = Instant.parse(this)
-    val dateTime = instant.toLocalDateTime(TimeZone.UTC)
-    return "~${dateTime.year - 2000}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
+fun String.toFormatDate(locale: Locale = Locale.getDefault()): String {
+    val dateTime = LocalDateTime.parse(this)
+    val year = dateTime.year
+    val month = dateTime.monthValue
+    val day = dateTime.dayOfMonth
+
+    return when (locale.language) {
+        "en" -> "~$year, $month/$day"
+        "ko" -> "~${year}년 ${month}월 ${day}일"
+        else -> "~${year}y $month/$day"
+    }
 }
 
-fun String.toStringLocalDateTime(): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
+fun String.toStringLocalDateTime(locale: Locale = Locale.getDefault()): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm", locale)
     val dueDate = LocalDateTime.parse(this.substring(0, 16), formatter)
-    return "${dueDate.year}년 ${dueDate.monthValue}월 ${dueDate.dayOfMonth}일"
+    return when (locale.language) {
+        "en" -> "${dueDate.year}, ${dueDate.monthValue}/${dueDate.dayOfMonth}"
+        "ko" -> "${dueDate.year}년 ${dueDate.monthValue}월 ${dueDate.dayOfMonth}일"
+        else -> "${dueDate.year} ${dueDate.monthValue}/${dueDate.dayOfMonth}"
+    }
 }
 
 fun String.toLocalDateTime(): LocalDateTime {
