@@ -87,7 +87,6 @@ Modularization Based on [Now in Android](https://github.com/android/nowinandroid
 ## Package Structure
 ```
 ├── app
-│   ├── navigation
 │   ├── MainActivity
 │   └── Application
 ├── build-logic
@@ -97,6 +96,7 @@ Modularization Based on [Now in Android](https://github.com/android/nowinandroid
 │   ├── datastore
 │   ├── designsystem
 │   ├── domain
+│   ├── navigation
 │   ├── network
 │   └── ui
 ├── fastlane
