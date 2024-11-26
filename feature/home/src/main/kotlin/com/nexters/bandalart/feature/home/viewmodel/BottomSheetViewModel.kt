@@ -53,7 +53,7 @@ class BottomSheetViewModel @Inject constructor(
                 it.copy(
                     bandalartData = bandalart.toUiModel(),
                     cellData = cellData,
-                    cellDataForCheck = cellData.copy(),
+                    initialCellData = cellData.copy(),
                     isCellDataCopied = true,
                 )
             }

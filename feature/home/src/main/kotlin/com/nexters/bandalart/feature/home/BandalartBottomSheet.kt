@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -47,6 +46,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -246,9 +246,10 @@ fun BandalartBottomSheetContent(
                                         contentAlignment = Alignment.Center,
                                     ) {
                                         if (uiState.bandalartData.profileEmoji.isNullOrEmpty()) {
-                                            Image(
+                                            Icon(
                                                 imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
                                                 contentDescription = stringResource(R.string.empty_emoji_description),
+                                                tint = Color.Unspecified,
                                             )
                                         } else {
                                             Text(
@@ -258,9 +259,10 @@ fun BandalartBottomSheetContent(
                                         }
                                     }
                                 }
-                                Image(
+                                Icon(
                                     imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
                                     contentDescription = stringResource(R.string.edit_description),
+                                    tint = Color.Unspecified,
                                     modifier = Modifier
                                         .align(Alignment.BottomEnd)
                                         .offset(x = 4.dp, y = 4.dp),
@@ -457,7 +459,7 @@ fun BandalartBottomSheetContent(
                         }
                         BottomSheetCompleteButton(
                             isBlankCell = uiState.cellData.title?.trim()
-                                .isNullOrEmpty() || (uiState.cellData == uiState.cellDataForCheck),
+                                .isNullOrEmpty() || (uiState.cellData == uiState.initialCellData),
                             onClick = {
                                 onAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, isMainCell, isSubCell))
                             },
@@ -505,7 +507,7 @@ private fun BandalartMainCellBottomSheetPreview() {
         BandalartBottomSheetContent(
             uiState = BottomSheetUiState(
                 cellData = dummyBandalartCellData,
-                cellDataForCheck = dummyBandalartCellData,
+                initialCellData = dummyBandalartCellData,
             ),
             bandalartId = 0L,
             isMainCell = true,
@@ -526,7 +528,7 @@ private fun BandalartSubCellBottomSheetPreview() {
         BandalartBottomSheetContent(
             uiState = BottomSheetUiState(
                 cellData = dummyBandalartCellData,
-                cellDataForCheck = dummyBandalartCellData,
+                initialCellData = dummyBandalartCellData,
             ),
             bandalartId = 0L,
             isMainCell = false,
@@ -547,7 +549,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
         BandalartBottomSheetContent(
             uiState = BottomSheetUiState(
                 cellData = dummyBandalartCellData,
-                cellDataForCheck = dummyBandalartCellData,
+                initialCellData = dummyBandalartCellData,
             ),
             bandalartId = 0L,
             isMainCell = false,
