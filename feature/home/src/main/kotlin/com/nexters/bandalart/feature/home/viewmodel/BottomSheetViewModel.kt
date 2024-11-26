@@ -52,8 +52,9 @@ class BottomSheetViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     bandalartData = bandalart.toUiModel(),
+                    initialBandalartData = bandalart.toUiModel(),
                     cellData = cellData,
-                    initialCellData = cellData.copy(),
+                    initialCellData = cellData,
                     isCellDataCopied = true,
                 )
             }
@@ -90,7 +91,7 @@ class BottomSheetViewModel @Inject constructor(
                 updateSubCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
-                    UpdateBandalartSubCellModel(
+                    updateBandalartSubCellModel = UpdateBandalartSubCellModel(
                         title = trimmedTitle,
                         description = description,
                         dueDate = dueDate,
@@ -102,7 +103,7 @@ class BottomSheetViewModel @Inject constructor(
                 updateTaskCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
-                    UpdateBandalartTaskCellModel(
+                    updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
                         title = trimmedTitle,
                         description = description,
                         dueDate = dueDate,
@@ -111,6 +112,7 @@ class BottomSheetViewModel @Inject constructor(
                 )
             }
         }
+        _uiState.update { it.copy(isCellUpdated = true) }
     }
 
     private fun updateMainCell(
@@ -120,17 +122,7 @@ class BottomSheetViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel.toEntity())
-            bandalartRepository.getBandalart(bandalartId).let { bandalart ->
-                _uiState.update {
-                    it.copy(
-                        bandalartData = it.bandalartData.copy(
-                            mainColor = bandalart.mainColor,
-                            subColor = bandalart.subColor,
-                        ),
-                        isCellUpdated = true,
-                    )
-                }
-            }
+            bandalartRepository.getBandalart(bandalartId)
         }
     }
 
@@ -141,7 +133,6 @@ class BottomSheetViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartSubCell(bandalartId, cellId, updateBandalartSubCellModel.toEntity())
-            _uiState.update { it.copy(isCellUpdated = true) }
         }
     }
 
@@ -152,7 +143,6 @@ class BottomSheetViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartTaskCell(bandalartId, cellId, updateBandalartTaskCellModel.toEntity())
-            _uiState.update { it.copy(isCellUpdated = true) }
         }
     }
 

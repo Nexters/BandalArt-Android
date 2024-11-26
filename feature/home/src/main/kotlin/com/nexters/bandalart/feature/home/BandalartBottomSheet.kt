@@ -98,7 +98,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 
 // TODO onResult 지우고 싶다.
 // TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
-// TODO 이모지나 컬러만 변경되어도 완료 버튼이 활성화 되도록
+// TODO 앱 시작 후 바텀시트가 두번째 올라온 이후, 완료 버튼을 눌러도 반응이 없는 문제 해결
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
