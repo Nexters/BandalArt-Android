@@ -82,7 +82,7 @@ import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentPla
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentText
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDeleteButton
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleText
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTopBar
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
@@ -98,7 +98,6 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 
 // TODO onResult 지우고 싶다.
 // TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
-// TODO 앱 시작 후 바텀시트가 두번째 올라온 이후, 완료 버튼을 눌러도 반응이 없는 문제 해결
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
@@ -124,6 +123,7 @@ fun BandalartBottomSheet(
         onResult = onResult,
         copyCellData = viewModel::copyCellData,
         onAction = viewModel::onAction,
+        initState = viewModel::initState,
     )
 }
 
@@ -142,6 +142,7 @@ fun BandalartBottomSheetContent(
     ) -> Unit,
     copyCellData: (Long, BandalartCellUiModel) -> Unit,
     onAction: (BottomSheetUiAction) -> Unit,
+    initState: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -160,6 +161,7 @@ fun BandalartBottomSheetContent(
             scope.launch {
                 bottomSheetState.hide()
                 onResult(false, true)
+                initState()
             }
         }
     }
@@ -192,6 +194,15 @@ fun BandalartBottomSheetContent(
         )
     }
 
+    LaunchedEffect(key1 = uiState.isBottomSheetOpened) {
+        if (!uiState.isBottomSheetOpened) {
+            scope.launch {
+                bottomSheetState.hide()
+                initState()
+            }
+        }
+    }
+
     ModalBottomSheet(
         onDismissRequest = {
             onResult(false, false)
@@ -213,7 +224,7 @@ fun BandalartBottomSheetContent(
                 isMainCell = isMainCell,
                 isSubCell = isSubCell,
                 isBlankCell = isBlankCell,
-                onResult = onResult,
+                onAction = onAction,
             )
             Box {
                 Column(
@@ -517,6 +528,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             onResult = { _, _ -> },
             copyCellData = { _, _ -> },
             onAction = {},
+            initState = {},
         )
     }
 }
@@ -538,6 +550,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             onResult = { _, _ -> },
             copyCellData = { _, _ -> },
             onAction = {},
+            initState = {},
         )
     }
 }
@@ -559,6 +572,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             onResult = { _, _ -> },
             copyCellData = { _, _ -> },
             onAction = {},
+            initState = {},
         )
     }
 }

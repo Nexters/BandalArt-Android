@@ -286,6 +286,8 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel.toEntity())
+            toggleEmojiBottomSheet(false)
+            updateBottomSheetData(true)
         }
     }
 

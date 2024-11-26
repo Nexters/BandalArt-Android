@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.nexters.bandalart.core.ui.component.bottomsheet
+package com.nexters.bandalart.feature.home.ui.bandalart
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -23,19 +23,17 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import kotlinx.coroutines.launch
+import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTitleText
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 
 @Composable
 fun BottomSheetTopBar(
     isMainCell: Boolean,
     isSubCell: Boolean,
     isBlankCell: Boolean,
-    onResult: (Boolean, Boolean) -> Unit,
+    onAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -48,11 +46,7 @@ fun BottomSheetTopBar(
                 .height(21.dp)
                 .aspectRatio(1f),
             onClick = {
-                scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                    if (!bottomSheetState.isVisible) {
-                        onResult(false, false)
-                    }
-                }
+                onAction(BottomSheetUiAction.OnClearButtonClick)
             },
         ) {
             Icon(
@@ -72,7 +66,7 @@ private fun BottomSheetMainCellTopBarPreview() {
             isMainCell = true,
             isSubCell = false,
             isBlankCell = false,
-            onResult = { _, _ -> },
+            onAction = {},
         )
     }
 }
@@ -85,7 +79,7 @@ private fun BottomSheetSubCellTopBarPreview() {
             isMainCell = false,
             isSubCell = true,
             isBlankCell = false,
-            onResult = { _, _ -> },
+            onAction = {},
         )
     }
 }
@@ -98,7 +92,7 @@ private fun BottomSheetBlankCellTopBarPreview() {
             isMainCell = false,
             isSubCell = false,
             isBlankCell = true,
-            onResult = { _, _ -> },
+            onAction = {},
         )
     }
 }

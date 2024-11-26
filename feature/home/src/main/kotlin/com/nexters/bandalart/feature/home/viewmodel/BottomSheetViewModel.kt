@@ -27,6 +27,7 @@ class BottomSheetViewModel @Inject constructor(
 
     fun onAction(action: BottomSheetUiAction) {
         when (action) {
+            is BottomSheetUiAction.OnClearButtonClick -> toggleBottomSheet(false)
             is BottomSheetUiAction.OnCompleteButtonClick -> updateCell(action.bandalartId, action.cellId, action.isMainCell, action.isSubCell)
             is BottomSheetUiAction.OnDeleteButtonClick -> toggleDeleteCellDialog(!_uiState.value.isDeleteCellDialogOpened)
             is BottomSheetUiAction.OnDeleteDialogConfirmClick -> {
@@ -44,6 +45,19 @@ class BottomSheetViewModel @Inject constructor(
             is BottomSheetUiAction.OnDescriptionUpdate -> updateDescription(action.description)
             is BottomSheetUiAction.OnCompletionUpdate -> updateCompletion(action.isCompleted)
         }
+    }
+
+    fun initState() {
+        _uiState.update {
+            it.copy(
+                isBottomSheetOpened = true,
+                isCellUpdated = false,
+            )
+        }
+    }
+
+    private fun toggleBottomSheet(flag: Boolean) {
+        _uiState.update { it.copy(isBottomSheetOpened = flag) }
     }
 
     fun copyCellData(bandalartId: Long, cellData: BandalartCellUiModel) {

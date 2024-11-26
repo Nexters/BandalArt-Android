@@ -3,6 +3,7 @@ package com.nexters.bandalart.feature.home.viewmodel
 import java.util.Locale
 
 sealed interface BottomSheetUiAction {
+    data object OnClearButtonClick : BottomSheetUiAction
     data class OnCompleteButtonClick(
         val bandalartId: Long,
         val cellId: Long,
