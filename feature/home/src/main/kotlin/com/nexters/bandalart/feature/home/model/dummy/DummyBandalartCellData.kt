@@ -1,4 +1,6 @@
-package com.nexters.bandalart.feature.home.model
+package com.nexters.bandalart.feature.home.model.dummy
+
+import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 
 val dummyBandalartCellData = BandalartCellUiModel(
     id = 0L,

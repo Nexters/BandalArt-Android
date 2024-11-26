@@ -22,11 +22,11 @@
             tools:node="merge">
 
             <meta-data
-                android:name="com.nexters.bandalart.initialize.TimberInitializer"
+                android:name="com.nexters.bandalart.initializer.TimberInitializer"
                 android:value="androidx.startup" />
 
             <meta-data
-                android:name="com.nexters.bandalart.initialize.FirebaseCrashlyticsInitializer"
+                android:name="com.nexters.bandalart.initializer.FirebaseCrashlyticsInitializer"
                 android:value="androidx.startup" />
 
         </provider>

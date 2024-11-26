@@ -1,4 +1,4 @@
-package com.nexters.bandalart.initialize
+package com.nexters.bandalart.initializer
 
 import android.content.Context
 import androidx.startup.Initializer

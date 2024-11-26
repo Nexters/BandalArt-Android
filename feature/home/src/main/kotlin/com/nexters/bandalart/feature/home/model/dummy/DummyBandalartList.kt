@@ -1,6 +1,7 @@
-package com.nexters.bandalart.feature.home.model
+package com.nexters.bandalart.feature.home.model.dummy
 
 import com.nexters.bandalart.core.ui.allColor
+import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import kotlinx.datetime.Clock
 
 val dummyBandalartList = listOf(

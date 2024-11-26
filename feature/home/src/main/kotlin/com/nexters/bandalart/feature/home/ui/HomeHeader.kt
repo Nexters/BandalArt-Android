@@ -45,7 +45,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartData
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 
 @Composable

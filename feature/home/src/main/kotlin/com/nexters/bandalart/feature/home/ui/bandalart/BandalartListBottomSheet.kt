@@ -47,7 +47,7 @@ import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartList
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch

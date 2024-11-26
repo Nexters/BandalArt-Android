@@ -22,7 +22,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable

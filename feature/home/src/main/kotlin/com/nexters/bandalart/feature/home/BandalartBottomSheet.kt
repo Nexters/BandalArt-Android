@@ -85,7 +85,7 @@ import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleTe
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartCellData
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker

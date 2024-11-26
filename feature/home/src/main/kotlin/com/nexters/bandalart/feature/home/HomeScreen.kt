@@ -40,9 +40,9 @@ import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartChartData
-import com.nexters.bandalart.feature.home.model.dummyBandalartData
-import com.nexters.bandalart.feature.home.model.dummyBandalartList
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
 import com.nexters.bandalart.feature.home.ui.HomeHeader
 import com.nexters.bandalart.feature.home.ui.HomeShareButton
 import com.nexters.bandalart.feature.home.ui.HomeTopBar

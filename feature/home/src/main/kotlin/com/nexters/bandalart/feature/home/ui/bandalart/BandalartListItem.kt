@@ -44,7 +44,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.dummyBandalartData
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import kotlinx.coroutines.launch
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
