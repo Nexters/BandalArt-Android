@@ -64,6 +64,7 @@ private const val SnackbarDuration = 1000L
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 // TODO 굳이 UiModel 이 있어야 할까에 대한 고민
+// TODO 전체 구조를 Flow 형태로 전환하여, 직접 변화 했다는 flag 를 변경하고, 이 flag 를 기반으로 업데이트를 실행하지 않아도 되도록 구현
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,
