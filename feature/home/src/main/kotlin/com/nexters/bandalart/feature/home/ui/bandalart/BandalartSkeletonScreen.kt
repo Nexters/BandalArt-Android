@@ -47,8 +47,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray200
@@ -59,8 +57,10 @@ import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
 import kotlinx.collections.immutable.persistentListOf
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -69,8 +69,8 @@ data class SkeletonSubCell(
     val colCnt: Int,
     val subCellRowIndex: Int,
     val subCellColIndex: Int,
-    val subCellData: BandalartCellUiModel? = null,
-    val taskCells: List<BandalartCellUiModel> = emptyList(),
+    val subCellData: BandalartCellEntity? = null,
+    val taskCells: List<BandalartCellEntity> = emptyList(),
 )
 
 @Composable

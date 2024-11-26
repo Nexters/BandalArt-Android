@@ -1,6 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 
 /**
@@ -22,8 +22,8 @@ data class BottomSheetUiState(
     val isBottomSheetOpened: Boolean = true,
     val initialBandalartData: BandalartUiModel = BandalartUiModel(),
     val bandalartData: BandalartUiModel = BandalartUiModel(),
-    val cellData: BandalartCellUiModel = BandalartCellUiModel(),
-    val initialCellData: BandalartCellUiModel = BandalartCellUiModel(),
+    val cellData: BandalartCellEntity = BandalartCellEntity(),
+    val initialCellData: BandalartCellEntity = BandalartCellEntity(),
     val isCellDataCopied: Boolean = false,
     val isCellUpdated: Boolean = false,
     val isCellDeleted: Boolean = false,

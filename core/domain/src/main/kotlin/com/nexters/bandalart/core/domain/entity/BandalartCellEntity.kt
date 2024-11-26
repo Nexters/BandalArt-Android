@@ -15,12 +15,12 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class BandalartCellEntity(
-    val id: Long,
-    val bandalartId: Long,
-    val title: String?,
-    val description: String?,
-    val dueDate: String?,
-    val isCompleted: Boolean,
-    val parentId: Long?,
+    val id: Long = 0L,
+    val bandalartId: Long? = 0L,
+    val title: String? = null,
+    val description: String? = null,
+    val dueDate: String? = null,
+    val isCompleted: Boolean = false,
+    val parentId: Long? = 0L,
     val children: List<BandalartCellEntity> = emptyList(),
 )

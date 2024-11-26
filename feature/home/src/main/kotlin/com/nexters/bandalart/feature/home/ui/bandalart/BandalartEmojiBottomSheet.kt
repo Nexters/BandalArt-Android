@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,7 +19,7 @@ fun BandalartEmojiBottomSheet(
     bandalartId: Long,
     cellId: Long,
     currentEmoji: String?,
-    onEmojiSelected: (Long, Long, UpdateBandalartEmojiModel) -> Unit,
+    onEmojiSelected: (Long, Long, UpdateBandalartEmojiEntity) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -43,7 +43,7 @@ fun BandalartEmojiBottomSheet(
                     onEmojiSelected(
                         bandalartId,
                         cellId,
-                        UpdateBandalartEmojiModel(profileEmoji = currentEmojiResult),
+                        UpdateBandalartEmojiEntity(profileEmoji = currentEmojiResult),
                     )
                 },
                 emojiPickerState = bottomSheetState,

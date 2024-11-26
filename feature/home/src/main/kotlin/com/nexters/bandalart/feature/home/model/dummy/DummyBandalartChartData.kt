@@ -1,50 +1,50 @@
 package com.nexters.bandalart.feature.home.model.dummy
 
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 
-val dummyBandalartChartData = BandalartCellUiModel(
+val dummyBandalartChartData = BandalartCellEntity(
     id = 0L,
     title = "넥스터즈 1등하기",
     description = null,
     isCompleted = false,
     parentId = null,
     children = listOf(
-        BandalartCellUiModel(
+        BandalartCellEntity(
             id = 1L,
             title = "iOS 출시",
             description = null,
             isCompleted = false,
             parentId = 0L,
             children = listOf(
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 5L,
                     title = "개발자 계정 만들기",
                     description = null,
                     isCompleted = true,
                     parentId = 1L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 6L,
                     title = "MVP 개발",
                     description = null,
                     isCompleted = false,
                     parentId = 1L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 7L,
                     title = null,
                     description = null,
                     isCompleted = false,
                     parentId = 1L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 8L,
                     title = "코딩 컨벤션 정하기",
                     description = null,
                     isCompleted = true,
                     parentId = 1L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 9L,
                     title = "1일 1커밋",
                     description = null,
@@ -53,42 +53,42 @@ val dummyBandalartChartData = BandalartCellUiModel(
                 ),
             ),
         ),
-        BandalartCellUiModel(
+        BandalartCellEntity(
             id = 2L,
             title = "Android 출시",
             description = null,
             isCompleted = true,
             parentId = 0L,
             children = listOf(
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 10L,
                     title = "매일 밤새기",
                     description = null,
                     isCompleted = true,
                     parentId = 2L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 11L,
                     title = "개발자 계정 만들기",
                     description = null,
                     isCompleted = true,
                     parentId = 2L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 12L,
                     title = "MVP 개발",
                     description = null,
                     isCompleted = true,
                     parentId = 2L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 13L,
                     title = "코딩 컨벤션 정하기",
                     description = null,
                     isCompleted = true,
                     parentId = 2L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 14L,
                     title = "하나라도 더 만들기",
                     description = null,
@@ -97,42 +97,42 @@ val dummyBandalartChartData = BandalartCellUiModel(
                 ),
             ),
         ),
-        BandalartCellUiModel(
+        BandalartCellEntity(
             id = 3L,
             title = "PM 말듣기",
             description = null,
             isCompleted = false,
             parentId = 0L,
             children = listOf(
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 15L,
                     title = "화식",
                     description = null,
                     isCompleted = true,
                     parentId = 3L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 16L,
                     title = "클라이밍",
                     description = null,
                     isCompleted = false,
                     parentId = 3L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 17L,
                     title = "카페",
                     description = null,
                     isCompleted = true,
                     parentId = 3L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 18L,
                     title = "산책",
                     description = null,
                     isCompleted = false,
                     parentId = 3L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 19L,
                     title = null,
                     description = null,
@@ -141,42 +141,42 @@ val dummyBandalartChartData = BandalartCellUiModel(
                 ),
             ),
         ),
-        BandalartCellUiModel(
+        BandalartCellEntity(
             id = 4L,
             title = "넥나잇 준비",
             description = null,
             isCompleted = false,
             parentId = 0L,
             children = listOf(
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 20L,
                     title = "세면도구 챙기기",
                     description = null,
                     isCompleted = true,
                     parentId = 4L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 21L,
                     title = "라꾸라꾸 구매",
                     description = null,
                     isCompleted = false,
                     parentId = 4L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 22L,
                     title = "노트북 충전기 챙기기",
                     description = null,
                     isCompleted = true,
                     parentId = 4L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 23L,
                     title = "담뇨 챙기기",
                     description = null,
                     isCompleted = false,
                     parentId = 4L,
                 ),
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = 24L,
                     title = "커피 준비",
                     description = null,

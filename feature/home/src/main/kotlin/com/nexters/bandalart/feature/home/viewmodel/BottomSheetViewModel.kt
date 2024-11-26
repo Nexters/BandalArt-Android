@@ -2,13 +2,12 @@ package com.nexters.bandalart.feature.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartSubCellEntity
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
-import com.nexters.bandalart.feature.home.mapper.toEntity
 import com.nexters.bandalart.feature.home.mapper.toUiModel
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartMainCellModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartSubCellModel
-import com.nexters.bandalart.feature.home.model.UpdateBandalartTaskCellModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,7 +59,7 @@ class BottomSheetViewModel @Inject constructor(
         _uiState.update { it.copy(isBottomSheetOpened = flag) }
     }
 
-    fun copyCellData(bandalartId: Long, cellData: BandalartCellUiModel) {
+    fun copyCellData(bandalartId: Long, cellData: BandalartCellEntity) {
         viewModelScope.launch {
             val bandalart = bandalartRepository.getBandalart(bandalartId)
             _uiState.update {
@@ -90,7 +89,7 @@ class BottomSheetViewModel @Inject constructor(
                 updateMainCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
-                    updateBandalartMainCellModel = UpdateBandalartMainCellModel(
+                    updateBandalartMainCellModel = UpdateBandalartMainCellEntity(
                         title = trimmedTitle,
                         description = description,
                         dueDate = dueDate,
@@ -105,7 +104,7 @@ class BottomSheetViewModel @Inject constructor(
                 updateSubCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
-                    updateBandalartSubCellModel = UpdateBandalartSubCellModel(
+                    updateBandalartSubCellModel = UpdateBandalartSubCellEntity(
                         title = trimmedTitle,
                         description = description,
                         dueDate = dueDate,
@@ -117,7 +116,7 @@ class BottomSheetViewModel @Inject constructor(
                 updateTaskCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
-                    updateBandalartTaskCellModel = UpdateBandalartTaskCellModel(
+                    updateBandalartTaskCellModel = UpdateBandalartTaskCellEntity(
                         title = trimmedTitle,
                         description = description,
                         dueDate = dueDate,
@@ -132,10 +131,10 @@ class BottomSheetViewModel @Inject constructor(
     private fun updateMainCell(
         bandalartId: Long,
         cellId: Long,
-        updateBandalartMainCellModel: UpdateBandalartMainCellModel,
+        updateBandalartMainCellModel: UpdateBandalartMainCellEntity,
     ) {
         viewModelScope.launch {
-            bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel.toEntity())
+            bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel)
             bandalartRepository.getBandalart(bandalartId)
         }
     }
@@ -143,20 +142,20 @@ class BottomSheetViewModel @Inject constructor(
     private fun updateSubCell(
         bandalartId: Long,
         cellId: Long,
-        updateBandalartSubCellModel: UpdateBandalartSubCellModel,
+        updateBandalartSubCellModel: UpdateBandalartSubCellEntity,
     ) {
         viewModelScope.launch {
-            bandalartRepository.updateBandalartSubCell(bandalartId, cellId, updateBandalartSubCellModel.toEntity())
+            bandalartRepository.updateBandalartSubCell(bandalartId, cellId, updateBandalartSubCellModel)
         }
     }
 
     private fun updateTaskCell(
         bandalartId: Long,
         cellId: Long,
-        updateBandalartTaskCellModel: UpdateBandalartTaskCellModel,
+        updateBandalartTaskCellModel: UpdateBandalartTaskCellEntity,
     ) {
         viewModelScope.launch {
-            bandalartRepository.updateBandalartTaskCell(bandalartId, cellId, updateBandalartTaskCellModel.toEntity())
+            bandalartRepository.updateBandalartTaskCell(bandalartId, cellId, updateBandalartTaskCellModel)
         }
     }
 

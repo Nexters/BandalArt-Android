@@ -4,26 +4,26 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.core.common.utils.UiText
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
-import com.nexters.bandalart.feature.home.mapper.toEntity
+import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.mapper.toUiModel
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import com.nexters.bandalart.core.ui.R
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -203,7 +203,7 @@ class HomeViewModel @Inject constructor(
 
             val children = subCells.map { subCell ->
                 val taskCells = bandalartRepository.getChildCells(subCell.id)
-                BandalartCellUiModel(
+                BandalartCellEntity(
                     id = subCell.id,
                     title = subCell.title,
                     description = subCell.description,
@@ -211,7 +211,7 @@ class HomeViewModel @Inject constructor(
                     isCompleted = subCell.isCompleted,
                     parentId = subCell.parentId,
                     children = taskCells.map { taskCell ->
-                        BandalartCellUiModel(
+                        BandalartCellEntity(
                             id = taskCell.id,
                             title = taskCell.title,
                             description = taskCell.description,
@@ -226,7 +226,7 @@ class HomeViewModel @Inject constructor(
 
             _uiState.update {
                 it.copy(
-                    bandalartCellData = BandalartCellUiModel(
+                    bandalartCellData = BandalartCellEntity(
                         id = mainCell?.id ?: 0L,
                         title = mainCell?.title,
                         description = mainCell?.description,
@@ -282,10 +282,10 @@ class HomeViewModel @Inject constructor(
     private fun updateBandalartEmoji(
         bandalartId: Long,
         cellId: Long,
-        updateBandalartEmojiModel: com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel,
+        updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
     ) {
         viewModelScope.launch {
-            bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel.toEntity())
+            bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel)
             toggleEmojiBottomSheet(false)
             updateBottomSheetData(true)
         }

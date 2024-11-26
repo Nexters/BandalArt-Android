@@ -1,6 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
-import com.nexters.bandalart.feature.home.model.UpdateBandalartEmojiModel
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 
 sealed interface HomeUiAction {
     data class OnCreateClick(val bandalartId: Long? = null) : HomeUiAction
@@ -9,7 +9,7 @@ sealed interface HomeUiAction {
     data class OnEmojiSelected(
         val bandalartId: Long,
         val cellId: Long,
-        val updateBandalartEmojiModel: UpdateBandalartEmojiModel,
+        val updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
     ) : HomeUiAction
 
     data class OnConfirmClick(val modalType: ModalType) : HomeUiAction

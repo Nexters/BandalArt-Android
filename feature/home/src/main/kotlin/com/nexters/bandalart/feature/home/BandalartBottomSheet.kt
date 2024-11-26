@@ -72,6 +72,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray700
 import com.nexters.bandalart.core.designsystem.theme.White
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
@@ -84,7 +85,6 @@ import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDeleteButt
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
@@ -104,7 +104,7 @@ fun BandalartBottomSheet(
     isSubCell: Boolean,
     isMainCell: Boolean,
     isBlankCell: Boolean,
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     onResult: (
         bottomSheetState: Boolean,
         bottomSheetDataChangedState: Boolean,
@@ -135,12 +135,12 @@ fun BandalartBottomSheetContent(
     isMainCell: Boolean,
     isSubCell: Boolean,
     isBlankCell: Boolean,
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     onResult: (
         bottomSheetState: Boolean,
         bottomSheetDataChangedState: Boolean,
     ) -> Unit,
-    copyCellData: (Long, BandalartCellUiModel) -> Unit,
+    copyCellData: (Long, BandalartCellEntity) -> Unit,
     onAction: (BottomSheetUiAction) -> Unit,
     initState: () -> Unit,
     modifier: Modifier = Modifier,
@@ -363,7 +363,7 @@ fun BandalartBottomSheetContent(
                             if (uiState.cellData.dueDate.isNullOrEmpty()) {
                                 BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
                             } else {
-                                BottomSheetContentText(text = uiState.cellData.dueDate.toStringLocalDateTime())
+                                BottomSheetContentText(text = uiState.cellData.dueDate!!.toStringLocalDateTime())
                             }
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

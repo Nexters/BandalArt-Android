@@ -1,6 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class HomeUiState(
     val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
     val bandalartData: BandalartUiModel? = null,
-    val bandalartCellData: BandalartCellUiModel? = null,
+    val bandalartCellData: BandalartCellEntity? = null,
     val isBandalartDeleted: Boolean = false,
     val isDropDownMenuOpened: Boolean = false,
     val isBandalartDeleteAlertDialogOpened: Boolean = false,

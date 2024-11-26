@@ -37,11 +37,11 @@ import com.nexters.bandalart.core.designsystem.theme.Gray500
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.White
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.CellText
 import com.nexters.bandalart.feature.home.BandalartBottomSheet
-import com.nexters.bandalart.feature.home.model.BandalartCellUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -52,7 +52,7 @@ data class CellInfo(
     val colCnt: Int = 1,
     val rowCnt: Int = 1,
     // TODO 상위 셀 정보 추가 필요(서브 목표가 비어 있을 경우, 태스크 셀을 먼저 작성할 수 없도록 validation)
-    val parentCell: BandalartCellUiModel? = null,
+    val parentCell: BandalartCellEntity? = null,
 )
 
 data class SubCell(
@@ -60,7 +60,7 @@ data class SubCell(
     val colCnt: Int,
     val subCellRowIndex: Int,
     val subCellColIndex: Int,
-    val subCellData: BandalartCellUiModel?,
+    val subCellData: BandalartCellEntity?,
 )
 
 @Composable
@@ -68,7 +68,7 @@ fun BandalartCell(
     bandalartId: Long,
     bandalartData: BandalartUiModel,
     isMainCell: Boolean,
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     bottomSheetDataChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     cellInfo: CellInfo = CellInfo(),
@@ -134,7 +134,7 @@ fun BandalartCell(
 private fun CellContent(
     isMainCell: Boolean,
     isSubCell: Boolean,
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     bandalartData: BandalartUiModel,
 ) {
     when {
@@ -146,7 +146,7 @@ private fun CellContent(
 
 @Composable
 private fun MainCellContent(
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     bandalartData: BandalartUiModel,
 ) {
     val cellTextColor = bandalartData.subColor.toColor()
@@ -155,7 +155,7 @@ private fun MainCellContent(
         EmptyMainCellContent(cellTextColor)
     } else {
         FilledCellContent(
-            title = cellData.title,
+            title = cellData.title!!,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
             fontWeight = FontWeight.W700,
@@ -165,7 +165,7 @@ private fun MainCellContent(
 
 @Composable
 private fun SubCellContent(
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     bandalartData: BandalartUiModel,
 ) {
     val cellTextColor = bandalartData.mainColor.toColor()
@@ -174,7 +174,7 @@ private fun SubCellContent(
         EmptySubCellContent(cellTextColor)
     } else {
         FilledCellContent(
-            title = cellData.title,
+            title = cellData.title!!,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
             fontWeight = FontWeight.W700,
@@ -183,14 +183,14 @@ private fun SubCellContent(
 }
 
 @Composable
-private fun TaskCellContent(cellData: BandalartCellUiModel) {
+private fun TaskCellContent(cellData: BandalartCellEntity) {
     val cellTextColor = if (cellData.isCompleted) Gray600 else Gray900
 
     if (cellData.title.isNullOrEmpty()) {
         EmptyTaskContent()
     } else {
         FilledCellContent(
-            title = cellData.title,
+            title = cellData.title!!,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
             fontWeight = FontWeight.W500,
@@ -284,7 +284,7 @@ private fun FilledCellContent(
 private fun getCellBackgroundColor(
     bandalartData: BandalartUiModel,
     isMainCell: Boolean,
-    cellData: BandalartCellUiModel,
+    cellData: BandalartCellEntity,
     cellInfo: CellInfo,
 ): Color = when {
     // 메인 목표 달성
@@ -312,7 +312,7 @@ private fun BandalartCellPreview() {
                 subColor = "#FF111827",
             ),
             isMainCell = true,
-            cellData = BandalartCellUiModel(
+            cellData = BandalartCellEntity(
                 title = "메인 목표",
                 isCompleted = false,
             ),
