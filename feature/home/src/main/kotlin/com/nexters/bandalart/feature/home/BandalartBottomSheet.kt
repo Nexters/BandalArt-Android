@@ -33,6 +33,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
@@ -79,7 +80,6 @@ import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetCompleteBu
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentPlaceholder
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentText
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDeleteButton
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDivider
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleText
 import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
@@ -197,8 +197,7 @@ fun BandalartBottomSheetContent(
         },
         modifier = modifier
             .wrapContentSize()
-            .statusBarsPadding()
-            .noRippleClickable { },
+            .statusBarsPadding(),
         sheetState = bottomSheetState,
         dragHandle = null,
     ) {
@@ -290,7 +289,11 @@ fun BandalartBottomSheetContent(
                                 },
                             )
                             Spacer(modifier = Modifier.height(10.dp))
-                            BottomSheetDivider()
+                            HorizontalDivider(
+                                modifier = Modifier.fillMaxWidth(),
+                                thickness = 1.dp,
+                                color = Gray300
+                            )
                         }
                     }
                     AnimatedVisibility(visible = uiState.isEmojiPickerOpened) {
@@ -359,7 +362,11 @@ fun BandalartBottomSheetContent(
                             )
                         }
                         Spacer(modifier = Modifier.height(10.dp))
-                        BottomSheetDivider()
+                        HorizontalDivider(
+                            modifier = Modifier.fillMaxWidth(),
+                            thickness = 1.dp,
+                            color = Gray300
+                        )
                     }
                     AnimatedVisibility(visible = uiState.isDatePickerOpened) {
                         BandalartDatePicker(
@@ -393,7 +400,11 @@ fun BandalartBottomSheetContent(
                                 },
                             )
                             Spacer(modifier = Modifier.height(10.dp))
-                            BottomSheetDivider()
+                            HorizontalDivider(
+                                modifier = Modifier.fillMaxWidth(),
+                                thickness = 1.dp,
+                                color = Gray300
+                            )
                         }
                     }
                     if (!isSubCell && !isMainCell) {
