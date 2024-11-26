@@ -36,7 +36,7 @@ fun BottomSheetDeleteButton(
 
 @Composable
 fun BottomSheetCompleteButton(
-    isBlankCell: Boolean,
+    isEnabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -44,11 +44,11 @@ fun BottomSheetCompleteButton(
         onClick = onClick,
         modifier = modifier.height(56.dp),
         colors = IconButtonColors(Gray900, White, Gray200, Gray400),
-        enabled = !isBlankCell,
+        enabled = isEnabled,
     ) {
         BottomSheetButtonText(
             text = stringResource(R.string.bottomsheet_done),
-            color = if (isBlankCell) Gray400 else White,
+            color = if (isEnabled) White else Gray400,
         )
     }
 }
@@ -71,7 +71,7 @@ private fun BottomSheetDeleteButtonPreview() {
 private fun BottomSheetCompleteButtonPreview() {
     BandalartTheme {
         BottomSheetCompleteButton(
-            isBlankCell = false,
+            isEnabled = false,
             onClick = {},
             modifier = Modifier
                 .fillMaxWidth()

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -28,7 +29,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -294,7 +295,7 @@ fun BandalartBottomSheetContent(
                             HorizontalDivider(
                                 modifier = Modifier.fillMaxWidth(),
                                 thickness = 1.dp,
-                                color = Gray300
+                                color = Gray300,
                             )
                         }
                     }
@@ -354,12 +355,11 @@ fun BandalartBottomSheetContent(
                                 BottomSheetContentText(text = uiState.cellData.dueDate.toStringLocalDateTime())
                             }
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 contentDescription = stringResource(R.string.arrow_forward_description),
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
-                                    .height(21.dp)
-                                    .aspectRatio(1f),
+                                    .size(24.dp),
                                 tint = Gray400,
                             )
                         }
@@ -367,7 +367,7 @@ fun BandalartBottomSheetContent(
                         HorizontalDivider(
                             modifier = Modifier.fillMaxWidth(),
                             thickness = 1.dp,
-                            color = Gray300
+                            color = Gray300,
                         )
                     }
                     AnimatedVisibility(visible = uiState.isDatePickerOpened) {
@@ -405,7 +405,7 @@ fun BandalartBottomSheetContent(
                             HorizontalDivider(
                                 modifier = Modifier.fillMaxWidth(),
                                 thickness = 1.dp,
-                                color = Gray300
+                                color = Gray300,
                             )
                         }
                     }
@@ -458,8 +458,8 @@ fun BandalartBottomSheetContent(
                             Spacer(modifier = Modifier.width(9.dp))
                         }
                         BottomSheetCompleteButton(
-                            isBlankCell = uiState.cellData.title?.trim()
-                                .isNullOrEmpty() || (uiState.cellData == uiState.initialCellData),
+                            isEnabled = (uiState.cellData.title?.trim()
+                                ?.isNotEmpty() == true) && (uiState.cellData != uiState.initialCellData || uiState.bandalartData != uiState.initialBandalartData),
                             onClick = {
                                 onAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, isMainCell, isSubCell))
                             },
