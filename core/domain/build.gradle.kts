@@ -4,5 +4,8 @@ plugins {
 }
 
 dependencies {
+    compileOnly(
+        libs.compose.stable.marker,
+    )
     implementation(libs.javax.inject)
 }

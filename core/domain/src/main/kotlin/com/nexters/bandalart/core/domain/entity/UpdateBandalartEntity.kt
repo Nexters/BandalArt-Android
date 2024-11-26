@@ -1,5 +1,7 @@
 package com.nexters.bandalart.core.domain.entity
 
+import androidx.compose.runtime.Stable
+
 /**
  * 반다라트 메인 셀 수정
  *
@@ -10,6 +12,7 @@ package com.nexters.bandalart.core.domain.entity
  * @param mainColor 셀 메인 색상
  * @param subColor 셀 서브 색상
  */
+@Stable
 data class UpdateBandalartMainCellEntity(
     val title: String?,
     val description: String?,
@@ -26,6 +29,7 @@ data class UpdateBandalartMainCellEntity(
  * @param description 셀 설명
  * @param dueDate 셀 마감일, 미설정인 경우 null
  */
+@Stable
 data class UpdateBandalartSubCellEntity(
     val title: String?,
     val description: String?,
@@ -40,6 +44,7 @@ data class UpdateBandalartSubCellEntity(
  * @param dueDate 셀 마감일, 미설정인 경우 null
  * @param isCompleted 셀 완료 여부
  */
+@Stable
 data class UpdateBandalartTaskCellEntity(
     val title: String?,
     val description: String?,
@@ -52,6 +57,7 @@ data class UpdateBandalartTaskCellEntity(
  *
  * @param profileEmoji 반다라트 프로필 이모지
  */
+@Stable
 data class UpdateBandalartEmojiEntity(
     val profileEmoji: String?,
 )

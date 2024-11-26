@@ -1,5 +1,7 @@
 package com.nexters.bandalart.core.domain.entity
 
+import androidx.compose.runtime.Stable
+
 /**
  * 반다라트 생성
  *
@@ -10,6 +12,7 @@ package com.nexters.bandalart.core.domain.entity
  * @param completionRatio 목표 달성률(%)
  */
 
+@Stable
 data class BandalartEntity(
     val id: Long,
     val mainColor: String,

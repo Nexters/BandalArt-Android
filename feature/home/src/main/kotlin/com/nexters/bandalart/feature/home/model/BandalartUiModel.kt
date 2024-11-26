@@ -11,17 +11,4 @@ data class BandalartUiModel(
     val isCompleted: Boolean = false,
     val completionRatio: Int = 0,
     val isGeneratedTitle: Boolean = false,
-) {
-    fun copy(): BandalartUiModel = BandalartUiModel(
-        id = id,
-        mainColor = mainColor,
-        subColor = subColor,
-        profileEmoji = profileEmoji,
-        title = title,
-        cellId = cellId,
-        dueDate = dueDate,
-        isCompleted = isCompleted,
-        completionRatio = completionRatio,
-        isGeneratedTitle = isGeneratedTitle,
-    )
-}
+)

@@ -1,5 +1,7 @@
 package com.nexters.bandalart.core.domain.entity
 
+import androidx.compose.runtime.Stable
+
 /**
  * 반다라트 셀 조회
  *
@@ -11,6 +13,7 @@ package com.nexters.bandalart.core.domain.entity
  * @param parentId 부모 셀 고유 키 (Main Cell 이면 null)
  */
 
+@Stable
 data class BandalartCellEntity(
     val id: Long,
     val bandalartId: Long,

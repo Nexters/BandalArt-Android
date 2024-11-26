@@ -8,14 +8,4 @@ data class BandalartCellUiModel(
     val isCompleted: Boolean = false,
     val parentId: Long? = 0L,
     val children: List<BandalartCellUiModel> = emptyList(),
-) {
-    fun copy(): BandalartCellUiModel = BandalartCellUiModel(
-        id = id,
-        title = title,
-        description = description,
-        dueDate = dueDate,
-        isCompleted = isCompleted,
-        parentId = parentId,
-        children = children,
-    )
-}
+)
