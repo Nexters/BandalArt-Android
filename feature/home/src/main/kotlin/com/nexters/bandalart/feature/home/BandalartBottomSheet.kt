@@ -122,7 +122,7 @@ fun BandalartBottomSheet(
         cellData = cellData,
         onResult = onResult,
         copyCellData = viewModel::copyCellData,
-        onAction = viewModel::onAction,
+        onBottomSheetUiAction = viewModel::onBottomSheetUiAction,
         initState = viewModel::initState,
     )
 }
@@ -141,7 +141,7 @@ fun BandalartBottomSheetContent(
         bottomSheetDataChangedState: Boolean,
     ) -> Unit,
     copyCellData: (Long, BandalartCellEntity) -> Unit,
-    onAction: (BottomSheetUiAction) -> Unit,
+    onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     initState: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -180,7 +180,7 @@ fun BandalartBottomSheetContent(
             },
             onDeleteClicked = {
                 scope.launch {
-                    onAction(BottomSheetUiAction.OnDeleteDialogConfirmClick(uiState.cellData.id))
+                    onBottomSheetUiAction(BottomSheetUiAction.OnDeleteDialogConfirmClick(uiState.cellData.id))
                     bottomSheetState.hide()
                 }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
@@ -189,7 +189,7 @@ fun BandalartBottomSheetContent(
                 }
             },
             onCancelClicked = {
-                onAction(BottomSheetUiAction.OnDeleteDialogCancelClick)
+                onBottomSheetUiAction(BottomSheetUiAction.OnDeleteDialogCancelClick)
             },
         )
     }
@@ -224,7 +224,7 @@ fun BandalartBottomSheetContent(
                 isMainCell = isMainCell,
                 isSubCell = isSubCell,
                 isBlankCell = isBlankCell,
-                onAction = onAction,
+                onAction = onBottomSheetUiAction,
             )
             Box {
                 Column(
@@ -253,7 +253,7 @@ fun BandalartBottomSheetContent(
                                             .aspectRatio(1f)
                                             .background(Gray100)
                                             .clickable {
-                                                onAction(BottomSheetUiAction.OnEmojiPickerClick)
+                                                onBottomSheetUiAction(BottomSheetUiAction.OnEmojiPickerClick)
                                             },
                                         contentAlignment = Alignment.Center,
                                     ) {
@@ -285,7 +285,7 @@ fun BandalartBottomSheetContent(
                             BasicTextField(
                                 value = uiState.cellData.title ?: "",
                                 onValueChange = { title ->
-                                    onAction(BottomSheetUiAction.OnTitleUpdate(title, currentLocale))
+                                    onBottomSheetUiAction(BottomSheetUiAction.OnTitleUpdate(title, currentLocale))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -326,7 +326,7 @@ fun BandalartBottomSheetContent(
                                 isBottomSheet = false,
                                 onResult = { currentEmojiResult, _ ->
                                     if (currentEmojiResult != null) {
-                                        onAction(BottomSheetUiAction.OnEmojiSelect(currentEmojiResult))
+                                        onBottomSheetUiAction(BottomSheetUiAction.OnEmojiSelect(currentEmojiResult))
                                     }
                                 },
                                 emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -342,7 +342,7 @@ fun BandalartBottomSheetContent(
                                 subColor = uiState.bandalartData.subColor,
                             ),
                             onColorSelect = {
-                                onAction(BottomSheetUiAction.OnColorSelect(it.mainColor, it.subColor))
+                                onBottomSheetUiAction(BottomSheetUiAction.OnColorSelect(it.mainColor, it.subColor))
                             },
                         )
                         Spacer(modifier = Modifier.height(3.dp))
@@ -356,7 +356,7 @@ fun BandalartBottomSheetContent(
                                 .fillMaxWidth()
                                 .height(24.dp)
                                 .clickable {
-                                    onAction(BottomSheetUiAction.OnDatePickerClick)
+                                    onBottomSheetUiAction(BottomSheetUiAction.OnDatePickerClick)
                                 },
                             contentAlignment = Alignment.CenterStart,
                         ) {
@@ -383,7 +383,7 @@ fun BandalartBottomSheetContent(
                     }
                     AnimatedVisibility(visible = uiState.isDatePickerOpened) {
                         BandalartDatePicker(
-                            onDueDateSelect = { dueDateResult -> onAction(BottomSheetUiAction.OnDueDateSelect(dueDateResult.toString())) },
+                            onDueDateSelect = { dueDateResult -> onBottomSheetUiAction(BottomSheetUiAction.OnDueDateSelect(dueDateResult.toString())) },
                             currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
                         )
                     }
@@ -395,7 +395,7 @@ fun BandalartBottomSheetContent(
                             BasicTextField(
                                 value = uiState.cellData.description ?: "",
                                 onValueChange = { description ->
-                                    onAction(BottomSheetUiAction.OnDescriptionUpdate(description))
+                                    onBottomSheetUiAction(BottomSheetUiAction.OnDescriptionUpdate(description))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -433,7 +433,7 @@ fun BandalartBottomSheetContent(
                             Switch(
                                 checked = uiState.cellData.isCompleted,
                                 onCheckedChange = { isCompleted ->
-                                    onAction(BottomSheetUiAction.OnCompletionUpdate(isCompleted))
+                                    onBottomSheetUiAction(BottomSheetUiAction.OnCompletionUpdate(isCompleted))
                                 },
                                 colors = SwitchDefaults.colors(
                                     uncheckedThumbColor = White,
@@ -462,7 +462,7 @@ fun BandalartBottomSheetContent(
                         if (!isBlankCell) {
                             BottomSheetDeleteButton(
                                 onClick = {
-                                    onAction(BottomSheetUiAction.OnDeleteButtonClick)
+                                    onBottomSheetUiAction(BottomSheetUiAction.OnDeleteButtonClick)
                                 },
                                 modifier = Modifier.weight(1f),
                             )
@@ -472,7 +472,7 @@ fun BandalartBottomSheetContent(
                             isEnabled = (uiState.cellData.title?.trim()
                                 ?.isNotEmpty() == true) && (uiState.cellData != uiState.initialCellData || uiState.bandalartData != uiState.initialBandalartData),
                             onClick = {
-                                onAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, isMainCell, isSubCell))
+                                onBottomSheetUiAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, isMainCell, isSubCell))
                             },
                             modifier = Modifier.weight(1f),
                         )
@@ -527,7 +527,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
             copyCellData = { _, _ -> },
-            onAction = {},
+            onBottomSheetUiAction = {},
             initState = {},
         )
     }
@@ -549,7 +549,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
             copyCellData = { _, _ -> },
-            onAction = {},
+            onBottomSheetUiAction = {},
             initState = {},
         )
     }
@@ -571,7 +571,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             onResult = { _, _ -> },
             copyCellData = { _, _ -> },
-            onAction = {},
+            onBottomSheetUiAction = {},
             initState = {},
         )
     }

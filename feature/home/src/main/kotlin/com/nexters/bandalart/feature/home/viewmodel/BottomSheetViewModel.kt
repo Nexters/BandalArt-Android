@@ -24,7 +24,7 @@ class BottomSheetViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(BottomSheetUiState())
     val uiState: StateFlow<BottomSheetUiState> = _uiState.asStateFlow()
 
-    fun onAction(action: BottomSheetUiAction) {
+    fun onBottomSheetUiAction(action: BottomSheetUiAction) {
         when (action) {
             is BottomSheetUiAction.OnClearButtonClick -> toggleBottomSheet(false)
             is BottomSheetUiAction.OnCompleteButtonClick -> updateCell(action.bandalartId, action.cellId, action.isMainCell, action.isSubCell)
