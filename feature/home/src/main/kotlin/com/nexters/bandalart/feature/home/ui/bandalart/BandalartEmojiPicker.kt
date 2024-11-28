@@ -51,7 +51,7 @@ private val emojiList = persistentListOf(
 fun BandalartEmojiPicker(
     currentEmoji: String?,
     isBottomSheet: Boolean,
-    onResult: (String?, Boolean) -> Unit,
+    onEmojiSelect: (String) -> Unit,
     emojiPickerState: SheetState,
     modifier: Modifier = Modifier,
 ) {
@@ -127,7 +127,9 @@ fun BandalartEmojiPicker(
                                         scope
                                             .launch { emojiPickerState.hide() }
                                             .invokeOnCompletion {
-                                                if (!emojiPickerState.isVisible) onResult(selectedEmoji, false)
+                                                if (selectedEmoji != null) {
+                                                    onEmojiSelect(selectedEmoji!!)
+                                                }
                                             }
                                     },
                                 contentAlignment = Alignment.Center,
@@ -153,8 +155,8 @@ private fun BandalartEmojiPickerPreview() {
         BandalartEmojiPicker(
             currentEmoji = "😎",
             isBottomSheet = false,
-            onResult = { _, _ -> },
             emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            onEmojiSelect = {},
         )
     }
 }

@@ -9,6 +9,7 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.mapper.toUiModel
+import com.nexters.bandalart.feature.home.model.CellType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
@@ -110,6 +111,8 @@ class HomeViewModel @Inject constructor(
                 setRecentBandalartId(action.key)
                 getBandalart(action.key)
             }
+
+            is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.isMainCell, action.isSubCell, action.isMainCellTitleEmpty)
         }
     }
 
@@ -325,8 +328,37 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isEmojiBottomSheetOpened = flag) }
     }
 
-    private fun toggleCellBottomSheet(flag: Boolean) {
-        _uiState.update { it.copy(isCellBottomSheetOpened = flag) }
+    private fun toggleCellBottomSheet(
+        flag: Boolean,
+        isMainCell: Boolean? = false,
+        isSubCell: Boolean? = false,
+    ) {
+        if (!flag) {
+            _uiState.update { it.copy(isCellBottomSheetOpened = false) }
+        } else {
+            when {
+                isMainCell == true -> _uiState.update {
+                    it.copy(
+                        isCellBottomSheetOpened = true,
+                        clickedCellType = CellType.MAIN,
+                    )
+                }
+
+                isSubCell == true -> _uiState.update {
+                    it.copy(
+                        isCellBottomSheetOpened = true,
+                        clickedCellType = CellType.SUB,
+                    )
+                }
+
+                else -> _uiState.update {
+                    it.copy(
+                        isCellBottomSheetOpened = true,
+                        clickedCellType = CellType.TASK,
+                    )
+                }
+            }
+        }
     }
 
     fun updateBottomSheetData(flag: Boolean) {
@@ -371,5 +403,28 @@ class HomeViewModel @Inject constructor(
 
     fun updateBandalartChartUrl(url: String) {
         _uiState.update { it.copy(bandalartChartUrl = url) }
+    }
+
+    private fun handleBandalartCellClick(isMainCell: Boolean, isSubCell: Boolean, isMainCellTitleEmpty: Boolean) {
+        when {
+            // 메인셀이 비어있고, 서브나 태스크셀 클릭 시
+            !isMainCell && isMainCellTitleEmpty -> {
+                viewModelScope.launch {
+                    _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.please_input_main_goal)))
+                }
+            }
+
+            // 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
+//            !isMainCell && !isSubCell && isMainCellTitleEmpty -> {
+//                viewModelScope.launch {
+//                    _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.please_input_sub_goal)))
+//                }
+//            }
+
+            // 그 외의 경우 바텀시트 열기
+            else -> {
+                toggleCellBottomSheet(true, isMainCell, isSubCell)
+            }
+        }
     }
 }

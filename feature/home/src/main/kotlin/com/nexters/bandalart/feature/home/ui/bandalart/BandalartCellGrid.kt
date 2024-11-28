@@ -12,16 +12,16 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartCellGrid(
-    bandalartId: Long,
     bandalartData: BandalartUiModel,
     subCell: SubCell,
     rows: Int,
     cols: Int,
-    bottomSheetDataChanged: (Boolean) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -40,7 +40,6 @@ fun BandalartCellGrid(
                     val isSubCell = rowIndex == subCell.subCellRowIndex && colIndex == subCell.subCellColIndex
                     BandalartCell(
                         modifier = Modifier.weight(1f),
-                        bandalartId = bandalartId,
                         bandalartData = bandalartData,
                         isMainCell = false,
                         cellInfo = CellInfo(
@@ -50,9 +49,8 @@ fun BandalartCellGrid(
                             colCnt = cols,
                             rowCnt = rows,
                         ),
-                        cellData = if (isSubCell) subCell.subCellData!!
-                        else subCell.subCellData!!.children[taskIndex++],
-                        bottomSheetDataChanged = bottomSheetDataChanged,
+                        cellData = if (isSubCell) subCell.subCellData!! else subCell.subCellData!!.children[taskIndex++],
+                        onHomeUiAction = onHomeUiAction,
                     )
                 }
             }
@@ -72,7 +70,6 @@ private fun BandalartCellGridPreview() {
 
     BandalartTheme {
         BandalartCellGrid(
-            bandalartId = 0L,
             bandalartData = BandalartUiModel(
                 id = 0L,
                 mainColor = "#3FFFBA",
@@ -81,7 +78,7 @@ private fun BandalartCellGridPreview() {
             subCell = subCellList[1],
             rows = subCellList[1].rowCnt,
             cols = subCellList[1].colCnt,
-            bottomSheetDataChanged = {},
+            onHomeUiAction = {},
         )
     }
 }

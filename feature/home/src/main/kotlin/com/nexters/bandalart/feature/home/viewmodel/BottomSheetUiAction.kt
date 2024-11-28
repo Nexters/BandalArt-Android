@@ -1,5 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
+import com.nexters.bandalart.feature.home.model.CellType
 import java.util.Locale
 
 sealed interface BottomSheetUiAction {
@@ -7,8 +8,7 @@ sealed interface BottomSheetUiAction {
     data class OnCompleteButtonClick(
         val bandalartId: Long,
         val cellId: Long,
-        val isMainCell: Boolean,
-        val isSubCell: Boolean,
+        val cellType: CellType,
     ) : BottomSheetUiAction
 
     data object OnDeleteButtonClick : BottomSheetUiAction

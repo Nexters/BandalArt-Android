@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.home.ui.bandalart
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,16 +14,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,8 +35,8 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.CellText
-import com.nexters.bandalart.feature.home.BandalartBottomSheet
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 data class CellInfo(
@@ -65,20 +59,16 @@ data class SubCell(
 
 @Composable
 fun BandalartCell(
-    bandalartId: Long,
     bandalartData: BandalartUiModel,
     isMainCell: Boolean,
     cellData: BandalartCellEntity,
-    bottomSheetDataChanged: (Boolean) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
     cellInfo: CellInfo = CellInfo(),
     outerPadding: Dp = 3.dp,
     innerPadding: Dp = 2.dp,
     mainCellPadding: Dp = 1.dp,
 ) {
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
-    val context = LocalContext.current
-
     Box(
         modifier = modifier
             .padding(
@@ -91,20 +81,7 @@ fun BandalartCell(
             .clip(RoundedCornerShape(10.dp))
             .background(getCellBackgroundColor(bandalartData, isMainCell, cellData, cellInfo))
             .clickable {
-                when {
-                    // 메인셀이 비어있고, 서브나 태스크셀 클릭 시
-                    !isMainCell && bandalartData.title.isNullOrEmpty() -> {
-                        Toast
-                            .makeText(context, context.getString(R.string.please_input_main_goal), Toast.LENGTH_SHORT)
-                            .show()
-                    }
-//                    // 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
-//                    !isMainCell && !cellInfo.isSubCell && cellInfo.parentCell?.title.isNullOrEmpty() -> {
-//                        Toast.makeText(context, context.getString(R.string.please_input_sub_goal), Toast.LENGTH_SHORT).show()
-//                    }
-                    // 그 외의 경우 바텀시트 열기
-                    else -> openBottomSheet = !openBottomSheet
-                }
+                onHomeUiAction(HomeUiAction.OnBandalartCellClick(isMainCell, cellInfo.isSubCell, bandalartData.title.isNullOrEmpty()))
             },
         contentAlignment = Alignment.Center,
     ) {
@@ -113,19 +90,6 @@ fun BandalartCell(
             isSubCell = cellInfo.isSubCell,
             cellData = cellData,
             bandalartData = bandalartData,
-        )
-    }
-    if (openBottomSheet) {
-        BandalartBottomSheet(
-            bandalartId = bandalartId,
-            isSubCell = cellInfo.isSubCell,
-            isMainCell = isMainCell,
-            isBlankCell = cellData.title.isNullOrEmpty(),
-            cellData = cellData,
-            onResult = { bottomSheetState, bottomSheetDataChangedState ->
-                openBottomSheet = bottomSheetState
-                bottomSheetDataChanged(bottomSheetDataChangedState)
-            },
         )
     }
 }
@@ -305,7 +269,6 @@ private fun getCellBackgroundColor(
 private fun BandalartCellPreview() {
     BandalartTheme {
         BandalartCell(
-            bandalartId = 0L,
             bandalartData = BandalartUiModel(
                 id = 0L,
                 mainColor = "#FF3FFFBA",
@@ -316,7 +279,7 @@ private fun BandalartCellPreview() {
                 title = "메인 목표",
                 isCompleted = false,
             ),
-            bottomSheetDataChanged = {},
+            onHomeUiAction = {},
         )
     }
 }

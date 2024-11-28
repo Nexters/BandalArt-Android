@@ -8,12 +8,14 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.feature.home.mapper.toUiModel
+import com.nexters.bandalart.feature.home.model.CellType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
@@ -27,13 +29,9 @@ class BottomSheetViewModel @Inject constructor(
     fun onBottomSheetUiAction(action: BottomSheetUiAction) {
         when (action) {
             is BottomSheetUiAction.OnClearButtonClick -> toggleBottomSheet(false)
-            is BottomSheetUiAction.OnCompleteButtonClick -> updateCell(action.bandalartId, action.cellId, action.isMainCell, action.isSubCell)
+            is BottomSheetUiAction.OnCompleteButtonClick -> updateCell(action.bandalartId, action.cellId, action.cellType)
             is BottomSheetUiAction.OnDeleteButtonClick -> toggleDeleteCellDialog(!_uiState.value.isDeleteCellDialogOpened)
-            is BottomSheetUiAction.OnDeleteDialogConfirmClick -> {
-                deleteBandalartCell(action.id)
-                toggleDeleteCellDialog(false)
-            }
-
+            is BottomSheetUiAction.OnDeleteDialogConfirmClick -> deleteBandalartCell(action.id)
             is BottomSheetUiAction.OnDeleteDialogCancelClick -> toggleDeleteCellDialog(false)
             is BottomSheetUiAction.OnDatePickerClick -> toggleDatePicker(!_uiState.value.isDatePickerOpened)
             is BottomSheetUiAction.OnEmojiPickerClick -> toggleEmojiPicker(!_uiState.value.isEmojiPickerOpened)
@@ -77,15 +75,14 @@ class BottomSheetViewModel @Inject constructor(
     private fun updateCell(
         bandalartId: Long,
         cellId: Long,
-        isMainCell: Boolean,
-        isSubCell: Boolean,
+        cellType: CellType,
     ) {
         val trimmedTitle = _uiState.value.cellData.title?.trim()
         val description = _uiState.value.cellData.description
         val dueDate = _uiState.value.cellData.dueDate?.ifEmpty { null }
 
-        when {
-            isMainCell -> {
+        when(cellType) {
+            CellType.MAIN -> {
                 updateMainCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
@@ -100,7 +97,7 @@ class BottomSheetViewModel @Inject constructor(
                 )
             }
 
-            isSubCell -> {
+            CellType.SUB -> {
                 updateSubCell(
                     bandalartId = bandalartId,
                     cellId = cellId,
@@ -162,6 +159,7 @@ class BottomSheetViewModel @Inject constructor(
     private fun deleteBandalartCell(cellId: Long) {
         viewModelScope.launch {
             bandalartRepository.deleteBandalartCell(cellId)
+            toggleDeleteCellDialog(false)
         }
     }
 
@@ -246,5 +244,10 @@ class BottomSheetViewModel @Inject constructor(
         _uiState.update {
             it.copy(cellData = it.cellData.copy(isCompleted = flag))
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("BottomSheetViewModel onCleared")
     }
 }

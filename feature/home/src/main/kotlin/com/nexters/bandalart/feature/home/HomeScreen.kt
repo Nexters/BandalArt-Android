@@ -63,8 +63,8 @@ private const val SnackbarDuration = 1000L
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
-// TODO 굳이 UiModel 이 있어야 할까에 대한 고민
 // TODO 전체 구조를 Flow 형태로 전환하여, 직접 변화 했다는 flag 를 변경하고, 이 flag 를 기반으로 업데이트를 실행하지 않아도 되도록 구현
+// TODO onResult 함수 제거 후 최초 1회만 바텀시트가 열리고 그 이후에 열리지 않는 문제를 해결해야함
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,
@@ -182,7 +182,7 @@ internal fun HomeScreen(
                     bandalartId = bandalart.id,
                     cellId = cell.id,
                     currentEmoji = bandalart.profileEmoji,
-                    onEmojiSelected = { bandalartId, cellId, emoji -> onHomeUiAction(HomeUiAction.OnEmojiSelected(bandalartId, cellId, emoji)) },
+                    onHomeUiAction = onHomeUiAction,
                 )
             }
         }
@@ -193,14 +193,11 @@ internal fun HomeScreen(
             uiState.bandalartCellData?.let { cell ->
                 BandalartBottomSheet(
                     bandalartId = bandalart.id,
-                    isSubCell = false,
-                    isMainCell = true,
+                    cellType = uiState.clickedCellType,
                     isBlankCell = cell.title.isNullOrEmpty(),
                     cellData = cell,
-                    onResult = { bottomSheetState, bottomSheetDataChangedState ->
-                        onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(bottomSheetState))
-                        bottomSheetDataChanged(bottomSheetDataChangedState)
-                    },
+                    onHomeUiAction = onHomeUiAction,
+                    bottomSheetDataChanged = bottomSheetDataChanged,
                 )
             }
         }
@@ -257,10 +254,9 @@ internal fun HomeScreen(
                     }
                     if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
                         BandalartChart(
-                            bandalartId = uiState.bandalartData.id,
                             bandalartData = uiState.bandalartData,
                             bandalartCellData = uiState.bandalartCellData,
-                            bottomSheetDataChanged = bottomSheetDataChanged,
+                            onHomeUiAction = onHomeUiAction,
                             modifier = Modifier
                                 .drawWithContent {
                                     completeGraphicsLayer.record { this@drawWithContent.drawContent() }

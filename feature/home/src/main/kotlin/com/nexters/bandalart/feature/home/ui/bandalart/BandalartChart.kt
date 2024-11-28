@@ -23,14 +23,14 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartChart(
-    bandalartId: Long,
     bandalartData: BandalartUiModel,
     bandalartCellData: BandalartCellEntity,
-    bottomSheetDataChanged: (Boolean) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -59,12 +59,11 @@ fun BandalartChart(
                         .background(color = Gray300),
                 ) {
                     BandalartCellGrid(
-                        bandalartId = bandalartId,
                         bandalartData = bandalartData,
                         subCell = subCellList[index],
                         rows = subCellList[index].rowCnt,
                         cols = subCellList[index].colCnt,
-                        bottomSheetDataChanged = bottomSheetDataChanged,
+                        onHomeUiAction = onHomeUiAction,
                     )
                 }
             }
@@ -78,8 +77,7 @@ fun BandalartChart(
                     isMainCell = true,
                     bandalartData = bandalartData,
                     cellData = bandalartCellData,
-                    bandalartId = bandalartId,
-                    bottomSheetDataChanged = bottomSheetDataChanged,
+                    onHomeUiAction = onHomeUiAction,
                 )
             }
         },
@@ -121,14 +119,13 @@ fun BandalartChart(
 private fun BandalartChartPreview() {
     BandalartTheme {
         BandalartChart(
-            bandalartId = 0L,
             bandalartCellData = dummyBandalartChartData,
             bandalartData = BandalartUiModel(
                 id = 0L,
                 mainColor = "#3FFFBA",
                 subColor = "#111827",
             ),
-            bottomSheetDataChanged = {},
+            onHomeUiAction = {},
         )
     }
 }

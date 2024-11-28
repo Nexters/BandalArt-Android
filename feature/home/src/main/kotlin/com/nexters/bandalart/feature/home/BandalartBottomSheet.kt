@@ -78,37 +78,36 @@ import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetCompleteButton
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentPlaceholder
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetContentText
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetDeleteButton
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetSubTitleText
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
+import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetCompleteButton
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentPlaceholder
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentText
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetDeleteButton
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetSubTitleText
+import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiState
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
-// TODO onResult 지우고 싶다.
 // TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
+// TODO 바텀시트의 활성화 여부를 양쪽에서 관리하고 있는데, 하나로 (홈) 통일
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
-    isSubCell: Boolean,
-    isMainCell: Boolean,
+    cellType: CellType,
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
-    onResult: (
-        bottomSheetState: Boolean,
-        bottomSheetDataChangedState: Boolean,
-    ) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
+    bottomSheetDataChanged: (Boolean) -> Unit,
     viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -116,11 +115,11 @@ fun BandalartBottomSheet(
     BandalartBottomSheetContent(
         uiState = uiState,
         bandalartId = bandalartId,
-        isSubCell = isSubCell,
-        isMainCell = isMainCell,
+        cellType = cellType,
         isBlankCell = isBlankCell,
         cellData = cellData,
-        onResult = onResult,
+        onHomeUiAction = onHomeUiAction,
+        bottomSheetDataChange = bottomSheetDataChanged,
         copyCellData = viewModel::copyCellData,
         onBottomSheetUiAction = viewModel::onBottomSheetUiAction,
         initState = viewModel::initState,
@@ -132,14 +131,11 @@ fun BandalartBottomSheet(
 fun BandalartBottomSheetContent(
     uiState: BottomSheetUiState,
     bandalartId: Long,
-    isMainCell: Boolean,
-    isSubCell: Boolean,
+    cellType: CellType,
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
-    onResult: (
-        bottomSheetState: Boolean,
-        bottomSheetDataChangedState: Boolean,
-    ) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
+    bottomSheetDataChange: (Boolean) -> Unit,
     copyCellData: (Long, BandalartCellEntity) -> Unit,
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     initState: () -> Unit,
@@ -160,7 +156,8 @@ fun BandalartBottomSheetContent(
         if (uiState.isCellUpdated) {
             scope.launch {
                 bottomSheetState.hide()
-                onResult(false, true)
+                onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+                bottomSheetDataChange(true)
                 initState()
             }
         }
@@ -168,14 +165,14 @@ fun BandalartBottomSheetContent(
 
     if (uiState.isDeleteCellDialogOpened) {
         BandalartDeleteAlertDialog(
-            title = when {
-                isMainCell -> stringResource(R.string.delete_bandalart_maincell_dialog_title, uiState.cellData.title ?: "")
-                isSubCell -> stringResource(R.string.delete_bandalart_subcell_dialog_title, uiState.cellData.title ?: "")
+            title = when (cellType) {
+                CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_title, uiState.cellData.title ?: "")
+                CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_title, uiState.cellData.title ?: "")
                 else -> stringResource(R.string.delete_bandalart_taskcell_dialog_title, uiState.cellData.title ?: "")
             },
             message = when {
-                isMainCell -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
-                isSubCell -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
+                cellType == CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
+                cellType == CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
                 else -> null
             },
             onDeleteClicked = {
@@ -184,7 +181,8 @@ fun BandalartBottomSheetContent(
                     bottomSheetState.hide()
                 }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
-                        onResult(false, true)
+                        onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+                        bottomSheetDataChange(true)
                     }
                 }
             },
@@ -205,7 +203,8 @@ fun BandalartBottomSheetContent(
 
     ModalBottomSheet(
         onDismissRequest = {
-            onResult(false, false)
+            onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+            bottomSheetDataChange(false)
         },
         modifier = modifier
             .wrapContentSize()
@@ -221,8 +220,7 @@ fun BandalartBottomSheetContent(
         ) {
             Spacer(modifier = Modifier.height(20.dp))
             BottomSheetTopBar(
-                isMainCell = isMainCell,
-                isSubCell = isSubCell,
+                cellType = cellType,
                 isBlankCell = isBlankCell,
                 onAction = onBottomSheetUiAction,
             )
@@ -237,7 +235,7 @@ fun BandalartBottomSheetContent(
                     BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
                     Spacer(modifier = Modifier.height(11.dp))
                     Row(modifier = Modifier.fillMaxWidth()) {
-                        if (isMainCell) {
+                        if (cellType == CellType.MAIN) {
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically)
@@ -324,16 +322,14 @@ fun BandalartBottomSheetContent(
                                     ),
                                 currentEmoji = uiState.bandalartData.profileEmoji,
                                 isBottomSheet = false,
-                                onResult = { currentEmojiResult, _ ->
-                                    if (currentEmojiResult != null) {
-                                        onBottomSheetUiAction(BottomSheetUiAction.OnEmojiSelect(currentEmojiResult))
-                                    }
+                                onEmojiSelect = { selectedEmoji ->
+                                    onBottomSheetUiAction(BottomSheetUiAction.OnEmojiSelect(selectedEmoji))
                                 },
                                 emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                             )
                         }
                     }
-                    if (isMainCell && uiState.isCellDataCopied) {
+                    if (cellType == CellType.MAIN && uiState.isCellDataCopied) {
                         Spacer(modifier = Modifier.height(22.dp))
                         BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
                         BandalartColorPicker(
@@ -420,7 +416,7 @@ fun BandalartBottomSheetContent(
                             )
                         }
                     }
-                    if (!isSubCell && !isMainCell) {
+                    if (cellType == CellType.TASK) {
                         Spacer(modifier = Modifier.height(28.dp))
                         BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
                         Spacer(modifier = Modifier.height(12.dp))
@@ -472,7 +468,7 @@ fun BandalartBottomSheetContent(
                             isEnabled = (uiState.cellData.title?.trim()
                                 ?.isNotEmpty() == true) && (uiState.cellData != uiState.initialCellData || uiState.bandalartData != uiState.initialBandalartData),
                             onClick = {
-                                onBottomSheetUiAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, isMainCell, isSubCell))
+                                onBottomSheetUiAction(BottomSheetUiAction.OnCompleteButtonClick(bandalartId, cellData.id, cellType))
                             },
                             modifier = Modifier.weight(1f),
                         )
@@ -521,11 +517,11 @@ private fun BandalartMainCellBottomSheetPreview() {
                 initialCellData = dummyBandalartCellData,
             ),
             bandalartId = 0L,
-            isMainCell = true,
-            isSubCell = false,
+            cellType = CellType.MAIN,
             isBlankCell = false,
             cellData = dummyBandalartCellData,
-            onResult = { _, _ -> },
+            onHomeUiAction = {},
+            bottomSheetDataChange = {},
             copyCellData = { _, _ -> },
             onBottomSheetUiAction = {},
             initState = {},
@@ -543,12 +539,12 @@ private fun BandalartSubCellBottomSheetPreview() {
                 initialCellData = dummyBandalartCellData,
             ),
             bandalartId = 0L,
-            isMainCell = false,
-            isSubCell = true,
+            cellType = CellType.SUB,
             isBlankCell = false,
             cellData = dummyBandalartCellData,
-            onResult = { _, _ -> },
             copyCellData = { _, _ -> },
+            onHomeUiAction = {},
+            bottomSheetDataChange = {},
             onBottomSheetUiAction = {},
             initState = {},
         )
@@ -565,12 +561,12 @@ private fun BandalartTaskCellBottomSheetPreview() {
                 initialCellData = dummyBandalartCellData,
             ),
             bandalartId = 0L,
-            isMainCell = false,
-            isSubCell = false,
+            cellType = CellType.TASK,
             isBlankCell = true,
             cellData = dummyBandalartCellData,
-            onResult = { _, _ -> },
             copyCellData = { _, _ -> },
+            onHomeUiAction = {},
+            bottomSheetDataChange = {},
             onBottomSheetUiAction = {},
             initState = {},
         )

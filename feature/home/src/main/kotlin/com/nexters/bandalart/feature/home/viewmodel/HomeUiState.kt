@@ -2,6 +2,7 @@ package com.nexters.bandalart.feature.home.viewmodel
 
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.CellType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -21,6 +22,9 @@ import kotlinx.collections.immutable.persistentListOf
  * @param isBottomSheetMainCellChanged 바텀시트의 변경된 데이터가 메인 셀임
  * @param isBandalartCompleted 반다라트 목표를 달성함
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
+ * @param isShared 반다라트가 공유되었는지 유무
+ * @param isCaptured 반다라트가 완료되어서 캡쳐되었는지 유무
+ * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
  */
 
 data class HomeUiState(
@@ -40,4 +44,5 @@ data class HomeUiState(
     val isShared: Boolean = false,
     val isCaptured: Boolean = false,
     val bandalartChartUrl: String? = null,
+    val clickedCellType: CellType = CellType.MAIN,
 )
