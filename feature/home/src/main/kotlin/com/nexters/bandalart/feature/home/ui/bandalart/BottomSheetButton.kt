@@ -1,4 +1,4 @@
-package com.nexters.bandalart.core.ui.component.bottomsheet
+package com.nexters.bandalart.feature.home.ui.bandalart
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

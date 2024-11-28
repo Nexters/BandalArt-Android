@@ -12,9 +12,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,13 +21,12 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.bottomsheet.BottomSheetTitleText
+import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 
 @Composable
 fun BottomSheetTopBar(
-    isMainCell: Boolean,
-    isSubCell: Boolean,
+    cellType: CellType,
     isBlankCell: Boolean,
     onAction: (BottomSheetUiAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -39,7 +36,7 @@ fun BottomSheetTopBar(
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
     ) {
-        BottomSheetTitleText(isMainCell = isMainCell, isSubCell = isSubCell, isBlankCell = isBlankCell)
+        BottomSheetTitleText(cellType = cellType, isBlankCell = isBlankCell)
         IconButton(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -63,8 +60,7 @@ fun BottomSheetTopBar(
 private fun BottomSheetMainCellTopBarPreview() {
     BandalartTheme {
         BottomSheetTopBar(
-            isMainCell = true,
-            isSubCell = false,
+            cellType = CellType.MAIN,
             isBlankCell = false,
             onAction = {},
         )
@@ -76,8 +72,7 @@ private fun BottomSheetMainCellTopBarPreview() {
 private fun BottomSheetSubCellTopBarPreview() {
     BandalartTheme {
         BottomSheetTopBar(
-            isMainCell = false,
-            isSubCell = true,
+            cellType = CellType.SUB,
             isBlankCell = false,
             onAction = {},
         )
@@ -89,8 +84,7 @@ private fun BottomSheetSubCellTopBarPreview() {
 private fun BottomSheetBlankCellTopBarPreview() {
     BandalartTheme {
         BottomSheetTopBar(
-            isMainCell = false,
-            isSubCell = false,
+            cellType = CellType.TASK,
             isBlankCell = true,
             onAction = {},
         )

@@ -1,4 +1,4 @@
-package com.nexters.bandalart.core.ui.component.bottomsheet
+package com.nexters.bandalart.feature.home.ui.bandalart
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
@@ -15,23 +15,30 @@ import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.model.CellType
 
+// TODO 텍스트들을 굳이 Composable 로 뺄 필요가 있나 생각(font 를 정의해서 넣으면 되는데)
 @Composable
 fun BottomSheetTitleText(
-    isMainCell: Boolean,
-    isSubCell: Boolean,
+    cellType: CellType,
     isBlankCell: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val titleResId = when {
+        isBlankCell -> when (cellType) {
+            CellType.MAIN -> R.string.bottomsheet_header_maincell_enter_title
+            CellType.SUB -> R.string.bottomsheet_header_subcell_enter_title
+            CellType.TASK -> R.string.bottomsheet_header_taskcell_enter_title
+        }
+        else -> when (cellType) {
+            CellType.MAIN -> R.string.bottomsheet_header_maincell_edit_title
+            CellType.SUB -> R.string.bottomsheet_header_subcell_edit_title
+            CellType.TASK -> R.string.bottomsheet_header_taskcell_edit_title
+        }
+    }
+
     Text(
-        text =
-        if (isBlankCell)
-            if (isMainCell) stringResource(id = R.string.bottomsheet_header_maincell_enter_title)
-            else if (isSubCell) stringResource(id = R.string.bottomsheet_header_subcell_enter_title)
-            else stringResource(id = R.string.bottomsheet_header_taskcell_enter_title)
-        else if (isMainCell) stringResource(id = R.string.bottomsheet_header_maincell_edit_title)
-        else if (isSubCell) stringResource(id = R.string.bottomsheet_header_subcell_edit_title)
-        else stringResource(id = R.string.bottomsheet_header_taskcell_edit_title),
+        text = stringResource(id = titleResId),
         color = Gray900,
         fontSize = 16.sp,
         fontWeight = FontWeight.W700,
@@ -116,8 +123,7 @@ fun BottomSheetButtonText(
 private fun BottomSheetMainCellTitleTextPreview() {
     BandalartTheme {
         BottomSheetTitleText(
-            isMainCell = true,
-            isSubCell = false,
+            cellType = CellType.MAIN,
             isBlankCell = false,
         )
     }
@@ -128,8 +134,7 @@ private fun BottomSheetMainCellTitleTextPreview() {
 private fun BottomSheetSubCellTitleTextPreview() {
     BandalartTheme {
         BottomSheetTitleText(
-            isMainCell = false,
-            isSubCell = true,
+            cellType = CellType.SUB,
             isBlankCell = false,
         )
     }
@@ -140,8 +145,7 @@ private fun BottomSheetSubCellTitleTextPreview() {
 private fun BottomSheetBlankCellTitleTextPreview() {
     BandalartTheme {
         BottomSheetTitleText(
-            isMainCell = false,
-            isSubCell = false,
+            cellType = CellType.TASK,
             isBlankCell = true,
         )
     }
@@ -151,7 +155,7 @@ private fun BottomSheetBlankCellTitleTextPreview() {
 @Composable
 private fun BottomSheetSubTitleTextPreview() {
     BandalartTheme {
-        BottomSheetSubTitleText(text = "목표 이름 (필수)")
+        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
     }
 }
 
@@ -159,7 +163,7 @@ private fun BottomSheetSubTitleTextPreview() {
 @Composable
 private fun BottomSheetContentPlaceholderPreview() {
     BandalartTheme {
-        BottomSheetContentPlaceholder(text = "15자 이내로 입력해주세요")
+        BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_title_placeholder))
     }
 }
 
@@ -167,7 +171,7 @@ private fun BottomSheetContentPlaceholderPreview() {
 @Composable
 private fun BottomSheetContentTextPreview() {
     BandalartTheme {
-        BottomSheetContentText(text = "달성")
+        BottomSheetContentText(text = stringResource(R.string.bottomsheet_completed))
     }
 }
 
@@ -176,7 +180,7 @@ private fun BottomSheetContentTextPreview() {
 private fun BottomSheetButtonTextPreview() {
     BandalartTheme {
         BottomSheetButtonText(
-            text = "완료",
+            text = stringResource(R.string.bottomsheet_done),
             color = Gray400,
         )
     }
