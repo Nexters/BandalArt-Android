@@ -124,7 +124,8 @@ fun HomeHeader(
                 BandalartDropDownMenu(
                     toggleDropDownMenu = { flag -> onAction(HomeUiAction.ToggleDropDownMenu(flag)) },
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onDeleteClicked = { onAction(HomeUiAction.OnDeleteClick) },
+                    onSaveClick = { onAction(HomeUiAction.OnSaveClick) },
+                    onDeleteClick = { onAction(HomeUiAction.OnDeleteClick) },
                 )
             }
         }

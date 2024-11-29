@@ -1,20 +1,22 @@
 package com.nexters.bandalart.core.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Error
+import com.nexters.bandalart.core.designsystem.theme.Gray800
 import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
@@ -34,7 +37,8 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 fun BandalartDropDownMenu(
     isDropDownMenuOpened: Boolean,
     toggleDropDownMenu: (Boolean) -> Unit,
-    onDeleteClicked: () -> Unit,
+    onSaveClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DropdownMenu(
@@ -49,51 +53,50 @@ fun BandalartDropDownMenu(
         ),
         shape = RoundedCornerShape(12.dp),
     ) {
-//            // TODO MVP 에서 제외, 이번에 구현해도 좋을듯
-//            DropdownMenuItem(
-//                modifier = Modifier
-//                    .wrapContentSize()
-//                    .padding(horizontal = 7.dp),
-//                text = {
-//                    Row {
-//                        Image(
-//                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_image),
-//                            contentDescription = "Image Icon",
-//                            modifier = Modifier
-//                                .height(14.dp)
-//                                .align(CenterVertically),
-//                        )
-//                        Text(
-//                            text = "이미지 내보내기",
-//                            color = Gray800,
-//                            fontSize = 14.sp,
-//                            fontWeight = FontWeight.W500,
-//                            modifier = Modifier
-//                                .fillMaxHeight()
-//                                .padding(start = 13.dp)
-//                                .align(CenterVertically),
-//                            fontFamily = pretendard,
-//                        )
-//                    }
-//                },
-//                onClick = { openDropDownMenu(false) },
-//            )
-//            Spacer(modifier = Modifier.height(2.dp))
+        // TODO MVP 에서 제외, 이번에 구현해도 좋을듯
         DropdownMenuItem(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(horizontal = 7.dp),
             text = {
                 Row {
-                    Image(
-                        imageVector = ImageVector.vectorResource(
-                            id = DesignR.drawable.ic_delete,
-                        ),
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_gallery),
+                        contentDescription = "Gallery Icon",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(CenterVertically),
+                        tint = Color.Unspecified,
+                    )
+                    Text(
+                        text = stringResource(R.string.dropdown_save),
+                        color = Gray800,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W500,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(start = 13.dp)
+                            .align(CenterVertically),
+                        fontFamily = pretendard,
+                    )
+                }
+            },
+            onClick = onSaveClick,
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        DropdownMenuItem(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(horizontal = 7.dp),
+            text = {
+                Row {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(DesignR.drawable.ic_trash),
                         contentDescription = stringResource(R.string.delete_description),
                         modifier = Modifier
-                            .height(14.dp)
+                            .size(24.dp)
                             .align(CenterVertically),
-                        colorFilter = ColorFilter.tint(Error),
+                        tint = Color.Unspecified,
                     )
                     Text(
                         text = stringResource(R.string.dropdown_delete),
@@ -108,7 +111,7 @@ fun BandalartDropDownMenu(
                     )
                 }
             },
-            onClick = onDeleteClicked,
+            onClick = onDeleteClick,
         )
     }
 }
@@ -120,7 +123,8 @@ private fun BandalartDropDownMenuPreview() {
         BandalartDropDownMenu(
             toggleDropDownMenu = {},
             isDropDownMenuOpened = true,
-            onDeleteClicked = {},
+            onSaveClick = {},
+            onDeleteClick = {},
         )
     }
 }

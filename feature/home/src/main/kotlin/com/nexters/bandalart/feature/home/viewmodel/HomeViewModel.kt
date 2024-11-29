@@ -71,6 +71,7 @@ class HomeViewModel @Inject constructor(
         when (action) {
             is HomeUiAction.OnCreateClick -> createBandalart()
             is HomeUiAction.OnListClick -> toggleBandalartListBottomSheet(true)
+            is HomeUiAction.OnSaveClick -> saveBandalartImage()
             is HomeUiAction.OnDeleteClick -> {
                 toggleBandalartDeleteAlertDialog(true)
                 toggleDropDownMenu(false)
@@ -265,6 +266,13 @@ class HomeViewModel @Inject constructor(
                 upsertBandalartId(bandalart.id)
                 _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
             }
+        }
+    }
+
+    private fun saveBandalartImage() {
+        viewModelScope.launch {
+            _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.save_bandalart)))
+            toggleDropDownMenu(false)
         }
     }
 
