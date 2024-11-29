@@ -53,7 +53,7 @@ class HomeViewModel @Inject constructor(
                     val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
                     if (isBandalartCompleted) {
                         delay(500L)
-                        updateCaptureState()
+                        updateCaptureState(true)
                         delay(500L)
                         navigateToComplete(
                             bandalart.id,
@@ -71,7 +71,7 @@ class HomeViewModel @Inject constructor(
         when (action) {
             is HomeUiAction.OnCreateClick -> createBandalart()
             is HomeUiAction.OnListClick -> toggleBandalartListBottomSheet(true)
-            is HomeUiAction.OnSaveClick -> saveBandalartImage()
+            is HomeUiAction.OnSaveClick -> updateCaptureState(true)
             is HomeUiAction.OnDeleteClick -> {
                 toggleBandalartDeleteAlertDialog(true)
                 toggleDropDownMenu(false)
@@ -269,9 +269,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun saveBandalartImage() {
+    fun saveBandalartImage(bitmap: ImageBitmap) {
         viewModelScope.launch {
-            _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.save_bandalart)))
+            _uiEvent.send(HomeUiEvent.SaveBandalart(bitmap))
             toggleDropDownMenu(false)
         }
     }
@@ -313,8 +313,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateCaptureState() {
-        _uiState.update { it.copy(isCaptured = true) }
+    private fun updateCaptureState(flag: Boolean) {
+        _uiState.update { it.copy(isCaptured = flag) }
     }
 
     fun captureBandalart(bitmap: ImageBitmap) {

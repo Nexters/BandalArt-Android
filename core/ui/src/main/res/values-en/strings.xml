@@ -112,7 +112,7 @@
     <string name="data_validation">Request succeeded but data validation failed</string>
     <string name="create_bandalart">Created a new bandalart.</string>
     <string name="limit_create_bandalart">You can create up to 5 bandalarts.</string>
-    <string name="save_bandalart">Bandalart has been saved to the gallery.</string>
+    <string name="save_bandalart_image">Bandalart has been saved to the gallery.</string>
     <string name="delete_bandalart">New Bandalart created.</string>
 
     <!-- image descrption -->

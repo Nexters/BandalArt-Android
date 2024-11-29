@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
+import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
@@ -104,6 +105,11 @@ internal fun HomeRoute(
                 Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
             }
 
+            is HomeUiEvent.SaveBandalart -> {
+                context.saveImageToGallery(event.bitmap)
+                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+            }
+
             is HomeUiEvent.ShareBandalart -> {
                 context.externalShareForBitmap(event.bitmap)
             }
@@ -122,6 +128,7 @@ internal fun HomeRoute(
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         shareBandalart = homeViewModel::shareBandalart,
         captureBandalart = homeViewModel::captureBandalart,
+        saveBandalart = homeViewModel::saveBandalartImage,
         modifier = modifier,
     )
 }
@@ -135,6 +142,7 @@ internal fun HomeScreen(
     bottomSheetDataChanged: (Boolean) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
     captureBandalart: (ImageBitmap) -> Unit,
+    saveBandalart: (ImageBitmap) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -159,7 +167,11 @@ internal fun HomeScreen(
 
     LaunchedEffect(key1 = uiState.isCaptured) {
         if (uiState.isCaptured) {
-            captureBandalart(completeGraphicsLayer.toImageBitmap())
+            if (uiState.isBandalartCompleted) {
+                captureBandalart(completeGraphicsLayer.toImageBitmap())
+            } else {
+                saveBandalart(completeGraphicsLayer.toImageBitmap())
+            }
         }
     }
 
@@ -315,6 +327,7 @@ private fun HomeScreenSingleBandalartPreview() {
             bottomSheetDataChanged = {},
             shareBandalart = {},
             captureBandalart = {},
+            saveBandalart = {},
         )
     }
 }
@@ -335,6 +348,7 @@ private fun HomeScreenMultipleBandalartPreview() {
             bottomSheetDataChanged = {},
             shareBandalart = {},
             captureBandalart = {},
+            saveBandalart = {},
         )
     }
 }
