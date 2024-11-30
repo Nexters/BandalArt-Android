@@ -1,6 +1,7 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
+import com.nexters.bandalart.feature.home.model.CellType
 
 sealed interface HomeUiAction {
     data class OnCreateClick(val bandalartId: Long? = null) : HomeUiAction
@@ -24,7 +25,7 @@ sealed interface HomeUiAction {
     data class ToggleBandalartListBottomSheet(val flag: Boolean) : HomeUiAction
     data object BottomSheetDataChanged : HomeUiAction
     data class OnBandalartListItemClick(val key: Long) : HomeUiAction
-    data class OnBandalartCellClick(val isMainCell: Boolean, val isSubCell: Boolean, val isMainCellTitleEmpty: Boolean) : HomeUiAction
+    data class OnBandalartCellClick(val cellType: CellType, val isMainCellTitleEmpty: Boolean) : HomeUiAction
 }
 
 enum class ModalType {

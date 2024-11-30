@@ -113,7 +113,7 @@ class HomeViewModel @Inject constructor(
                 getBandalart(action.key)
             }
 
-            is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.isMainCell, action.isSubCell, action.isMainCellTitleEmpty)
+            is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.cellType, action.isMainCellTitleEmpty)
         }
     }
 
@@ -338,21 +338,20 @@ class HomeViewModel @Inject constructor(
 
     private fun toggleCellBottomSheet(
         flag: Boolean,
-        isMainCell: Boolean? = false,
-        isSubCell: Boolean? = false,
+        cellType: CellType? = CellType.TASK,
     ) {
         if (!flag) {
             _uiState.update { it.copy(isCellBottomSheetOpened = false) }
         } else {
-            when {
-                isMainCell == true -> _uiState.update {
+            when(cellType) {
+                CellType.MAIN -> _uiState.update {
                     it.copy(
                         isCellBottomSheetOpened = true,
                         clickedCellType = CellType.MAIN,
                     )
                 }
 
-                isSubCell == true -> _uiState.update {
+                CellType.SUB -> _uiState.update {
                     it.copy(
                         isCellBottomSheetOpened = true,
                         clickedCellType = CellType.SUB,
@@ -413,17 +412,17 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(bandalartChartUrl = url) }
     }
 
-    private fun handleBandalartCellClick(isMainCell: Boolean, isSubCell: Boolean, isMainCellTitleEmpty: Boolean) {
+    private fun handleBandalartCellClick(cellType: CellType, isMainCellTitleEmpty: Boolean) {
         when {
             // 메인셀이 비어있고, 서브나 태스크셀 클릭 시
-            !isMainCell && isMainCellTitleEmpty -> {
+            cellType != CellType.MAIN && isMainCellTitleEmpty -> {
                 viewModelScope.launch {
                     _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.please_input_main_goal)))
                 }
             }
 
             // 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
-//            !isMainCell && !isSubCell && isMainCellTitleEmpty -> {
+//            cellType == CellType.Task && isSubCellTitleEmpty -> {
 //                viewModelScope.launch {
 //                    _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.please_input_sub_goal)))
 //                }
@@ -431,7 +430,7 @@ class HomeViewModel @Inject constructor(
 
             // 그 외의 경우 바텀시트 열기
             else -> {
-                toggleCellBottomSheet(true, isMainCell, isSubCell)
+                toggleCellBottomSheet(true, cellType)
             }
         }
     }

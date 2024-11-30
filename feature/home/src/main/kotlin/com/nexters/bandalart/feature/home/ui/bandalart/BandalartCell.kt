@@ -36,6 +36,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.CellText
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -81,7 +82,11 @@ fun BandalartCell(
             .clip(RoundedCornerShape(10.dp))
             .background(getCellBackgroundColor(bandalartData, isMainCell, cellData, cellInfo))
             .clickable {
-                onHomeUiAction(HomeUiAction.OnBandalartCellClick(isMainCell, cellInfo.isSubCell, bandalartData.title.isNullOrEmpty()))
+                when {
+                    isMainCell -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty()))
+                    cellInfo.isSubCell -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.SUB, bandalartData.title.isNullOrEmpty()))
+                    else -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.TASK, bandalartData.title.isNullOrEmpty()))
+                }
             },
         contentAlignment = Alignment.Center,
     ) {
