@@ -65,7 +65,7 @@ private const val SnackbarDuration = 1000L
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 // TODO 전체 구조를 Flow 형태로 전환하여, 직접 변화 했다는 flag 를 변경하고, 이 flag 를 기반으로 업데이트를 실행하지 않아도 되도록 구현
-// TODO onResult 함수 제거 후 최초 1회만 바텀시트가 열리고 그 이후에 열리지 않는 문제를 해결해야함
+// TODO onResult 함수 제거 후 최초 1회만 바텀시트가 열리고 그 이후에 열리지 않는 문제를 해결해야함(앱 자체가 먹통이 되는 문제 발생)
 // TODO 일본어 지원
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
 @Composable
@@ -220,11 +220,8 @@ internal fun HomeScreen(
     if (uiState.isBandalartDeleteAlertDialogOpened) {
         uiState.bandalartData?.let { bandalart ->
             BandalartDeleteAlertDialog(
-                title = if (bandalart.title.isNullOrEmpty()) {
-                    stringResource(R.string.delete_bandalart_dialog_empty_title)
-                } else {
-                    stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
-                },
+                title = if (bandalart.title.isNullOrEmpty()) stringResource(R.string.delete_bandalart_dialog_empty_title)
+                else stringResource(R.string.delete_bandalart_dialog_title, bandalart.title),
                 message = stringResource(R.string.delete_bandalart_dialog_message),
                 onDeleteClicked = { onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG)) },
                 onCancelClicked = { onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG)) },
