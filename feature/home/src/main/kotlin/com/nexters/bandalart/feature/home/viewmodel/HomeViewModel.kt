@@ -85,6 +85,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeUiAction.OnConfirmClick -> {
                 when (action.modalType) {
+                    // TODO 구현 필요 및 메세지 안내 필요(삭제되었습니다)
                     ModalType.CELL -> {}
                     ModalType.DELETE_DIALOG -> _uiState.value.bandalartData?.let { deleteBandalart(it.id) }
                     else -> {}
@@ -152,7 +153,7 @@ class HomeViewModel @Inject constructor(
                 return@launch
             }
 
-            // 서버의 데이터와 로컬의 데이터를 동기화
+            // 데이터를 동기화
             bandalartList.forEach { bandalart ->
                 bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
             }
@@ -162,6 +163,7 @@ class HomeViewModel @Inject constructor(
                 getBandalart(bandalartId)
                 return@launch
             }
+
             // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
             if (bandalartList.isEmpty()) {
                 createBandalart()

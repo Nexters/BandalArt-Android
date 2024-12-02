@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
@@ -41,7 +42,7 @@ fun BandalartCellGrid(
                     BandalartCell(
                         modifier = Modifier.weight(1f),
                         bandalartData = bandalartData,
-                        isMainCell = false,
+                        cellType = if (isSubCell) CellType.SUB else CellType.TASK,
                         cellInfo = CellInfo(
                             isSubCell = isSubCell,
                             colIndex = colIndex,

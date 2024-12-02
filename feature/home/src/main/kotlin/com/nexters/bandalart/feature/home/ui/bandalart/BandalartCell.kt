@@ -61,7 +61,7 @@ data class SubCell(
 @Composable
 fun BandalartCell(
     bandalartData: BandalartUiModel,
-    isMainCell: Boolean,
+    cellType: CellType,
     cellData: BandalartCellEntity,
     onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -73,26 +73,25 @@ fun BandalartCell(
     Box(
         modifier = modifier
             .padding(
-                start = if (isMainCell) mainCellPadding else if (cellInfo.colIndex == 0) outerPadding else innerPadding,
-                end = if (isMainCell) mainCellPadding else if (cellInfo.colIndex == cellInfo.colCnt - 1) outerPadding else innerPadding,
-                top = if (isMainCell) mainCellPadding else if (cellInfo.rowIndex == 0) outerPadding else innerPadding,
-                bottom = if (isMainCell) mainCellPadding else if (cellInfo.rowIndex == cellInfo.rowCnt - 1) outerPadding else innerPadding,
+                start = if (cellType == CellType.MAIN) mainCellPadding else if (cellInfo.colIndex == 0) outerPadding else innerPadding,
+                end = if (cellType == CellType.MAIN) mainCellPadding else if (cellInfo.colIndex == cellInfo.colCnt - 1) outerPadding else innerPadding,
+                top = if (cellType == CellType.MAIN) mainCellPadding else if (cellInfo.rowIndex == 0) outerPadding else innerPadding,
+                bottom = if (cellType == CellType.MAIN) mainCellPadding else if (cellInfo.rowIndex == cellInfo.rowCnt - 1) outerPadding else innerPadding,
             )
             .aspectRatio(1f)
             .clip(RoundedCornerShape(10.dp))
-            .background(getCellBackgroundColor(bandalartData, isMainCell, cellData, cellInfo))
+            .background(getCellBackgroundColor(bandalartData, cellType, cellData))
             .clickable {
-                when {
-                    isMainCell -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty()))
-                    cellInfo.isSubCell -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.SUB, bandalartData.title.isNullOrEmpty()))
+                when(cellType) {
+                    CellType.MAIN -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty()))
+                    CellType.SUB -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.SUB, bandalartData.title.isNullOrEmpty()))
                     else -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.TASK, bandalartData.title.isNullOrEmpty()))
                 }
             },
         contentAlignment = Alignment.Center,
     ) {
         CellContent(
-            isMainCell = isMainCell,
-            isSubCell = cellInfo.isSubCell,
+            cellType = cellType,
             cellData = cellData,
             bandalartData = bandalartData,
         )
@@ -101,14 +100,13 @@ fun BandalartCell(
 
 @Composable
 private fun CellContent(
-    isMainCell: Boolean,
-    isSubCell: Boolean,
+    cellType: CellType,
     cellData: BandalartCellEntity,
     bandalartData: BandalartUiModel,
 ) {
-    when {
-        isMainCell -> MainCellContent(cellData, bandalartData)
-        isSubCell -> SubCellContent(cellData, bandalartData)
+    when(cellType) {
+        CellType.MAIN -> MainCellContent(cellData, bandalartData)
+        CellType.SUB -> SubCellContent(cellData, bandalartData)
         else -> TaskCellContent(cellData)
     }
 }
@@ -252,18 +250,17 @@ private fun FilledCellContent(
 
 private fun getCellBackgroundColor(
     bandalartData: BandalartUiModel,
-    isMainCell: Boolean,
+    cellType: CellType,
     cellData: BandalartCellEntity,
-    cellInfo: CellInfo,
 ): Color = when {
     // 메인 목표 달성
-    isMainCell && cellData.isCompleted -> bandalartData.mainColor.toColor().copy(alpha = 0.6f)
+    cellType == CellType.MAIN && cellData.isCompleted -> bandalartData.mainColor.toColor().copy(alpha = 0.6f)
     // 메인 목표 미달성
-    isMainCell -> bandalartData.mainColor.toColor()
+    cellType == CellType.MAIN -> bandalartData.mainColor.toColor()
     // 서브 목표 달성
-    cellInfo.isSubCell && cellData.isCompleted -> bandalartData.subColor.toColor().copy(alpha = 0.6f)
+    cellType == CellType.SUB && cellData.isCompleted -> bandalartData.subColor.toColor().copy(alpha = 0.6f)
     // 서브 목표 미달성
-    cellInfo.isSubCell -> bandalartData.subColor.toColor()
+    cellType == CellType.SUB -> bandalartData.subColor.toColor()
     // 태스크 목표 달성
     cellData.isCompleted -> Gray400
     else -> White
@@ -279,7 +276,7 @@ private fun BandalartCellPreview() {
                 mainColor = "#FF3FFFBA",
                 subColor = "#FF111827",
             ),
-            isMainCell = true,
+            cellType = CellType.MAIN,
             cellData = BandalartCellEntity(
                 title = "메인 목표",
                 isCompleted = false,

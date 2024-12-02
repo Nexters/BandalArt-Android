@@ -68,6 +68,7 @@ private const val SnackbarDuration = 1000L
 // TODO onResult 함수 제거 후 최초 1회만 바텀시트가 열리고 그 이후에 열리지 않는 문제를 해결해야함(앱 자체가 먹통이 되는 문제 발생)
 // TODO 일본어 지원
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
+// TODO 현재 모든 셀이 메인 목표의 데이터로 채워지는 문제가 있는 듯
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,

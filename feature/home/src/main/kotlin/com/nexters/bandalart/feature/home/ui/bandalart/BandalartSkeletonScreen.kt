@@ -61,6 +61,7 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
+import com.nexters.bandalart.feature.home.model.CellType
 import kotlinx.collections.immutable.persistentListOf
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -280,7 +281,7 @@ fun BandalartSkeletonChart(
                     .background(brush = taskBrush),
             ) {
                 SkeletonCell(
-                    isMainCell = true,
+                    cellType = CellType.MAIN,
                     taskBrush = taskBrush,
                     subBrush = subBrush,
                     mainBrush = mainBrush,
@@ -344,7 +345,7 @@ fun SkeletonCellGrid(
                 repeat(cols) { colIndex ->
                     val isSubCell = rowIndex == subCell.subCellRowIndex && colIndex == subCell.subCellColIndex
                     SkeletonCell(
-                        isMainCell = false,
+                        cellType = if (isSubCell) CellType.SUB else CellType.TASK,
                         skeletonCellInfo = SkeletonCellInfo(
                             isSubCell = isSubCell,
                             colIndex = colIndex,
@@ -373,7 +374,7 @@ data class SkeletonCellInfo(
 
 @Composable
 fun SkeletonCell(
-    isMainCell: Boolean,
+    cellType: CellType,
     taskBrush: Brush,
     subBrush: Brush,
     mainBrush: Brush,
@@ -386,14 +387,14 @@ fun SkeletonCell(
     Box(
         modifier = modifier
             .padding(
-                start = if (isMainCell) mainCellPadding else if (skeletonCellInfo.colIndex == 0) outerPadding else innerPadding,
-                end = if (isMainCell) mainCellPadding else if (skeletonCellInfo.colIndex == skeletonCellInfo.colCnt - 1) outerPadding else innerPadding,
-                top = if (isMainCell) mainCellPadding else if (skeletonCellInfo.rowIndex == 0) outerPadding else innerPadding,
-                bottom = if (isMainCell) mainCellPadding else if (skeletonCellInfo.rowIndex == skeletonCellInfo.rowCnt - 1) outerPadding else innerPadding,
+                start = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.colIndex == 0) outerPadding else innerPadding,
+                end = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.colIndex == skeletonCellInfo.colCnt - 1) outerPadding else innerPadding,
+                top = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.rowIndex == 0) outerPadding else innerPadding,
+                bottom = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.rowIndex == skeletonCellInfo.rowCnt - 1) outerPadding else innerPadding,
             )
             .aspectRatio(1f)
             .clip(RoundedCornerShape(10.dp))
-            .background(if (isMainCell) mainBrush else if (skeletonCellInfo.isSubCell) subBrush else taskBrush),
+            .background(if (cellType == CellType.MAIN) mainBrush else if (skeletonCellInfo.isSubCell) subBrush else taskBrush),
         contentAlignment = Alignment.Center,
     ) { }
 }

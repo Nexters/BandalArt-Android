@@ -22,6 +22,7 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
@@ -74,7 +75,7 @@ fun BandalartChart(
                     .background(color = bandalartData.mainColor.toColor()),
             ) {
                 BandalartCell(
-                    isMainCell = true,
+                    cellType = CellType.MAIN,
                     bandalartData = bandalartData,
                     cellData = bandalartCellData,
                     onHomeUiAction = onHomeUiAction,
