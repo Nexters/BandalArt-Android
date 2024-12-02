@@ -1,6 +1,7 @@
 package com.nexters.bandalart.feature.complete
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -167,16 +168,26 @@ internal fun CompleteScreen(
                             // bandalartChartImageUri = uiState.bandalartChartImageUri,
                             modifier = Modifier.align(Alignment.Center),
                         )
-                        // TODO MVP 제외, 이번에 추가해도 좋을듯
-                        // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
-                        BandalartButton(
-                            onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                            text = stringResource(R.string.complete_share),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = 32.dp),
-                        )
+                        Column(
+                            modifier = Modifier.align(Alignment.BottomCenter),
+                        ) {
+                            BandalartButton(
+                                onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
+                                text = stringResource(R.string.complete_save),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp, vertical = 8.dp)
+                                    .background(Gray900)
+                            )
+                            BandalartButton(
+                                onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
+                                text = stringResource(R.string.complete_share),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp, bottom = 32.dp, start = 24.dp, end = 24.dp)
+                                    .background(Gray900)
+                            )
+                        }
                     }
                 }
             }

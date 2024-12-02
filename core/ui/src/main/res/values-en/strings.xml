@@ -11,9 +11,9 @@
 
     <!-- CompleteScreen.kt -->
     <string name="complete_title">You\'ve achieved all the goals in Bandalart. Truly amazing!</string>
-    <string name="complete_share">Share</string>
     <string name="complete_chart">Completed Bandalart</string>
-    <string name="save_image">Save Image</string>
+    <string name="complete_save">Save</string>
+    <string name="complete_share">Share</string>
 
     <!--  HomeScreen.kt -->
     <string name="home_default_emoji">default emoji</string>

@@ -11,9 +11,9 @@
 
     <!-- CompleteScreen.kt -->
     <string name="complete_title">반다라트의 모든 목표를 달성했어요.\n정말 대단해요!</string>
-    <string name="complete_share">공유하기</string>
     <string name="complete_chart">달성 완료 반다라트</string>
-    <string name="save_image">이미지 저장하기</string>
+    <string name="complete_save">저장하기</string>
+    <string name="complete_share">공유하기</string>
 
     <!--  HomeScreen.kt -->
     <string name="home_default_emoji">default emoji</string>
