@@ -116,6 +116,7 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.cellType, action.isMainCellTitleEmpty)
+            is HomeUiAction.OnCloseButtonClick -> toggleCellBottomSheet(false)
         }
     }
 

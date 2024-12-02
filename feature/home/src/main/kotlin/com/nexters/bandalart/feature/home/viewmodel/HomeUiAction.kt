@@ -26,6 +26,7 @@ sealed interface HomeUiAction {
     data object BottomSheetDataChanged : HomeUiAction
     data class OnBandalartListItemClick(val key: Long) : HomeUiAction
     data class OnBandalartCellClick(val cellType: CellType, val isMainCellTitleEmpty: Boolean) : HomeUiAction
+    data object OnCloseButtonClick: HomeUiAction
 }
 
 enum class ModalType {

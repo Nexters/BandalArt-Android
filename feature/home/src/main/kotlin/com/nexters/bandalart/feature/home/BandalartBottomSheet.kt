@@ -99,7 +99,6 @@ import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 // TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
-// TODO 바텀시트의 활성화 여부를 양쪽에서 관리하고 있는데, 하나로 (홈) 통일
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
@@ -192,15 +191,6 @@ fun BandalartBottomSheetContent(
         )
     }
 
-    LaunchedEffect(key1 = uiState.isBottomSheetOpened) {
-        if (!uiState.isBottomSheetOpened) {
-            scope.launch {
-                bottomSheetState.hide()
-                initState()
-            }
-        }
-    }
-
     ModalBottomSheet(
         onDismissRequest = {
             onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
@@ -222,7 +212,7 @@ fun BandalartBottomSheetContent(
             BottomSheetTopBar(
                 cellType = cellType,
                 isBlankCell = isBlankCell,
-                onAction = onBottomSheetUiAction,
+                onAction = onHomeUiAction,
             )
             Box {
                 Column(

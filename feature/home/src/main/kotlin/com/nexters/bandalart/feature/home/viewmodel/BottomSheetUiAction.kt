@@ -4,7 +4,6 @@ import com.nexters.bandalart.feature.home.model.CellType
 import java.util.Locale
 
 sealed interface BottomSheetUiAction {
-    data object OnClearButtonClick : BottomSheetUiAction
     data class OnCompleteButtonClick(
         val bandalartId: Long,
         val cellId: Long,

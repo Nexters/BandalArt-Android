@@ -19,7 +19,6 @@ import com.nexters.bandalart.feature.home.model.BandalartUiModel
  */
 
 data class BottomSheetUiState(
-    val isBottomSheetOpened: Boolean = true,
     val initialBandalartData: BandalartUiModel = BandalartUiModel(),
     val bandalartData: BandalartUiModel = BandalartUiModel(),
     val cellData: BandalartCellEntity = BandalartCellEntity(),

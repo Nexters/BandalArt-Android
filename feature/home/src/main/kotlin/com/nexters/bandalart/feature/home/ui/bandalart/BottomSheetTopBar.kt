@@ -23,12 +23,13 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 
 @Composable
 fun BottomSheetTopBar(
     cellType: CellType,
     isBlankCell: Boolean,
-    onAction: (BottomSheetUiAction) -> Unit,
+    onAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -43,7 +44,7 @@ fun BottomSheetTopBar(
                 .height(21.dp)
                 .aspectRatio(1f),
             onClick = {
-                onAction(BottomSheetUiAction.OnClearButtonClick)
+                onAction(HomeUiAction.OnCloseButtonClick)
             },
         ) {
             Icon(
