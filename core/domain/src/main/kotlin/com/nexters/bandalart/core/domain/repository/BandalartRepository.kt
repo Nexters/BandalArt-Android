@@ -6,6 +6,7 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
+import kotlinx.coroutines.flow.Flow
 
 /** 반다라트 API */
 interface BandalartRepository {
@@ -17,7 +18,7 @@ interface BandalartRepository {
     /**
      * 반다라트 목록 조회
      */
-    suspend fun getBandalartList(): List<BandalartEntity>
+    fun getBandalartList(): Flow<List<BandalartEntity>>
 
     /**
      * 반다라트 조회

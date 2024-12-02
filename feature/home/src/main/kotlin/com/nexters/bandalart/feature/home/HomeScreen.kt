@@ -68,7 +68,8 @@ private const val SnackbarDuration = 1000L
 // TODO onResult 함수 제거 후 최초 1회만 바텀시트가 열리고 그 이후에 열리지 않는 문제를 해결해야함(앱 자체가 먹통이 되는 문제 발생)
 // TODO 일본어 지원
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
-// TODO 현재 모든 셀이 메인 목표의 데이터로 채워지는 문제가 있는 듯
+// TODO 현재 모든 셀이 메인 목표의 데이터로 채워지는 문제가 있는 듯(바텀시트를 열면 테스트인데도 불구하고 메인목표의 title 이 매핑되어있음, 수정해도 메인 목표가 바뀜)
+// TODO 셀 바텀시트를 x 를 눌러 닫으면, 모든 터치가 먹통되는 문제 발생
 @Composable
 internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,
@@ -127,7 +128,6 @@ internal fun HomeRoute(
         uiState = uiState,
         bandalartCount = bandalartCount,
         onHomeUiAction = homeViewModel::onAction,
-        getBandalartList = homeViewModel::getBandalartList,
         bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         shareBandalart = homeViewModel::shareBandalart,
         captureBandalart = homeViewModel::captureBandalart,
@@ -141,7 +141,6 @@ internal fun HomeScreen(
     uiState: HomeUiState,
     bandalartCount: Int,
     onHomeUiAction: (HomeUiAction) -> Unit,
-    getBandalartList: (Long?) -> Unit,
     bottomSheetDataChanged: (Boolean) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
     captureBandalart: (ImageBitmap) -> Unit,
@@ -152,15 +151,15 @@ internal fun HomeScreen(
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
 
-    LaunchedEffect(key1 = Unit) {
-        getBandalartList(null)
-    }
-
-    LaunchedEffect(key1 = uiState.isBottomSheetDataChanged) {
-        if (uiState.isBottomSheetDataChanged) {
-            getBandalartList(null)
-        }
-    }
+//    LaunchedEffect(key1 = Unit) {
+//        getBandalartList(null)
+//    }
+//
+//    LaunchedEffect(key1 = uiState.isBottomSheetDataChanged) {
+//        if (uiState.isBottomSheetDataChanged) {
+//            getBandalartList(null)
+//        }
+//    }
 
     LaunchedEffect(key1 = uiState.isShared) {
         if (uiState.isShared) {
@@ -323,7 +322,6 @@ private fun HomeScreenSingleBandalartPreview() {
             ),
             bandalartCount = listOf(dummyBandalartList[0]).size,
             onHomeUiAction = {},
-            getBandalartList = {},
             bottomSheetDataChanged = {},
             shareBandalart = {},
             captureBandalart = {},
@@ -344,7 +342,6 @@ private fun HomeScreenMultipleBandalartPreview() {
             ),
             bandalartCount = dummyBandalartList.size,
             onHomeUiAction = {},
-            getBandalartList = {},
             bottomSheetDataChanged = {},
             shareBandalart = {},
             captureBandalart = {},

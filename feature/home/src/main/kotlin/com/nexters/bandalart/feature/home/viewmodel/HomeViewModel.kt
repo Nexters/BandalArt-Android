@@ -43,6 +43,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         updateSkeletonState(true)
+        getBandalartList()
         observeBandalartCompletion()
     }
 
@@ -131,57 +132,60 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getBandalartList(bandalartId: Long? = null) {
+    fun getBandalartList() {
         viewModelScope.launch {
-            val bandalartList = bandalartRepository.getBandalartList().map { it.toUiModel() }
-            _uiState.update {
-                it.copy(bandalartList = bandalartList.toImmutableList())
-            }
+            bandalartRepository.getBandalartList()
+                .map { list -> list.map { it.toUiModel() } }
+                .collect { bandalartList ->
+                    _uiState.update {
+                        it.copy(bandalartList = bandalartList.toImmutableList())
+                    }
 
-            // 이전 반다라트 목록 상태 조회
-            val prevBandalartList = bandalartRepository.getPrevBandalartList()
+                    // 이전 반다라트 목록 상태 조회
+                    val prevBandalartList = bandalartRepository.getPrevBandalartList()
 
-            // 새로 업데이트 된 상태와 이전 상태를 비교
-            val completedKeys = bandalartList.filter { bandalart ->
-                val prevBandalart = prevBandalartList.find { it.first == bandalart.id }
-                prevBandalart != null && !prevBandalart.second && bandalart.isCompleted
-            }.map { it.id }
+                    // 새로 업데이트 된 상태와 이전 상태를 비교
+                    val completedKeys = bandalartList.filter { bandalart ->
+                        val prevBandalart = prevBandalartList.find { it.first == bandalart.id }
+                        prevBandalart != null && !prevBandalart.second && bandalart.isCompleted
+                    }.map { it.id }
 
-            // 이번에 목표를 달성한 반다라트가 존재하는 경우
-            if (completedKeys.isNotEmpty()) {
-                getBandalart(completedKeys[0], isBandalartCompleted = true)
-                return@launch
-            }
+                    // 이번에 목표를 달성한 반다라트가 존재하는 경우
+                    if (completedKeys.isNotEmpty()) {
+                        getBandalart(completedKeys[0], isBandalartCompleted = true)
+                        return@collect
+                    }
 
-            // 데이터를 동기화
-            bandalartList.forEach { bandalart ->
-                bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
-            }
+                    // 데이터를 동기화
+                    bandalartList.forEach { bandalart ->
+                        bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
+                    }
 
-            // 생성한 반다라트 표를 화면에 띄우는 경우
-            if (bandalartId != null) {
-                getBandalart(bandalartId)
-                return@launch
-            }
+//                    // 생성한 반다라트 표를 화면에 띄우는 경우
+//                    if (bandalartId != null) {
+//                        getBandalart(bandalartId)
+//                        return@collect
+//                    }
 
-            // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
-            if (bandalartList.isEmpty()) {
-                createBandalart()
-                return@launch
-            } else {
-                // 반다라트 목록이 존재할 경우
-                // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
-                val recentBandalartId = getRecentBandalartId()
-                // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
-                if (bandalartList.any { it.id == recentBandalartId }) {
-                    getBandalart(recentBandalartId)
+                    // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
+                    if (bandalartList.isEmpty()) {
+                        createBandalart()
+                        return@collect
+                    } else {
+                        // 반다라트 목록이 존재할 경우
+                        // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
+                        val recentBandalartId = getRecentBandalartId()
+                        // 가장 최근에 확인한 반다라트 표가 존재 하는 경우
+                        if (bandalartList.any { it.id == recentBandalartId }) {
+                            getBandalart(recentBandalartId)
+                        }
+                        // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
+                        else {
+                            // 목록에 가장 첫번째 표를 화면에 띄움
+                            getBandalart(bandalartList[0].id)
+                        }
+                    }
                 }
-                // 가장 최근에 확인한 반다라트 표가 존재 하지 않을 경우
-                else {
-                    // 목록에 가장 첫번째 표를 화면에 띄움
-                    getBandalart(bandalartList[0].id)
-                }
-            }
         }
     }
 
@@ -261,7 +265,7 @@ class HomeViewModel @Inject constructor(
                     it.copy(isBandalartListBottomSheetOpened = false)
                 }
                 // 새로운 반다라트를 생성하면 화면에 생성된 반다라트 표를 보여주도록 id 를 전달
-                getBandalartList(bandalart.id)
+                getBandalart(bandalart.id)
                 // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
                 setRecentBandalartId(bandalart.id)
                 // 새로운 반다라트를 로컬에 저장
@@ -286,7 +290,7 @@ class HomeViewModel @Inject constructor(
                 it.copy(isBandalartDeleted = true)
             }
             toggleBandalartDeleteAlertDialog(false)
-            getBandalartList()
+            // getBandalartList()
             deleteBandalartId(bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
@@ -345,7 +349,7 @@ class HomeViewModel @Inject constructor(
         if (!flag) {
             _uiState.update { it.copy(isCellBottomSheetOpened = false) }
         } else {
-            when(cellType) {
+            when (cellType) {
                 CellType.MAIN -> _uiState.update {
                     it.copy(
                         isCellBottomSheetOpened = true,

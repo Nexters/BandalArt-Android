@@ -14,6 +14,7 @@ import com.nexters.bandalart.core.database.entity.UpdateBandalartEmojiDto
 import com.nexters.bandalart.core.database.entity.UpdateBandalartMainCellDto
 import com.nexters.bandalart.core.database.entity.UpdateBandalartSubCellDto
 import com.nexters.bandalart.core.database.entity.UpdateBandalartTaskCellDto
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BandalartDao {
@@ -83,7 +84,7 @@ interface BandalartDao {
 
     /** 모든 반다라트 목록 조회 */
     @Query("SELECT * FROM bandalarts")
-    suspend fun getBandalartList(): List<BandalartDBEntity>
+    fun getBandalartList(): Flow<List<BandalartDBEntity>>
 
     // Read - 셀
     /** 특정 반다라트의 메인 셀(최상위 셀) 조회 */

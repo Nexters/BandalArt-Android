@@ -12,6 +12,8 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class BandalartRepositoryImpl @Inject constructor(
@@ -24,8 +26,9 @@ internal class BandalartRepositoryImpl @Inject constructor(
         return bandalartDao.getBandalart(bandalartId).toEntity()
     }
 
-    override suspend fun getBandalartList(): List<BandalartEntity> {
-        return bandalartDao.getBandalartList().map { it.toEntity() }
+    override fun getBandalartList(): Flow<List<BandalartEntity>> {
+        return bandalartDao.getBandalartList()
+            .map { list -> list.map { it.toEntity() } }
     }
 
     override suspend fun getBandalart(bandalartId: Long): BandalartEntity {
