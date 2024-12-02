@@ -106,30 +106,38 @@ fun Context.saveImageToGallery(bitmap: ImageBitmap) {
 fun Context.saveUriToGallery(imageUri: Uri) {
     try {
         val fileName = "bandalart_${System.currentTimeMillis()}.png"
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
-            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                put(MediaStore.Images.Media.IS_PENDING, 1)
-            }
-        }
-
+        val contentValues = createContentValues(fileName)
         val destinationUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-        destinationUri?.let { uri ->
-            contentResolver.openInputStream(imageUri)?.use { input ->
-                contentResolver.openOutputStream(uri)?.use { output ->
-                    input.copyTo(output)
-                }
-            }
+            ?: return
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                contentValues.clear()
-                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
-                contentResolver.update(uri, contentValues, null, null)
-            }
-        }
+        copyUriContent(imageUri, destinationUri)
+        updatePendingStatus(destinationUri, contentValues)
     } catch (e: Exception) {
         Timber.e("Failed to save image to gallery: ${e.message}")
+    }
+}
+
+private fun createContentValues(fileName: String) = ContentValues().apply {
+    put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+    put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+        put(MediaStore.Images.Media.IS_PENDING, 1)
+    }
+}
+
+private fun Context.copyUriContent(sourceUri: Uri, destinationUri: Uri) {
+    contentResolver.openInputStream(sourceUri)?.use { input ->
+        contentResolver.openOutputStream(destinationUri)?.use { output ->
+            input.copyTo(output)
+        }
+    }
+}
+
+private fun Context.updatePendingStatus(uri: Uri, contentValues: ContentValues) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        contentValues.clear()
+        contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
+        contentResolver.update(uri, contentValues, null, null)
     }
 }

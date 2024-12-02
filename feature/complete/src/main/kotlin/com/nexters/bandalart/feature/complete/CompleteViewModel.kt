@@ -48,7 +48,6 @@ class CompleteViewModel @Inject constructor(
             is CompleteUiAction.OnBackButtonClick -> navigateBack()
             is CompleteUiAction.OnSaveButtonClick -> saveBandalart()
             is CompleteUiAction.OnShareButtonClick -> shareBandalart()
-
         }
     }
 

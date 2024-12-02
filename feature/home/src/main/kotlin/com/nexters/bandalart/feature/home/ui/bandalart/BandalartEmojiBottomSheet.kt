@@ -46,7 +46,7 @@ fun BandalartEmojiBottomSheet(
                             bandalartId,
                             cellId,
                             UpdateBandalartEmojiEntity(profileEmoji = selectedEmoji),
-                        )
+                        ),
                     )
                 },
                 emojiPickerState = bottomSheetState,

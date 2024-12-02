@@ -363,7 +363,9 @@ fun BandalartBottomSheetContent(
                     }
                     AnimatedVisibility(visible = uiState.isDatePickerOpened) {
                         BandalartDatePicker(
-                            onDueDateSelect = { dueDateResult -> onBottomSheetUiAction(BottomSheetUiAction.OnDueDateSelect(dueDateResult.toString())) },
+                            onDueDateSelect = { dueDateResult ->
+                                onBottomSheetUiAction(BottomSheetUiAction.OnDueDateSelect(dueDateResult.toString()))
+                            },
                             currentDueDate = uiState.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
                         )
                     }

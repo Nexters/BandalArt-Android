@@ -22,7 +22,6 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.CellType
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 
 @Composable

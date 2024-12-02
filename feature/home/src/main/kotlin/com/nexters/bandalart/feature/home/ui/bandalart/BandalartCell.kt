@@ -82,7 +82,7 @@ fun BandalartCell(
             .clip(RoundedCornerShape(10.dp))
             .background(getCellBackgroundColor(bandalartData, cellType, cellData))
             .clickable {
-                when(cellType) {
+                when (cellType) {
                     CellType.MAIN -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
                     CellType.SUB -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.SUB, bandalartData.title.isNullOrEmpty(), cellData))
                     else -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.TASK, bandalartData.title.isNullOrEmpty(), cellData))
@@ -104,7 +104,7 @@ private fun CellContent(
     cellData: BandalartCellEntity,
     bandalartData: BandalartUiModel,
 ) {
-    when(cellType) {
+    when (cellType) {
         CellType.MAIN -> MainCellContent(cellData, bandalartData)
         CellType.SUB -> SubCellContent(cellData, bandalartData)
         else -> TaskCellContent(cellData)

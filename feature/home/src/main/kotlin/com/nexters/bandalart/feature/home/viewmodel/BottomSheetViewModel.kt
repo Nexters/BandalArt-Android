@@ -71,7 +71,7 @@ class BottomSheetViewModel @Inject constructor(
         val description = _uiState.value.cellData.description
         val dueDate = _uiState.value.cellData.dueDate?.ifEmpty { null }
 
-        when(cellType) {
+        when (cellType) {
             CellType.MAIN -> {
                 updateMainCell(
                     bandalartId = bandalartId,
