@@ -119,7 +119,7 @@ fun BandalartBottomSheet(
         onHomeUiAction = onHomeUiAction,
         copyCellData = viewModel::copyCellData,
         onBottomSheetUiAction = viewModel::onBottomSheetUiAction,
-        initState = viewModel::initState,
+        toggleCellUpdate = viewModel::toggleCellUpdate,
     )
 }
 
@@ -134,7 +134,7 @@ fun BandalartBottomSheetContent(
     onHomeUiAction: (HomeUiAction) -> Unit,
     copyCellData: (Long, BandalartCellEntity) -> Unit,
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
-    initState: () -> Unit,
+    toggleCellUpdate: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -153,7 +153,7 @@ fun BandalartBottomSheetContent(
             scope.launch {
                 bottomSheetState.hide()
                 onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
-                initState()
+                toggleCellUpdate(false)
             }
         }
     }
@@ -509,7 +509,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             onHomeUiAction = {},
             copyCellData = { _, _ -> },
             onBottomSheetUiAction = {},
-            initState = {},
+            toggleCellUpdate = {},
         )
     }
 }
@@ -530,7 +530,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             copyCellData = { _, _ -> },
             onHomeUiAction = {},
             onBottomSheetUiAction = {},
-            initState = {},
+            toggleCellUpdate = {},
         )
     }
 }
@@ -551,7 +551,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             copyCellData = { _, _ -> },
             onHomeUiAction = {},
             onBottomSheetUiAction = {},
-            initState = {},
+            toggleCellUpdate = {},
         )
     }
 }

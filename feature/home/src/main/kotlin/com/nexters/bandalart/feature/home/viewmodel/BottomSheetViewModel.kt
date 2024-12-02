@@ -43,8 +43,8 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun initState() {
-        _uiState.update { it.copy(isCellUpdated = false) }
+    fun toggleCellUpdate(flag: Boolean) {
+        _uiState.update { it.copy(isCellUpdated = flag) }
     }
 
     fun copyCellData(bandalartId: Long, cellData: BandalartCellEntity) {
