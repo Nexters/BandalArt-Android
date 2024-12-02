@@ -86,8 +86,6 @@ class HomeViewModel @Inject constructor(
 
             is HomeUiAction.OnConfirmClick -> {
                 when (action.modalType) {
-                    // TODO 구현 필요 및 메세지 안내 필요(삭제되었습니다)
-                    ModalType.CELL -> {}
                     ModalType.DELETE_DIALOG -> _uiState.value.bandalartData?.let { deleteBandalart(it.id) }
                     else -> {}
                 }
@@ -95,10 +93,10 @@ class HomeViewModel @Inject constructor(
 
             is HomeUiAction.OnCancelClick -> {
                 when (action.modalType) {
-                    ModalType.CELL -> toggleCellBottomSheet(false)
                     ModalType.EMOJI -> toggleEmojiBottomSheet(false)
                     ModalType.BANDALART_LIST -> toggleBandalartListBottomSheet(false)
                     ModalType.DELETE_DIALOG -> toggleBandalartDeleteAlertDialog(false)
+                    else -> {}
                 }
             }
 
@@ -133,7 +131,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getBandalartList() {
+    private fun getBandalartList() {
         viewModelScope.launch {
             bandalartRepository.getBandalartList()
                 .map { list -> list.map { it.toUiModel() } }
@@ -161,12 +159,6 @@ class HomeViewModel @Inject constructor(
                     bandalartList.forEach { bandalart ->
                         bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
                     }
-
-//                    // 생성한 반다라트 표를 화면에 띄우는 경우
-//                    if (bandalartId != null) {
-//                        getBandalart(bandalartId)
-//                        return@collect
-//                    }
 
                     // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
                     if (bandalartList.isEmpty()) {
@@ -291,7 +283,6 @@ class HomeViewModel @Inject constructor(
                 it.copy(isBandalartDeleted = true)
             }
             toggleBandalartDeleteAlertDialog(false)
-            // getBandalartList()
             deleteBandalartId(bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }

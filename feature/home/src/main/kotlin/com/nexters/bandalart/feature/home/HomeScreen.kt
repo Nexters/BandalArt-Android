@@ -148,16 +148,6 @@ internal fun HomeScreen(
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
 
-//    LaunchedEffect(key1 = Unit) {
-//        getBandalartList(null)
-//    }
-//
-//    LaunchedEffect(key1 = uiState.isBottomSheetDataChanged) {
-//        if (uiState.isBottomSheetDataChanged) {
-//            getBandalartList(null)
-//        }
-//    }
-
     LaunchedEffect(key1 = uiState.isShared) {
         if (uiState.isShared) {
             shareBandalart(homeGraphicsLayer.toImageBitmap())
