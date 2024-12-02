@@ -1,5 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.feature.home.model.CellType
 
@@ -25,8 +26,13 @@ sealed interface HomeUiAction {
     data class ToggleBandalartListBottomSheet(val flag: Boolean) : HomeUiAction
     data object BottomSheetDataChanged : HomeUiAction
     data class OnBandalartListItemClick(val key: Long) : HomeUiAction
-    data class OnBandalartCellClick(val cellType: CellType, val isMainCellTitleEmpty: Boolean) : HomeUiAction
-    data object OnCloseButtonClick: HomeUiAction
+    data class OnBandalartCellClick(
+        val cellType: CellType,
+        val isMainCellTitleEmpty: Boolean,
+        val cellData: BandalartCellEntity,
+    ) : HomeUiAction
+
+    data object OnCloseButtonClick : HomeUiAction
 }
 
 enum class ModalType {

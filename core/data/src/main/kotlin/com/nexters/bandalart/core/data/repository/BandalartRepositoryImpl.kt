@@ -56,10 +56,7 @@ internal class BandalartRepositoryImpl @Inject constructor(
         cellId: Long,
         updateBandalartMainCellEntity: UpdateBandalartMainCellEntity,
     ) {
-        bandalartDao.updateMainCellWithDto(
-            cellId,
-            updateBandalartMainCellEntity.toDto(),
-        )
+        bandalartDao.updateMainCellWithDto(cellId, updateBandalartMainCellEntity.toDto())
     }
 
     override suspend fun updateBandalartSubCell(
@@ -67,10 +64,7 @@ internal class BandalartRepositoryImpl @Inject constructor(
         cellId: Long,
         updateBandalartSubCellEntity: UpdateBandalartSubCellEntity,
     ) {
-        bandalartDao.updateSubCellWithDto(
-            cellId,
-            updateBandalartSubCellEntity.toDto(),
-        )
+        bandalartDao.updateSubCellWithDto(cellId, updateBandalartSubCellEntity.toDto())
     }
 
     override suspend fun updateBandalartTaskCell(
@@ -78,10 +72,7 @@ internal class BandalartRepositoryImpl @Inject constructor(
         cellId: Long,
         updateBandalartTaskCellEntity: UpdateBandalartTaskCellEntity,
     ) {
-        bandalartDao.updateTaskCellWithDto(
-            cellId,
-            updateBandalartTaskCellEntity.toDto(),
-        )
+        bandalartDao.updateTaskCellWithDto(cellId, updateBandalartTaskCellEntity.toDto())
     }
 
     override suspend fun updateBandalartEmoji(
@@ -89,10 +80,7 @@ internal class BandalartRepositoryImpl @Inject constructor(
         cellId: Long,
         updateBandalartEmojiEntity: UpdateBandalartEmojiEntity,
     ) {
-        bandalartDao.updateEmojiWithDto(
-            cellId,
-            updateBandalartEmojiEntity.toDto(),
-        )
+        bandalartDao.updateEmojiWithDto(cellId, updateBandalartEmojiEntity.toDto())
     }
 
     override suspend fun deleteBandalartCell(cellId: Long) {

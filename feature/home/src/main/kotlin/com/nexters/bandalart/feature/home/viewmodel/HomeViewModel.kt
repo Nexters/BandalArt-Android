@@ -115,7 +115,7 @@ class HomeViewModel @Inject constructor(
                 getBandalart(action.key)
             }
 
-            is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.cellType, action.isMainCellTitleEmpty)
+            is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.cellType, action.isMainCellTitleEmpty, action.cellData)
             is HomeUiAction.OnCloseButtonClick -> toggleCellBottomSheet(false)
         }
     }
@@ -419,7 +419,11 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(bandalartChartUrl = url) }
     }
 
-    private fun handleBandalartCellClick(cellType: CellType, isMainCellTitleEmpty: Boolean) {
+    private fun handleBandalartCellClick(
+        cellType: CellType,
+        isMainCellTitleEmpty: Boolean,
+        cellData: BandalartCellEntity,
+    ) {
         when {
             // 메인셀이 비어있고, 서브나 태스크셀 클릭 시
             cellType != CellType.MAIN && isMainCellTitleEmpty -> {
@@ -437,6 +441,7 @@ class HomeViewModel @Inject constructor(
 
             // 그 외의 경우 바텀시트 열기
             else -> {
+                _uiState.update { it.copy(clickedCellData = cellData) }
                 toggleCellBottomSheet(true, cellType)
             }
         }

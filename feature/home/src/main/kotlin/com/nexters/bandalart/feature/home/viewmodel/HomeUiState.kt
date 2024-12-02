@@ -45,4 +45,5 @@ data class HomeUiState(
     val isCaptured: Boolean = false,
     val bandalartChartUrl: String? = null,
     val clickedCellType: CellType = CellType.MAIN,
+    val clickedCellData: BandalartCellEntity? = null,
 )

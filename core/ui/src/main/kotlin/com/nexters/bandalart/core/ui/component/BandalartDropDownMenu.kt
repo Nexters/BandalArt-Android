@@ -53,7 +53,6 @@ fun BandalartDropDownMenu(
         ),
         shape = RoundedCornerShape(12.dp),
     ) {
-        // TODO MVP 에서 제외, 이번에 구현해도 좋을듯
         DropdownMenuItem(
             modifier = Modifier
                 .wrapContentSize()
