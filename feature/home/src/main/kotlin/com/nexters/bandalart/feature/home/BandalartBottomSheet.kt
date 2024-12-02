@@ -170,9 +170,9 @@ fun BandalartBottomSheetContent(
                 CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_title, uiState.cellData.title ?: "")
                 else -> stringResource(R.string.delete_bandalart_taskcell_dialog_title, uiState.cellData.title ?: "")
             },
-            message = when {
-                cellType == CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
-                cellType == CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
+            message = when (cellType) {
+                CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
+                CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
                 else -> null
             },
             onDeleteClicked = {
