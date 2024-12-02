@@ -30,7 +30,6 @@ fun BandalartButton(
     Box(
         modifier = modifier
             .height(56.dp)
-            .clip(shape = RoundedCornerShape(50.dp))
             .clickableSingle(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {

@@ -46,7 +46,7 @@ class CompleteViewModel @Inject constructor(
     fun onAction(action: CompleteUiAction) {
         when (action) {
             is CompleteUiAction.OnBackButtonClick -> navigateBack()
-            is CompleteUiAction.OnSaveButtonClick -> saveBandalartImage()
+            is CompleteUiAction.OnSaveButtonClick -> saveBandalart()
             is CompleteUiAction.OnShareButtonClick -> shareBandalart()
 
         }
@@ -78,7 +78,11 @@ class CompleteViewModel @Inject constructor(
         }
     }
 
-    private fun saveBandalartImage() {}
+    private fun saveBandalart() {
+        viewModelScope.launch {
+            _uiEvent.send(CompleteUiEvent.SaveBandalart(Uri.parse(bandalartChartImageUri)))
+        }
+    }
 
     private fun shareBandalart() {
         viewModelScope.launch {
