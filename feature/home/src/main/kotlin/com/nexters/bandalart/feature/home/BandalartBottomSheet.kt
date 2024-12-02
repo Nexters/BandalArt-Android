@@ -106,7 +106,6 @@ fun BandalartBottomSheet(
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
     onHomeUiAction: (HomeUiAction) -> Unit,
-    bottomSheetDataChanged: (Boolean) -> Unit,
     viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -118,7 +117,6 @@ fun BandalartBottomSheet(
         isBlankCell = isBlankCell,
         cellData = cellData,
         onHomeUiAction = onHomeUiAction,
-        bottomSheetDataChange = bottomSheetDataChanged,
         copyCellData = viewModel::copyCellData,
         onBottomSheetUiAction = viewModel::onBottomSheetUiAction,
         initState = viewModel::initState,
@@ -134,7 +132,6 @@ fun BandalartBottomSheetContent(
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
     onHomeUiAction: (HomeUiAction) -> Unit,
-    bottomSheetDataChange: (Boolean) -> Unit,
     copyCellData: (Long, BandalartCellEntity) -> Unit,
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     initState: () -> Unit,
@@ -156,7 +153,6 @@ fun BandalartBottomSheetContent(
             scope.launch {
                 bottomSheetState.hide()
                 onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
-                bottomSheetDataChange(true)
                 initState()
             }
         }
@@ -181,7 +177,6 @@ fun BandalartBottomSheetContent(
                 }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
                         onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
-                        bottomSheetDataChange(true)
                     }
                 }
             },
@@ -194,7 +189,6 @@ fun BandalartBottomSheetContent(
     ModalBottomSheet(
         onDismissRequest = {
             onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
-            bottomSheetDataChange(false)
         },
         modifier = modifier
             .wrapContentSize()
@@ -511,7 +505,6 @@ private fun BandalartMainCellBottomSheetPreview() {
             isBlankCell = false,
             cellData = dummyBandalartCellData,
             onHomeUiAction = {},
-            bottomSheetDataChange = {},
             copyCellData = { _, _ -> },
             onBottomSheetUiAction = {},
             initState = {},
@@ -534,7 +527,6 @@ private fun BandalartSubCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             copyCellData = { _, _ -> },
             onHomeUiAction = {},
-            bottomSheetDataChange = {},
             onBottomSheetUiAction = {},
             initState = {},
         )
@@ -556,7 +548,6 @@ private fun BandalartTaskCellBottomSheetPreview() {
             cellData = dummyBandalartCellData,
             copyCellData = { _, _ -> },
             onHomeUiAction = {},
-            bottomSheetDataChange = {},
             onBottomSheetUiAction = {},
             initState = {},
         )

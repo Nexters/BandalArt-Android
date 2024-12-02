@@ -106,7 +106,6 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.ToggleDeleteAlertDialog -> toggleBandalartDeleteAlertDialog(action.flag)
             is HomeUiAction.ToggleEmojiBottomSheet -> toggleEmojiBottomSheet(action.flag)
             is HomeUiAction.ToggleCellBottomSheet -> toggleCellBottomSheet(action.flag)
-            is HomeUiAction.BottomSheetDataChanged -> updateBottomSheetData(true)
             is HomeUiAction.ToggleBandalartListBottomSheet -> toggleBandalartListBottomSheet(action.flag)
             is HomeUiAction.OnBandalartListItemClick -> {
                 setRecentBandalartId(action.key)
@@ -241,7 +240,6 @@ class HomeViewModel @Inject constructor(
                 )
             }
             updateSkeletonState(false)
-            updateBottomSheetData(flag = false)
         }
     }
 
@@ -279,9 +277,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             updateSkeletonState(true)
             bandalartRepository.deleteBandalart(bandalartId)
-            _uiState.update {
-                it.copy(isBandalartDeleted = true)
-            }
             toggleBandalartDeleteAlertDialog(false)
             deleteBandalartId(bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
@@ -296,7 +291,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel)
             toggleEmojiBottomSheet(false)
-            updateBottomSheetData(true)
         }
     }
 
@@ -364,10 +358,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun updateBottomSheetData(flag: Boolean) {
-        _uiState.update { it.copy(isBottomSheetDataChanged = flag) }
     }
 
     private fun updateSkeletonState(flag: Boolean) {

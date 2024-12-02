@@ -72,8 +72,7 @@ fun BandalartListItem(
                 if (currentBandalartId != bandalartItem.id) {
                     onClick(bandalartItem.id)
                 }
-                scope
-                    .launch { bottomSheetState.hide() }
+                scope.launch { bottomSheetState.hide() }
                     .invokeOnCompletion {
                         if (!bottomSheetState.isVisible) onCancelClicked()
                     }

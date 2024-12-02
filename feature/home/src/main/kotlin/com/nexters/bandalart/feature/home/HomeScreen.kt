@@ -125,7 +125,6 @@ internal fun HomeRoute(
         uiState = uiState,
         bandalartCount = bandalartCount,
         onHomeUiAction = homeViewModel::onAction,
-        bottomSheetDataChanged = homeViewModel::updateBottomSheetData,
         shareBandalart = homeViewModel::shareBandalart,
         captureBandalart = homeViewModel::captureBandalart,
         saveBandalart = homeViewModel::saveBandalartImage,
@@ -138,7 +137,6 @@ internal fun HomeScreen(
     uiState: HomeUiState,
     bandalartCount: Int,
     onHomeUiAction: (HomeUiAction) -> Unit,
-    bottomSheetDataChanged: (Boolean) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
     captureBandalart: (ImageBitmap) -> Unit,
     saveBandalart: (ImageBitmap) -> Unit,
@@ -198,7 +196,6 @@ internal fun HomeScreen(
                     isBlankCell = cell.title.isNullOrEmpty(),
                     cellData = cell,
                     onHomeUiAction = onHomeUiAction,
-                    bottomSheetDataChanged = bottomSheetDataChanged,
                 )
             }
         }
@@ -309,7 +306,6 @@ private fun HomeScreenSingleBandalartPreview() {
             ),
             bandalartCount = listOf(dummyBandalartList[0]).size,
             onHomeUiAction = {},
-            bottomSheetDataChanged = {},
             shareBandalart = {},
             captureBandalart = {},
             saveBandalart = {},
@@ -329,7 +325,6 @@ private fun HomeScreenMultipleBandalartPreview() {
             ),
             bandalartCount = dummyBandalartList.size,
             onHomeUiAction = {},
-            bottomSheetDataChanged = {},
             shareBandalart = {},
             captureBandalart = {},
             saveBandalart = {},

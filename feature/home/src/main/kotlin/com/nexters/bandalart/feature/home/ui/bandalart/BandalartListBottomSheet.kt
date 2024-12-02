@@ -99,9 +99,10 @@ fun BandalartListBottomSheet(
                         .height(21.dp)
                         .aspectRatio(1f),
                     onClick = {
-                        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                            if (!bottomSheetState.isVisible) onDismissRequest()
-                        }
+                        scope.launch { bottomSheetState.hide() }
+                            .invokeOnCompletion {
+                                if (!bottomSheetState.isVisible) onDismissRequest()
+                            }
                     },
                 ) {
                     Icon(
