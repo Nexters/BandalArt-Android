@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
@@ -133,20 +134,20 @@ fun BandalartSkeletonScreen(
                                             .background(Gray100),
                                         contentAlignment = Alignment.Center,
                                     ) {
-                                        Image(
+                                        Icon(
                                             imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
                                             contentDescription = stringResource(R.string.empty_emoji_description),
+                                            tint = Color.Unspecified,
                                         )
                                     }
                                 }
-                                Image(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = DesignR.drawable.ic_edit,
-                                    ),
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
                                     contentDescription = stringResource(R.string.edit_description),
                                     modifier = Modifier
                                         .align(Alignment.BottomEnd)
                                         .offset(x = 4.dp, y = 4.dp),
+                                    tint = Color.Unspecified,
                                 )
                             }
                             Spacer(modifier = Modifier.height(12.dp))
@@ -165,10 +166,11 @@ fun BandalartSkeletonScreen(
                                         .background(subBrush),
                                     letterSpacing = (-0.4).sp,
                                 )
-                                Image(
+                                Icon(
                                     imageVector = ImageVector.vectorResource(DesignR.drawable.ic_option),
                                     contentDescription = stringResource(R.string.option_description),
                                     modifier = Modifier.align(Alignment.CenterEnd),
+                                    tint = Color.Unspecified,
                                 )
                             }
                         }
@@ -214,9 +216,10 @@ fun BandalartSkeletonScreen(
                         modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 20.dp, bottom = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Image(
+                        Icon(
                             imageVector = ImageVector.vectorResource(DesignR.drawable.ic_share),
                             contentDescription = stringResource(R.string.share_description),
+                            tint = Color.Unspecified,
                         )
                         Text(
                             text = stringResource(R.string.home_share),

@@ -2,7 +2,6 @@
 
 package com.nexters.bandalart.feature.home.ui.bandalart
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -89,9 +89,10 @@ fun BandalartListItem(
                     contentAlignment = Alignment.Center,
                 ) {
                     if (bandalartItem.profileEmoji.isNullOrEmpty()) {
-                        Image(
+                        Icon(
                             imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
                             contentDescription = stringResource(R.string.empty_emoji_description),
+                            tint = Color.Unspecified,
                         )
                     } else {
                         Text(

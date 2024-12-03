@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.home.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -35,18 +35,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.common.extension.toFormatDate
-import com.nexters.bandalart.core.designsystem.R
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
+import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun HomeHeader(
@@ -72,9 +73,10 @@ fun HomeHeader(
                         contentAlignment = Alignment.Center,
                     ) {
                         if (bandalartData.profileEmoji.isNullOrEmpty()) {
-                            Image(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_empty_emoji),
-                                contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.empty_emoji_description),
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_empty_emoji),
+                                contentDescription = stringResource(R.string.empty_emoji_description),
+                                tint = Color.Unspecified,
                             )
                         } else {
                             Text(
@@ -85,14 +87,13 @@ fun HomeHeader(
                     }
                 }
                 if (bandalartData.profileEmoji.isNullOrEmpty()) {
-                    Image(
-                        imageVector = ImageVector.vectorResource(
-                            id = R.drawable.ic_edit,
-                        ),
-                        contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.edit_description),
+                    Icon(
+                        imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
+                        contentDescription = stringResource(R.string.edit_description),
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .offset(x = 4.dp, y = 4.dp),
+                        tint = Color.Unspecified,
                     )
                 }
             }
@@ -112,14 +113,13 @@ fun HomeHeader(
                         .clickable { onAction(HomeUiAction.ToggleCellBottomSheet(true)) },
                     letterSpacing = (-0.4).sp,
                 )
-                Image(
-                    imageVector = ImageVector.vectorResource(
-                        id = R.drawable.ic_option,
-                    ),
-                    contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.option_description),
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_option),
+                    contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .clickable(onClick = { onAction(HomeUiAction.ToggleDropDownMenu(true)) }),
+                    tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
                     toggleDropDownMenu = { flag -> onAction(HomeUiAction.ToggleDropDownMenu(flag)) },
