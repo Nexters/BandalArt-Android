@@ -98,7 +98,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
-// TODO BandalartBottomSheet 내에 파라미터도 최대한 줄여보기
 @Composable
 fun BandalartBottomSheet(
     bandalartId: Long,
