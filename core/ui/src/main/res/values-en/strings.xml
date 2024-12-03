@@ -18,7 +18,6 @@
     <!--  HomeScreen.kt -->
     <string name="home_default_emoji">default emoji</string>
     <string name="home_share_url">Come and see the Bandalart I made!\n%1$s</string>
-    <string name="home_share_type">text/plain</string>
     <string name="home_empty_title">Please enter your main goal</string>
     <string name="home_complete_ratio">Completion Rate %1$d%%</string>
     <string name="home_complete">All Goals Completed!</string>
