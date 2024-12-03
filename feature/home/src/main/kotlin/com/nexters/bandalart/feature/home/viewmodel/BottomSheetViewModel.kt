@@ -189,7 +189,7 @@ class BottomSheetViewModel @Inject constructor(
         currentLocale: Locale,
     ): String {
         val maxLength = when (currentLocale.language) {
-            Locale.KOREAN.language -> 15
+            Locale.KOREAN.language, Locale.JAPAN.language -> 15
             else -> 24
         }
 
