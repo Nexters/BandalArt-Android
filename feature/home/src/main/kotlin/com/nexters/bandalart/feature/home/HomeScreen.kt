@@ -77,6 +77,8 @@ internal fun HomeRoute(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    // TODO 굳이 derivedStateOf 를 사용하지 않아도 될 것 같음(쓸꺼면 제대로)
     val bandalartCount by remember {
         derivedStateOf { uiState.bandalartList.size }
     }
