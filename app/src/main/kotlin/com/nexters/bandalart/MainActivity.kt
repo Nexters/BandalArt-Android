@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -126,6 +127,54 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun checkForAppUpdates() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            val isUpdateAvailable = appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+
+            if (isUpdateAvailable) {
+                processUpdate(appUpdateInfo)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                processUpdate(appUpdateInfo)
+            }
+        }
+    }
+
+    private fun processUpdate(appUpdateInfo: AppUpdateInfo) {
+        val availableVersionCode = appUpdateInfo.availableVersionCode()
+
+        lifecycleScope.launch {
+            // 선택 업데이트이고 이전에 거절한 버전인 경우, 업데이트 표시하지 않음
+            if (!isValidImmediateAppUpdate(availableVersionCode) &&
+                inAppUpdateRepository.isUpdateAlreadyRejected(availableVersionCode)
+            ) {
+                return@launch
+            }
+
+            val updateType = if (isValidImmediateAppUpdate(availableVersionCode)) {
+                AppUpdateType.IMMEDIATE
+            } else {
+                AppUpdateType.FLEXIBLE
+            }
+
+            if (appUpdateInfo.isUpdateTypeAllowed(updateType)) {
+                currentUpdateType = updateType
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    appUpdateResultLauncher,
+                    AppUpdateOptions.newBuilder(updateType).build(),
+                )
+            }
+        }
+    }
+
     private fun isValidImmediateAppUpdate(updateVersionCode: Int): Boolean {
         // Major 버전 비교 (앞 2자리)
         val updateMajor = updateVersionCode / 10_000
@@ -136,74 +185,6 @@ class MainActivity : ComponentActivity() {
         val currentMinor = (BuildConfig.VERSION_CODE % 10_000) / 100
 
         return updateMajor > currentMajor || updateMinor > currentMinor
-    }
-
-    private fun checkForAppUpdates() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            val isUpdateAvailable = appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-
-            if (isUpdateAvailable) {
-                val availableVersionCode = appUpdateInfo.availableVersionCode()
-
-                lifecycleScope.launch {
-                    // 선택 업데이트이고 이전에 거절한 버전인 경우, 업데이트 표시하지 않음
-                    if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                        inAppUpdateRepository.isUpdateAlreadyRejected(availableVersionCode)
-                    ) {
-                        return@launch
-                    }
-
-                    val updateType = if (isValidImmediateAppUpdate(availableVersionCode)) {
-                        AppUpdateType.IMMEDIATE
-                    } else {
-                        AppUpdateType.FLEXIBLE
-                    }
-
-                    if (appUpdateInfo.isUpdateTypeAllowed(updateType)) {
-                        currentUpdateType = updateType
-                        appUpdateManager.startUpdateFlowForResult(
-                            appUpdateInfo,
-                            appUpdateResultLauncher,
-                            AppUpdateOptions.newBuilder(updateType).build(),
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                val availableVersionCode = appUpdateInfo.availableVersionCode()
-
-                lifecycleScope.launch {
-                    // 선택 업데이트이고 이전에 거절한 버전인 경우, 업데이트 표시하지 않음
-                    if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                        inAppUpdateRepository.isUpdateAlreadyRejected(availableVersionCode)
-                    ) {
-                        return@launch
-                    }
-
-                    val updateType = if (isValidImmediateAppUpdate(availableVersionCode)) {
-                        AppUpdateType.IMMEDIATE
-                    } else {
-                        AppUpdateType.FLEXIBLE
-                    }
-
-                    if (appUpdateInfo.isUpdateTypeAllowed(updateType)) {
-                        currentUpdateType = updateType
-                        appUpdateManager.startUpdateFlowForResult(
-                            appUpdateInfo,
-                            appUpdateResultLauncher,
-                            AppUpdateOptions.newBuilder(updateType).build(),
-                        )
-                    }
-                }
-            }
-        }
     }
 
     override fun onDestroy() {
