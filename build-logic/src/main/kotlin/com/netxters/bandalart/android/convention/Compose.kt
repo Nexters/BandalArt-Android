@@ -16,7 +16,6 @@ internal fun Project.configureCompose(extension: CommonExtension<*, *, *, *, *, 
         }
 
         configure<ComposeCompilerGradlePluginExtension> {
-            enableStrongSkippingMode.set(true)
             includeSourceInformation.set(true)
 
             metricsDestination.file("build/composeMetrics")

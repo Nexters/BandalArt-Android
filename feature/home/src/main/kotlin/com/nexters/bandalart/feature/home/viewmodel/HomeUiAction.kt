@@ -31,7 +31,7 @@ sealed interface HomeUiAction {
     ) : HomeUiAction
 
     data object OnCloseButtonClick : HomeUiAction
-    data object OnAppTitleClick: HomeUiAction
+    data object OnAppTitleClick : HomeUiAction
 }
 
 enum class ModalType {
