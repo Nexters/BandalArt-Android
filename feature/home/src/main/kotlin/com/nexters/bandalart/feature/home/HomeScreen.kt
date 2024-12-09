@@ -131,7 +131,7 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShowAppVersion -> {
-                Toast.makeText(context, "버전 정보: v$appVersion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
             }
         }
     }
