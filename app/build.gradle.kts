@@ -76,6 +76,7 @@ dependencies {
         libs.androidx.core,
         libs.androidx.navigation.compose,
         libs.androidx.hilt.navigation.compose,
+        libs.app.update,
         libs.timber,
     )
 }
