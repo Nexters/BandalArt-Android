@@ -135,4 +135,8 @@
 
     <!--  label -->
     <string name="skeleton_trans_animate_label">メニューアイコン</string>
+
+    <!-- in-app update -->
+    <string name="update_download_complete">ダウンロードが完了しました。5秒後にアプリが再起動されます。</string>
+
 </resources>

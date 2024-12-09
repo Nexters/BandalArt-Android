@@ -22,11 +22,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
+import com.nexters.bandalart.core.ui.R
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var appUpdateManager: AppUpdateManager
-    private val updateType = AppUpdateType.IMMEDIATE
+    private val updateType = AppUpdateType.FLEXIBLE
 
     private val updateResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
-            Toast.makeText(applicationContext, "Download successful. Restarting app in 5 seconds.", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, getString(R.string.update_download_complete), Toast.LENGTH_LONG).show()
         }
         lifecycleScope.launch {
             delay(5.seconds)

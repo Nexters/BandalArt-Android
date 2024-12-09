@@ -135,4 +135,7 @@
     <string name="server_error_dialog_message">Please try again.</string>
     <string name="server_error_retry_message">Retry</string>
 
+    <!-- in-app update -->
+    <string name="update_download_complete">Download successful. Restarting app in 5 seconds.</string>
+
 </resources>
