@@ -70,7 +70,6 @@ class HomeViewModel @Inject constructor(
 
     fun onAction(action: HomeUiAction) {
         when (action) {
-            is HomeUiAction.OnCreateClick -> createBandalart()
             is HomeUiAction.OnListClick -> toggleBandalartListBottomSheet(true)
             is HomeUiAction.OnSaveClick -> updateCaptureState(true)
             is HomeUiAction.OnDeleteClick -> {

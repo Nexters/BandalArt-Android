@@ -227,7 +227,7 @@ internal fun HomeScreen(
             ) {
                 HomeTopBar(
                     bandalartCount = bandalartCount,
-                    onListClick = { onHomeUiAction(HomeUiAction.OnListClick) },
+                    onHomeUiAction = onHomeUiAction,
                 )
                 HorizontalDivider(
                     thickness = 1.dp,

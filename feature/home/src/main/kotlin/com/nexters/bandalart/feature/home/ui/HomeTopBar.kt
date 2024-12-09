@@ -30,12 +30,13 @@ import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 internal fun HomeTopBar(
     bandalartCount: Int,
-    onListClick: () -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -55,7 +56,15 @@ internal fun HomeTopBar(
             Box(
                 modifier = Modifier
                     .padding(end = 20.dp)
-                    .clickable(onClick = onListClick),
+                    .clickable(
+                        onClick = {
+                            if (bandalartCount > 1) {
+                                onHomeUiAction(HomeUiAction.OnListClick)
+                            } else {
+                                onHomeUiAction(HomeUiAction.OnAddClick)
+                            }
+                        },
+                    ),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (bandalartCount > 1) {
@@ -97,7 +106,7 @@ private fun HomeTopBarSingleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 1,
-            onListClick = {},
+            onHomeUiAction = {},
         )
     }
 }
@@ -108,7 +117,7 @@ private fun HomeTopBarMultipleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 2,
-            onListClick = {},
+            onHomeUiAction = {},
         )
     }
 }

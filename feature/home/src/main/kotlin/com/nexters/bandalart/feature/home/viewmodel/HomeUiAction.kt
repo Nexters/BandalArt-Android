@@ -5,7 +5,6 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.feature.home.model.CellType
 
 sealed interface HomeUiAction {
-    data class OnCreateClick(val bandalartId: Long? = null) : HomeUiAction
     data object OnListClick : HomeUiAction
     data object OnSaveClick : HomeUiAction
     data object OnDeleteClick : HomeUiAction
