@@ -1,17 +1,17 @@
 package com.nexters.bandalart.core.data.repository
 
-import com.nexters.bandalart.core.datastore.datasource.OnboardingDataSource
+import com.nexters.bandalart.core.datastore.BandalartDataStore
 import com.nexters.bandalart.core.domain.repository.OnboardingRepository
 import javax.inject.Inject
 
 internal class OnboardingRepositoryImpl @Inject constructor(
-    private val dataSource: OnboardingDataSource,
+    private val bandalartDataStore: BandalartDataStore,
 ) : OnboardingRepository {
     override suspend fun setOnboardingCompletedStatus(flag: Boolean) {
-        dataSource.setOnboardingCompletedStatus(flag)
+        bandalartDataStore.setOnboardingCompletedStatus(flag)
     }
 
     override suspend fun getOnboardingCompletedStatus(): Boolean {
-        return dataSource.getOnboardingCompletedStatus()
+        return bandalartDataStore.getOnboardingCompletedStatus()
     }
 }
