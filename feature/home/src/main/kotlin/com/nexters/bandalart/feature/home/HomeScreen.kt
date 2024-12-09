@@ -182,9 +182,7 @@ internal fun HomeScreen(
             BandalartListBottomSheet(
                 bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
                 currentBandalartId = bandalart.id,
-                onDismissRequest = { onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false)) },
-                onAddClick = { onHomeUiAction(HomeUiAction.OnAddClick) },
-                onBandalartListItemClick = { key -> onHomeUiAction(HomeUiAction.OnBandalartListItemClick(key)) },
+                onHomeUiAction = onHomeUiAction,
             )
         }
     }

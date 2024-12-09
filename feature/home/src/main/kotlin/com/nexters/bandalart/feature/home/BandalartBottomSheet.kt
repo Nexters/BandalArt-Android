@@ -150,7 +150,6 @@ fun BandalartBottomSheetContent(
     LaunchedEffect(key1 = uiState.isCellUpdated) {
         if (uiState.isCellUpdated) {
             scope.launch {
-                bottomSheetState.hide()
                 onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
                 toggleCellUpdate(false)
             }
@@ -172,11 +171,7 @@ fun BandalartBottomSheetContent(
             onDeleteClicked = {
                 scope.launch {
                     onBottomSheetUiAction(BottomSheetUiAction.OnDeleteDialogConfirmClick(uiState.cellData.id))
-                    bottomSheetState.hide()
-                }.invokeOnCompletion {
-                    if (!bottomSheetState.isVisible) {
-                        onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
-                    }
+                    onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
                 }
             },
             onCancelClicked = {
@@ -308,7 +303,6 @@ fun BandalartBottomSheetContent(
                                 onEmojiSelect = { selectedEmoji ->
                                     onBottomSheetUiAction(BottomSheetUiAction.OnEmojiSelect(selectedEmoji))
                                 },
-                                emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                             )
                         }
                     }

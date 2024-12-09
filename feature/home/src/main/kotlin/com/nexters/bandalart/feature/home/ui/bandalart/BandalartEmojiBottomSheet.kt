@@ -44,7 +44,6 @@ fun BandalartEmojiBottomSheet(
                         ),
                     )
                 },
-                emojiPickerState = bottomSheetState,
             )
         }
     }

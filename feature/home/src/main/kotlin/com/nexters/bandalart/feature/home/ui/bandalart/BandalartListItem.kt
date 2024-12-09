@@ -20,11 +20,8 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,20 +42,15 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
-import kotlinx.coroutines.launch
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartListItem(
-    bottomSheetState: SheetState,
     bandalartItem: BandalartUiModel,
     currentBandalartId: Long,
     onClick: (Long) -> Unit,
-    onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -72,10 +64,6 @@ fun BandalartListItem(
                 if (currentBandalartId != bandalartItem.id) {
                     onClick(bandalartItem.id)
                 }
-                scope.launch { bottomSheetState.hide() }
-                    .invokeOnCompletion {
-                        if (!bottomSheetState.isVisible) onCancelClicked()
-                    }
             }
             .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
@@ -183,11 +171,9 @@ fun BandalartListItem(
 private fun BandalartItemPreview() {
     BandalartTheme {
         BandalartListItem(
-            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             bandalartItem = dummyBandalartData,
             currentBandalartId = 0L,
             onClick = {},
-            onCancelClicked = {},
         )
     }
 }

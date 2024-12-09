@@ -28,7 +28,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -48,29 +47,27 @@ import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartListBottomSheet(
     bandalartList: ImmutableList<BandalartUiModel>,
     currentBandalartId: Long,
-    onDismissRequest: () -> Unit,
-    onAddClick: () -> Unit,
-    onBandalartListItemClick: (Long) -> Unit,
-    // onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
         modifier = Modifier
             .wrapContentSize()
             .statusBarsPadding(),
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false))
+        },
         sheetState = bottomSheetState,
         dragHandle = null,
     ) {
@@ -99,10 +96,7 @@ fun BandalartListBottomSheet(
                         .height(21.dp)
                         .aspectRatio(1f),
                     onClick = {
-                        scope.launch { bottomSheetState.hide() }
-                            .invokeOnCompletion {
-                                if (!bottomSheetState.isVisible) onDismissRequest()
-                            }
+                        onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false))
                     },
                 ) {
                     Icon(
@@ -124,14 +118,12 @@ fun BandalartListBottomSheet(
                 ) { index ->
                     val bandalartItem = bandalartList[index]
                     BandalartListItem(
-                        bottomSheetState = bottomSheetState,
                         bandalartItem = bandalartItem,
                         currentBandalartId = currentBandalartId,
                         onClick = { key ->
                             // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
-                            onBandalartListItemClick(key)
+                            onHomeUiAction(HomeUiAction.OnBandalartListItemClick(key))
                         },
-                        onCancelClicked = onDismissRequest,
                     )
                 }
                 item {
@@ -142,7 +134,9 @@ fun BandalartListBottomSheet(
                                 .weight(1f)
                                 .height(56.dp)
                                 .padding(horizontal = 24.dp),
-                            onClick = onAddClick,
+                            onClick = {
+                                onHomeUiAction(HomeUiAction.OnAddClick)
+                            },
                             colors = ButtonDefaults.buttonColors(containerColor = Gray200),
                         ) {
                             Row {
@@ -175,10 +169,7 @@ private fun BandalartListBottomSheetPreview() {
         BandalartListBottomSheet(
             bandalartList = dummyBandalartList.toImmutableList(),
             currentBandalartId = 0L,
-            onDismissRequest = {},
-            onAddClick = {},
-            onBandalartListItemClick = {},
-            // onBottomSheetUiAction = {},
+            onHomeUiAction = {},
         )
     }
 }

@@ -109,6 +109,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.OnBandalartListItemClick -> {
                 setRecentBandalartId(action.key)
                 getBandalart(action.key)
+                toggleBandalartListBottomSheet(false)
             }
 
             is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.cellType, action.isMainCellTitleEmpty, action.cellData)

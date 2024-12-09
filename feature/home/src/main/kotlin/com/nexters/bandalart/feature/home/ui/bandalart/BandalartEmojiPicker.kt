@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.nexters.bandalart.feature.home.ui.bandalart
 
 import androidx.compose.foundation.BorderStroke
@@ -16,15 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +32,6 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.launch
 
 private val emojiList = persistentListOf(
     "🔥", "😀", "😃", "😄", "😆", "🥹",
@@ -52,10 +45,8 @@ fun BandalartEmojiPicker(
     currentEmoji: String?,
     isBottomSheet: Boolean,
     onEmojiSelect: (String) -> Unit,
-    emojiPickerState: SheetState,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
     var selectedEmoji by remember { mutableStateOf(currentEmoji) }
     var prevSelectedEmoji by remember { mutableStateOf(currentEmoji) }
 
@@ -119,18 +110,13 @@ fun BandalartEmojiPicker(
                                     .aspectRatio(1f)
                                     .background(color = Gray100)
                                     .clickable {
-                                        if (selectedEmoji == emojiItem) selectedEmoji = null
-                                        else {
+                                        if (selectedEmoji == emojiItem) {
+                                            selectedEmoji = null
+                                        } else {
                                             prevSelectedEmoji = selectedEmoji
                                             selectedEmoji = emojiItem
                                         }
-                                        scope
-                                            .launch { emojiPickerState.hide() }
-                                            .invokeOnCompletion {
-                                                if (selectedEmoji != null) {
-                                                    onEmojiSelect(selectedEmoji!!)
-                                                }
-                                            }
+                                        onEmojiSelect(selectedEmoji!!)
                                     },
                                 contentAlignment = Alignment.Center,
                             ) {
@@ -155,7 +141,6 @@ private fun BandalartEmojiPickerPreview() {
         BandalartEmojiPicker(
             currentEmoji = "😎",
             isBottomSheet = false,
-            emojiPickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             onEmojiSelect = {},
         )
     }

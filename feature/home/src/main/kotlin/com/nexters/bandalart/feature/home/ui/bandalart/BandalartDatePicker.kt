@@ -1,4 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
 @file:SuppressLint("FrequentlyChangedStateReadInComposition")
 
 package com.nexters.bandalart.feature.home.ui.bandalart
@@ -18,14 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -44,23 +40,18 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 private val years = (2000..2050).map { it }
 private val monthsNumber = (1..12).map { it }
 private val days = (1..31).map { it }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartDatePicker(
     onDueDateSelect: (LocalDateTime?) -> Unit,
     currentDueDate: LocalDateTime,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-    val datePickerState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -85,12 +76,7 @@ fun BandalartDatePicker(
                 fontWeight = FontWeight.W700,
                 modifier = Modifier
                     .clickable {
-                        scope.launch { datePickerState.hide() }
-                            .invokeOnCompletion {
-                                if (!datePickerState.isVisible) {
-                                    onDueDateSelect(LocalDateTime.now())
-                                }
-                            }
+                        onDueDateSelect(LocalDateTime.now())
                     },
                 fontFamily = pretendard,
             )
@@ -102,13 +88,7 @@ fun BandalartDatePicker(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .clickable {
-                        scope
-                            .launch { datePickerState.hide() }
-                            .invokeOnCompletion {
-                                if (!datePickerState.isVisible) {
-                                    onDueDateSelect(selectedDateWithValidate(chosenYear.value, chosenMonth.value, chosenDay.value))
-                                }
-                            }
+                        onDueDateSelect(selectedDateWithValidate(chosenYear.value, chosenMonth.value, chosenDay.value))
                     },
                 fontFamily = pretendard,
             )
