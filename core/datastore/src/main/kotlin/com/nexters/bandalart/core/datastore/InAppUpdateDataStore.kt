@@ -20,19 +20,15 @@ class InAppUpdateDataStore @Inject constructor(
 
     private val rejectedVersionCodeKey = intPreferencesKey(REJECTED_VERSION_CODE)
 
-    suspend fun saveRejectedVersion(rejectedVersionCode: Int) {
+    suspend fun setLastRejectedUpdateVersion(rejectedVersionCode: Int) {
         dataStore.edit { preferences ->
             preferences[rejectedVersionCodeKey] = rejectedVersionCode
         }
     }
 
-    suspend fun hasRejectedUpdate(newVersionCode: Int): Boolean {
-        val rejectedVersion = dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }.first()[rejectedVersionCodeKey] ?: return false
-
-        return newVersionCode <= rejectedVersion
-    }
+    suspend fun getLastRejectedUpdateVersion() = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }.first()[rejectedVersionCodeKey] ?: 0
 }

@@ -136,6 +136,6 @@
     <string name="server_error_retry_message">Retry</string>
 
     <!-- in-app update -->
-    <string name="update_download_complete">Download successful. Restarting app in 5 seconds.</string>
+    <string name="update_download_complete">App update is complete. Please restart the app.</string>
 
 </resources>

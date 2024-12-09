@@ -138,6 +138,6 @@
     <string name="skeleton_trans_animate_label">Hamburger Icon</string>
 
     <!-- in-app update -->
-    <string name="update_download_complete">다운로드가 완료되었습니다. 5초 후 앱이 재시작됩니다.</string>
+    <string name="update_download_complete">앱의 업데이트가 완료되었습니다. 앱을 다시 시작해주세요.</string>
 
 </resources>
