@@ -138,5 +138,6 @@
 
     <!-- in-app update -->
     <string name="update_download_complete">アプリのアップデートが完了しました。アプリを再起動してください。</string>
+    <string name="app_version_info">バージョン: v%s</string>
 
 </resources>

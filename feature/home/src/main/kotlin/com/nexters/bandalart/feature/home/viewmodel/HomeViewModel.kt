@@ -113,6 +113,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeUiAction.OnBandalartCellClick -> handleBandalartCellClick(action.cellType, action.isMainCellTitleEmpty, action.cellData)
             is HomeUiAction.OnCloseButtonClick -> toggleCellBottomSheet(false)
+            is HomeUiAction.OnAppTitleClick -> showAppVersion()
         }
     }
 
@@ -424,6 +425,12 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { it.copy(clickedCellData = cellData) }
                 toggleCellBottomSheet(true, cellType)
             }
+        }
+    }
+
+    private fun showAppVersion() {
+        viewModelScope.launch {
+            _uiEvent.send(HomeUiEvent.ShowAppVersion)
         }
     }
 }

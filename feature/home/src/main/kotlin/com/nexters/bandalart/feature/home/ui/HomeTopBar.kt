@@ -50,7 +50,10 @@ internal fun HomeTopBar(
             AppTitle(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .padding(start = 20.dp, top = 2.dp),
+                    .padding(start = 20.dp, top = 2.dp)
+                    .clickable {
+                        onHomeUiAction(HomeUiAction.OnAppTitleClick)
+                    },
             )
             Spacer(modifier = Modifier.weight(1f))
             Box(

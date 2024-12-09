@@ -1,6 +1,7 @@
 package com.nexters.bandalart.feature.home
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -59,6 +60,7 @@ import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private const val SnackbarDuration = 1000L
 
@@ -76,6 +78,14 @@ internal fun HomeRoute(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val appVersion = remember {
+        try {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            Timber.tag("AppVersion").e(e, "Failed to get package info")
+            "Unknown"
+        }
+    }
 
     // TODO 굳이 derivedStateOf 를 사용하지 않아도 될 것 같음(쓸꺼면 제대로)
     val bandalartCount by remember {
@@ -118,6 +128,10 @@ internal fun HomeRoute(
 
             is HomeUiEvent.CaptureBandalart -> {
                 homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+            }
+
+            is HomeUiEvent.ShowAppVersion -> {
+                Toast.makeText(context, "버전 정보: v$appVersion", Toast.LENGTH_SHORT).show()
             }
         }
     }

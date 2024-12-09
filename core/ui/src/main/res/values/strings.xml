@@ -139,5 +139,6 @@
 
     <!-- in-app update -->
     <string name="update_download_complete">앱의 업데이트가 완료되었습니다. 앱을 다시 시작해주세요.</string>
+    <string name="app_version_info">버전 정보: v%s</string>
 
 </resources>

@@ -16,4 +16,5 @@ sealed interface HomeUiEvent {
     data class SaveBandalart(val bitmap: ImageBitmap) : HomeUiEvent
     data class ShareBandalart(val bitmap: ImageBitmap) : HomeUiEvent
     data class CaptureBandalart(val bitmap: ImageBitmap) : HomeUiEvent
+    data object ShowAppVersion: HomeUiEvent
 }
