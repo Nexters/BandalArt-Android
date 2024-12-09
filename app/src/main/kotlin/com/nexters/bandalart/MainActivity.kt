@@ -29,6 +29,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
+// TODO 왜 강제 업데이트 로직으로 돌지? patch 버전 올렸는데?
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -151,7 +152,7 @@ class MainActivity : ComponentActivity() {
         val availableVersionCode = appUpdateInfo.availableVersionCode()
 
         lifecycleScope.launch {
-            // 선택 업데이트이고 이전에 거절한 버전인 경우, 업데이트 표시하지 않음
+            // 선택 업데이트이고 이전에 업데이트를 거절한 버전인 경우, 업데이트를 표시하지 않음
             if (!isValidImmediateAppUpdate(availableVersionCode) &&
                 inAppUpdateRepository.isUpdateAlreadyRejected(availableVersionCode)
             ) {
