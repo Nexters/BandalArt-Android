@@ -3,6 +3,7 @@ package com.nexters.bandalart
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,30 +17,33 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
+import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.ui.BandalartApp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
-import com.nexters.bandalart.core.ui.R
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType = AppUpdateType.FLEXIBLE
 
-    private val updateResultLauncher = registerForActivityResult(
+    private val appUpdateResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result: ActivityResult ->
         if (result.resultCode != RESULT_OK) {
             Timber.e("Something went wrong with app update...")
+            finish()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        setupBackPressHandler()
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.registerListener(installStateUpdatedListener)
@@ -50,6 +54,18 @@ class MainActivity : ComponentActivity() {
                 BandalartApp()
             }
         }
+    }
+
+    private fun setupBackPressHandler() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (updateType == AppUpdateType.IMMEDIATE) {
+                    return
+                }
+                // 기본 뒤로가기 동작 수행
+                onBackPressedDispatcher.onBackPressed()
+            }
+        })
     }
 
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
@@ -71,7 +87,7 @@ class MainActivity : ComponentActivity() {
                 else -> false
             }
             if (isUpdateAvailable && isUpdateAllowed) {
-                appUpdateManager.startUpdateFlowForResult(appUpdateInfo, updateResultLauncher, AppUpdateOptions.newBuilder(updateType).build())
+                appUpdateManager.startUpdateFlowForResult(appUpdateInfo, appUpdateResultLauncher, AppUpdateOptions.newBuilder(updateType).build())
             }
         }
     }
@@ -81,7 +97,7 @@ class MainActivity : ComponentActivity() {
         if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo, updateResultLauncher, AppUpdateOptions.newBuilder(updateType).build())
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo, appUpdateResultLauncher, AppUpdateOptions.newBuilder(updateType).build())
                 }
             }
         }
