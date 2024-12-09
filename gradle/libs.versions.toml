@@ -3,8 +3,8 @@
 minSdk = "28"
 targetSdk = "34"
 compileSdk = "34"
-versionCode = "201030"
-versionName = "2.1.3"
+versionCode = "020132"
+versionName = "2.1.32"
 packageName = "com.nexters.bandalart.android"
 
 android-gradle-plugin = "8.5.2"
