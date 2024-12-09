@@ -3,8 +3,7 @@ package com.nexters.bandalart.core.data.repository
 import com.nexters.bandalart.core.data.mapper.toDto
 import com.nexters.bandalart.core.data.mapper.toEntity
 import com.nexters.bandalart.core.database.BandalartDao
-import com.nexters.bandalart.core.datastore.datasource.CompletedBandalartIdDataSource
-import com.nexters.bandalart.core.datastore.datasource.RecentBandalartIdDataSource
+import com.nexters.bandalart.core.datastore.BandalartDataStore
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.BandalartEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
@@ -17,8 +16,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class BandalartRepositoryImpl @Inject constructor(
-    private val recentBandalartIdDataSource: RecentBandalartIdDataSource,
-    private val completedBandalartIdDataSource: CompletedBandalartIdDataSource,
+    private val bandalartDataStore: BandalartDataStore,
     private val bandalartDao: BandalartDao,
 ) : BandalartRepository {
     override suspend fun createBandalart(): BandalartEntity {
@@ -88,26 +86,26 @@ internal class BandalartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setRecentBandalartId(recentBandalartId: Long) {
-        recentBandalartIdDataSource.setRecentBandalartId(recentBandalartId)
+        bandalartDataStore.setRecentBandalartId(recentBandalartId)
     }
 
     override suspend fun getRecentBandalartId(): Long {
-        return recentBandalartIdDataSource.getRecentBandalartId()
+        return bandalartDataStore.getRecentBandalartId()
     }
 
     override suspend fun getPrevBandalartList(): List<Pair<Long, Boolean>> {
-        return completedBandalartIdDataSource.getPrevBandalartList()
+        return bandalartDataStore.getPrevBandalartList()
     }
 
     override suspend fun upsertBandalartId(bandalartId: Long, isCompleted: Boolean) {
-        completedBandalartIdDataSource.upsertBandalartId(bandalartId, isCompleted)
+        bandalartDataStore.upsertBandalartId(bandalartId, isCompleted)
     }
 
     override suspend fun checkCompletedBandalartId(bandalartId: Long): Boolean {
-        return completedBandalartIdDataSource.checkCompletedBandalartId(bandalartId)
+        return bandalartDataStore.checkCompletedBandalartId(bandalartId)
     }
 
     override suspend fun deleteCompletedBandalartId(bandalartId: Long) {
-        completedBandalartIdDataSource.deleteBandalartId(bandalartId)
+        bandalartDataStore.deleteBandalartId(bandalartId)
     }
 }
