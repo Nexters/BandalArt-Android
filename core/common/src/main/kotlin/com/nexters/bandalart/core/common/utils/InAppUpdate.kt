@@ -2,7 +2,7 @@ package com.nexters.bandalart.core.common.utils
 
 fun isValidImmediateAppUpdate(
     updateVersionCode: String,
-    currentVersionCode: String
+    currentVersionCode: String,
 ): Boolean {
     // Major 버전 비교 (앞 2자리)
     val updateMajor = updateVersionCode.take(2).toInt()

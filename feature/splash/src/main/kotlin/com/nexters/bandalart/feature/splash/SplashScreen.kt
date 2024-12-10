@@ -40,6 +40,7 @@ import com.nexters.bandalart.core.ui.component.AppTitle
 import timber.log.Timber
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
+@Suppress("TooGenericExceptionCaught")
 @Composable
 internal fun SplashRoute(
     navigateToOnBoarding: (NavOptions) -> Unit,
@@ -52,7 +53,7 @@ internal fun SplashRoute(
     val currentVersionCode = BuildConfig.VERSION_CODE
 
     val appUpdateResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult()
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
         if (result.resultCode != Activity.RESULT_OK) {
             activity.finish()
@@ -71,7 +72,7 @@ internal fun SplashRoute(
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         appUpdateResultLauncher,
-                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                     )
                 } else {
                     viewModel.checkOnboardingStatus()
