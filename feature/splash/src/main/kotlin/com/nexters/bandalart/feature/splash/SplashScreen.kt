@@ -29,7 +29,6 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 internal fun SplashRoute(
     navigateToOnBoarding: (NavOptions) -> Unit,
     navigateToHome: (NavOptions) -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel(),
 ) {
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
@@ -50,9 +49,7 @@ internal fun SplashRoute(
         }
     }
 
-    SplashScreen(
-        modifier = modifier,
-    )
+    SplashScreen()
 }
 
 @Composable
