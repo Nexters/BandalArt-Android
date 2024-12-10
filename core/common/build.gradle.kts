@@ -15,8 +15,13 @@ android {
 
 dependencies {
     implementations(
-        libs.androidx.core,
         libs.kotlinx.datetime,
+
+        libs.androidx.core,
+
+        libs.app.update,
+        libs.app.update.ktx,
+
         libs.timber,
         libs.bundles.retrofit,
     )

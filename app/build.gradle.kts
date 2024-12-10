@@ -49,6 +49,10 @@ android {
         }
     }
 
+    defaultConfig {
+        buildConfigField("String", "VERSION_CODE", "\"${libs.versions.versionCode.get()}\"")
+    }
+
     buildFeatures {
         buildConfig = true
     }
@@ -77,6 +81,7 @@ dependencies {
         libs.androidx.navigation.compose,
         libs.androidx.hilt.navigation.compose,
         libs.app.update,
+        libs.app.update.ktx,
         libs.timber,
     )
 }

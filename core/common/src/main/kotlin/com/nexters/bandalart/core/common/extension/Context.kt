@@ -1,7 +1,9 @@
 package com.nexters.bandalart.core.common.extension
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat.PNG
 import android.net.Uri
@@ -140,4 +142,13 @@ private fun Context.updatePendingStatus(uri: Uri, contentValues: ContentValues) 
         contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
         contentResolver.update(uri, contentValues, null, null)
     }
+}
+
+fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    error("Permissions should be called in the context of an Activity")
 }

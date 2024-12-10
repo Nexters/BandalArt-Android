@@ -1,8 +1,11 @@
 package com.nexters.bandalart.feature.home
 
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,10 +34,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
+import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -78,12 +87,49 @@ internal fun HomeRoute(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val currentVersionCode = BuildConfig.VERSION_CODE
     val appVersion = remember {
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.tag("AppVersion").e(e, "Failed to get package info")
             "Unknown"
+        }
+    }
+
+    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+
+    val appUpdateResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
+            scope.launch {
+                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
+                    homeViewModel.setLastRejectedUpdateVersion(versionCode)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        try {
+            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                val availableVersionCode = appUpdateInfo.availableVersionCode()
+                if (!isValidImmediateAppUpdate(availableVersionCode.toString(), currentVersionCode) &&
+                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                ) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        appUpdateResultLauncher,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to check for flexible update")
         }
     }
 

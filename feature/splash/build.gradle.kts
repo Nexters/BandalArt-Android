@@ -7,6 +7,10 @@ plugins {
 android {
     namespace = "com.nexters.bandalart.feature.splash"
 
+    defaultConfig {
+        buildConfigField("String", "VERSION_CODE", "\"${libs.versions.versionCode.get()}\"")
+    }
+
     buildFeatures {
         buildConfig = true
     }
@@ -18,6 +22,9 @@ ksp {
 
 dependencies {
     implementations(
+        libs.app.update,
+        libs.app.update.ktx,
+
         libs.lottie.compose,
         libs.timber,
     )

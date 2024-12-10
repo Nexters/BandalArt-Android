@@ -3,7 +3,6 @@ package com.nexters.bandalart
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,9 +16,11 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.BuildConfig
 import com.nexters.bandalart.ui.BandalartApp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -29,7 +30,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-// TODO 왜 강제 업데이트 로직으로 돌지? patch 버전 올렸는데?
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var appUpdateManager: AppUpdateManager
     private var currentUpdateType: Int? = null
+    private val currentVersionCode = BuildConfig.VERSION_CODE
 
     private val appUpdateResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult(),
@@ -74,7 +75,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        setupBackPressHandler()
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         setupInAppUpdate()
         setContent {
@@ -85,26 +85,14 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setupInAppUpdate() {
-        appUpdateManager.registerListener(installStateUpdatedListener)
+        if (currentUpdateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(installStateUpdatedListener)
+        }
+
         checkForAppUpdates()
     }
 
-    private fun setupBackPressHandler() {
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    // 강제 업데이트일 경우, 뒤로가기 동작이 수행되지 않도록
-                    if (currentUpdateType == AppUpdateType.IMMEDIATE) {
-                        return
-                    }
-                    // 선택 업데이트일 경우, 기본 뒤로가기 동작 수행
-                    onBackPressedDispatcher.onBackPressed()
-                }
-            },
-        )
-    }
-
+    // TODO 이거 옮겨야 함(선택 업데이트시 사용)
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         when (state.installStatus()) {
             InstallStatus.DOWNLOADED -> {
@@ -153,13 +141,13 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             // 선택 업데이트이고 이전에 업데이트를 거절한 버전인 경우, 업데이트를 표시하지 않음
-            if (!isValidImmediateAppUpdate(availableVersionCode) &&
+            if (!isValidImmediateAppUpdate(availableVersionCode.toString(), currentVersionCode) &&
                 inAppUpdateRepository.isUpdateAlreadyRejected(availableVersionCode)
             ) {
                 return@launch
             }
 
-            val updateType = if (isValidImmediateAppUpdate(availableVersionCode)) {
+            val updateType = if (isValidImmediateAppUpdate(availableVersionCode.toString(), currentVersionCode)) {
                 AppUpdateType.IMMEDIATE
             } else {
                 AppUpdateType.FLEXIBLE
@@ -176,21 +164,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun isValidImmediateAppUpdate(updateVersionCode: Int): Boolean {
-        // Major 버전 비교 (앞 2자리)
-        val updateMajor = updateVersionCode / 10_000
-        val currentMajor = BuildConfig.VERSION_CODE / 10_000
-
-        // Minor 버전 비교 (중간 2자리)
-        val updateMinor = (updateVersionCode % 10_000) / 100
-        val currentMinor = (BuildConfig.VERSION_CODE % 10_000) / 100
-
-        return updateMajor > currentMajor || updateMinor > currentMinor
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
-        appUpdateManager.unregisterListener(installStateUpdatedListener)
+        if (currentUpdateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
     }
 }

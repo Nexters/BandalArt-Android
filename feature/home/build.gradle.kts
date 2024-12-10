@@ -7,6 +7,10 @@ plugins {
 android {
     namespace = "com.nexters.bandalart.feature.home"
 
+    defaultConfig {
+        buildConfigField("String", "VERSION_CODE", "\"${libs.versions.versionCode.get()}\"")
+    }
+
     buildFeatures {
         buildConfig = true
     }
@@ -20,6 +24,12 @@ dependencies {
     implementations(
         libs.kotlinx.collections.immutable,
         libs.kotlinx.datetime,
+
+        libs.androidx.core,
+
+        libs.app.update,
+        libs.app.update.ktx,
+
         libs.lottie.compose,
         libs.facebook.shimmer,
         libs.timber,

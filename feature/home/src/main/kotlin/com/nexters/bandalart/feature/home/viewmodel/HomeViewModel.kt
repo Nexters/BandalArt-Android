@@ -7,6 +7,7 @@ import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
+import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -29,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val bandalartRepository: BandalartRepository,
+    private val inAppUpdateRepository: InAppUpdateRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -433,5 +435,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiEvent.send(HomeUiEvent.ShowAppVersion)
         }
+    }
+
+    suspend fun setLastRejectedUpdateVersion(versionCode: Int) {
+        inAppUpdateRepository.setLastRejectedUpdateVersion(versionCode)
+    }
+
+    suspend fun isUpdateAlreadyRejected(versionCode: Int): Boolean {
+        return inAppUpdateRepository.isUpdateAlreadyRejected(versionCode)
     }
 }
