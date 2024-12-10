@@ -7,10 +7,6 @@ plugins {
 android {
     namespace = "com.nexters.bandalart.feature.home"
 
-    defaultConfig {
-        buildConfigField("String", "VERSION_CODE", "\"${libs.versions.versionCode.get()}\"")
-    }
-
     buildFeatures {
         buildConfig = true
     }

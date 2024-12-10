@@ -8,6 +8,15 @@ plugins {
 android {
     namespace = "com.nexters.bandalart.core.common"
 
+    defaultConfig {
+        val major = libs.versions.majorVersion.get().toInt()
+        val minor = libs.versions.minorVersion.get().toInt()
+        val patch = libs.versions.patchVersion.get().toInt()
+        val versionCode = (major * 10000) + (minor * 100) + patch
+
+        buildConfigField("int", "VERSION_CODE", "$versionCode")
+    }
+
     buildFeatures {
         buildConfig = true
     }

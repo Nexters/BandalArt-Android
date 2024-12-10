@@ -1,16 +1,13 @@
 package com.nexters.bandalart.core.common.utils
 
-fun isValidImmediateAppUpdate(
-    updateVersionCode: String,
-    currentVersionCode: String,
-): Boolean {
-    // Major 버전 비교 (앞 2자리)
-    val updateMajor = updateVersionCode.take(2).toInt()
-    val currentMajor = currentVersionCode.take(2).toInt()
+import com.nexters.bandalart.core.common.BuildConfig
 
-    // Minor 버전 비교 (중간 2자리)
-    val updateMinor = updateVersionCode.substring(2, 4).toInt()
-    val currentMinor = currentVersionCode.substring(2, 4).toInt()
+fun isValidImmediateAppUpdate(updateVersion: Int): Boolean {
+    val updateMajor = updateVersion / 10000
+    val updateMinor = (updateVersion % 10000) / 100
+
+    val currentMajor = BuildConfig.VERSION_CODE / 10000
+    val currentMinor = (BuildConfig.VERSION_CODE % 10000) / 100
 
     return updateMajor > currentMajor || updateMinor > currentMinor
 }

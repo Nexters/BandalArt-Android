@@ -14,8 +14,13 @@ internal class AndroidApplicationConventionPlugin : BuildLogicConventionPlugin(
 
             defaultConfig {
                 targetSdk = libs.versions.targetSdk.get().toInt()
-                versionCode = libs.versions.versionCode.get().toInt()
-                versionName = libs.versions.versionName.get()
+
+                val major = libs.versions.majorVersion.get().toInt()
+                val minor = libs.versions.minorVersion.get().toInt()
+                val patch = libs.versions.patchVersion.get().toInt()
+
+                versionCode = (major * 10000) + (minor * 100) + patch
+                versionName = "$major.$minor.$patch"
             }
         }
     },

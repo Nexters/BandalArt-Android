@@ -50,12 +50,11 @@ internal fun SplashRoute(
     val context = LocalContext.current
     val activity = context.findActivity()
     val appUpdateManager: AppUpdateManager = remember { AppUpdateManagerFactory.create(context) }
-    val currentVersionCode = BuildConfig.VERSION_CODE
 
     val appUpdateResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
-        if (result.resultCode != Activity.RESULT_OK) {
+        if (result.resultCode == Activity.RESULT_CANCELED) {
             activity.finish()
         }
     }
@@ -65,8 +64,9 @@ internal fun SplashRoute(
             val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
 
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                val availableVersionCode = appUpdateInfo.availableVersionCode().toString()
-                if (isValidImmediateAppUpdate(availableVersionCode, currentVersionCode) &&
+                val availableVersionCode = appUpdateInfo.availableVersionCode()
+
+                if (isValidImmediateAppUpdate(availableVersionCode) &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
                 ) {
                     appUpdateManager.startUpdateFlowForResult(

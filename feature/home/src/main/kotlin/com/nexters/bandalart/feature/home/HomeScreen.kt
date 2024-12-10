@@ -92,7 +92,6 @@ internal fun HomeRoute(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val currentVersionCode = BuildConfig.VERSION_CODE
     val appVersion = remember {
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
@@ -146,7 +145,7 @@ internal fun HomeRoute(
 
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                 val availableVersionCode = appUpdateInfo.availableVersionCode()
-                if (!isValidImmediateAppUpdate(availableVersionCode.toString(), currentVersionCode) &&
+                if (!isValidImmediateAppUpdate(availableVersionCode) &&
                     !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
                 ) {
