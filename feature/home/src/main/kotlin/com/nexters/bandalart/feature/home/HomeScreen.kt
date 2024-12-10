@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -36,7 +37,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
@@ -70,6 +73,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.time.Duration.Companion.seconds
 
 private const val SnackbarDuration = 1000L
 
@@ -99,6 +103,30 @@ internal fun HomeRoute(
     }
 
     val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+
+    val installStateUpdatedListener = remember {
+        InstallStateUpdatedListener { state ->
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.update_download_complete),
+                    Toast.LENGTH_LONG,
+                ).show()
+
+                scope.launch {
+                    delay(5.seconds)
+                    appUpdateManager.completeUpdate()
+                }
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        appUpdateManager.registerListener(installStateUpdatedListener)
+        onDispose {
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
+    }
 
     val appUpdateResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
