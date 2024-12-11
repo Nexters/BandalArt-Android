@@ -75,6 +75,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarDuration.Indefinite
+import androidx.compose.material3.SnackbarHost
 import timber.log.Timber
 
 private const val SnackbarDuration = 1500L
@@ -93,7 +94,7 @@ internal fun HomeRoute(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState()}
+    val snackbarHostState = remember { SnackbarHostState() }
     val appVersion = remember {
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
@@ -112,7 +113,7 @@ internal fun HomeRoute(
                     val snackbarResult = snackbarHostState.showSnackbar(
                         message = context.getString(R.string.update_ready_to_install),
                         actionLabel = context.getString(R.string.update_action_restart),
-                        duration = Indefinite
+                        duration = Indefinite,
                     )
 
                     // 재시작 버튼 클릭시
@@ -221,6 +222,7 @@ internal fun HomeRoute(
         shareBandalart = homeViewModel::shareBandalart,
         captureBandalart = homeViewModel::captureBandalart,
         saveBandalart = homeViewModel::saveBandalartImage,
+        snackbarHostState = snackbarHostState,
         modifier = modifier,
     )
 }
@@ -233,6 +235,7 @@ internal fun HomeScreen(
     shareBandalart: (ImageBitmap) -> Unit,
     captureBandalart: (ImageBitmap) -> Unit,
     saveBandalart: (ImageBitmap) -> Unit,
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -358,6 +361,12 @@ internal fun HomeScreen(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
+
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter),
+            )
+
             if (uiState.isShowSkeleton) {
                 BandalartSkeleton()
             }
@@ -399,6 +408,7 @@ private fun HomeScreenSingleBandalartPreview() {
             shareBandalart = {},
             captureBandalart = {},
             saveBandalart = {},
+            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
@@ -418,6 +428,7 @@ private fun HomeScreenMultipleBandalartPreview() {
             shareBandalart = {},
             captureBandalart = {},
             saveBandalart = {},
+            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
