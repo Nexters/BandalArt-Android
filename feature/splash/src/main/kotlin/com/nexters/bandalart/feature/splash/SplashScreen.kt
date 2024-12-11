@@ -45,7 +45,6 @@ import com.nexters.bandalart.core.ui.component.AppTitle
 import timber.log.Timber
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
-// TODO AddOnCompleteListener 와 AddOnSuccessListener 는 다르다
 @Suppress("TooGenericExceptionCaught")
 @Composable
 internal fun SplashRoute(
