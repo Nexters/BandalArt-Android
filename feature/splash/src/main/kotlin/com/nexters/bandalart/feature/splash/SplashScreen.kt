@@ -62,7 +62,9 @@ internal fun SplashRoute(
     val appUpdateResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
-        if (result.resultCode == Activity.RESULT_CANCELED) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            appUpdateManager.completeUpdate()
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
             activity.finish()
         }
     }
@@ -94,6 +96,7 @@ internal fun SplashRoute(
         }
     }
 
+    // LifecycleResumeEffect 는 내부에 suspend 함수를 사용할 수 없다.
     LaunchedEffect(lifecycleState) {
         if (lifecycleState == Lifecycle.State.RESUMED) {
             try {
