@@ -327,14 +327,13 @@ internal fun HomeScreen(
                         }
                         .background(Gray50),
                 ) {
-                    uiState.bandalartData?.let { bandalart ->
+                    if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
                         HomeHeader(
-                            bandalartData = bandalart,
+                            bandalartData = uiState.bandalartData,
                             isDropDownMenuOpened = uiState.isDropDownMenuOpened,
+                            cellData = uiState.bandalartCellData,
                             onAction = onHomeUiAction,
                         )
-                    }
-                    if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
                         BandalartChart(
                             bandalartData = uiState.bandalartData,
                             bandalartCellData = uiState.bandalartCellData,

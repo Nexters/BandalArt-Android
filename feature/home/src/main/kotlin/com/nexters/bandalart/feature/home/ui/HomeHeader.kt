@@ -40,11 +40,14 @@ import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
+import com.nexters.bandalart.feature.home.model.CellType
+import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
@@ -53,7 +56,8 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 fun HomeHeader(
     bandalartData: BandalartUiModel,
     isDropDownMenuOpened: Boolean,
-    onAction: (HomeUiAction) -> Unit = {},
+    cellData: BandalartCellEntity,
+    onAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -110,7 +114,9 @@ fun HomeHeader(
                     fontWeight = FontWeight.W700,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .clickable { onAction(HomeUiAction.ToggleCellBottomSheet(true)) },
+                        .clickable {
+                            onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                        },
                     letterSpacing = (-0.4).sp,
                 )
                 Icon(
@@ -118,7 +124,7 @@ fun HomeHeader(
                     contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable(onClick = { onAction(HomeUiAction.ToggleDropDownMenu(true)) }),
+                        .clickable { onAction(HomeUiAction.ToggleDropDownMenu(true)) },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
@@ -203,6 +209,8 @@ private fun HomeHeaderPreview() {
         HomeHeader(
             bandalartData = dummyBandalartData,
             isDropDownMenuOpened = false,
+            cellData = dummyBandalartCellData,
+            onAction = {},
         )
     }
 }
