@@ -4,7 +4,7 @@ minSdk = "28"
 targetSdk = "34"
 compileSdk = "34"
 majorVersion = "2"
-minorVersion = "9"
+minorVersion = "11"
 patchVersion = "0"
 packageName = "com.nexters.bandalart.android"
 

@@ -62,9 +62,7 @@ internal fun SplashRoute(
     val appUpdateResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            appUpdateManager.completeUpdate()
-        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+        if (result.resultCode == Activity.RESULT_CANCELED) {
             activity.finish()
         }
     }
