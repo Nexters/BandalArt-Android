@@ -63,22 +63,34 @@ internal fun SplashRoute(
         try {
             val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
 
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                val availableVersionCode = appUpdateInfo.availableVersionCode()
+            when (appUpdateInfo.updateAvailability()) {
+                UpdateAvailability.UPDATE_AVAILABLE -> {
+                    val availableVersionCode = appUpdateInfo.availableVersionCode()
 
-                if (isValidImmediateAppUpdate(availableVersionCode) &&
-                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                ) {
+                    if (isValidImmediateAppUpdate(availableVersionCode) &&
+                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                    ) {
+                        appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            appUpdateResultLauncher,
+                            AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
+                        )
+                    } else {
+                        viewModel.checkOnboardingStatus()
+                    }
+                }
+
+                UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS -> {
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         appUpdateResultLauncher,
                         AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                     )
-                } else {
+                }
+
+                else -> {
                     viewModel.checkOnboardingStatus()
                 }
-            } else {
-                viewModel.checkOnboardingStatus()
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to check for immediate update")
