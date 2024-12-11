@@ -136,7 +136,8 @@
     <string name="server_error_retry_message">Retry</string>
 
     <!-- in-app update -->
-    <string name="update_download_complete">App update is complete. Please restart the app.</string>
+    <string name="update_ready_to_install">App update is ready to install.</string>
+    <string name="update_action_restart">Restart</string>
     <string name="app_version_info">Version: v%s</string>
 
 </resources>

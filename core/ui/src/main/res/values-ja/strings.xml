@@ -137,7 +137,8 @@
     <string name="skeleton_trans_animate_label">メニューアイコン</string>
 
     <!-- in-app update -->
-    <string name="update_download_complete">アプリのアップデートが完了しました。アプリを再起動してください。</string>
+    <string name="update_ready_to_install">アプリのアップデートのインストール準備が完了しました。</string>
+    <string name="update_action_restart">再起動</string>
     <string name="app_version_info">バージョン: v%s</string>
 
 </resources>

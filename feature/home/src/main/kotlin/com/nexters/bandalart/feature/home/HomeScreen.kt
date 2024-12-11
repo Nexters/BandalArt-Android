@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -72,10 +74,10 @@ import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.material3.SnackbarDuration.Indefinite
 import timber.log.Timber
-import kotlin.time.Duration.Companion.seconds
 
-private const val SnackbarDuration = 1000L
+private const val SnackbarDuration = 1500L
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
@@ -92,6 +94,7 @@ internal fun HomeRoute(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState()}
     val appVersion = remember {
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
@@ -106,15 +109,17 @@ internal fun HomeRoute(
     val installStateUpdatedListener = remember {
         InstallStateUpdatedListener { state ->
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.update_download_complete),
-                    Toast.LENGTH_LONG,
-                ).show()
-
                 scope.launch {
-                    delay(5.seconds)
-                    appUpdateManager.completeUpdate()
+                    val snackbarResult = snackbarHostState.showSnackbar(
+                        message = context.getString(R.string.update_ready_to_install),
+                        actionLabel = context.getString(R.string.update_action_restart),
+                        duration = Indefinite
+                    )
+
+                    // 재시작 버튼 클릭시
+                    if (snackbarResult == SnackbarResult.ActionPerformed) {
+                        appUpdateManager.completeUpdate()
+                    }
                 }
             }
         }
