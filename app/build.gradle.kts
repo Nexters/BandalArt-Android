@@ -77,5 +77,9 @@ dependencies {
         libs.androidx.navigation.compose,
         libs.androidx.hilt.navigation.compose,
         libs.timber,
+
+        libs.bundles.circuit
     )
+    api(libs.circuit.codegen.annotation)
+    ksp(libs.circuit.codegen.ksp)
 }

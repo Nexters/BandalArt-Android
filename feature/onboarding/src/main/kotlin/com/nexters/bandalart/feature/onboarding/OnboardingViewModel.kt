@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed interface OnBoardingUiEvent {
-    data object NavigateToHome : OnBoardingUiEvent
+sealed interface OnboardingUiEvent {
+    data object NavigateToHome : OnboardingUiEvent
 }
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val onboardingRepository: OnboardingRepository,
 ) : ViewModel() {
-    private val _uiEvent = Channel<OnBoardingUiEvent>()
+    private val _uiEvent = Channel<OnboardingUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun setOnboardingCompletedStatus(flag: Boolean) {
@@ -29,7 +29,7 @@ class OnboardingViewModel @Inject constructor(
 
     private fun navigateToHome() {
         viewModelScope.launch {
-            _uiEvent.send(OnBoardingUiEvent.NavigateToHome)
+            _uiEvent.send(OnboardingUiEvent.NavigateToHome)
         }
     }
 }

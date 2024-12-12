@@ -32,8 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -41,44 +39,57 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
-import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import kotlinx.parcelize.Parcelize
 import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
-@Composable
-internal fun OnBoardingRoute(
-    navigateToHome: (NavOptions) -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = hiltViewModel(),
-) {
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is OnBoardingUiEvent.NavigateToHome -> {
-                val options = NavOptions.Builder()
-                    .setPopUpTo(Route.Onboarding, inclusive = true)
-                    .build()
-                navigateToHome(options)
-            }
-        }
-    }
+@Parcelize
+data object OnBoardingScreen : Screen {
+    data class State(
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    OnBoardingScreen(
-        setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
-        modifier = modifier,
-    )
+    sealed interface Event : CircuitUiEvent {
+        data object NavigateToHome : Event
+    }
 }
 
+//@Composable
+//internal fun OnboardingRoute(
+//    navigateToHome: (NavOptions) -> Unit,
+//    modifier: Modifier = Modifier,
+//    viewModel: OnboardingViewModel = hiltViewModel(),
+//) {
+//    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
+//        when (event) {
+//            is OnBoardingUiEvent.NavigateToHome -> {
+//                val options = NavOptions.Builder()
+//                    .setPopUpTo(Route.Onboarding, inclusive = true)
+//                    .build()
+//                navigateToHome(options)
+//            }
+//        }
+//    }
+//
+//    OnBoardingScreen(
+//        setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
+//        modifier = modifier,
+//    )
+//}
+
 @Composable
-internal fun OnBoardingScreen(
+internal fun OnBoarding(
     setOnboardingCompletedStatus: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -258,7 +269,7 @@ internal fun OnBoardingScreen(
 @Composable
 private fun OnBoardingScreenPreview() {
     BandalartTheme {
-        OnBoardingScreen(
+        OnBoarding(
             setOnboardingCompletedStatus = {},
         )
     }

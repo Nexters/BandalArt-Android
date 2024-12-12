@@ -76,9 +76,56 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
+import com.nexters.bandalart.core.common.utils.UiText
+import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.feature.home.model.CellType
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 
 private const val SnackbarDuration = 1500L
+
+@Parcelize
+data object HomeScreen : Screen {
+    data class State(
+        val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
+        val bandalartData: BandalartUiModel? = null,
+        val bandalartCellData: BandalartCellEntity? = null,
+        val isDropDownMenuOpened: Boolean = false,
+        val isBandalartDeleteAlertDialogOpened: Boolean = false,
+        val isBandalartListBottomSheetOpened: Boolean = false,
+        val isCellBottomSheetOpened: Boolean = false,
+        val isEmojiBottomSheetOpened: Boolean = false,
+        val isBandalartCompleted: Boolean = false,
+        val isShowSkeleton: Boolean = false,
+        val isShared: Boolean = false,
+        val isCaptured: Boolean = false,
+        val bandalartChartUrl: String? = null,
+        val clickedCellType: CellType = CellType.MAIN,
+        val clickedCellData: BandalartCellEntity? = null,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
+
+    sealed interface Event : CircuitUiEvent {
+        data class NavigateToComplete(
+            val id: Long,
+            val title: String,
+            val profileEmoji: String,
+            val bandalartChart: String,
+        ) : Event
+
+        data class ShowSnackbar(val message: UiText) : Event
+        data class ShowToast(val message: UiText) : Event
+        data class SaveBandalart(val bitmap: ImageBitmap) : Event
+        data class ShareBandalart(val bitmap: ImageBitmap) : Event
+        data class CaptureBandalart(val bitmap: ImageBitmap) : Event
+        data object ShowAppVersion : Event
+    }
+}
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리

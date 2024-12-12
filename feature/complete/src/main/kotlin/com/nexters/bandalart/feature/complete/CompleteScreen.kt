@@ -50,42 +50,61 @@ import com.nexters.bandalart.feature.complete.ui.CompleteTopBar
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import kotlinx.parcelize.Parcelize
 
-@Composable
-internal fun CompleteRoute(
-    onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: CompleteViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+@Parcelize
+data object CompleteScreen: Screen {
+    data class State(
+        val id: Long = 0L,
+        val title: String = "",
+        val profileEmoji: String = "",
+        val isShared: Boolean = false,
+        val bandalartChartImageUri: String = "",
+    ) : CircuitUiState
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is CompleteUiEvent.NavigateBack -> {
-                onNavigateBack()
-            }
-
-            is CompleteUiEvent.SaveBandalart -> {
-                context.saveUriToGallery(event.imageUri)
-                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
-            }
-
-            is CompleteUiEvent.ShareBandalart -> {
-                context.shareImage(event.imageUri)
-            }
-        }
+    sealed interface Event : CircuitUiEvent {
+        data object NavigateBack : Event
     }
-
-    CompleteScreen(
-        uiState = uiState,
-        onAction = viewModel::onAction,
-        modifier = modifier,
-    )
 }
 
+//@Composable
+//internal fun CompleteRoute(
+//    onNavigateBack: () -> Unit,
+//    modifier: Modifier = Modifier,
+//    viewModel: CompleteViewModel = hiltViewModel(),
+//) {
+//    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+//    val context = LocalContext.current
+//
+//    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
+//        when (event) {
+//            is CompleteUiEvent.NavigateBack -> {
+//                onNavigateBack()
+//            }
+//
+//            is CompleteUiEvent.SaveBandalart -> {
+//                context.saveUriToGallery(event.imageUri)
+//                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+//            }
+//
+//            is CompleteUiEvent.ShareBandalart -> {
+//                context.shareImage(event.imageUri)
+//            }
+//        }
+//    }
+//
+//    CompleteScreen(
+//        uiState = uiState,
+//        onAction = viewModel::onAction,
+//        modifier = modifier,
+//    )
+//}
+
 @Composable
-internal fun CompleteScreen(
+internal fun Complete(
     uiState: CompleteUiState,
     onAction: (CompleteUiAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -209,9 +228,9 @@ internal fun CompleteScreen(
 
 @DevicePreview
 @Composable
-private fun CompleteScreenPreview() {
+private fun CompletePreview() {
     BandalartTheme {
-        CompleteScreen(
+        Complete(
             uiState = CompleteUiState(
                 id = 0L,
                 title = "발전하는 예진",
