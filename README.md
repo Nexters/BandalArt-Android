@@ -30,6 +30,8 @@
 ## Article
 [Custom Splash Screen 만드는 방법(Splash Screen API을 사용하는 경우)](https://velog.io/@mraz3068/How-to-make-Custom-Splash-Screen-with-Splash-Screen-API)
 
+[In-app update 적용해보기 with Compose](https://velog.io/@mraz3068/Implementing-In-app-update-with-Compose)
+
 ## Development
 
 ### Required
@@ -53,6 +55,7 @@
   - StartUp
   - Splash
   - Room
+  - In-app update
 
 - Kotlin Libraries (Coroutine, DateTime, Serialization)
 - Compose
