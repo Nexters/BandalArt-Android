@@ -7,19 +7,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.feature.home.HomeScreen
-import com.nexters.bandalart.ui.BandalartApp
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
+import com.slack.circuit.overlay.ContentWithOverlays
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var circut: Circuit
+    lateinit var circuit: Circuit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -30,11 +30,17 @@ class MainActivity : ComponentActivity() {
                 val backStack = rememberSaveableBackStack(root = HomeScreen)
                 val navigator = rememberCircuitNavigator(backStack)
 
-                CircuitCompositionLocals(circut) {
-                    NavigableCircuitContent(
-                        navigator = navigator,
-                        backStack = backStack,
-                    )
+                CircuitCompositionLocals(circuit) {
+                    ContentWithOverlays {
+                        NavigableCircuitContent(
+                            navigator = navigator,
+                            backStack = backStack,
+                            decoration = GestureNavigationDecoration(
+                                circuit.defaultNavDecoration,
+                                navigator::pop,
+                            )
+                        )
+                    }
                 }
 
                 // BandalartApp()

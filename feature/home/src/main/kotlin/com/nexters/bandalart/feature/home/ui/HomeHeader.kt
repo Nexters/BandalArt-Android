@@ -45,11 +45,13 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
+import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
@@ -57,7 +59,7 @@ fun HomeHeader(
     bandalartData: BandalartUiModel,
     isDropDownMenuOpened: Boolean,
     cellData: BandalartCellEntity,
-    onAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -73,7 +75,10 @@ fun HomeHeader(
                             .width(52.dp)
                             .aspectRatio(1f)
                             .background(Gray100)
-                            .clickable { onAction(HomeUiAction.ToggleEmojiBottomSheet(true)) },
+                            .clickable {
+                                // onAction(HomeUiAction.ToggleEmojiBottomSheet(true))
+                                // eventSink(Event.ToggleEmojiBottomSheet(true))
+                            },
                         contentAlignment = Alignment.Center,
                     ) {
                         if (bandalartData.profileEmoji.isNullOrEmpty()) {
@@ -115,7 +120,8 @@ fun HomeHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clickable {
-                            onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                            // onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                            // eventSink(Event.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
                         },
                     letterSpacing = (-0.4).sp,
                 )
@@ -124,14 +130,23 @@ fun HomeHeader(
                     contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable { onAction(HomeUiAction.ToggleDropDownMenu(true)) },
+                        .clickable {
+                            // onAction(HomeUiAction.ToggleDropDownMenu(true))
+                            // eventSink(Event.ToggleDropDownMenu(true))
+                        },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
-                    toggleDropDownMenu = { flag -> onAction(HomeUiAction.ToggleDropDownMenu(flag)) },
+                    toggleDropDownMenu = { flag ->
+                        // onAction(HomeUiAction.ToggleDropDownMenu(flag))
+                    },
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onSaveClick = { onAction(HomeUiAction.OnSaveClick) },
-                    onDeleteClick = { onAction(HomeUiAction.OnDeleteClick) },
+                    onSaveClick = {
+                        // onAction(HomeUiAction.OnSaveClick)
+                    },
+                    onDeleteClick = {
+                        // onAction(HomeUiAction.OnDeleteClick)
+                    },
                 )
             }
         }
@@ -210,7 +225,7 @@ private fun HomeHeaderPreview() {
             bandalartData = dummyBandalartData,
             isDropDownMenuOpened = false,
             cellData = dummyBandalartCellData,
-            onAction = {},
+            eventSink = {},
         )
     }
 }

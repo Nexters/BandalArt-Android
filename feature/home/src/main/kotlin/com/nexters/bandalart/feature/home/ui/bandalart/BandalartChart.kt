@@ -21,17 +21,18 @@ import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BandalartChart(
     bandalartData: BandalartUiModel,
     bandalartCellData: BandalartCellEntity,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
+    // onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -126,7 +127,7 @@ private fun BandalartChartPreview() {
                 mainColor = "#3FFFBA",
                 subColor = "#111827",
             ),
-            onHomeUiAction = {},
+            eventSink = {},
         )
     }
 }

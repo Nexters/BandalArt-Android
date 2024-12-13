@@ -30,13 +30,13 @@ import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 internal fun HomeTopBar(
     bandalartCount: Int,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -52,7 +52,8 @@ internal fun HomeTopBar(
                     .align(Alignment.CenterVertically)
                     .padding(start = 20.dp, top = 2.dp)
                     .clickable {
-                        onHomeUiAction(HomeUiAction.OnAppTitleClick)
+                        // onHomeUiAction(HomeUiAction.OnAppTitleClick)
+                        eventSink(Event.ShowAppVersion)
                     },
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -62,9 +63,9 @@ internal fun HomeTopBar(
                     .clickable(
                         onClick = {
                             if (bandalartCount > 1) {
-                                onHomeUiAction(HomeUiAction.OnListClick)
+                                // onHomeUiAction(HomeUiAction.OnListClick)
                             } else {
-                                onHomeUiAction(HomeUiAction.OnAddClick)
+                                // onHomeUiAction(HomeUiAction.OnAddClick)
                             }
                         },
                     ),
@@ -109,7 +110,7 @@ private fun HomeTopBarSingleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 1,
-            onHomeUiAction = {},
+            eventSink = {}
         )
     }
 }
@@ -120,7 +121,7 @@ private fun HomeTopBarMultipleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 2,
-            onHomeUiAction = {},
+            eventSink = {}
         )
     }
 }
