@@ -1,6 +1,9 @@
 package com.nexters.bandalart.feature.home
 
+import android.app.Activity
 import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,10 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,7 +33,15 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.common.utils.UiText
+import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -35,6 +49,7 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
@@ -53,11 +68,9 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.parcelize.Parcelize
-import com.nexters.bandalart.feature.home.HomeScreen.Event
 import kotlinx.coroutines.launch
-
-private const val SnackbarDuration = 1500L
+import kotlinx.parcelize.Parcelize
+import timber.log.Timber
 
 // TODO Action 와 Event 를 분리하지 말고 바로 Event 를 호출하면 될듯 (이게 MVI 가 맞나?)
 @Parcelize
@@ -86,7 +99,7 @@ data object HomeScreen : Screen {
             val id: Long,
             val title: String,
             val profileEmoji: String,
-            val bandalartChart: String,
+            val bandalartChartImageUri: String,
         ) : Event
 
         data class ShowSnackbar(val message: UiText) : Event
@@ -249,7 +262,6 @@ data object HomeScreen : Screen {
 @Composable
 internal fun Home(
     state: HomeScreen.State,
-//    bandalartCount: Int,
 //    onHomeUiAction: (HomeUiAction) -> Unit,
 //    shareBandalart: (ImageBitmap) -> Unit,
 //    captureBandalart: (ImageBitmap) -> Unit,
@@ -263,6 +275,68 @@ internal fun Home(
     val snackbarHostState = remember { SnackbarHostState() }
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
+
+    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+
+    val installStateUpdatedListener = remember {
+        InstallStateUpdatedListener { state ->
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                scope.launch {
+                    val snackbarResult = snackbarHostState.showSnackbar(
+                        message = context.getString(R.string.update_ready_to_install),
+                        actionLabel = context.getString(R.string.update_action_restart),
+                        duration = Indefinite,
+                    )
+
+                    // 재시작 버튼 클릭시
+                    if (snackbarResult == SnackbarResult.ActionPerformed) {
+                        appUpdateManager.completeUpdate()
+                    }
+                }
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        appUpdateManager.registerListener(installStateUpdatedListener)
+        onDispose {
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
+    }
+
+    val appUpdateResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
+            scope.launch {
+                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
+                    // homeViewModel.setLastRejectedUpdateVersion(versionCode)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        try {
+            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                val availableVersionCode = appUpdateInfo.availableVersionCode()
+                if (!isValidImmediateAppUpdate(availableVersionCode) &&
+                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                ) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        appUpdateResultLauncher,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to check for flexible update")
+        }
+    }
 
     LaunchedEffect(key1 = state.isShared) {
         if (state.isShared) {

@@ -18,6 +18,8 @@ ksp {
 
 dependencies {
     implementations(
+        projects.feature.complete,
+
         libs.kotlinx.collections.immutable,
         libs.kotlinx.datetime,
 

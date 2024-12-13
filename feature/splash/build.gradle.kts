@@ -18,6 +18,9 @@ ksp {
 
 dependencies {
     implementations(
+        projects.feature.home,
+        projects.feature.onboarding,
+
         libs.app.update,
         libs.app.update.ktx,
 

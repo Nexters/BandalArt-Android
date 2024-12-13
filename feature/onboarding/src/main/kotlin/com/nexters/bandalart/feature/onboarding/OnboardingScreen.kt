@@ -47,15 +47,18 @@ import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
+import com.nexters.bandalart.feature.onboarding.OnboardingScreen.Event
 import kotlinx.parcelize.Parcelize
 import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Parcelize
-data object OnBoardingScreen : Screen {
+data object OnboardingScreen : Screen {
     data class State(
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
@@ -65,34 +68,13 @@ data object OnBoardingScreen : Screen {
     }
 }
 
-//@Composable
-//internal fun OnboardingRoute(
-//    navigateToHome: (NavOptions) -> Unit,
-//    modifier: Modifier = Modifier,
-//    viewModel: OnboardingViewModel = hiltViewModel(),
-//) {
-//    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-//        when (event) {
-//            is OnBoardingUiEvent.NavigateToHome -> {
-//                val options = NavOptions.Builder()
-//                    .setPopUpTo(Route.Onboarding, inclusive = true)
-//                    .build()
-//                navigateToHome(options)
-//            }
-//        }
-//    }
-//
-//    OnBoardingScreen(
-//        setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
-//        modifier = modifier,
-//    )
-//}
-
+@CircuitInject(OnboardingScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun OnBoarding(
-    setOnboardingCompletedStatus: (Boolean) -> Unit,
+internal fun Onboarding(
+    state: OnboardingScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val eventSink = state.eventSink
     val context = LocalContext.current
     val currentLocale = context.getCurrentLocale()
     val configuration = LocalConfiguration.current
@@ -236,7 +218,9 @@ internal fun OnBoarding(
                             }
                             if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                                 BandalartButton(
-                                    onClick = { setOnboardingCompletedStatus(true) },
+                                    onClick = {
+                                        eventSink(Event.NavigateToHome)
+                                    },
                                     text = stringResource(R.string.onboarding_start),
                                     modifier = Modifier
                                         .wrapContentWidth()
@@ -247,7 +231,9 @@ internal fun OnBoarding(
                                 )
                             } else {
                                 BandalartButton(
-                                    onClick = { setOnboardingCompletedStatus(true) },
+                                    onClick = {
+                                        eventSink(Event.NavigateToHome)
+                                    },
                                     text = stringResource(R.string.onboarding_start),
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -269,8 +255,10 @@ internal fun OnBoarding(
 @Composable
 private fun OnBoardingScreenPreview() {
     BandalartTheme {
-        OnBoarding(
-            setOnboardingCompletedStatus = {},
+        Onboarding(
+            state = OnboardingScreen.State(
+                eventSink = {},
+            ),
         )
     }
 }

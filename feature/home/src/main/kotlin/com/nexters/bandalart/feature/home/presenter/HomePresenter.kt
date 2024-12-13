@@ -29,6 +29,8 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import com.nexters.bandalart.feature.complete.CompleteScreen
+import com.slack.circuit.retained.produceRetainedState
 
 // TODO Presenter 에 context 못쓰지 않나? 여기서 이벤트 구현하는게 맞나? -> 쓸 수 있음
 // TODO Navigation 을 app 모듈 또는 main 모듈에서 전역으로 관리하는게 아니다보니, feature 모듈간에 순환참조가 발생할 것 같은데...
@@ -56,12 +58,21 @@ class HomePresenter @AssistedInject constructor(
 
         var bandalartCaptureUrl by remember { mutableStateOf("") }
 
+        val isUpdateAlreadyRejected by produceRetainedState(initialValue = false) {
+            inAppUpdateRepository.isUpdateAlreadyRejected(updateVersionCode)
+        }
+
         return HomeScreen.State(
             bandalartChartUrl = bandalartCaptureUrl,
         ) { event ->
             when (event) {
                 is Event.NavigateToComplete -> navigator.goTo(
-                    // CompleteScreen()
+                    CompleteScreen(
+                        bandalartId = event.id,
+                        bandalartTitle = event.title,
+                        bandalartProfileEmoji = event.profileEmoji,
+                        bandalartChartImageUri = event.bandalartChartImageUri,
+                    )
                 )
 
                 is Event.ShowSnackbar -> {

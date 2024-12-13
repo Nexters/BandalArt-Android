@@ -18,6 +18,8 @@ ksp {
 
 dependencies {
     implementations(
+        projects.feature.home,
+
         libs.lottie.compose,
         libs.timber,
     )

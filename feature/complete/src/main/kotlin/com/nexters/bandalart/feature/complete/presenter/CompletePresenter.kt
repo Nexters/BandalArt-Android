@@ -18,7 +18,6 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class CompletePresenter @AssistedInject constructor(
-    @Assisted private val screen: CompleteScreen,
     @Assisted private val navigator: Navigator,
     @ApplicationContext private val context: Context,
 ) : Presenter<CompleteScreen.State> {
