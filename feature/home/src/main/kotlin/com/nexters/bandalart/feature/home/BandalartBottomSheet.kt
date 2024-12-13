@@ -93,7 +93,7 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiAction
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetUiState
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetViewModel
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
@@ -106,7 +106,7 @@ fun BandalartBottomSheet(
     cellType: CellType,
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
     viewModel: BottomSheetViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -117,7 +117,7 @@ fun BandalartBottomSheet(
         cellType = cellType,
         isBlankCell = isBlankCell,
         cellData = cellData,
-        onHomeUiAction = onHomeUiAction,
+        eventSink = eventSink,
         copyCellData = viewModel::copyCellData,
         onBottomSheetUiAction = viewModel::onBottomSheetUiAction,
         toggleCellUpdate = viewModel::toggleCellUpdate,
@@ -132,7 +132,7 @@ fun BandalartBottomSheetContent(
     cellType: CellType,
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
     copyCellData: (Long, BandalartCellEntity) -> Unit,
     onBottomSheetUiAction: (BottomSheetUiAction) -> Unit,
     toggleCellUpdate: (Boolean) -> Unit,
@@ -152,7 +152,7 @@ fun BandalartBottomSheetContent(
     LaunchedEffect(key1 = uiState.isCellUpdated) {
         if (uiState.isCellUpdated) {
             scope.launch {
-                onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+                eventSink(Event.ToggleCellBottomSheet(false))
                 toggleCellUpdate(false)
             }
         }
@@ -173,7 +173,7 @@ fun BandalartBottomSheetContent(
             onDeleteClicked = {
                 scope.launch {
                     onBottomSheetUiAction(BottomSheetUiAction.OnDeleteDialogConfirmClick(uiState.cellData.id))
-                    onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+                    eventSink(Event.ToggleCellBottomSheet(false))
                 }
             },
             onCancelClicked = {
@@ -184,7 +184,7 @@ fun BandalartBottomSheetContent(
 
     ModalBottomSheet(
         onDismissRequest = {
-            onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+            eventSink(Event.ToggleCellBottomSheet(false))
         },
         modifier = modifier
             .wrapContentSize()
@@ -202,7 +202,7 @@ fun BandalartBottomSheetContent(
             BottomSheetTopBar(
                 cellType = cellType,
                 isBlankCell = isBlankCell,
-                onAction = onHomeUiAction,
+                eventSink = eventSink,
             )
             Box {
                 Column(
@@ -501,7 +501,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             cellType = CellType.MAIN,
             isBlankCell = false,
             cellData = dummyBandalartCellData,
-            onHomeUiAction = {},
+            eventSink = {},
             copyCellData = { _, _ -> },
             onBottomSheetUiAction = {},
             toggleCellUpdate = {},
@@ -523,7 +523,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             isBlankCell = false,
             cellData = dummyBandalartCellData,
             copyCellData = { _, _ -> },
-            onHomeUiAction = {},
+            eventSink = {},
             onBottomSheetUiAction = {},
             toggleCellUpdate = {},
         )
@@ -544,7 +544,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             isBlankCell = true,
             cellData = dummyBandalartCellData,
             copyCellData = { _, _ -> },
-            onHomeUiAction = {},
+            eventSink = {},
             onBottomSheetUiAction = {},
             toggleCellUpdate = {},
         )

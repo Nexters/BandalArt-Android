@@ -46,6 +46,7 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
@@ -59,8 +60,13 @@ import com.nexters.bandalart.feature.home.ui.HomeHeader
 import com.nexters.bandalart.feature.home.ui.HomeShareButton
 import com.nexters.bandalart.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartChart
+import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
+import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.overlay.LocalOverlayHost
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
@@ -91,6 +97,7 @@ data object HomeScreen : Screen {
         val bandalartChartUrl: String? = null,
         val clickedCellType: CellType = CellType.MAIN,
         val clickedCellData: BandalartCellEntity? = null,
+        val isUpdateAlreadyRejected: Boolean = false,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 
@@ -108,6 +115,34 @@ data object HomeScreen : Screen {
         data class ShareBandalart(val bitmap: ImageBitmap) : Event
         data class CaptureBandalart(val bitmap: ImageBitmap) : Event
         data object ShowAppVersion : Event
+        data class SaveLastRejectedUpdateVersion(val versionCode: Int) : Event
+        data object OnListClick : Event
+        data object OnSaveClick : Event
+        data object OnDeleteClick : Event
+        data class OnEmojiSelected(
+            val bandalartId: Long,
+            val cellId: Long,
+            val updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
+        ) : Event
+
+        data class OnConfirmClick(val modalType: ModalType) : Event
+        data class OnCancelClick(val modalType: ModalType) : Event
+        data object OnShareButtonClick : Event
+        data object OnAddClick : Event
+        data class ToggleDropDownMenu(val flag: Boolean) : Event
+        data class ToggleDeleteAlertDialog(val flag: Boolean) : Event
+        data class ToggleEmojiBottomSheet(val flag: Boolean) : Event
+        data class ToggleCellBottomSheet(val flag: Boolean) : Event
+        data class ToggleBandalartListBottomSheet(val flag: Boolean) : Event
+        data class OnBandalartListItemClick(val key: Long) : Event
+        data class OnBandalartCellClick(
+            val cellType: CellType,
+            val isMainCellTitleEmpty: Boolean,
+            val cellData: BandalartCellEntity,
+        ) : Event
+
+        data object OnCloseButtonClick : Event
+        data object OnAppTitleClick : Event
     }
 }
 
@@ -273,6 +308,7 @@ internal fun Home(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val overlayHost = LocalOverlayHost.current
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
 
@@ -311,6 +347,7 @@ internal fun Home(
             scope.launch {
                 appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
                     // homeViewModel.setLastRejectedUpdateVersion(versionCode)
+                    // eventSink(Event.SaveLastRejectedUpdateVersion(versionCode))
                 }
             }
         }
@@ -357,42 +394,42 @@ internal fun Home(
         }
     }
 
-//    if (state.isBandalartListBottomSheetOpened) {
-//        state.bandalartData?.let { bandalart ->
-//            BandalartListBottomSheet(
-//                bandalartList = updateBandalartListTitles(state.bandalartList, context).toImmutableList(),
-//                currentBandalartId = bandalart.id,
-//                // onHomeUiAction = onHomeUiAction,
-//            )
-//        }
-//    }
+    if (state.isBandalartListBottomSheetOpened) {
+        state.bandalartData?.let { bandalart ->
+            BandalartListBottomSheet(
+                bandalartList = updateBandalartListTitles(state.bandalartList, context).toImmutableList(),
+                currentBandalartId = bandalart.id,
+                eventSink = eventSink,
+            )
+        }
+    }
 
-//    if (state.isEmojiBottomSheetOpened) {
-//        state.bandalartData?.let { bandalart ->
-//            state.bandalartCellData?.let { cell ->
-//                BandalartEmojiBottomSheet(
-//                    bandalartId = bandalart.id,
-//                    cellId = cell.id,
-//                    currentEmoji = bandalart.profileEmoji,
-//                    onHomeUiAction = onHomeUiAction,
-//                )
-//            }
-//        }
-//    }
+    if (state.isEmojiBottomSheetOpened) {
+        state.bandalartData?.let { bandalart ->
+            state.bandalartCellData?.let { cell ->
+                BandalartEmojiBottomSheet(
+                    bandalartId = bandalart.id,
+                    cellId = cell.id,
+                    currentEmoji = bandalart.profileEmoji,
+                    eventSink = eventSink,
+                )
+            }
+        }
+    }
 
-//    if (state.isCellBottomSheetOpened) {
-//        state.bandalartData?.let { bandalart ->
-//            state.clickedCellData?.let { cell ->
-//                BandalartBottomSheet(
-//                    bandalartId = bandalart.id,
-//                    cellType = state.clickedCellType,
-//                    isBlankCell = cell.title.isNullOrEmpty(),
-//                    cellData = cell,
-//                    onHomeUiAction = onHomeUiAction,
-//                )
-//            }
-//        }
-//    }
+    if (state.isCellBottomSheetOpened) {
+        state.bandalartData?.let { bandalart ->
+            state.clickedCellData?.let { cell ->
+                BandalartBottomSheet(
+                    bandalartId = bandalart.id,
+                    cellType = state.clickedCellType,
+                    isBlankCell = cell.title.isNullOrEmpty(),
+                    cellData = cell,
+                    eventSink = eventSink,
+                )
+            }
+        }
+    }
 
     if (state.isBandalartDeleteAlertDialogOpened) {
         state.bandalartData?.let { bandalart ->
@@ -401,10 +438,10 @@ internal fun Home(
                 else stringResource(R.string.delete_bandalart_dialog_title, bandalart.title),
                 message = stringResource(R.string.delete_bandalart_dialog_message),
                 onDeleteClicked = {
-                    // onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG))
+                    eventSink(Event.OnConfirmClick(ModalType.DELETE_DIALOG))
                 },
                 onCancelClicked = {
-                    // onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG))
+                    eventSink(Event.OnCancelClick(ModalType.DELETE_DIALOG))
                 },
             )
         }
@@ -461,10 +498,10 @@ internal fun Home(
                 Spacer(modifier = Modifier.weight(1f))
                 HomeShareButton(
                     onShareButtonClick = {
-                        // onHomeUiAction(HomeUiAction.OnShareButtonClick)
-                        scope.launch {
-                            eventSink(Event.ShareBandalart(homeGraphicsLayer.toImageBitmap()))
-                        }
+                        eventSink(Event.OnShareButtonClick)
+//                        scope.launch {
+//                            eventSink(Event.ShareBandalart(homeGraphicsLayer.toImageBitmap()))
+//                        }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
