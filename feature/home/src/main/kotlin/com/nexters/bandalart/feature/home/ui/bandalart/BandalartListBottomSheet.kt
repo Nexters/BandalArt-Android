@@ -45,11 +45,9 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -68,7 +66,6 @@ fun BandalartListBottomSheet(
             .wrapContentSize()
             .statusBarsPadding(),
         onDismissRequest = {
-            // onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false))
             eventSink(Event.ToggleBandalartListBottomSheet(false))
         },
         sheetState = bottomSheetState,
@@ -99,7 +96,6 @@ fun BandalartListBottomSheet(
                         .height(21.dp)
                         .aspectRatio(1f),
                     onClick = {
-                        // onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false))
                         eventSink(Event.ToggleBandalartListBottomSheet(false))
                     },
                 ) {
@@ -126,7 +122,6 @@ fun BandalartListBottomSheet(
                         currentBandalartId = currentBandalartId,
                         onClick = { key ->
                             // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
-                            // onHomeUiAction(HomeUiAction.OnBandalartListItemClick(key))
                             eventSink(Event.OnBandalartListItemClick(key))
                         },
                     )
@@ -140,7 +135,6 @@ fun BandalartListBottomSheet(
                                 .height(56.dp)
                                 .padding(horizontal = 24.dp),
                             onClick = {
-                                // onHomeUiAction(HomeUiAction.OnAddClick)
                                 eventSink(Event.OnAddClick)
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Gray200),

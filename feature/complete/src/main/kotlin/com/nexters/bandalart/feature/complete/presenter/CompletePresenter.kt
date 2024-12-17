@@ -47,9 +47,6 @@ class CompletePresenter @AssistedInject constructor(
     @CircuitInject(CompleteScreen::class, ActivityRetainedComponent::class)
     @AssistedFactory
     fun interface Factory {
-        fun create(
-            screen: CompleteScreen,
-            navigator: Navigator,
-        ): CompletePresenter
+        fun create(navigator: Navigator): CompletePresenter
     }
 }

@@ -10,10 +10,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
+import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -22,7 +23,7 @@ fun BandalartCellGrid(
     subCell: SubCell,
     rows: Int,
     cols: Int,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -51,7 +52,7 @@ fun BandalartCellGrid(
                             rowCnt = rows,
                         ),
                         cellData = if (isSubCell) subCell.subCellData!! else subCell.subCellData!!.children[taskIndex++],
-                        onHomeUiAction = onHomeUiAction,
+                        eventSink = eventSink,
                     )
                 }
             }
@@ -79,7 +80,7 @@ private fun BandalartCellGridPreview() {
             subCell = subCellList[1],
             rows = subCellList[1].rowCnt,
             cols = subCellList[1].colCnt,
-            onHomeUiAction = {},
+            eventSink = {},
         )
     }
 }

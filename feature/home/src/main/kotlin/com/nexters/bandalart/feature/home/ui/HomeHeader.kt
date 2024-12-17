@@ -45,13 +45,11 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
 import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
-import com.nexters.bandalart.feature.home.HomeScreen
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
@@ -76,8 +74,7 @@ fun HomeHeader(
                             .aspectRatio(1f)
                             .background(Gray100)
                             .clickable {
-                                // onAction(HomeUiAction.ToggleEmojiBottomSheet(true))
-                                // eventSink(Event.ToggleEmojiBottomSheet(true))
+                                eventSink(Event.ToggleEmojiBottomSheet(true))
                             },
                         contentAlignment = Alignment.Center,
                     ) {
@@ -120,8 +117,7 @@ fun HomeHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clickable {
-                            // onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
-                            // eventSink(Event.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                            eventSink(Event.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
                         },
                     letterSpacing = (-0.4).sp,
                 )
@@ -131,21 +127,20 @@ fun HomeHeader(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .clickable {
-                            // onAction(HomeUiAction.ToggleDropDownMenu(true))
-                            // eventSink(Event.ToggleDropDownMenu(true))
+                            eventSink(Event.ToggleDropDownMenu(true))
                         },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
                     toggleDropDownMenu = { flag ->
-                        // onAction(HomeUiAction.ToggleDropDownMenu(flag))
+                        eventSink(Event.ToggleDropDownMenu(flag))
                     },
                     isDropDownMenuOpened = isDropDownMenuOpened,
                     onSaveClick = {
-                        // onAction(HomeUiAction.OnSaveClick)
+                        eventSink(Event.OnSaveClick)
                     },
                     onDeleteClick = {
-                        // onAction(HomeUiAction.OnDeleteClick)
+                        eventSink(Event.OnDeleteClick)
                     },
                 )
             }

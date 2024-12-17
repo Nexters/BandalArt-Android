@@ -35,10 +35,11 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.CellText
+import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 
 data class CellInfo(
     val isSubCell: Boolean = false,
@@ -63,7 +64,7 @@ fun BandalartCell(
     bandalartData: BandalartUiModel,
     cellType: CellType,
     cellData: BandalartCellEntity,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
     modifier: Modifier = Modifier,
     cellInfo: CellInfo = CellInfo(),
     outerPadding: Dp = 3.dp,
@@ -83,9 +84,15 @@ fun BandalartCell(
             .background(getCellBackgroundColor(bandalartData, cellType, cellData))
             .clickable {
                 when (cellType) {
-                    CellType.MAIN -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
-                    CellType.SUB -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.SUB, bandalartData.title.isNullOrEmpty(), cellData))
-                    else -> onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.TASK, bandalartData.title.isNullOrEmpty(), cellData))
+                    CellType.MAIN -> {
+                        eventSink(Event.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                    }
+                    CellType.SUB -> {
+                        eventSink(Event.OnBandalartCellClick(CellType.SUB, bandalartData.title.isNullOrEmpty(), cellData))
+                    }
+                    else -> {
+                        eventSink(Event.OnBandalartCellClick(CellType.TASK, bandalartData.title.isNullOrEmpty(), cellData))
+                    }
                 }
             },
         contentAlignment = Alignment.Center,
@@ -281,7 +288,7 @@ private fun BandalartCellPreview() {
                 title = "메인 목표",
                 isCompleted = false,
             ),
-            onHomeUiAction = {},
+            eventSink = {},
         )
     }
 }

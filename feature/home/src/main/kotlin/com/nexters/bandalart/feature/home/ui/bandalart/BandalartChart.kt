@@ -65,7 +65,7 @@ fun BandalartChart(
                         subCell = subCellList[index],
                         rows = subCellList[index].rowCnt,
                         cols = subCellList[index].colCnt,
-                        onHomeUiAction = onHomeUiAction,
+                        eventSink = eventSink,
                     )
                 }
             }
@@ -79,7 +79,7 @@ fun BandalartChart(
                     cellType = CellType.MAIN,
                     bandalartData = bandalartData,
                     cellData = bandalartCellData,
-                    onHomeUiAction = onHomeUiAction,
+                    eventSink = eventSink,
                 )
             }
         },

@@ -35,10 +35,10 @@ class MainActivity : ComponentActivity() {
                         NavigableCircuitContent(
                             navigator = navigator,
                             backStack = backStack,
-                            decoration = GestureNavigationDecoration(
-                                circuit.defaultNavDecoration,
-                                navigator::pop,
-                            )
+//                            decoration = GestureNavigationDecoration(
+//                                circuit.defaultNavDecoration,
+//                                navigator::pop,
+//                            )
                         )
                     }
                 }

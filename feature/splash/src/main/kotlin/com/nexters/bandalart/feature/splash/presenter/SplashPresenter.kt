@@ -50,9 +50,6 @@ class SplashPresenter @AssistedInject constructor(
     @CircuitInject(SplashScreen::class, ActivityRetainedComponent::class)
     @AssistedFactory
     fun interface Factory {
-        fun create(
-            screen: SplashScreen,
-            navigator: Navigator,
-        ): SplashPresenter
+        fun create(navigator: Navigator): SplashPresenter
     }
 }

@@ -63,7 +63,6 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartChart
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.overlay.LocalOverlayHost
@@ -360,7 +359,7 @@ internal fun Home(
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                 val availableVersionCode = appUpdateInfo.availableVersionCode()
                 if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+                    // !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
                 ) {
                     appUpdateManager.startUpdateFlowForResult(

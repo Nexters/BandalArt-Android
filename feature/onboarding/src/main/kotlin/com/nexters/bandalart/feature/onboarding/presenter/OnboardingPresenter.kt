@@ -43,9 +43,6 @@ class OnboardingPresenter @AssistedInject constructor(
     @CircuitInject(OnboardingScreen::class, ActivityRetainedComponent::class)
     @AssistedFactory
     fun interface Factory {
-        fun create(
-            screen: OnboardingScreen,
-            navigator: Navigator,
-        ): OnboardingPresenter
+        fun create(navigator: Navigator): OnboardingPresenter
     }
 }
