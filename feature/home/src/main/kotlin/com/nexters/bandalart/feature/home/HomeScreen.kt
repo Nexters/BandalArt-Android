@@ -292,6 +292,7 @@ data object HomeScreen : Screen {
 //    )
 //}
 
+// TODO Scaffold 를 통해 NavHost 를 감싸지 않았기 때문에, 모든 화면에 Scaffold 를 래핑해줘야 할 듯 하다. (innerPadding 을 적용하기 위해)
 @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Home(

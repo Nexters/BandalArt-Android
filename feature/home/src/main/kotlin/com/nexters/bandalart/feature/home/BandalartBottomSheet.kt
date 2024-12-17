@@ -98,7 +98,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
-// TODO Circuit Overlay 로 migration 필요
+// TODO Circuit BottomSheetOverlay 로 migration 필요
 // TODO 전체 구조를 Flow 형태로 전환하여, 직접 변화 했다는 flag 를 변경하고, 이 flag 를 기반으로 업데이트를 실행하지 않아도 되도록 구현
 @Composable
 fun BandalartBottomSheet(

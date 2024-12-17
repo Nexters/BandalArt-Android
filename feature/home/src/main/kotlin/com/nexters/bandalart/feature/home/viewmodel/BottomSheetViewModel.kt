@@ -19,6 +19,7 @@ import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
+// TODO Presenter 로 migration
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
     private val bandalartRepository: BandalartRepository,
