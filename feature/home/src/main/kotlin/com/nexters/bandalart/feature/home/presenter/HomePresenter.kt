@@ -20,7 +20,6 @@ import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.home.HomeScreen
-import com.nexters.bandalart.feature.home.HomeScreen.State
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -29,10 +28,11 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
-import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.internal.rememberStableCoroutineScope
 import com.slack.circuit.runtime.presenter.Presenter
+import com.nexters.bandalart.feature.home.HomeScreen.State
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -57,19 +57,14 @@ class HomePresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val bandalartRepository: BandalartRepository,
     private val inAppUpdateRepository: InAppUpdateRepository,
-) : Presenter<HomePresenter.State> {
-
-    data class State(
-        val uiState: HomeUiState = HomeUiState(),
-        val eventSink: (HomeUiEvent) -> Unit,
-    ): CircuitUiState
+) : Presenter<State> {
 
     @Composable
     override fun present(): State {
         val scope = rememberStableCoroutineScope()
 
-        var uiState by rememberRetained { mutableStateOf(HomeUiState()) }
-        val eventChannel = rememberRetained { Channel<HomeUiEvent>() }
+        var uiState by rememberRetained { mutableStateOf(State(eventSink = {})) }
+        val eventChannel = rememberRetained { Channel<Event>() }
 
         LaunchedEffect(Unit) {
             uiState = getBandalartList(uiState)
@@ -102,11 +97,11 @@ class HomePresenter @AssistedInject constructor(
                                     uiState = uiState.copy(isCaptured = true)
                                     delay(500L)
                                     eventChannel.send(
-                                        HomeUiEvent.NavigateToComplete(
+                                        Event.NavigateToComplete(
                                             id = bandalart.id,
                                             title = bandalart.title,
                                             profileEmoji = bandalart.profileEmoji.orEmpty(),
-                                            bandalartChart = uiState.bandalartChartUrl.orEmpty(),
+                                            bandalartChartImageUri = uiState.bandalartChartUrl.orEmpty(),
                                         )
                                     )
                                 }
@@ -134,35 +129,35 @@ class HomePresenter @AssistedInject constructor(
         LaunchedEffect(Unit) {
             eventChannel.receiveAsFlow().collect { event ->
                 when (event) {
-                    is HomeUiEvent.NavigateToComplete -> {
+                    is Event.NavigateToComplete -> {
                         navigator.goTo(CompleteScreen(
                             bandalartId = event.id,
                             bandalartTitle = event.title,
                             bandalartProfileEmoji = event.profileEmoji,
-                            bandalartChartImageUri = event.bandalartChart
+                            bandalartChartImageUri = event.bandalartChartImageUri
                         ))
                     }
-                    is HomeUiEvent.ShowSnackbar -> {
+                    is Event.ShowSnackbar -> {
                         scope.launch {
                             snackbarHostState.showSnackbar(event.message.asString(context))
                         }
                     }
-                    is HomeUiEvent.ShowToast -> {
+                    is Event.ShowToast -> {
                         Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
                     }
-                    is HomeUiEvent.SaveBandalart -> {
+                    is Event.SaveBandalart -> {
                         context.saveImageToGallery(event.bitmap)
                         Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
                     }
-                    is HomeUiEvent.ShareBandalart -> {
+                    is Event.ShareBandalart -> {
                         context.externalShareForBitmap(event.bitmap)
                     }
-                    is HomeUiEvent.CaptureBandalart -> {
+                    is Event.CaptureBandalart -> {
                         uiState = uiState.copy(
                             bandalartChartUrl = context.bitmapToFileUri(event.bitmap).toString()
                         )
                     }
-                    is HomeUiEvent.ShowAppVersion -> {
+                    is Event.ShowAppVersion -> {
                         Toast.makeText(
                             context,
                             context.getString(R.string.app_version_info, appVersion),
@@ -174,25 +169,25 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        val eventSink: (HomeUiEvent) -> Unit = { event ->
+        val eventSink: (Event) -> Unit = { event ->
             scope.launch {
                 when (event) {
-                    is HomeUiEvent.OnListClick -> {
+                    is Event.OnListClick -> {
                         uiState = uiState.copy(isBandalartListBottomSheetOpened = true)
                     }
 
-                    is HomeUiEvent.OnSaveClick -> {
+                    is Event.OnSaveClick -> {
                         uiState = uiState.copy(isCaptured = true)
                     }
 
-                    is HomeUiEvent.OnDeleteClick -> {
+                    is Event.OnDeleteClick -> {
                         uiState = uiState.copy(
                             isBandalartDeleteAlertDialogOpened = true,
                             isDropDownMenuOpened = false
                         )
                     }
 
-                    is HomeUiEvent.OnEmojiSelected -> {
+                    is Event.OnEmojiSelected -> {
                         bandalartRepository.updateBandalartEmoji(
                             event.bandalartId,
                             event.cellId,
@@ -201,18 +196,18 @@ class HomePresenter @AssistedInject constructor(
                         uiState = uiState.copy(isEmojiBottomSheetOpened = false)
                     }
 
-                    is HomeUiEvent.OnConfirmClick -> {
+                    is Event.OnConfirmClick -> {
                         when (event.modalType) {
                             ModalType.DELETE_DIALOG -> uiState.bandalartData?.let {
                                 bandalartRepository.deleteBandalart(it.id)
                                 uiState = uiState.copy(isBandalartDeleteAlertDialogOpened = false)
-                                eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
+                                eventChannel.send(Event.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
                             }
                             else -> {}
                         }
                     }
 
-                    is HomeUiEvent.OnCancelClick -> {
+                    is Event.OnCancelClick -> {
                         uiState = when (event.modalType) {
                             ModalType.EMOJI -> uiState.copy(isEmojiBottomSheetOpened = false)
                             ModalType.BANDALART_LIST -> uiState.copy(isBandalartListBottomSheetOpened = false)
@@ -221,13 +216,13 @@ class HomePresenter @AssistedInject constructor(
                         }
                     }
 
-                    is HomeUiEvent.OnShareButtonClick -> {
+                    is Event.OnShareButtonClick -> {
                         uiState = uiState.copy(isShared = true)
                     }
 
-                    is HomeUiEvent.OnAddClick -> {
+                    is Event.OnAddClick -> {
                         if (uiState.bandalartList.size + 1 > 5) {
-                            eventChannel.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
+                            eventChannel.send(Event.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
                             return@launch
                         }
 
@@ -238,23 +233,23 @@ class HomePresenter @AssistedInject constructor(
                             // 새로운 반다라트의 키를 최근에 확인한 반다라트로 저장
                             bandalartRepository.setRecentBandalartId(bandalart.id)
                             bandalartRepository.upsertBandalartId(bandalart.id, false)
-                            eventChannel.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
+                            eventChannel.send(Event.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
                         }
                     }
 
-                    is HomeUiEvent.ToggleDropDownMenu -> {
+                    is Event.ToggleDropDownMenu -> {
                         uiState = uiState.copy(isDropDownMenuOpened = event.flag)
                     }
 
-                    is HomeUiEvent.ToggleDeleteAlertDialog -> {
+                    is Event.ToggleDeleteAlertDialog -> {
                         uiState = uiState.copy(isBandalartDeleteAlertDialogOpened = event.flag)
                     }
 
-                    is HomeUiEvent.ToggleEmojiBottomSheet -> {
+                    is Event.ToggleEmojiBottomSheet -> {
                         uiState = uiState.copy(isEmojiBottomSheetOpened = event.flag)
                     }
 
-                    is HomeUiEvent.ToggleCellBottomSheet -> {
+                    is Event.ToggleCellBottomSheet -> {
                         if (!event.flag) {
                             uiState = uiState.copy(isCellBottomSheetOpened = false)
                         } else {
@@ -275,20 +270,20 @@ class HomePresenter @AssistedInject constructor(
                         }
                     }
 
-                    is HomeUiEvent.ToggleBandalartListBottomSheet -> {
+                    is Event.ToggleBandalartListBottomSheet -> {
                         uiState = uiState.copy(isBandalartListBottomSheetOpened = event.flag)
                     }
 
-                    is HomeUiEvent.OnBandalartListItemClick -> {
+                    is Event.OnBandalartListItemClick -> {
                         bandalartRepository.setRecentBandalartId(event.key)
                         getBandalart(uiState, event.key)
                         uiState = uiState.copy(isBandalartListBottomSheetOpened = false)
                     }
 
-                    is HomeUiEvent.OnBandalartCellClick -> {
+                    is Event.OnBandalartCellClick -> {
                         when {
                             event.cellType != CellType.MAIN && event.isMainCellTitleEmpty -> {
-                                eventChannel.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.please_input_main_goal)))
+                                eventChannel.send(Event.ShowToast(UiText.StringResource(R.string.please_input_main_goal)))
                             }
                             else -> {
                                 uiState = uiState.copy(
@@ -300,12 +295,12 @@ class HomePresenter @AssistedInject constructor(
                         }
                     }
 
-                    is HomeUiEvent.OnCloseButtonClick -> {
+                    is Event.OnCloseButtonClick -> {
                         uiState = uiState.copy(isCellBottomSheetOpened = false)
                     }
 
-                    is HomeUiEvent.OnAppTitleClick -> {
-                        eventChannel.send(HomeUiEvent.ShowAppVersion)
+                    is Event.OnAppTitleClick -> {
+                        eventChannel.send(Event.ShowAppVersion)
                     }
 
                     else -> {}
@@ -313,10 +308,10 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        return State(uiState, eventSink)
+        return uiState.copy(eventSink = eventSink)
     }
 
-    private suspend fun getBandalartList(currentState: HomeUiState): HomeUiState {
+    private suspend fun getBandalartList(currentState: State): State {
         val bandalartList = bandalartRepository.getBandalartList()
             .map { list -> list.map { it.toUiModel() } }
             .first()
@@ -371,10 +366,10 @@ class HomePresenter @AssistedInject constructor(
     }
 
     private suspend fun getBandalart(
-        currentState: HomeUiState,
+        currentState: State,
         bandalartId: Long,
         isBandalartCompleted: Boolean = false
-    ): HomeUiState {
+    ): State {
         val bandalart = bandalartRepository.getBandalart(bandalartId)
         val mainCell = bandalartRepository.getBandalartMainCell(bandalartId)
         val subCells = bandalartRepository.getChildCells(mainCell?.id ?: 0L)
