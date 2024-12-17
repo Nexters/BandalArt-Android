@@ -7,6 +7,7 @@ import com.nexters.bandalart.core.common.extension.saveUriToGallery
 import com.nexters.bandalart.core.common.extension.shareImage
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.complete.CompleteScreen
+import com.nexters.bandalart.feature.complete.CompleteScreen.State
 import com.nexters.bandalart.feature.complete.CompleteScreen.Event
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
@@ -20,11 +21,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 class CompletePresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     @ApplicationContext private val context: Context,
-) : Presenter<CompleteScreen.State> {
+) : Presenter<State> {
 
     @Composable
-    override fun present(): CompleteScreen.State {
-        return CompleteScreen.State(
+    override fun present(): State {
+        return State(
             id = 0L,
             title = "",
             profileEmoji = "",

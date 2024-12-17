@@ -6,6 +6,8 @@ import com.nexters.bandalart.core.domain.repository.OnboardingRepository
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen
 import com.nexters.bandalart.feature.splash.SplashScreen
+import com.nexters.bandalart.feature.splash.SplashScreen.State
+import com.nexters.bandalart.feature.splash.SplashScreen.Event
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.runtime.Navigator
@@ -18,19 +20,19 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 class SplashPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val repository: OnboardingRepository,
-) : Presenter<SplashScreen.State> {
+) : Presenter<State> {
 
     @Composable
-    override fun present(): SplashScreen.State {
+    override fun present(): State {
         val isOnboardingCompleted by produceRetainedState(initialValue = false) {
             repository.getOnboardingCompletedStatus()
         }
 
-        return SplashScreen.State(
+        return State(
             isOnboardingCompleted = isOnboardingCompleted,
         ) { event ->
             when (event) {
-                is SplashScreen.Event.CheckOnboardingStatus -> {
+                is Event.CheckOnboardingStatus -> {
                     if (isOnboardingCompleted) {
                         navigator.apply {
                             pop()
