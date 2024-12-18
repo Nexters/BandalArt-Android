@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,18 +36,26 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.slack.circuit.overlay.Overlay
 import com.slack.circuit.overlay.OverlayNavigator
 
+sealed interface DialogResult {
+    data object Confirm : DialogResult
+    data object Cancel : DialogResult
+    data object Dismiss : DialogResult
+}
+
+@Stable
 class BandalartDeleteAlertDialogOverlay(
-    val title: String,
-): Overlay<BandalartEmojiBottomSheetResult> {
+    private val title: String,
+    private val message: String,
+): Overlay<DialogResult> {
     @Composable
-    override fun Content(navigator: OverlayNavigator<BandalartEmojiBottomSheetResult>) {
-        Dialog(onDismissRequest = { onCancelClicked() }) {
+    override fun Content(navigator: OverlayNavigator<DialogResult>) {
+        Dialog(onDismissRequest = { navigator.finish(DialogResult.Dismiss) }) {
             Surface(
                 shape = RoundedCornerShape(16.dp),
                 color = White,
             ) {
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 24.dp),
                 ) {
@@ -93,7 +103,7 @@ class BandalartDeleteAlertDialogOverlay(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(56.dp),
-                            onClick = onCancelClicked,
+                            onClick = { navigator.finish(DialogResult.Cancel) },
                             colors = ButtonColors(
                                 containerColor = Gray200,
                                 contentColor = Gray900,
@@ -113,7 +123,7 @@ class BandalartDeleteAlertDialogOverlay(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(56.dp),
-                            onClick = onDeleteClicked,
+                            onClick = { navigator.finish(DialogResult.Confirm) },
                             colors = ButtonColors(
                                 containerColor = Gray900,
                                 contentColor = White,
