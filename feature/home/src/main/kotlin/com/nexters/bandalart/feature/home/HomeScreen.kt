@@ -49,7 +49,7 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
+import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -66,6 +66,8 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.overlay.LocalOverlayHost
+import com.slack.circuit.overlay.Overlay
+import com.slack.circuit.overlay.OverlayEffect
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
@@ -401,6 +403,26 @@ internal fun Home(
                 currentBandalartId = bandalart.id,
                 eventSink = eventSink,
             )
+        }
+    }
+
+    OverlayEffect {
+        if (state.isEmojiBottomSheetOpened) {
+            state.bandalartData?.let { bandalart ->
+                state.bandalartCellData?.let { cell ->
+                    Overlay(
+                        content = {
+                            BandalartEmojiBottomSheet(
+                                bandalartId = bandalart.id,
+                                cellId = cell.id,
+                                currentEmoji = bandalart.profileEmoji,
+                                eventSink = eventSink,
+                            )
+                        },
+                        overlayHost = overlayHost,
+                    )
+                }
+            }
         }
     }
 

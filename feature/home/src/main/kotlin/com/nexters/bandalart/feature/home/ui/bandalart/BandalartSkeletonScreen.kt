@@ -61,8 +61,8 @@ import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
 import com.nexters.bandalart.feature.home.model.CellType
+import com.nexters.bandalart.feature.home.ui.CompletionRatioProgressBar
 import kotlinx.collections.immutable.persistentListOf
 import com.nexters.bandalart.core.designsystem.R as DesignR
 

@@ -77,7 +77,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
-import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
+import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData

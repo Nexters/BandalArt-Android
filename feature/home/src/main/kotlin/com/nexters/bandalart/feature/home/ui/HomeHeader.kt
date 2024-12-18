@@ -43,8 +43,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.BandalartDropDownMenu
-import com.nexters.bandalart.core.ui.component.CompletionRatioProgressBar
+import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
