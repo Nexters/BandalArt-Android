@@ -187,6 +187,10 @@ class HomePresenter @AssistedInject constructor(
                         )
                     }
 
+                    is Event.OnEmojiClick -> {
+                        uiState = uiState.copy(isEmojiPickerOpened = !uiState.isEmojiPickerOpened)
+                    }
+
                     is Event.OnEmojiSelected -> {
                         bandalartRepository.updateBandalartEmoji(
                             event.bandalartId,
@@ -301,6 +305,10 @@ class HomePresenter @AssistedInject constructor(
 
                     is Event.OnAppTitleClick -> {
                         eventChannel.send(Event.ShowAppVersion)
+                    }
+
+                    is Event.OnDatePickerClick -> {
+                        uiState = uiState.copy(isDatePickerOpened = !uiState.isDatePickerOpened)
                     }
 
                     else -> {}

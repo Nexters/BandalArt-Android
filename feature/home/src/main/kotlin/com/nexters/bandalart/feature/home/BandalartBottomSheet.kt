@@ -202,7 +202,9 @@ fun BandalartBottomSheetContent(
             BottomSheetTopBar(
                 cellType = cellType,
                 isBlankCell = isBlankCell,
-                eventSink = eventSink,
+                onCloseClick = {
+                    eventSink(Event.ToggleCellBottomSheet(false))
+                }
             )
             Box {
                 Column(

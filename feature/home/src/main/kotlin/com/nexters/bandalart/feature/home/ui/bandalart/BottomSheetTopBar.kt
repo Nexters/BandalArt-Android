@@ -21,14 +21,13 @@ import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.CellType
 
 @Composable
 fun BottomSheetTopBar(
     cellType: CellType,
     isBlankCell: Boolean,
-    eventSink: (Event) -> Unit,
+    onCloseClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -42,9 +41,7 @@ fun BottomSheetTopBar(
                 .align(Alignment.CenterEnd)
                 .height(21.dp)
                 .aspectRatio(1f),
-            onClick = {
-                eventSink(Event.OnCloseButtonClick)
-            },
+            onClick = onCloseClick,
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
@@ -62,7 +59,7 @@ private fun BottomSheetMainCellTopBarPreview() {
         BottomSheetTopBar(
             cellType = CellType.MAIN,
             isBlankCell = false,
-            eventSink = {},
+            onCloseClick = {},
         )
     }
 }
@@ -74,7 +71,7 @@ private fun BottomSheetSubCellTopBarPreview() {
         BottomSheetTopBar(
             cellType = CellType.SUB,
             isBlankCell = false,
-            eventSink = {},
+            onCloseClick = {},
         )
     }
 }
@@ -86,7 +83,7 @@ private fun BottomSheetBlankCellTopBarPreview() {
         BottomSheetTopBar(
             cellType = CellType.TASK,
             isBlankCell = true,
-            eventSink = {},
+            onCloseClick = {},
         )
     }
 }

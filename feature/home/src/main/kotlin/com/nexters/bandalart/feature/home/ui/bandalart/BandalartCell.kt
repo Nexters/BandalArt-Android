@@ -1,5 +1,6 @@
 package com.nexters.bandalart.feature.home.ui.bandalart
 
+import CellText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -34,12 +35,10 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.CellText
-import com.nexters.bandalart.feature.home.HomeScreen
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.core.designsystem.R as DesignR
-import com.nexters.bandalart.feature.home.HomeScreen.Event
 
 data class CellInfo(
     val isSubCell: Boolean = false,

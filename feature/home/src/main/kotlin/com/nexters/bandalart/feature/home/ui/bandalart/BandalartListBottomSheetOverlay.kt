@@ -48,114 +48,114 @@ import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.slack.circuit.overlay.OverlayNavigator
 import com.slack.circuitx.overlays.BottomSheetOverlay
 
-@OptIn(ExperimentalMaterial3Api::class)
-class BandalartListBottomSheetOverlay(
-    private val title: String,
-    private val bandalartList: List<BandalartUiModel>,
-    private val currentBandalartId: Long,
-): BottomSheetOverlay<BottomSheetResult> {
-    @Composable
-    override fun Content(navigator: OverlayNavigator<BottomSheetResult>) {
-        val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-        ModalBottomSheet(
-            modifier = Modifier
-                .wrapContentSize()
-                .statusBarsPadding(),
-            onDismissRequest = {
-                navigator.finish(BottomSheetResult.Dismiss)
-            },
-            sheetState = bottomSheetState,
-            dragHandle = null,
-        ) {
-            Column(
-                modifier = Modifier
-                    .background(White)
-                    .navigationBarsPadding(),
-            ) {
-                Spacer(modifier = Modifier.height(20.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                ) {
-                    Text(
-                        text = stringResource(R.string.bandalart_list_title),
-                        color = Gray900,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W700,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                    )
-                    IconButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .height(21.dp)
-                            .aspectRatio(1f),
-                        onClick = {
-                            eventSink(Event.ToggleBandalartListBottomSheet(false))
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Clear,
-                            contentDescription = stringResource(R.string.clear_description),
-                            tint = Gray900,
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(40.dp))
-                LazyColumn(
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
-                ) {
-                    items(
-                        count = bandalartList.size,
-                        key = { index -> bandalartList[index].id },
-                    ) { index ->
-                        val bandalartItem = bandalartList[index]
-                        BandalartListItem(
-                            bandalartItem = bandalartItem,
-                            currentBandalartId = currentBandalartId,
-                            onClick = { key ->
-                                // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
-                                eventSink(Event.OnBandalartListItemClick(key))
-                            },
-                        )
-                    }
-                    item {
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Row {
-                            Button(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(56.dp)
-                                    .padding(horizontal = 24.dp),
-                                onClick = {
-                                    eventSink(Event.OnAddClick)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = Gray200),
-                            ) {
-                                Row {
-                                    Icon(
-                                        imageVector = Icons.Default.Add,
-                                        contentDescription = stringResource(R.string.add_description),
-                                        tint = Gray600,
-                                        modifier = Modifier.size(20.dp),
-                                    )
-                                    Spacer(modifier = Modifier.padding(start = 4.dp))
-                                    Text(
-                                        text = stringResource(R.string.bandalart_list_add),
-                                        color = Gray800,
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.W600,
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//class BandalartListBottomSheetOverlay(
+//    private val title: String,
+//    private val bandalartList: List<BandalartUiModel>,
+//    private val currentBandalartId: Long,
+//): BottomSheetOverlay<BottomSheetResult> {
+//    @Composable
+//    override fun Content(navigator: OverlayNavigator<BottomSheetResult>) {
+//        val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+//
+//        ModalBottomSheet(
+//            modifier = Modifier
+//                .wrapContentSize()
+//                .statusBarsPadding(),
+//            onDismissRequest = {
+//                navigator.finish(BottomSheetResult.Dismiss)
+//            },
+//            sheetState = bottomSheetState,
+//            dragHandle = null,
+//        ) {
+//            Column(
+//                modifier = Modifier
+//                    .background(White)
+//                    .navigationBarsPadding(),
+//            ) {
+//                Spacer(modifier = Modifier.height(20.dp))
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp),
+//                ) {
+//                    Text(
+//                        text = stringResource(R.string.bandalart_list_title),
+//                        color = Gray900,
+//                        fontSize = 16.sp,
+//                        fontWeight = FontWeight.W700,
+//                        modifier = Modifier.fillMaxWidth(),
+//                        textAlign = TextAlign.Center,
+//                    )
+//                    IconButton(
+//                        modifier = Modifier
+//                            .align(Alignment.CenterEnd)
+//                            .height(21.dp)
+//                            .aspectRatio(1f),
+//                        onClick = {
+//                            eventSink(Event.ToggleBandalartListBottomSheet(false))
+//                        },
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Default.Clear,
+//                            contentDescription = stringResource(R.string.clear_description),
+//                            tint = Gray900,
+//                        )
+//                    }
+//                }
+//                Spacer(modifier = Modifier.height(40.dp))
+//                LazyColumn(
+//                    modifier = Modifier.padding(horizontal = 20.dp),
+//                    verticalArrangement = Arrangement.spacedBy(12.dp),
+//                    contentPadding = PaddingValues(bottom = NavigationBarHeightDp + getNavigationBarPadding()),
+//                ) {
+//                    items(
+//                        count = bandalartList.size,
+//                        key = { index -> bandalartList[index].id },
+//                    ) { index ->
+//                        val bandalartItem = bandalartList[index]
+//                        BandalartListItem(
+//                            bandalartItem = bandalartItem,
+//                            currentBandalartId = currentBandalartId,
+//                            onClick = { key ->
+//                                // 앱에 진입할때 가장 최근에 확인한 표가 화면에 보여지도록
+//                                eventSink(Event.OnBandalartListItemClick(key))
+//                            },
+//                        )
+//                    }
+//                    item {
+//                        Spacer(modifier = Modifier.height(20.dp))
+//                        Row {
+//                            Button(
+//                                modifier = Modifier
+//                                    .weight(1f)
+//                                    .height(56.dp)
+//                                    .padding(horizontal = 24.dp),
+//                                onClick = {
+//                                    eventSink(Event.OnAddClick)
+//                                },
+//                                colors = ButtonDefaults.buttonColors(containerColor = Gray200),
+//                            ) {
+//                                Row {
+//                                    Icon(
+//                                        imageVector = Icons.Default.Add,
+//                                        contentDescription = stringResource(R.string.add_description),
+//                                        tint = Gray600,
+//                                        modifier = Modifier.size(20.dp),
+//                                    )
+//                                    Spacer(modifier = Modifier.padding(start = 4.dp))
+//                                    Text(
+//                                        text = stringResource(R.string.bandalart_list_add),
+//                                        color = Gray800,
+//                                        fontSize = 16.sp,
+//                                        fontWeight = FontWeight.W600,
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
