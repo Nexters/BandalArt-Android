@@ -2,6 +2,7 @@ package com.nexters.bandalart.feature.splash.presenter
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import com.nexters.bandalart.core.domain.repository.OnboardingRepository
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen
@@ -16,6 +17,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.coroutines.launch
 
 class SplashPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
@@ -24,6 +26,8 @@ class SplashPresenter @AssistedInject constructor(
 
     @Composable
     override fun present(): State {
+        val scope = rememberCoroutineScope()
+
         val isOnboardingCompleted by produceRetainedState(initialValue = false) {
             repository.getOnboardingCompletedStatus()
         }
@@ -33,15 +37,17 @@ class SplashPresenter @AssistedInject constructor(
         ) { event ->
             when (event) {
                 is Event.CheckOnboardingStatus -> {
-                    if (isOnboardingCompleted) {
-                        navigator.apply {
-                            pop()
-                            goTo(HomeScreen)
-                        }
-                    } else {
-                        navigator.apply {
-                            pop()
-                            goTo(OnboardingScreen)
+                    scope.launch {
+                        if (isOnboardingCompleted) {
+                            navigator.apply {
+                                goTo(HomeScreen)
+                                resetRoot(HomeScreen)
+                            }
+                        } else {
+                            navigator.apply {
+                                goTo(OnboardingScreen)
+                                resetRoot(OnboardingScreen)
+                            }
                         }
                     }
                 }

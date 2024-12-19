@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import com.nexters.bandalart.core.domain.repository.OnboardingRepository
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen
-import com.nexters.bandalart.feature.onboarding.OnboardingScreen.State
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen.Event
+import com.nexters.bandalart.feature.onboarding.OnboardingScreen.State
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.internal.rememberStableCoroutineScope
@@ -14,7 +14,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
-import com.slack.circuit.runtime.popUntil
 import kotlinx.coroutines.launch
 
 class OnboardingPresenter @AssistedInject constructor(
@@ -32,8 +31,8 @@ class OnboardingPresenter @AssistedInject constructor(
                     scope.launch {
                         repository.setOnboardingCompletedStatus(true)
                         navigator.apply {
-                            popUntil { it is OnboardingScreen }
                             goTo(HomeScreen)
+                            resetRoot(HomeScreen)
                         }
                     }
                 }

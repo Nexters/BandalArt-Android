@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.feature.home.HomeScreen
+import com.nexters.bandalart.feature.splash.SplashScreen
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.foundation.CircuitCompositionLocals
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BandalartTheme {
-                val backStack = rememberSaveableBackStack(root = HomeScreen)
+                val backStack = rememberSaveableBackStack(root = SplashScreen)
                 val navigator = rememberCircuitNavigator(backStack)
 
                 CircuitCompositionLocals(circuit) {
