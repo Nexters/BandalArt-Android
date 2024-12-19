@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -90,15 +91,16 @@ internal fun Complete(
         iterations = LottieConstants.IterateForever,
     )
 
-    Surface(
+    Scaffold(
         modifier = modifier.fillMaxSize(),
-        color = Gray50,
-    ) {
+        containerColor = Gray50,
+    ) { innerPadding ->
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Box {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(innerPadding)
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -156,7 +158,9 @@ internal fun Complete(
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
