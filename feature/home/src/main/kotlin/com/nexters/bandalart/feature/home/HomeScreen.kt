@@ -86,6 +86,7 @@ private const val SnackbarDuration = 1500L
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
+// TODO 셀 삭제 다이얼로그를 띄우면 셀 바텀시트가 내려가는 문제 해결해야함!
 @Suppress("TooGenericExceptionCaught")
 @Composable
 internal fun HomeRoute(
