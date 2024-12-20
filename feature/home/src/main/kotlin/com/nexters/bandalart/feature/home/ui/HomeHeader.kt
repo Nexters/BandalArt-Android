@@ -141,7 +141,7 @@ fun HomeHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(com.nexters.bandalart.core.ui.R.string.home_complete_ratio, bandalartData.completionRatio),
+                text = stringResource(R.string.home_complete_ratio, bandalartData.completionRatio),
                 color = Gray600,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W500,

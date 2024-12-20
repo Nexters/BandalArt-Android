@@ -3,8 +3,10 @@ package com.nexters.bandalart.feature.home.viewmodel
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.feature.home.model.CellType
+import java.util.Locale
 
 sealed interface HomeUiAction {
+    // HomeScreen UiAction
     data object OnListClick : HomeUiAction
     data object OnSaveClick : HomeUiAction
     data object OnDeleteClick : HomeUiAction
@@ -32,6 +34,25 @@ sealed interface HomeUiAction {
 
     data object OnCloseButtonClick : HomeUiAction
     data object OnAppTitleClick : HomeUiAction
+
+    // BottomSheet UiAction
+    data class OnCellTitleUpdate(val title: String, val locale: Locale) : HomeUiAction
+    data class OnEmojiSelect(val emoji: String) : HomeUiAction
+    data class OnColorSelect(val mainColor: String, val subColor: String) : HomeUiAction
+    data object OnDatePickerClick : HomeUiAction
+    data class OnDueDateSelect(val date: String) : HomeUiAction
+    data class OnDescriptionUpdate(val description: String) : HomeUiAction
+    data class OnCompletionUpdate(val isCompleted: Boolean) : HomeUiAction
+    data class OnDeleteCell(val cellId: Long) : HomeUiAction
+    data object OnCancelDeleteCell : HomeUiAction
+    data object OnEmojiPickerClick : HomeUiAction
+    data object OnCloseBottomSheet : HomeUiAction
+    data object OnDeleteButtonClick : HomeUiAction
+    data class OnCompleteButtonClick(
+        val bandalartId: Long,
+        val cellId: Long,
+        val cellType: CellType,
+    ) : HomeUiAction
 }
 
 enum class ModalType {

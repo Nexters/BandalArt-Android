@@ -24,20 +24,60 @@ import kotlinx.collections.immutable.persistentListOf
  * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
  */
 
-data class HomeUiState(
-    val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
-    val bandalartData: BandalartUiModel? = null,
-    val bandalartCellData: BandalartCellEntity? = null,
-    val isDropDownMenuOpened: Boolean = false,
-    val isBandalartDeleteAlertDialogOpened: Boolean = false,
-    val isBandalartListBottomSheetOpened: Boolean = false,
-    val isCellBottomSheetOpened: Boolean = false,
-    val isEmojiBottomSheetOpened: Boolean = false,
-    val isBandalartCompleted: Boolean = false,
-    val isShowSkeleton: Boolean = false,
-    val isShared: Boolean = false,
-    val isCaptured: Boolean = false,
-    val bandalartChartUrl: String? = null,
-    val clickedCellType: CellType = CellType.MAIN,
-    val clickedCellData: BandalartCellEntity? = null,
+sealed interface HomeUiState {
+    data class Content(
+        // 기본 홈 화면 상태
+        val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
+        val bandalartData: BandalartUiModel? = null,
+        val bandalartCellData: BandalartCellEntity? = null,
+        val isShowSkeleton: Boolean = false,
+        val bandalartChartUrl: String? = null,
+        val isBandalartCompleted: Boolean = false,
+
+        // UI 상태 관리
+        val modal: ModalState = ModalState.Hidden,
+        val shareState: ShareState = ShareState.None,
+
+        // 선택된 셀 정보
+        val clickedCellType: CellType = CellType.MAIN,
+        val clickedCellData: BandalartCellEntity? = null,
+    ) : HomeUiState
+}
+
+sealed interface ModalState {
+    data object Hidden : ModalState
+    data object DropDownMenu : ModalState
+    data class Modals(
+        val bottomSheet: BottomSheetModal? = null,
+        val dialog: DialogModal? = null,
+    ) : ModalState
+}
+
+sealed interface BottomSheetModal {
+    data class Cell(val data: BottomSheetData) : BottomSheetModal
+    data class BandalartList(val data: BottomSheetData) : BottomSheetModal
+    data class Emoji(val data: BottomSheetData) : BottomSheetModal
+}
+
+sealed interface DialogModal {
+    data object Delete : DialogModal
+}
+
+data class BottomSheetData(
+    // BottomSheet 공통 데이터
+    val initialCellData: BandalartCellEntity = BandalartCellEntity(),
+    val cellData: BandalartCellEntity = BandalartCellEntity(),
+    val initialBandalartData: BandalartUiModel = BandalartUiModel(),
+    val bandalartData: BandalartUiModel = BandalartUiModel(),
+
+    // UI 상태
+    val isDatePickerOpened: Boolean = false,
+    val isEmojiPickerOpened: Boolean = false,
+    val isDeleteCellDialogOpened: Boolean = false,
 )
+
+sealed interface ShareState {
+    data object None : ShareState
+    data object Share : ShareState
+    data object Capture : ShareState
+}
