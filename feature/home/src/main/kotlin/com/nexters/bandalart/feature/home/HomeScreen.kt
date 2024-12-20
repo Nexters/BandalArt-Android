@@ -326,9 +326,11 @@ internal fun HomeScreen(
                         }
                     }
                 }
+
                 ModalState.DropDownMenu -> {
                     // HomeHeader 내부에서 처리
                 }
+
                 ModalState.Hidden -> {}
             }
 

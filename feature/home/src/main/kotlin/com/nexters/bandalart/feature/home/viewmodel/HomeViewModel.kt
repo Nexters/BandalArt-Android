@@ -116,6 +116,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.OnConfirmClick -> {
                 when (action.modalType) {
                     ModalType.DELETE_DIALOG -> {
+                        // TODO 이런 로직도 checkState 함수를 살짝 바꿔서 제거할 수 있을 것 같음
                         if (_uiState.value is HomeUiState.Content) {
                             (_uiState.value as HomeUiState.Content).bandalartData?.let {
                                 deleteBandalart(it.id)
