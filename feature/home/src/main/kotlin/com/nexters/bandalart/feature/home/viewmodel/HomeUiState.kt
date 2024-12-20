@@ -1,6 +1,7 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.core.ui.UiState
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import kotlinx.collections.immutable.ImmutableList
@@ -24,7 +25,7 @@ import kotlinx.collections.immutable.persistentListOf
  * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
  */
 
-sealed interface HomeUiState {
+sealed interface HomeUiState: UiState {
     data class Content(
         // 기본 홈 화면 상태
         val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
@@ -44,7 +45,7 @@ sealed interface HomeUiState {
     ) : HomeUiState
 }
 
-sealed interface ModalState {
+sealed interface ModalState: UiState {
     data object Hidden : ModalState
     data object DropDownMenu : ModalState
     data class Modals(
@@ -76,7 +77,7 @@ data class BottomSheetData(
     val isDeleteCellDialogOpened: Boolean = false,
 )
 
-sealed interface ShareState {
+sealed interface ShareState: UiState {
     data object None : ShareState
     data object Share : ShareState
     data object Capture : ShareState

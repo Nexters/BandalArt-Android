@@ -12,6 +12,7 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.core.ui.checkState
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -62,7 +63,7 @@ class HomeViewModel @Inject constructor(
                     val isBandalartCompleted = checkCompletedBandalartId(bandalart.id)
                     if (isBandalartCompleted) {
                         delay(500L)
-                        updateCaptureState(true)
+                        updateCaptureState()
                         delay(500L)
                         val chartUrl = (_uiState.value as? HomeUiState.Content)?.bandalartChartUrl.orEmpty()
                         navigateToComplete(
@@ -80,28 +81,29 @@ class HomeViewModel @Inject constructor(
     fun onAction(action: HomeUiAction) {
         when (action) {
             is HomeUiAction.OnListClick -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             modal = ModalState.Modals(
-                                bottomSheet = BottomSheetModal.BandalartList(BottomSheetData()),
+                                bottomSheet = BottomSheetModal.BandalartList(
+                                    BottomSheetData(),
+                                ),
                             ),
                         )
-                    } else state
+                    }
                 }
             }
 
-            is HomeUiAction.OnSaveClick -> updateCaptureState(true)
-
+            is HomeUiAction.OnSaveClick -> updateCaptureState()
             is HomeUiAction.OnDeleteClick -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             modal = ModalState.Modals(
                                 dialog = DialogModal.Delete,
                             ),
                         )
-                    } else state
+                    }
                 }
             }
 
@@ -126,45 +128,37 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeUiAction.OnCancelClick -> hideModal()
-
             is HomeUiAction.OnShareButtonClick -> updateShareState()
-
             is HomeUiAction.OnAddClick -> createBandalart()
             is HomeUiAction.ToggleDropDownMenu -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
-                            modal = if (action.flag) ModalState.DropDownMenu else ModalState.Hidden,
-                        )
-                    } else state
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(modal = if (action.flag) ModalState.DropDownMenu else ModalState.Hidden)
+                    }
                 }
             }
 
             is HomeUiAction.ToggleDeleteAlertDialog -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             modal = if (action.flag) {
                                 ModalState.Modals(dialog = DialogModal.Delete)
                             } else ModalState.Hidden,
                         )
-                    } else state
+                    }
                 }
             }
 
             is HomeUiAction.ToggleEmojiBottomSheet -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             modal = if (action.flag) {
-                                ModalState.Modals(
-                                    bottomSheet = BottomSheetModal.Emoji(
-                                        BottomSheetData(),
-                                    ),
-                                )
+                                ModalState.Modals(bottomSheet = BottomSheetModal.Emoji(BottomSheetData()))
                             } else ModalState.Hidden,
                         )
-                    } else state
+                    }
                 }
             }
 
@@ -184,18 +178,14 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeUiAction.ToggleBandalartListBottomSheet -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             modal = if (action.flag) {
-                                ModalState.Modals(
-                                    bottomSheet = BottomSheetModal.BandalartList(
-                                        BottomSheetData(),
-                                    ),
-                                )
+                                ModalState.Modals(bottomSheet = BottomSheetModal.BandalartList(BottomSheetData()))
                             } else ModalState.Hidden,
                         )
-                    } else state
+                    }
                 }
             }
 
@@ -212,9 +202,7 @@ class HomeViewModel @Inject constructor(
             )
 
             is HomeUiAction.OnCloseButtonClick -> hideModal()
-
             is HomeUiAction.OnAppTitleClick -> showAppVersion()
-
             is HomeUiAction.OnCellTitleUpdate -> updateCellTitle(action.title, action.locale)
             is HomeUiAction.OnEmojiSelect -> updateEmoji(action.emoji)
             is HomeUiAction.OnColorSelect -> updateThemeColor(action.mainColor, action.subColor)
@@ -223,62 +211,54 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.OnCompletionUpdate -> updateCompletion(action.isCompleted)
             is HomeUiAction.OnDeleteCell -> deleteCell(action.cellId)
             is HomeUiAction.OnCancelDeleteCell -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
-                            modal = (state.modal as? ModalState.Modals)?.copy(
-                                dialog = null,
-                            ) ?: ModalState.Hidden,
-                        )
-                    } else state
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(modal = (modal as? ModalState.Modals)?.copy(dialog = null) ?: ModalState.Hidden)
+                    }
                 }
             }
 
             is HomeUiAction.OnEmojiPickerClick -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
-                        state.copy(
-                            modal = ModalState.Modals(
-                                bottomSheet = currentBottomSheet?.copy(
-                                    data = currentBottomSheet.data.copy(
-                                        isEmojiPickerOpened = true,
-                                    ),
+                uiState.checkState<HomeUiState.Content> {
+                    val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+                    copy(
+                        modal = ModalState.Modals(
+                            bottomSheet = currentBottomSheet?.copy(
+                                data = currentBottomSheet.data.copy(
+                                    isEmojiPickerOpened = true,
                                 ),
                             ),
-                        )
-                    } else state
+                        ),
+                    )
                 }
             }
 
             is HomeUiAction.OnDatePickerClick -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
-                        state.copy(
-                            modal = ModalState.Modals(
-                                bottomSheet = currentBottomSheet?.copy(
-                                    data = currentBottomSheet.data.copy(
-                                        isDatePickerOpened = true,
-                                    ),
+                uiState.checkState<HomeUiState.Content> {
+                    val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+                    copy(
+                        modal = ModalState.Modals(
+                            bottomSheet = currentBottomSheet?.copy(
+                                data = currentBottomSheet.data.copy(
+                                    isDatePickerOpened = true,
                                 ),
                             ),
-                        )
-                    } else state
+                        ),
+                    )
                 }
             }
 
             is HomeUiAction.OnCloseBottomSheet -> hideModal()
 
             is HomeUiAction.OnDeleteButtonClick -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             modal = ModalState.Modals(
                                 dialog = DialogModal.Delete,
                             ),
                         )
-                    } else state
+                    }
                 }
             }
 
@@ -310,10 +290,8 @@ class HomeViewModel @Inject constructor(
             bandalartRepository.getBandalartList()
                 .map { list -> list.map { it.toUiModel() } }
                 .collect { bandalartList ->
-                    _uiState.update { state ->
-                        if (state is HomeUiState.Content) {
-                            state.copy(bandalartList = bandalartList.toImmutableList())
-                        } else state
+                    uiState.checkState<HomeUiState.Content> {
+                        _uiState.update { copy(bandalartList = bandalartList.toImmutableList()) }
                     }
 
                     // 이전 반다라트 목록 상태 조회
@@ -362,14 +340,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             updateSkeletonState(true)
             bandalartRepository.getBandalart(bandalartId).let { bandalart ->
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             bandalartData = bandalart.toUiModel(),
                             modal = ModalState.Hidden,
                             isBandalartCompleted = isBandalartCompleted,
                         )
-                    } else state
+                    }
                 }
                 getBandalartMainCell(bandalartId)
             }
@@ -405,9 +383,9 @@ class HomeViewModel @Inject constructor(
                 )
             }
 
-            _uiState.update { state ->
-                if (state is HomeUiState.Content) {
-                    state.copy(
+            uiState.checkState<HomeUiState.Content> {
+                _uiState.update {
+                    copy(
                         bandalartCellData = BandalartCellEntity(
                             id = mainCell?.id ?: 0L,
                             title = mainCell?.title,
@@ -418,7 +396,7 @@ class HomeViewModel @Inject constructor(
                             children = children,
                         ),
                     )
-                } else state
+                }
             }
             updateSkeletonState(false)
         }
@@ -469,61 +447,45 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel)
-            _uiState.update { state ->
-                if (state is HomeUiState.Content) {
-                    state.copy(
-                        modal = (state.modal as? ModalState.Modals)?.copy(bottomSheet = null) ?: ModalState.Hidden,
-                    )
-                } else state
+            uiState.checkState<HomeUiState.Content> {
+                _uiState.update { copy(modal = (modal as? ModalState.Modals)?.copy(bottomSheet = null) ?: ModalState.Hidden) }
             }
         }
     }
 
     private fun updateShareState() {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                state.copy(shareState = ShareState.Share)
-            } else state
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update { copy(shareState = ShareState.Share) }
         }
     }
 
     fun shareBandalart(bitmap: ImageBitmap) {
         viewModelScope.launch {
-            _uiState.update { state ->
-                if (state is HomeUiState.Content) {
-                    state.copy(shareState = ShareState.None)
-                } else state
+            uiState.checkState<HomeUiState.Content> {
+                _uiState.update { copy(shareState = ShareState.None) }
             }
             _uiEvent.send(HomeUiEvent.ShareBandalart(bitmap))
         }
     }
 
-    private fun updateCaptureState(flag: Boolean) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                state.copy(
-                    shareState = if (flag) ShareState.Capture else ShareState.None,
-                )
-            } else state
+    private fun updateCaptureState() {
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update { copy(shareState = ShareState.Capture) }
         }
     }
 
     fun captureBandalart(bitmap: ImageBitmap) {
         viewModelScope.launch {
-            _uiState.update { state ->
-                if (state is HomeUiState.Content) {
-                    state.copy(shareState = ShareState.None)
-                } else state
+            uiState.checkState<HomeUiState.Content> {
+                _uiState.update { copy(shareState = ShareState.None) }
             }
             _uiEvent.send(HomeUiEvent.CaptureBandalart(bitmap))
         }
     }
 
     private fun updateSkeletonState(flag: Boolean) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                state.copy(isShowSkeleton = flag)
-            } else state
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update { copy(isShowSkeleton = flag) }
         }
     }
 
@@ -556,10 +518,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun updateBandalartChartUrl(url: String) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                state.copy(bandalartChartUrl = url)
-            } else state
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update { copy(bandalartChartUrl = url) }
         }
     }
 
@@ -577,9 +537,9 @@ class HomeViewModel @Inject constructor(
             }
 
             else -> {
-                _uiState.update { state ->
-                    if (state is HomeUiState.Content) {
-                        state.copy(
+                uiState.checkState<HomeUiState.Content> {
+                    _uiState.update {
+                        copy(
                             clickedCellData = cellData,
                             clickedCellType = cellType,
                             modal = ModalState.Modals(
@@ -590,7 +550,7 @@ class HomeViewModel @Inject constructor(
                                 ),
                             ),
                         )
-                    } else state
+                    }
                 }
             }
         }
@@ -602,14 +562,14 @@ class HomeViewModel @Inject constructor(
             else -> 24
         }
 
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update {
+                val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
                 val validatedTitle = if (title.length > maxLength) {
                     currentBottomSheet?.data?.cellData?.title ?: ""
                 } else title
 
-                state.copy(
+                copy(
                     modal = ModalState.Modals(
                         bottomSheet = currentBottomSheet?.copy(
                             data = currentBottomSheet.data.copy(
@@ -620,35 +580,33 @@ class HomeViewModel @Inject constructor(
                         ),
                     ),
                 )
-            } else state
+            }
         }
     }
 
     private fun updateEmoji(emoji: String) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
-                state.copy(
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update {
+                val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+                copy(
                     modal = ModalState.Modals(
                         bottomSheet = currentBottomSheet?.copy(
                             data = currentBottomSheet.data.copy(
-                                bandalartData = currentBottomSheet.data.bandalartData.copy(
-                                    profileEmoji = emoji,
-                                ),
+                                bandalartData = currentBottomSheet.data.bandalartData.copy(profileEmoji = emoji),
                                 isEmojiPickerOpened = false,
                             ),
                         ),
                     ),
                 )
-            } else state
+            }
         }
     }
 
     private fun updateThemeColor(mainColor: String, subColor: String) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
-                state.copy(
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update {
+                val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+                copy(
                     modal = ModalState.Modals(
                         bottomSheet = currentBottomSheet?.copy(
                             data = currentBottomSheet.data.copy(
@@ -660,39 +618,37 @@ class HomeViewModel @Inject constructor(
                         ),
                     ),
                 )
-            } else state
+            }
         }
     }
 
     private fun updateDueDate(date: String) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
-                state.copy(
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update {
+                val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+                copy(
                     modal = ModalState.Modals(
                         bottomSheet = currentBottomSheet?.copy(
                             data = currentBottomSheet.data.copy(
-                                cellData = currentBottomSheet.data.cellData.copy(
-                                    dueDate = date,
-                                ),
+                                cellData = currentBottomSheet.data.cellData.copy(dueDate = date),
                                 isDatePickerOpened = false,
                             ),
                         ),
                     ),
                 )
-            } else state
+            }
         }
     }
 
     private fun updateDescription(description: String) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update {
+                val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
                 val validatedDescription = if ((description.length) > 1000) {
                     currentBottomSheet?.data?.cellData?.description
                 } else description
 
-                state.copy(
+                copy(
                     modal = ModalState.Modals(
                         bottomSheet = currentBottomSheet?.copy(
                             data = currentBottomSheet.data.copy(
@@ -703,26 +659,24 @@ class HomeViewModel @Inject constructor(
                         ),
                     ),
                 )
-            } else state
+            }
         }
     }
 
     private fun updateCompletion(isCompleted: Boolean) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                val currentBottomSheet = (state.modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
-                state.copy(
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update {
+                val currentBottomSheet = (modal as? ModalState.Modals)?.bottomSheet as? BottomSheetModal.Cell
+                copy(
                     modal = ModalState.Modals(
                         bottomSheet = currentBottomSheet?.copy(
                             data = currentBottomSheet.data.copy(
-                                cellData = currentBottomSheet.data.cellData.copy(
-                                    isCompleted = isCompleted,
-                                ),
+                                cellData = currentBottomSheet.data.cellData.copy(isCompleted = isCompleted),
                             ),
                         ),
                     ),
                 )
-            } else state
+            }
         }
     }
 
@@ -733,17 +687,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateModalState(block: (HomeUiState.Content) -> HomeUiState.Content) {
-        _uiState.update { state ->
-            if (state is HomeUiState.Content) {
-                block(state)
-            } else state
-        }
-    }
-
-    // 자주 사용되는 경우를 위한 편의 함수
     private fun hideModal() {
-        updateModalState { it.copy(modal = ModalState.Hidden) }
+        uiState.checkState<HomeUiState.Content> {
+            _uiState.update { copy(modal = ModalState.Hidden) }
+        }
     }
 
     private fun updateCell(
