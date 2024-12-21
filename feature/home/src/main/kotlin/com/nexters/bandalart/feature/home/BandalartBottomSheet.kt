@@ -240,6 +240,7 @@ fun BandalartBottomSheet(
                                 mainColor = bottomSheetData.bandalartData.mainColor,
                                 subColor = bottomSheetData.bandalartData.subColor,
                             ),
+                            // TODO 문제의 부분(테마가 업데이트 안되는 문제 해결)
                             onColorSelect = {
                                 onHomeUiAction(HomeUiAction.OnColorSelect(it.mainColor, it.subColor))
                             },
