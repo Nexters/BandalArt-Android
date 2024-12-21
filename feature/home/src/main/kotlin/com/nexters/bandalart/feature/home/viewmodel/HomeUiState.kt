@@ -15,21 +15,6 @@ import kotlinx.collections.immutable.persistentListOf
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
  * @param bandalartChartUrl 반다라트 차트 이미지 URL
  * @param isBandalartCompleted 반다라트 목표를 달성함
- * @param modal 모달 상태 (드롭다운 메뉴, 바텀시트, 다이얼로그 등)
- * @param shareState 공유 상태 (공유, 캡쳐)
- * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
- * @param clickedCellData 클릭한 반다라트 셀의 데이터
- */
-
-/**
- * HomeUiState
- *
- * @param bandalartList 반다라트 목록
- * @param bandalartData 반다라트 데이터
- * @param bandalartCellData 반다라트 각각의 셀의 데이터
- * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
- * @param bandalartChartUrl 반다라트 차트 이미지 URL
- * @param isBandalartCompleted 반다라트 목표를 달성함
  * @param bottomSheet 바텀시트 상태
  * @param dialog 다이얼로그 상태
  * @param isSharing 공유 요청 상태
