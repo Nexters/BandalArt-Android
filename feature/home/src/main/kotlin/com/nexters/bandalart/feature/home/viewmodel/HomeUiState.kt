@@ -1,7 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.core.ui.UiState
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import kotlinx.collections.immutable.ImmutableList
@@ -11,74 +10,76 @@ import kotlinx.collections.immutable.persistentListOf
  * HomeUiState
  *
  * @param bandalartList 반다라트 목록
- * @param bandalartData 반다라트 데이터,
- * @param bandalartCellData 반다라트 각각의 셀의 데이터,
- * @param isDropDownMenuOpened 드롭 다운 메뉴가 열림
- * @param isBandalartDeleteAlertDialogOpened 반다라트 표 삭제 다이얼로그가 열림
- * @param isBandalartListBottomSheetOpened 반다라트 목록 바텀시트가 열림
- * @param isCellBottomSheetOpened 반다라트 셀 바텀시트가 열림
- * @param isEmojiBottomSheetOpened 반다라트 이모지 바텀시트가 열림
- * @param isBandalartCompleted 반다라트 목표를 달성함
+ * @param bandalartData 반다라트 데이터
+ * @param bandalartCellData 반다라트 각각의 셀의 데이터
  * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
- * @param isShared 반다라트가 공유되었는지 유무
- * @param isCaptured 반다라트가 완료되어서 캡쳐되었는지 유무
+ * @param bandalartChartUrl 반다라트 차트 이미지 URL
+ * @param isBandalartCompleted 반다라트 목표를 달성함
+ * @param modal 모달 상태 (드롭다운 메뉴, 바텀시트, 다이얼로그 등)
+ * @param shareState 공유 상태 (공유, 캡쳐)
  * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
+ * @param clickedCellData 클릭한 반다라트 셀의 데이터
  */
 
-sealed interface HomeUiState : UiState {
-    data class Content(
-        // 기본 홈 화면 상태
-        val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
-        val bandalartData: BandalartUiModel? = null,
-        val bandalartCellData: BandalartCellEntity? = null,
-        val isShowSkeleton: Boolean = false,
-        val bandalartChartUrl: String? = null,
-        val isBandalartCompleted: Boolean = false,
-
-        // UI 상태 관리
-        val modal: ModalState = ModalState.Hidden,
-        val shareState: ShareState = ShareState.None,
-
-        // 선택된 셀 정보
-        val clickedCellType: CellType = CellType.MAIN,
-        val clickedCellData: BandalartCellEntity? = null,
-    ) : HomeUiState
-}
-
-sealed interface ModalState : UiState {
-    data object Hidden : ModalState
-    data object DropDownMenu : ModalState
-    data class Modals(
-        val bottomSheet: BottomSheetModal? = null,
-        val dialog: DialogModal? = null,
-    ) : ModalState
-}
-
-sealed interface BottomSheetModal {
-    data class Cell(val data: BottomSheetData) : BottomSheetModal
-    data class BandalartList(val data: BottomSheetData) : BottomSheetModal
-    data class Emoji(val data: BottomSheetData) : BottomSheetModal
-}
-
-sealed interface DialogModal {
-    data object Delete : DialogModal
-}
-
-data class BottomSheetData(
-    // BottomSheet 공통 데이터
-    val initialCellData: BandalartCellEntity = BandalartCellEntity(),
-    val cellData: BandalartCellEntity = BandalartCellEntity(),
-    val initialBandalartData: BandalartUiModel = BandalartUiModel(),
-    val bandalartData: BandalartUiModel = BandalartUiModel(),
-
-    // UI 상태
-    val isDatePickerOpened: Boolean = false,
-    val isEmojiPickerOpened: Boolean = false,
-    val isDeleteCellDialogOpened: Boolean = false,
+/**
+ * HomeUiState
+ *
+ * @param bandalartList 반다라트 목록
+ * @param bandalartData 반다라트 데이터
+ * @param bandalartCellData 반다라트 각각의 셀의 데이터
+ * @param isShowSkeleton 표의 첫 로딩을 보여주는 스켈레톤 이미지
+ * @param bandalartChartUrl 반다라트 차트 이미지 URL
+ * @param isBandalartCompleted 반다라트 목표를 달성함
+ * @param bottomSheet 바텀시트 상태
+ * @param dialog 다이얼로그 상태
+ * @param isSharing 공유 요청 상태
+ * @param isCapturing 저장 요청 상태
+ * @param isDropDownMenuOpened 드롭다운 메뉴가 열려있는지 여부
+ * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
+ * @param clickedCellData 클릭한 반다라트 셀의 데이터
+ */
+data class HomeUiState(
+    val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
+    val bandalartData: BandalartUiModel? = null,
+    val bandalartCellData: BandalartCellEntity? = null,
+    val isShowSkeleton: Boolean = false,
+    val bandalartChartUrl: String? = null,
+    val isBandalartCompleted: Boolean = false,
+    val bottomSheet: BottomSheetState? = null,
+    val dialog: DialogState? = null,
+    val isSharing: Boolean = false,
+    val isCapturing: Boolean = false,
+    val isDropDownMenuOpened: Boolean = false,
+    val clickedCellType: CellType = CellType.MAIN,
+    val clickedCellData: BandalartCellEntity? = null,
 )
 
-sealed interface ShareState : UiState {
-    data object None : ShareState
-    data object Share : ShareState
-    data object Capture : ShareState
+sealed interface BottomSheetState {
+    data class Cell(
+        val initialCellData : BandalartCellEntity,
+        val cellData: BandalartCellEntity,
+        val initialBandalartData: BandalartUiModel,
+        val bandalartData: BandalartUiModel,
+        val isDatePickerOpened: Boolean = false,
+        val isEmojiPickerOpened: Boolean = false
+    ) : BottomSheetState
+
+    data class BandalartList(
+        val bandalartList: ImmutableList<BandalartUiModel>,
+        val currentBandalartId: Long
+    ) : BottomSheetState
+
+    data class Emoji(
+        val bandalartId: Long,
+        val cellId: Long,
+        val currentEmoji: String?
+    ) : BottomSheetState
+}
+
+sealed interface DialogState {
+    data object BandalartDelete : DialogState
+    data class CellDelete(
+        val cellType: CellType,
+        val cellTitle: String?
+    ) : DialogState
 }
