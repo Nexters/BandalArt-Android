@@ -44,7 +44,6 @@ sealed interface HomeUiAction {
     data class OnDeleteCell(val cellId: Long) : HomeUiAction
     data object OnCancelClick : HomeUiAction
     data object OnEmojiPickerClick : HomeUiAction
-    data object OnCloseBottomSheet : HomeUiAction
     data object OnDeleteButtonClick : HomeUiAction
     data class OnCompleteButtonClick(
         val bandalartId: Long,
