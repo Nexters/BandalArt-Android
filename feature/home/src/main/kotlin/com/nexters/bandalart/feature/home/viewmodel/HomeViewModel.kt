@@ -574,9 +574,14 @@ class HomeViewModel @Inject constructor(
     private fun updateDescription(description: String) {
         _uiState.update {
             val currentBottomSheet = (it.bottomSheet as? BottomSheetState.Cell) ?: return@update it
+            val validatedDescription = if (description.length > 1000) {
+                currentBottomSheet.cellData.description
+            } else {
+                description
+            }
             it.copy(
                 bottomSheet = currentBottomSheet.copy(
-                    cellData = currentBottomSheet.cellData.copy(description = description),
+                    cellData = currentBottomSheet.cellData.copy(description = validatedDescription),
                 ),
             )
         }
