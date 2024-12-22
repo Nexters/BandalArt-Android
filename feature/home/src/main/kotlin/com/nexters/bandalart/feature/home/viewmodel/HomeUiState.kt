@@ -41,23 +41,23 @@ data class HomeUiState(
 
 sealed interface BottomSheetState {
     data class Cell(
-        val initialCellData : BandalartCellEntity,
+        val initialCellData: BandalartCellEntity,
         val cellData: BandalartCellEntity,
         val initialBandalartData: BandalartUiModel,
         val bandalartData: BandalartUiModel,
         val isDatePickerOpened: Boolean = false,
-        val isEmojiPickerOpened: Boolean = false
+        val isEmojiPickerOpened: Boolean = false,
     ) : BottomSheetState
 
     data class BandalartList(
         val bandalartList: ImmutableList<BandalartUiModel>,
-        val currentBandalartId: Long
+        val currentBandalartId: Long,
     ) : BottomSheetState
 
     data class Emoji(
         val bandalartId: Long,
         val cellId: Long,
-        val currentEmoji: String?
+        val currentEmoji: String?,
     ) : BottomSheetState
 }
 
@@ -65,6 +65,6 @@ sealed interface DialogState {
     data object BandalartDelete : DialogState
     data class CellDelete(
         val cellType: CellType,
-        val cellTitle: String?
+        val cellTitle: String?,
     ) : DialogState
 }

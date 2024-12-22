@@ -108,7 +108,7 @@ fun BandalartBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = {
-            onHomeUiAction(HomeUiAction.ToggleCellBottomSheet(false))
+            onHomeUiAction(HomeUiAction.OnDismiss)
         },
         modifier = Modifier
             .wrapContentSize()

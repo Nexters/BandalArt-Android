@@ -73,7 +73,9 @@ fun HomeHeader(
                             .width(52.dp)
                             .aspectRatio(1f)
                             .background(Gray100)
-                            .clickable { onAction(HomeUiAction.ToggleEmojiBottomSheet(true)) },
+                            .clickable {
+                                onAction(HomeUiAction.OnEmojiClick)
+                            },
                         contentAlignment = Alignment.Center,
                     ) {
                         if (bandalartData.profileEmoji.isNullOrEmpty()) {
@@ -124,12 +126,14 @@ fun HomeHeader(
                     contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable { onAction(HomeUiAction.ToggleDropDownMenu(true)) },
+                        .clickable { onAction(HomeUiAction.OnMenuClick) },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
-                    toggleDropDownMenu = { flag -> onAction(HomeUiAction.ToggleDropDownMenu(flag)) },
                     isDropDownMenuOpened = isDropDownMenuOpened,
+                    onDropDownDissmiss = {
+                        onAction(HomeUiAction.OnDropDownMenuDismiss)
+                    },
                     onSaveClick = { onAction(HomeUiAction.OnSaveClick) },
                     onDeleteClick = { onAction(HomeUiAction.OnDeleteClick) },
                 )

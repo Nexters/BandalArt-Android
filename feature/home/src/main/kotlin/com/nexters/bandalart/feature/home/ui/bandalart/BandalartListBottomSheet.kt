@@ -62,12 +62,12 @@ fun BandalartListBottomSheet(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
+        onDismissRequest = {
+            onHomeUiAction(HomeUiAction.OnDismiss)
+        },
         modifier = Modifier
             .wrapContentSize()
             .statusBarsPadding(),
-        onDismissRequest = {
-            onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false))
-        },
         sheetState = bottomSheetState,
         dragHandle = null,
     ) {
@@ -96,7 +96,7 @@ fun BandalartListBottomSheet(
                         .height(21.dp)
                         .aspectRatio(1f),
                     onClick = {
-                        onHomeUiAction(HomeUiAction.ToggleBandalartListBottomSheet(false))
+                        onHomeUiAction(HomeUiAction.OnDismiss)
                     },
                 ) {
                     Icon(

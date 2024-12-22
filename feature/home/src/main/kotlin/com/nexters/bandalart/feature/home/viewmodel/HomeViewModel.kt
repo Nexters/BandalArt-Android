@@ -76,95 +76,20 @@ class HomeViewModel @Inject constructor(
 
     fun onAction(action: HomeUiAction) {
         when (action) {
-            is HomeUiAction.OnListClick -> {
-                _uiState.update {
-                    it.copy(
-                        bottomSheet = BottomSheetState.BandalartList(
-                            bandalartList = it.bandalartList,
-                            currentBandalartId = it.bandalartData?.id ?: return,
-                        ),
-                    )
-                }
-            }
-
+            is HomeUiAction.OnListClick -> showBandalartListBottomSheet()
             is HomeUiAction.OnSaveClick -> requestCapture()
-            is HomeUiAction.OnDeleteClick -> {
-                _uiState.update { it.copy(dialog = DialogState.BandalartDelete) }
-            }
-
+            is HomeUiAction.OnDeleteClick -> showBandalartDeleteDialog()
             is HomeUiAction.OnEmojiSelected -> updateBandalartEmoji(
                 action.bandalartId,
                 action.cellId,
                 action.updateBandalartEmojiModel,
             )
 
-            is HomeUiAction.OnConfirmClick -> {
-                when (action.modalType) {
-                    ModalType.DELETE_DIALOG -> {
-                        _uiState.value.bandalartData?.let { deleteBandalart(it.id) }
-                    }
-
-                    else -> {}
-                }
-            }
-
-            is HomeUiAction.OnCancelClick -> hideBottomSheet()
             is HomeUiAction.OnShareButtonClick -> requestShare()
             is HomeUiAction.OnAddClick -> createBandalart()
-            is HomeUiAction.ToggleDropDownMenu -> _uiState.update { it.copy(isDropDownMenuOpened = !_uiState.value.isDropDownMenuOpened) }
-
-            is HomeUiAction.ToggleDeleteAlertDialog -> {
-                _uiState.update {
-                    it.copy(
-                        dialog = if (action.flag) {
-                            DialogState.BandalartDelete
-                        } else null,
-                    )
-                }
-            }
-
-            is HomeUiAction.ToggleEmojiBottomSheet -> {
-                _uiState.update {
-                    it.copy(
-                        bottomSheet = if (action.flag) {
-                            BottomSheetState.Emoji(
-                                bandalartId = it.bandalartData?.id ?: return,
-                                cellId = it.bandalartCellData?.id ?: return,
-                                currentEmoji = it.bandalartData.profileEmoji,
-                            )
-                        } else null,
-                    )
-                }
-            }
-
-            is HomeUiAction.ToggleCellBottomSheet -> {
-                if (!action.flag) {
-                    _uiState.update {
-                        it.copy(bottomSheet = null)
-                    }
-                } else {
-                    val currentState = _uiState.value
-                    handleBandalartCellClick(
-                        currentState.clickedCellType,
-                        currentState.clickedCellData?.title.isNullOrEmpty(),
-                        currentState.clickedCellData ?: return,
-                    )
-                }
-            }
-
-            is HomeUiAction.ToggleBandalartListBottomSheet -> {
-                _uiState.update {
-                    it.copy(
-                        bottomSheet = if (action.flag) {
-                            BottomSheetState.BandalartList(
-                                bandalartList = it.bandalartList,
-                                currentBandalartId = it.bandalartData?.id ?: return,
-                            )
-                        } else null,
-                    )
-                }
-            }
-
+            is HomeUiAction.OnMenuClick -> showDropDownMenu()
+            is HomeUiAction.OnDropDownMenuDismiss -> hideDropDownMenu()
+            is HomeUiAction.OnEmojiClick -> showEmojiBottomSheet()
             is HomeUiAction.OnBandalartListItemClick -> {
                 setRecentBandalartId(action.key)
                 getBandalart(action.key)
@@ -179,52 +104,20 @@ class HomeViewModel @Inject constructor(
 
             is HomeUiAction.OnCloseButtonClick -> hideBottomSheet()
             is HomeUiAction.OnAppTitleClick -> showAppVersion()
+            is HomeUiAction.OnDismiss -> hideBottomSheet()
             is HomeUiAction.OnCellTitleUpdate -> updateCellTitle(action.title, action.locale)
             is HomeUiAction.OnEmojiSelect -> updateEmoji(action.emoji)
             is HomeUiAction.OnColorSelect -> updateThemeColor(action.mainColor, action.subColor)
             is HomeUiAction.OnDueDateSelect -> updateDueDate(action.date)
             is HomeUiAction.OnDescriptionUpdate -> updateDescription(action.description)
             is HomeUiAction.OnCompletionUpdate -> updateCompletion(action.isCompleted)
+            is HomeUiAction.OnDeleteBandalart -> deleteBandalart(action.bandalartId)
             is HomeUiAction.OnDeleteCell -> deleteCell(action.cellId)
-            is HomeUiAction.OnCancelDeleteCell -> _uiState.update { it.copy(dialog = null) }
-
-            is HomeUiAction.OnEmojiPickerClick -> {
-                _uiState.update {
-                    val currentBottomSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
-                    it.copy(
-                        bottomSheet = currentBottomSheet.copy(
-                            isEmojiPickerOpened = true,
-                        ),
-                    )
-                }
-            }
-
-            is HomeUiAction.OnDatePickerClick -> {
-                _uiState.update {
-                    val currentSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
-                    it.copy(
-                        bottomSheet = currentSheet.copy(
-                            isDatePickerOpened = true,
-                        ),
-                    )
-                }
-            }
-
-            is HomeUiAction.OnCloseBottomSheet -> {
-                _uiState.update { it.copy(bottomSheet = null) }
-            }
-
-            is HomeUiAction.OnDeleteButtonClick -> {
-                _uiState.update {
-                    it.copy(
-                        dialog = DialogState.CellDelete(
-                            cellType = it.clickedCellType,
-                            cellTitle = (it.bottomSheet as? BottomSheetState.Cell)?.cellData?.title,
-                        ),
-                    )
-                }
-            }
-
+            is HomeUiAction.OnCancelClick -> hideDialog()
+            is HomeUiAction.OnEmojiPickerClick -> expandEmojiPicker()
+            is HomeUiAction.OnDatePickerClick -> expandDatePicker()
+            is HomeUiAction.OnCloseBottomSheet -> hideBottomSheet()
+            is HomeUiAction.OnDeleteButtonClick -> showCellDeleteDialog()
             is HomeUiAction.OnCompleteButtonClick -> {
                 updateCell(
                     bandalartId = action.bandalartId,
@@ -553,9 +446,9 @@ class HomeViewModel @Inject constructor(
                 bottomSheet = currentSheet.copy(
                     bandalartData = currentSheet.bandalartData.copy(
                         mainColor = mainColor,
-                        subColor = subColor
-                    )
-                )
+                        subColor = subColor,
+                    ),
+                ),
             )
         }
     }
@@ -603,19 +496,6 @@ class HomeViewModel @Inject constructor(
             bandalartRepository.deleteBandalartCell(cellId)
             hideModal()
         }
-    }
-
-    private fun hideModal() {
-        hideDialog()
-        hideBottomSheet()
-    }
-
-    private fun hideDialog() {
-        _uiState.update { it.copy(dialog = null) }
-    }
-
-    private fun hideBottomSheet() {
-        _uiState.update { it.copy(bottomSheet = null) }
     }
 
     private fun updateCell(
@@ -706,6 +586,89 @@ class HomeViewModel @Inject constructor(
             bandalartRepository.updateBandalartTaskCell(bandalartId, cellId, updateBandalartTaskCellModel)
             hideBottomSheet()
         }
+    }
+
+    private fun showDropDownMenu() {
+        _uiState.update { it.copy(isDropDownMenuOpened = true) }
+    }
+
+    private fun showEmojiBottomSheet() {
+        _uiState.value.bandalartData?.let { bandalartData ->
+            _uiState.update {
+                it.copy(
+                    bottomSheet = BottomSheetState.Emoji(
+                        bandalartId = bandalartData.id,
+                        cellId = bandalartData.id,
+                        currentEmoji = bandalartData.profileEmoji,
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun showBandalartListBottomSheet() {
+        _uiState.update {
+            it.copy(
+                bottomSheet = BottomSheetState.BandalartList(
+                    bandalartList = it.bandalartList,
+                    currentBandalartId = it.bandalartData?.id ?: return,
+                ),
+            )
+        }
+    }
+
+    private fun showBandalartDeleteDialog() {
+        _uiState.update { it.copy(dialog = DialogState.BandalartDelete) }
+    }
+
+    private fun showCellDeleteDialog() {
+        _uiState.update {
+            it.copy(
+                dialog = DialogState.CellDelete(
+                    cellType = it.clickedCellType,
+                    cellTitle = (it.bottomSheet as? BottomSheetState.Cell)?.cellData?.title,
+                ),
+            )
+        }
+    }
+
+    private fun expandEmojiPicker() {
+        _uiState.update {
+            val currentBottomSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            it.copy(
+                bottomSheet = currentBottomSheet.copy(
+                    isEmojiPickerOpened = true,
+                ),
+            )
+        }
+    }
+
+    private fun expandDatePicker() {
+        _uiState.update {
+            val currentSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            it.copy(
+                bottomSheet = currentSheet.copy(
+                    isDatePickerOpened = true,
+                ),
+            )
+        }
+    }
+
+    private fun hideDropDownMenu() {
+        _uiState.update { it.copy(isDropDownMenuOpened = false) }
+    }
+
+    private fun hideModal() {
+        hideDialog()
+        hideBottomSheet()
+    }
+
+    private fun hideDialog() {
+        _uiState.update { it.copy(dialog = null) }
+    }
+
+    private fun hideBottomSheet() {
+        _uiState.update { it.copy(bottomSheet = null) }
     }
 
     private fun showAppVersion() {

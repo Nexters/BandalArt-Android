@@ -74,7 +74,6 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
-import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -83,7 +82,6 @@ import timber.log.Timber
 private const val SnackbarDuration = 1500L
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
-// TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
 @Suppress("TooGenericExceptionCaught")
 @Composable
@@ -312,11 +310,11 @@ internal fun HomeScreen(
                         stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
                     },
                     message = stringResource(R.string.delete_bandalart_dialog_message),
-                    onDeleteClicked = {
-                        onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG))
+                    onDeleteClick = {
+                        onHomeUiAction(HomeUiAction.OnDeleteBandalart(bandalart.id))
                     },
-                    onCancelClicked = {
-                        onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG))
+                    onCancelClick = {
+                        onHomeUiAction(HomeUiAction.OnCancelClick)
                     },
                 )
             }
@@ -335,11 +333,11 @@ internal fun HomeScreen(
                         CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
                         else -> stringResource(R.string.delete_bandalart_taskcell_dialog_message)
                     },
-                    onDeleteClicked = {
+                    onDeleteClick = {
                         onHomeUiAction(HomeUiAction.OnDeleteCell(cellData.id))
                     },
-                    onCancelClicked = {
-                        onHomeUiAction(HomeUiAction.OnCancelDeleteCell)
+                    onCancelClick = {
+                        onHomeUiAction(HomeUiAction.OnCancelClick)
                     },
                 )
             }

@@ -36,7 +36,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 @Composable
 fun BandalartDropDownMenu(
     isDropDownMenuOpened: Boolean,
-    toggleDropDownMenu: (Boolean) -> Unit,
+    onDropDownDissmiss: () -> Unit,
     onSaveClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -46,7 +46,7 @@ fun BandalartDropDownMenu(
             .wrapContentSize()
             .background(White),
         expanded = isDropDownMenuOpened,
-        onDismissRequest = { toggleDropDownMenu(false) },
+        onDismissRequest = onDropDownDissmiss,
         offset = DpOffset(
             x = (-18).dp,
             y = 0.dp,
@@ -120,7 +120,7 @@ fun BandalartDropDownMenu(
 private fun BandalartDropDownMenuPreview() {
     BandalartTheme {
         BandalartDropDownMenu(
-            toggleDropDownMenu = {},
+            onDropDownDissmiss = {},
             isDropDownMenuOpened = true,
             onSaveClick = {},
             onDeleteClick = {},

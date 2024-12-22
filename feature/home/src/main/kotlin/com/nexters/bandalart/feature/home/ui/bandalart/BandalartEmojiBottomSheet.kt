@@ -25,7 +25,7 @@ fun BandalartEmojiBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = {
-            onHomeUiAction(HomeUiAction.ToggleEmojiBottomSheet(false))
+            onHomeUiAction(HomeUiAction.OnDismiss)
         },
         modifier = modifier.wrapContentSize(),
         sheetState = bottomSheetState,
