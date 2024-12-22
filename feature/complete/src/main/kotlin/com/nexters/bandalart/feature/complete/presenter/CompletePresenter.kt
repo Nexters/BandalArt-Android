@@ -3,8 +3,10 @@ package com.nexters.bandalart.feature.complete.presenter
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.nexters.bandalart.core.common.extension.saveUriToGallery
 import com.nexters.bandalart.core.common.extension.shareImage
+import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.complete.CompleteScreen.State
@@ -20,11 +22,20 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 
 class CompletePresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
+    @Assisted private val screen: CompleteScreen,
     @ApplicationContext private val context: Context,
+    private val bandalartRepository: BandalartRepository,
 ) : Presenter<State> {
 
     @Composable
     override fun present(): State {
+        LaunchedEffect(Unit) {
+            bandalartRepository.upsertBandalartId(
+                bandalartId = screen.bandalartId,
+                isCompleted = true
+            )
+        }
+
         return State(
             id = 0L,
             title = "",
@@ -48,6 +59,9 @@ class CompletePresenter @AssistedInject constructor(
     @CircuitInject(CompleteScreen::class, ActivityRetainedComponent::class)
     @AssistedFactory
     fun interface Factory {
-        fun create(navigator: Navigator): CompletePresenter
+        fun create(
+            navigator: Navigator,
+            screen: CompleteScreen
+        ): CompletePresenter
     }
 }
