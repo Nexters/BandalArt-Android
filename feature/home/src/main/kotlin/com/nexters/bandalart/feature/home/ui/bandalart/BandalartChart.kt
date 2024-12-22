@@ -32,7 +32,6 @@ fun BandalartChart(
     bandalartData: BandalartUiModel,
     bandalartCellData: BandalartCellEntity,
     eventSink: (Event) -> Unit,
-    // onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current

@@ -87,6 +87,7 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetSubTitleText
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -98,7 +99,7 @@ fun BandalartBottomSheet(
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
     bottomSheetData: BottomSheetState.Cell,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+    eventSink: (Event) -> Unit,
 ) {
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -108,7 +109,7 @@ fun BandalartBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = {
-            onHomeUiAction(HomeUiAction.OnDismiss)
+            eventSink(Event.OnDismiss)
         },
         modifier = Modifier
             .wrapContentSize()
@@ -127,7 +128,7 @@ fun BandalartBottomSheet(
                 cellType = cellType,
                 isBlankCell = isBlankCell,
                 onCloseClick = {
-                    onHomeUiAction(HomeUiAction.OnDismiss)
+                    eventSink(Event.OnDismiss)
                 },
             )
             Box {
@@ -157,7 +158,7 @@ fun BandalartBottomSheet(
                                             .aspectRatio(1f)
                                             .background(Gray100)
                                             .clickable {
-                                                onHomeUiAction(HomeUiAction.OnEmojiPickerClick)
+                                                eventSink(Event.OnEmojiPickerClick)
                                             },
                                         contentAlignment = Alignment.Center,
                                     ) {
@@ -189,7 +190,7 @@ fun BandalartBottomSheet(
                             BasicTextField(
                                 value = bottomSheetData.cellData.title ?: "",
                                 onValueChange = { title ->
-                                    onHomeUiAction(HomeUiAction.OnCellTitleUpdate(title, currentLocale))
+                                    eventSink(Event.OnCellTitleUpdate(title, currentLocale))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -229,7 +230,7 @@ fun BandalartBottomSheet(
                                 currentEmoji = bottomSheetData.bandalartData.profileEmoji,
                                 isBottomSheet = false,
                                 onEmojiSelect = { selectedEmoji ->
-                                    onHomeUiAction(HomeUiAction.OnEmojiSelect(selectedEmoji))
+                                    eventSink(Event.OnEmojiSelect(selectedEmoji))
                                 },
                             )
                         }
@@ -243,7 +244,7 @@ fun BandalartBottomSheet(
                                 subColor = bottomSheetData.bandalartData.subColor,
                             ),
                             onColorSelect = { themeColor ->
-                                onHomeUiAction(HomeUiAction.OnColorSelect(themeColor.mainColor, themeColor.subColor))
+                                eventSink(Event.OnColorSelect(themeColor.mainColor, themeColor.subColor))
                             },
                         )
                         Spacer(modifier = Modifier.height(3.dp))
@@ -257,7 +258,7 @@ fun BandalartBottomSheet(
                                 .fillMaxWidth()
                                 .height(24.dp)
                                 .clickable {
-                                    onHomeUiAction(HomeUiAction.OnDatePickerClick)
+                                    eventSink(Event.OnDatePickerClick)
                                 },
                             contentAlignment = Alignment.CenterStart,
                         ) {
@@ -285,7 +286,7 @@ fun BandalartBottomSheet(
                     AnimatedVisibility(visible = bottomSheetData.isDatePickerOpened) {
                         BandalartDatePicker(
                             onDueDateSelect = { dueDateResult ->
-                                onHomeUiAction(HomeUiAction.OnDueDateSelect(dueDateResult.toString()))
+                                eventSink(Event.OnDueDateSelect(dueDateResult.toString()))
                             },
                             currentDueDate = bottomSheetData.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
                         )
@@ -298,7 +299,7 @@ fun BandalartBottomSheet(
                             BasicTextField(
                                 value = bottomSheetData.cellData.description ?: "",
                                 onValueChange = { description ->
-                                    onHomeUiAction(HomeUiAction.OnDescriptionUpdate(description))
+                                    eventSink(Event.OnDescriptionUpdate(description))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -336,7 +337,7 @@ fun BandalartBottomSheet(
                             Switch(
                                 checked = bottomSheetData.cellData.isCompleted,
                                 onCheckedChange = { isCompleted ->
-                                    onHomeUiAction(HomeUiAction.OnCompletionUpdate(isCompleted))
+                                    eventSink(Event.OnCompletionUpdate(isCompleted))
                                 },
                                 colors = SwitchDefaults.colors(
                                     uncheckedThumbColor = White,
@@ -365,7 +366,7 @@ fun BandalartBottomSheet(
                         if (!isBlankCell) {
                             BottomSheetDeleteButton(
                                 onClick = {
-                                    onHomeUiAction(HomeUiAction.OnDeleteButtonClick)
+                                    eventSink(Event.OnDeleteButtonClick)
                                 },
                                 modifier = Modifier.weight(1f),
                             )
@@ -375,7 +376,7 @@ fun BandalartBottomSheet(
                             isEnabled = (bottomSheetData.cellData.title?.trim()
                                 ?.isNotEmpty() == true) && (bottomSheetData.initialCellData != bottomSheetData.cellData || bottomSheetData.initialBandalartData != bottomSheetData.bandalartData),
                             onClick = {
-                                onHomeUiAction(HomeUiAction.OnCompleteButtonClick(bandalartId, cellData.id, cellType))
+                                eventSink(Event.OnCompleteButtonClick(bandalartId, cellData.id, cellType))
                             },
                             modifier = Modifier.weight(1f),
                         )
@@ -429,7 +430,7 @@ private fun BandalartMainCellBottomSheetPreview() {
                 initialBandalartData = dummyBandalartData,
                 bandalartData = dummyBandalartData,
             ),
-            onHomeUiAction = {},
+            eventSink = {},
         )
     }
 }
@@ -449,7 +450,7 @@ private fun BandalartSubCellBottomSheetPreview() {
                 initialBandalartData = dummyBandalartData,
                 bandalartData = dummyBandalartData,
             ),
-            onHomeUiAction = {},
+            eventSink = {},
         )
     }
 }
@@ -469,7 +470,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
                 initialBandalartData = dummyBandalartData,
                 bandalartData = dummyBandalartData,
             ),
-            onHomeUiAction = {},
+            eventSink = {},
         )
     }
 }

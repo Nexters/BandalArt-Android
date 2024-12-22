@@ -52,8 +52,7 @@ internal fun HomeTopBar(
                     .align(Alignment.CenterVertically)
                     .padding(start = 20.dp, top = 2.dp)
                     .clickable {
-                        // onHomeUiAction(HomeUiAction.OnAppTitleClick)
-                        eventSink(Event.ShowAppVersion)
+                        eventSink(Event.OnAppTitleClick)
                     },
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -63,9 +62,9 @@ internal fun HomeTopBar(
                     .clickable(
                         onClick = {
                             if (bandalartCount > 1) {
-                                // onHomeUiAction(HomeUiAction.OnListClick)
+                                eventSink(Event.OnListClick)
                             } else {
-                                // onHomeUiAction(HomeUiAction.OnAddClick)
+                                eventSink(Event.OnAddClick)
                             }
                         },
                     ),

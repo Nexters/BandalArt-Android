@@ -31,14 +31,13 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartDropDownMenu(
     isDropDownMenuOpened: Boolean,
-    onDropDownDissmiss: () -> Unit,
-    onSaveClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    eventSink: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DropdownMenu(
@@ -46,7 +45,9 @@ fun BandalartDropDownMenu(
             .wrapContentSize()
             .background(White),
         expanded = isDropDownMenuOpened,
-        onDismissRequest = onDropDownDissmiss,
+        onDismissRequest = {
+            eventSink(Event.OnDropDownMenuDismiss)
+        },
         offset = DpOffset(
             x = (-18).dp,
             y = 0.dp,
@@ -80,7 +81,9 @@ fun BandalartDropDownMenu(
                     )
                 }
             },
-            onClick = onSaveClick,
+            onClick = {
+                eventSink(Event.OnSaveClick)
+            },
         )
         Spacer(modifier = Modifier.height(2.dp))
         DropdownMenuItem(
@@ -110,7 +113,9 @@ fun BandalartDropDownMenu(
                     )
                 }
             },
-            onClick = onDeleteClick,
+            onClick = {
+                eventSink(Event.OnDeleteClick)
+            },
         )
     }
 }
@@ -120,10 +125,8 @@ fun BandalartDropDownMenu(
 private fun BandalartDropDownMenuPreview() {
     BandalartTheme {
         BandalartDropDownMenu(
-            onDropDownDissmiss = {},
             isDropDownMenuOpened = true,
-            onSaveClick = {},
-            onDeleteClick = {},
+            eventSink = {},
         )
     }
 }

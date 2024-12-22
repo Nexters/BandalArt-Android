@@ -43,6 +43,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -56,7 +57,7 @@ fun HomeHeader(
     bandalartData: BandalartUiModel,
     isDropDownMenuOpened: Boolean,
     cellData: BandalartCellEntity,
-    onAction: (HomeUiAction) -> Unit,
+    eventSink: (HomeScreen.Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -73,7 +74,7 @@ fun HomeHeader(
                             .aspectRatio(1f)
                             .background(Gray100)
                             .clickable {
-                                onAction(HomeUiAction.OnEmojiClick)
+                                eventSink(HomeScreen.Event.OnEmojiClick)
                             },
                         contentAlignment = Alignment.Center,
                     ) {
@@ -116,7 +117,7 @@ fun HomeHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clickable {
-                            onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                            eventSink(HomeScreen.Event.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
                         },
                     letterSpacing = (-0.4).sp,
                 )
@@ -125,16 +126,14 @@ fun HomeHeader(
                     contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable { onAction(HomeUiAction.OnMenuClick) },
+                        .clickable {
+                            eventSink(HomeScreen.Event.OnMenuClick)
+                        },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onDropDownDissmiss = {
-                        onAction(HomeUiAction.OnDropDownMenuDismiss)
-                    },
-                    onSaveClick = { onAction(HomeUiAction.OnSaveClick) },
-                    onDeleteClick = { onAction(HomeUiAction.OnDeleteClick) },
+                    eventSink = eventSink,
                 )
             }
         }
@@ -213,7 +212,7 @@ private fun HomeHeaderPreview() {
             bandalartData = dummyBandalartData,
             isDropDownMenuOpened = false,
             cellData = dummyBandalartCellData,
-            onAction = {},
+            eventSink = {},
         )
     }
 }

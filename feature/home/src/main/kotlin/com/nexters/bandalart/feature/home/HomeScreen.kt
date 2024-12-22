@@ -1,9 +1,6 @@
 package com.nexters.bandalart.feature.home
 
-import android.app.Activity
 import android.content.Context
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,16 +12,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -34,15 +26,7 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.install.InstallStateUpdatedListener
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.common.utils.UiText
-import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -65,20 +49,15 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.DialogState
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
-import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
-import com.nexters.bandalart.feature.home.viewmodel.ModalType
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import timber.log.Timber
+import java.util.Locale
 
 // TODO Action 와 Event 를 분리하지 말고 바로 Event 를 호출하면 될듯 (이게 MVI 가 맞나?)
 @Parcelize
@@ -87,21 +66,16 @@ data object HomeScreen : Screen {
         val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
         val bandalartData: BandalartUiModel? = null,
         val bandalartCellData: BandalartCellEntity? = null,
-        val isDropDownMenuOpened: Boolean = false,
-        val isBandalartDeleteAlertDialogOpened: Boolean = false,
-        val isBandalartListBottomSheetOpened: Boolean = false,
-        val isCellBottomSheetOpened: Boolean = false,
-        val isEmojiBottomSheetOpened: Boolean = false,
-        val isBandalartCompleted: Boolean = false,
         val isShowSkeleton: Boolean = false,
-        val isShared: Boolean = false,
-        val isCaptured: Boolean = false,
         val bandalartChartUrl: String? = null,
+        val isBandalartCompleted: Boolean = false,
+        val bottomSheet: BottomSheetState? = null,
+        val dialog: DialogState? = null,
+        val isSharing: Boolean = false,
+        val isCapturing: Boolean = false,
+        val isDropDownMenuOpened: Boolean = false,
         val clickedCellType: CellType = CellType.MAIN,
         val clickedCellData: BandalartCellEntity? = null,
-        val isUpdateAlreadyRejected: Boolean = false,
-        val isEmojiPickerOpened: Boolean = false,
-        val isDatePickerOpened: Boolean = false,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 
@@ -119,26 +93,22 @@ data object HomeScreen : Screen {
         data class ShareBandalart(val bitmap: ImageBitmap) : Event
         data class CaptureBandalart(val bitmap: ImageBitmap) : Event
         data object ShowAppVersion : Event
-        data class SaveLastRejectedUpdateVersion(val versionCode: Int) : Event
+
+        // HomeScreen UiAction
         data object OnListClick : Event
         data object OnSaveClick : Event
         data object OnDeleteClick : Event
-        data object OnEmojiClick: Event
         data class OnEmojiSelected(
             val bandalartId: Long,
             val cellId: Long,
             val updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
         ) : Event
 
-        data class OnConfirmClick(val modalType: ModalType) : Event
-        data class OnCancelClick(val modalType: ModalType) : Event
         data object OnShareButtonClick : Event
         data object OnAddClick : Event
-        data class ToggleDropDownMenu(val flag: Boolean) : Event
-        data class ToggleDeleteAlertDialog(val flag: Boolean) : Event
-        data class ToggleEmojiBottomSheet(val flag: Boolean) : Event
-        data class ToggleCellBottomSheet(val flag: Boolean) : Event
-        data class ToggleBandalartListBottomSheet(val flag: Boolean) : Event
+        data object OnMenuClick : Event
+        data object OnDropDownMenuDismiss : Event
+        data object OnEmojiClick : Event
         data class OnBandalartListItemClick(val key: Long) : Event
         data class OnBandalartCellClick(
             val cellType: CellType,
@@ -148,175 +118,197 @@ data object HomeScreen : Screen {
 
         data object OnCloseButtonClick : Event
         data object OnAppTitleClick : Event
+
+        // BottomSheet UiAction
+        data object OnDismiss : Event
+        data class OnCellTitleUpdate(val title: String, val locale: Locale) : Event
+        data class OnEmojiSelect(val emoji: String) : Event
+        data class OnColorSelect(val mainColor: String, val subColor: String) : Event
         data object OnDatePickerClick : Event
+        data class OnDueDateSelect(val date: String) : Event
+        data class OnDescriptionUpdate(val description: String) : Event
+        data class OnCompletionUpdate(val isCompleted: Boolean) : Event
+        data class OnDeleteBandalart(val bandalartId: Long) : Event
+        data class OnDeleteCell(val cellId: Long) : Event
+        data object OnCancelClick : Event
+        data object OnEmojiPickerClick : Event
+        data object OnCloseBottomSheet : Event
+        data object OnDeleteButtonClick : Event
+        data class OnCompleteButtonClick(
+            val bandalartId: Long,
+            val cellId: Long,
+            val cellType: CellType,
+        ) : Event
     }
 }
 
 private const val SnackbarDuration = 1500L
 
-// TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
-// TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
-@Suppress("TooGenericExceptionCaught")
+//// TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
+//// TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
+//@Suppress("TooGenericExceptionCaught")
+//@Composable
+//internal fun HomeRoute(
+//    navigateToComplete: (Long, String, String, String) -> Unit,
+//    onShowSnackbar: suspend (String) -> Boolean,
+//    modifier: Modifier = Modifier,
+//    homeViewModel: HomeViewModel = hiltViewModel(),
+//) {
+//    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+//    val context = LocalContext.current
+//    val scope = rememberCoroutineScope()
+//    val snackbarHostState = remember { SnackbarHostState() }
+//    val appVersion = remember {
+//        try {
+//            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+//        } catch (e: PackageManager.NameNotFoundException) {
+//            Timber.tag("AppVersion").e(e, "Failed to get package info")
+//            "Unknown"
+//        }
+//    }
+//
+//    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+//
+//    val installStateUpdatedListener = remember {
+//        InstallStateUpdatedListener { state ->
+//            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+//                scope.launch {
+//                    val snackbarResult = snackbarHostState.showSnackbar(
+//                        message = context.getString(R.string.update_ready_to_install),
+//                        actionLabel = context.getString(R.string.update_action_restart),
+//                        duration = Indefinite,
+//                    )
+//
+//                    // 재시작 버튼 클릭시
+//                    if (snackbarResult == SnackbarResult.ActionPerformed) {
+//                        appUpdateManager.completeUpdate()
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    DisposableEffect(Unit) {
+//        appUpdateManager.registerListener(installStateUpdatedListener)
+//        onDispose {
+//            appUpdateManager.unregisterListener(installStateUpdatedListener)
+//        }
+//    }
+//
+//    val appUpdateResultLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.StartIntentSenderForResult(),
+//    ) { result ->
+//        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
+//            scope.launch {
+//                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
+//                    homeViewModel.setLastRejectedUpdateVersion(versionCode)
+//                }
+//            }
+//        }
+//    }
+//
+//    LaunchedEffect(Unit) {
+//        try {
+//            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
+//
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+//                val availableVersionCode = appUpdateInfo.availableVersionCode()
+//                if (!isValidImmediateAppUpdate(availableVersionCode) &&
+//                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+//                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+//                ) {
+//                    appUpdateManager.startUpdateFlowForResult(
+//                        appUpdateInfo,
+//                        appUpdateResultLauncher,
+//                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
+//                    )
+//                }
+//            }
+//        } catch (e: Exception) {
+//            Timber.e(e, "Failed to check for flexible update")
+//        }
+//    }
+//
+//    ObserveAsEvents(flow = homeViewModel.uiEvent) { event ->
+//        when (event) {
+//            is HomeUiEvent.NavigateToComplete -> {
+//                navigateToComplete(
+//                    event.id,
+//                    event.title,
+//                    event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
+//                    event.bandalartChart,
+//                )
+//            }
+//
+//            is HomeUiEvent.ShowSnackbar -> {
+//                scope.launch {
+//                    val job = launch {
+//                        onShowSnackbar(event.message.asString(context))
+//                    }
+//                    delay(SnackbarDuration)
+//                    job.cancel()
+//                }
+//            }
+//
+//            is HomeUiEvent.ShowToast -> {
+//                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+//            }
+//
+//            is HomeUiEvent.SaveBandalart -> {
+//                context.saveImageToGallery(event.bitmap)
+//                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+//            }
+//
+//            is HomeUiEvent.ShareBandalart -> {
+//                context.externalShareForBitmap(event.bitmap)
+//            }
+//
+//            is HomeUiEvent.CaptureBandalart -> {
+//                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+//            }
+//
+//            is HomeUiEvent.ShowAppVersion -> {
+//                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+//
+//    HomeScreen(
+//        uiState = uiState,
+//        onHomeUiAction = homeViewModel::onAction,
+//        shareBandalart = homeViewModel::shareBandalart,
+//        captureBandalart = homeViewModel::captureBandalart,
+//        saveBandalart = homeViewModel::saveBandalartImage,
+//        snackbarHostState = snackbarHostState,
+//        modifier = modifier,
+//    )
+//}
+
 @Composable
-internal fun HomeRoute(
-    navigateToComplete: (Long, String, String, String) -> Unit,
-    onShowSnackbar: suspend (String) -> Boolean,
-    modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = hiltViewModel(),
-) {
-    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val appVersion = remember {
-        try {
-            context.packageManager.getPackageInfo(context.packageName, 0).versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            Timber.tag("AppVersion").e(e, "Failed to get package info")
-            "Unknown"
-        }
-    }
-
-    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
-
-    val installStateUpdatedListener = remember {
-        InstallStateUpdatedListener { state ->
-            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                scope.launch {
-                    val snackbarResult = snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.update_ready_to_install),
-                        actionLabel = context.getString(R.string.update_action_restart),
-                        duration = Indefinite,
-                    )
-
-                    // 재시작 버튼 클릭시
-                    if (snackbarResult == SnackbarResult.ActionPerformed) {
-                        appUpdateManager.completeUpdate()
-                    }
-                }
-            }
-        }
-    }
-
-    DisposableEffect(Unit) {
-        appUpdateManager.registerListener(installStateUpdatedListener)
-        onDispose {
-            appUpdateManager.unregisterListener(installStateUpdatedListener)
-        }
-    }
-
-    val appUpdateResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult(),
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
-            scope.launch {
-                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
-                    homeViewModel.setLastRejectedUpdateVersion(versionCode)
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        try {
-            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
-
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                val availableVersionCode = appUpdateInfo.availableVersionCode()
-                if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
-                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-                ) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        appUpdateResultLauncher,
-                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to check for flexible update")
-        }
-    }
-
-    ObserveAsEvents(flow = homeViewModel.uiEvent) { event ->
-        when (event) {
-            is HomeUiEvent.NavigateToComplete -> {
-                navigateToComplete(
-                    event.id,
-                    event.title,
-                    event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
-                    event.bandalartChart,
-                )
-            }
-
-            is HomeUiEvent.ShowSnackbar -> {
-                scope.launch {
-                    val job = launch {
-                        onShowSnackbar(event.message.asString(context))
-                    }
-                    delay(SnackbarDuration)
-                    job.cancel()
-                }
-            }
-
-            is HomeUiEvent.ShowToast -> {
-                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-            }
-
-            is HomeUiEvent.SaveBandalart -> {
-                context.saveImageToGallery(event.bitmap)
-                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
-            }
-
-            is HomeUiEvent.ShareBandalart -> {
-                context.externalShareForBitmap(event.bitmap)
-            }
-
-            is HomeUiEvent.CaptureBandalart -> {
-                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
-            }
-
-            is HomeUiEvent.ShowAppVersion -> {
-                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    HomeScreen(
-        uiState = uiState,
-        onHomeUiAction = homeViewModel::onAction,
-        shareBandalart = homeViewModel::shareBandalart,
-        captureBandalart = homeViewModel::captureBandalart,
-        saveBandalart = homeViewModel::saveBandalartImage,
-        snackbarHostState = snackbarHostState,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun HomeScreen(
-    uiState: HomeUiState,
-    onHomeUiAction: (HomeUiAction) -> Unit,
+internal fun Home(
+    // uiState: HomeUiState,
+    state: HomeScreen.State,
+    // onHomeUiAction: (HomeUiAction) -> Unit,
     shareBandalart: (ImageBitmap) -> Unit,
     captureBandalart: (ImageBitmap) -> Unit,
     saveBandalart: (ImageBitmap) -> Unit,
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
+    val eventSink = state.eventSink
     val context = LocalContext.current
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
 
-    LaunchedEffect(key1 = uiState.isSharing) {
-        if (uiState.isSharing) {
+    LaunchedEffect(key1 = state.isSharing) {
+        if (state.isSharing) {
             shareBandalart(homeGraphicsLayer.toImageBitmap())
         }
     }
 
-    LaunchedEffect(key1 = uiState.isCapturing) {
-        if (uiState.isCapturing) {
-            if (uiState.isBandalartCompleted) {
+    LaunchedEffect(key1 = state.isCapturing) {
+        if (state.isCapturing) {
+            if (state.isBandalartCompleted) {
                 captureBandalart(completeGraphicsLayer.toImageBitmap())
             } else {
                 saveBandalart(completeGraphicsLayer.toImageBitmap())
@@ -324,23 +316,23 @@ internal fun HomeScreen(
         }
     }
 
-    when (uiState.bottomSheet) {
+    when (state.bottomSheet) {
         is BottomSheetState.Cell -> {
-            uiState.bandalartData?.let { bandalart ->
-                uiState.clickedCellData?.let { cell ->
+            state.bandalartData?.let { bandalart ->
+                state.clickedCellData?.let { cell ->
                     BandalartBottomSheet(
                         bandalartId = bandalart.id,
-                        cellType = uiState.clickedCellType,
+                        cellType = state.clickedCellType,
                         isBlankCell = cell.title.isNullOrEmpty(),
                         cellData = cell,
-                        onHomeUiAction = onHomeUiAction,
+                        eventSink = eventSink,
                         bottomSheetData = BottomSheetState.Cell(
-                            initialCellData = uiState.bottomSheet.initialCellData,
-                            cellData = uiState.bottomSheet.cellData,
-                            initialBandalartData = uiState.bottomSheet.initialBandalartData,
-                            bandalartData = uiState.bottomSheet.bandalartData,
-                            isDatePickerOpened = uiState.bottomSheet.isDatePickerOpened,
-                            isEmojiPickerOpened = uiState.bottomSheet.isEmojiPickerOpened,
+                            initialCellData = state.bottomSheet.initialCellData,
+                            cellData = state.bottomSheet.cellData,
+                            initialBandalartData = state.bottomSheet.initialBandalartData,
+                            bandalartData = state.bottomSheet.bandalartData,
+                            isDatePickerOpened = state.bottomSheet.isDatePickerOpened,
+                            isEmojiPickerOpened = state.bottomSheet.isEmojiPickerOpened,
                         ),
                     )
                 }
@@ -348,24 +340,24 @@ internal fun HomeScreen(
         }
 
         is BottomSheetState.Emoji -> {
-            uiState.bandalartData?.let { bandalart ->
-                uiState.bandalartCellData?.let { cell ->
+            state.bandalartData?.let { bandalart ->
+                state.bandalartCellData?.let { cell ->
                     BandalartEmojiBottomSheet(
                         bandalartId = bandalart.id,
                         cellId = cell.id,
                         currentEmoji = bandalart.profileEmoji,
-                        onHomeUiAction = onHomeUiAction,
+                        eventSink = eventSink,
                     )
                 }
             }
         }
 
         is BottomSheetState.BandalartList -> {
-            uiState.bandalartData?.let { bandalart ->
+            state.bandalartData?.let { bandalart ->
                 BandalartListBottomSheet(
-                    bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
+                    bandalartList = updateBandalartListTitles(state.bandalartList, context).toImmutableList(),
                     currentBandalartId = bandalart.id,
-                    onHomeUiAction = onHomeUiAction,
+                    eventSink = eventSink,
                 )
             }
         }
@@ -373,9 +365,9 @@ internal fun HomeScreen(
         else -> {}
     }
 
-    when (uiState.dialog) {
+    when (state.dialog) {
         is DialogState.BandalartDelete -> {
-            uiState.bandalartData?.let { bandalart ->
+            state.bandalartData?.let { bandalart ->
                 BandalartDeleteAlertDialog(
                     title = if (bandalart.title.isNullOrEmpty()) {
                         stringResource(R.string.delete_bandalart_dialog_empty_title)
@@ -384,33 +376,33 @@ internal fun HomeScreen(
                     },
                     message = stringResource(R.string.delete_bandalart_dialog_message),
                     onDeleteClick = {
-                        onHomeUiAction(HomeUiAction.OnDeleteBandalart(bandalart.id))
+                        eventSink(Event.OnDeleteBandalart(bandalart.id))
                     },
                     onCancelClick = {
-                        onHomeUiAction(HomeUiAction.OnCancelClick)
+                        eventSink(Event.OnCancelClick)
                     },
                 )
             }
         }
 
         is DialogState.CellDelete -> {
-            uiState.clickedCellData?.let { cellData ->
+            state.clickedCellData?.let { cellData ->
                 BandalartDeleteAlertDialog(
-                    title = when (uiState.clickedCellType) {
+                    title = when (state.clickedCellType) {
                         CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_title, cellData.title ?: "")
                         CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_title, cellData.title ?: "")
                         else -> stringResource(R.string.delete_bandalart_taskcell_dialog_title, cellData.title ?: "")
                     },
-                    message = when (uiState.clickedCellType) {
+                    message = when (state.clickedCellType) {
                         CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
                         CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
                         else -> stringResource(R.string.delete_bandalart_taskcell_dialog_message)
                     },
                     onDeleteClick = {
-                        onHomeUiAction(HomeUiAction.OnDeleteCell(cellData.id))
+                        eventSink(Event.OnDeleteCell(cellData.id))
                     },
                     onCancelClick = {
-                        onHomeUiAction(HomeUiAction.OnCancelClick)
+                        eventSink(Event.OnCancelClick)
                     },
                 )
             }
@@ -435,8 +427,8 @@ internal fun HomeScreen(
                     .padding(bottom = 32.dp),
             ) {
                 HomeTopBar(
-                    bandalartCount = uiState.bandalartList.size,
-                    onHomeUiAction = onHomeUiAction,
+                    bandalartCount = state.bandalartList.size,
+                    eventSink = eventSink,
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -450,17 +442,17 @@ internal fun HomeScreen(
                         }
                         .background(Gray50),
                 ) {
-                    if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
+                    if (state.bandalartCellData != null && state.bandalartData != null) {
                         HomeHeader(
-                            bandalartData = uiState.bandalartData,
-                            cellData = uiState.bandalartCellData,
-                            isDropDownMenuOpened = uiState.isDropDownMenuOpened,
-                            onAction = onHomeUiAction,
+                            bandalartData = state.bandalartData,
+                            cellData = state.bandalartCellData,
+                            isDropDownMenuOpened = state.isDropDownMenuOpened,
+                            eventSink = eventSink,
                         )
                         BandalartChart(
-                            bandalartData = uiState.bandalartData,
-                            bandalartCellData = uiState.bandalartCellData,
-                            onHomeUiAction = onHomeUiAction,
+                            bandalartData = state.bandalartData,
+                            bandalartCellData = state.bandalartCellData,
+                            eventSink = eventSink,
                             modifier = Modifier
                                 .drawWithContent {
                                     completeGraphicsLayer.record { this@drawWithContent.drawContent() }
@@ -474,7 +466,7 @@ internal fun HomeScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 HomeShareButton(
                     onShareButtonClick = {
-                        onHomeUiAction(HomeUiAction.OnShareButtonClick)
+                        eventSink(Event.OnShareButtonClick)
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
@@ -485,7 +477,7 @@ internal fun HomeScreen(
                 modifier = Modifier.align(Alignment.BottomCenter),
             )
 
-            if (uiState.isShowSkeleton) {
+            if (state.isShowSkeleton) {
                 BandalartSkeleton()
             }
         }
@@ -513,15 +505,15 @@ private fun updateBandalartListTitles(
 
 @DevicePreview
 @Composable
-private fun HomeScreenSingleBandalartPreview() {
+private fun HomeSingleBandalartPreview() {
     BandalartTheme {
-        HomeScreen(
-            uiState = HomeUiState(
+        Home(
+            state = HomeScreen.State(
                 bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
                 bandalartData = dummyBandalartData,
                 bandalartCellData = dummyBandalartChartData,
+                eventSink = {},
             ),
-            onHomeUiAction = {},
             shareBandalart = {},
             captureBandalart = {},
             saveBandalart = {},
@@ -532,15 +524,15 @@ private fun HomeScreenSingleBandalartPreview() {
 
 @DevicePreview
 @Composable
-private fun HomeScreenMultipleBandalartPreview() {
+private fun HomeMultipleBandalartPreview() {
     BandalartTheme {
-        HomeScreen(
-            uiState = HomeUiState(
+        Home(
+            state = HomeScreen.State(
                 bandalartList = dummyBandalartList.toImmutableList(),
                 bandalartData = dummyBandalartData,
                 bandalartCellData = dummyBandalartChartData,
+                eventSink = {},
             ),
-            onHomeUiAction = {},
             shareBandalart = {},
             captureBandalart = {},
             saveBandalart = {},
