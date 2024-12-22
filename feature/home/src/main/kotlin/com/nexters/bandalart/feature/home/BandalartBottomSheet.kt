@@ -126,7 +126,9 @@ fun BandalartBottomSheet(
             BottomSheetTopBar(
                 cellType = cellType,
                 isBlankCell = isBlankCell,
-                onAction = onHomeUiAction,
+                onCloseClick = {
+                    onHomeUiAction(HomeUiAction.OnDismiss)
+                },
             )
             Box {
                 Column(

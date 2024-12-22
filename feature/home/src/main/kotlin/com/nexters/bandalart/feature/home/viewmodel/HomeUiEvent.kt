@@ -5,8 +5,10 @@ import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.feature.home.model.CellType
+import java.util.Locale
 
 sealed interface HomeUiEvent {
+    // HomeScreen UiEvent
     data class NavigateToComplete(
         val id: Long,
         val title: String,
@@ -21,44 +23,49 @@ sealed interface HomeUiEvent {
     data class CaptureBandalart(val bitmap: ImageBitmap) : HomeUiEvent
     data object ShowAppVersion : HomeUiEvent
 
-    // Action 관련 이벤트들
-    data object OnListClick : HomeUiEvent
-    data object OnSaveClick : HomeUiEvent
-    data object OnDeleteClick : HomeUiEvent
+    // HomeScreen UiAction
+    data object OnListClick : HomeUiAction
+    data object OnSaveClick : HomeUiAction
+    data object OnDeleteClick : HomeUiAction
     data class OnEmojiSelected(
         val bandalartId: Long,
         val cellId: Long,
-        val updateBandalartEmojiModel: UpdateBandalartEmojiEntity
-    ) : HomeUiEvent
-    data class OnConfirmClick(val modalType: ModalType) : HomeUiEvent
-    data class OnCancelClick(val modalType: ModalType) : HomeUiEvent
-    data object OnShareButtonClick : HomeUiEvent
-    data object OnAddClick : HomeUiEvent
-    data class ToggleDropDownMenu(val flag: Boolean) : HomeUiEvent
-    data class ToggleDeleteAlertDialog(val flag: Boolean) : HomeUiEvent
-    data class ToggleEmojiBottomSheet(val flag: Boolean) : HomeUiEvent
-    data class ToggleCellBottomSheet(val flag: Boolean) : HomeUiEvent
-    data class ToggleBandalartListBottomSheet(val flag: Boolean) : HomeUiEvent
-    data class OnBandalartListItemClick(val key: Long) : HomeUiEvent
+        val updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
+    ) : HomeUiAction
+
+    data object OnShareButtonClick : HomeUiAction
+    data object OnAddClick : HomeUiAction
+    data object OnMenuClick : HomeUiAction
+    data object OnDropDownMenuDismiss : HomeUiAction
+    data object OnEmojiClick : HomeUiAction
+    data class OnBandalartListItemClick(val key: Long) : HomeUiAction
     data class OnBandalartCellClick(
         val cellType: CellType,
         val isMainCellTitleEmpty: Boolean,
-        val cellData: BandalartCellEntity
-    ) : HomeUiEvent
-    data object OnCloseButtonClick : HomeUiEvent
-    data object OnAppTitleClick : HomeUiEvent
-}
+        val cellData: BandalartCellEntity,
+    ) : HomeUiAction
 
-enum class ModalType {
-    // 셀 정보 수정 바텀시트
-    CELL,
+    data object OnCloseButtonClick : HomeUiAction
+    data object OnAppTitleClick : HomeUiAction
 
-    // 이모지 선택 바텀시트
-    EMOJI,
-
-    // 반다라트 목록 바텀시트
-    BANDALART_LIST,
-
-    // 삭제 다이얼로그
-    DELETE_DIALOG,
+    // BottomSheet UiAction
+    data object OnDismiss : HomeUiAction
+    data class OnCellTitleUpdate(val title: String, val locale: Locale) : HomeUiAction
+    data class OnEmojiSelect(val emoji: String) : HomeUiAction
+    data class OnColorSelect(val mainColor: String, val subColor: String) : HomeUiAction
+    data object OnDatePickerClick : HomeUiAction
+    data class OnDueDateSelect(val date: String) : HomeUiAction
+    data class OnDescriptionUpdate(val description: String) : HomeUiAction
+    data class OnCompletionUpdate(val isCompleted: Boolean) : HomeUiAction
+    data class OnDeleteBandalart(val bandalartId: Long) : HomeUiAction
+    data class OnDeleteCell(val cellId: Long) : HomeUiAction
+    data object OnCancelClick : HomeUiAction
+    data object OnEmojiPickerClick : HomeUiAction
+    data object OnCloseBottomSheet : HomeUiAction
+    data object OnDeleteButtonClick : HomeUiAction
+    data class OnCompleteButtonClick(
+        val bandalartId: Long,
+        val cellId: Long,
+        val cellType: CellType,
+    ) : HomeUiAction
 }
