@@ -116,7 +116,6 @@
 //            is HomeUiAction.OnCancelClick -> hideDialog()
 //            is HomeUiAction.OnEmojiPickerClick -> expandEmojiPicker()
 //            is HomeUiAction.OnDatePickerClick -> expandDatePicker()
-//            is HomeUiAction.OnCloseBottomSheet -> hideBottomSheet()
 //            is HomeUiAction.OnDeleteButtonClick -> showCellDeleteDialog()
 //            is HomeUiAction.OnCompleteButtonClick -> {
 //                updateCell(

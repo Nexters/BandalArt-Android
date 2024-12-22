@@ -79,20 +79,50 @@ data object HomeScreen : Screen {
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 
-    sealed interface Event : CircuitUiEvent {
-        data class NavigateToComplete(
-            val id: Long,
-            val title: String,
-            val profileEmoji: String,
-            val bandalartChartImageUri: String,
-        ) : Event
+    sealed interface BottomSheetState {
+        data class Cell(
+            val initialCellData: BandalartCellEntity,
+            val cellData: BandalartCellEntity,
+            val initialBandalartData: BandalartUiModel,
+            val bandalartData: BandalartUiModel,
+            val isDatePickerOpened: Boolean = false,
+            val isEmojiPickerOpened: Boolean = false,
+        ) : BottomSheetState
 
-        data class ShowSnackbar(val message: UiText) : Event
-        data class ShowToast(val message: UiText) : Event
-        data class SaveBandalart(val bitmap: ImageBitmap) : Event
-        data class ShareBandalart(val bitmap: ImageBitmap) : Event
-        data class CaptureBandalart(val bitmap: ImageBitmap) : Event
-        data object ShowAppVersion : Event
+        data class BandalartList(
+            val bandalartList: ImmutableList<BandalartUiModel>,
+            val currentBandalartId: Long,
+        ) : BottomSheetState
+
+        data class Emoji(
+            val bandalartId: Long,
+            val cellId: Long,
+            val currentEmoji: String?,
+        ) : BottomSheetState
+    }
+
+    sealed interface DialogState {
+        data object BandalartDelete : DialogState
+        data class CellDelete(
+            val cellType: CellType,
+            val cellTitle: String?,
+        ) : DialogState
+    }
+
+    sealed interface Event : CircuitUiEvent {
+//        data class NavigateToComplete(
+//            val id: Long,
+//            val title: String,
+//            val profileEmoji: String,
+//            val bandalartChartImageUri: String,
+//        ) : Event
+//
+//        data class ShowSnackbar(val message: UiText) : Event
+//        data class ShowToast(val message: UiText) : Event
+//        data class SaveBandalart(val bitmap: ImageBitmap) : Event
+//        data class ShareBandalart(val bitmap: ImageBitmap) : Event
+//        data class CaptureBandalart(val bitmap: ImageBitmap) : Event
+//        data object ShowAppVersion : Event
 
         // HomeScreen UiAction
         data object OnListClick : Event
