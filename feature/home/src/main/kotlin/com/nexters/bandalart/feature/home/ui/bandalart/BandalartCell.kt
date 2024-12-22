@@ -34,7 +34,7 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.CellText
+import com.nexters.bandalart.feature.home.ui.CellText
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction

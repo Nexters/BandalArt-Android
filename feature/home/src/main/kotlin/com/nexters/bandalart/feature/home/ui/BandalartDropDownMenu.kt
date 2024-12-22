@@ -1,4 +1,4 @@
-package com.nexters.bandalart.core.ui.component
+package com.nexters.bandalart.feature.home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -31,14 +31,13 @@ import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 fun BandalartDropDownMenu(
     isDropDownMenuOpened: Boolean,
-    onDropDownDissmiss: () -> Unit,
-    onSaveClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    onAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DropdownMenu(
@@ -46,7 +45,9 @@ fun BandalartDropDownMenu(
             .wrapContentSize()
             .background(White),
         expanded = isDropDownMenuOpened,
-        onDismissRequest = onDropDownDissmiss,
+        onDismissRequest = {
+            onAction(HomeUiAction.OnDropDownMenuDismiss)
+        },
         offset = DpOffset(
             x = (-18).dp,
             y = 0.dp,
@@ -80,7 +81,9 @@ fun BandalartDropDownMenu(
                     )
                 }
             },
-            onClick = onSaveClick,
+            onClick = {
+                onAction(HomeUiAction.OnSaveClick)
+            },
         )
         Spacer(modifier = Modifier.height(2.dp))
         DropdownMenuItem(
@@ -110,7 +113,9 @@ fun BandalartDropDownMenu(
                     )
                 }
             },
-            onClick = onDeleteClick,
+            onClick = {
+                onAction(HomeUiAction.OnDeleteClick)
+            },
         )
     }
 }
@@ -120,10 +125,8 @@ fun BandalartDropDownMenu(
 private fun BandalartDropDownMenuPreview() {
     BandalartTheme {
         BandalartDropDownMenu(
-            onDropDownDissmiss = {},
             isDropDownMenuOpened = true,
-            onSaveClick = {},
-            onDeleteClick = {},
+            onAction = {},
         )
     }
 }

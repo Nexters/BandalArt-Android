@@ -55,7 +55,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.component.BandalartDeleteAlertDialog
+import com.nexters.bandalart.feature.home.ui.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
