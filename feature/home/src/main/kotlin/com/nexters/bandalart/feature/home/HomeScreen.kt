@@ -132,7 +132,6 @@ data object HomeScreen : Screen {
         data class OnDeleteCell(val cellId: Long) : Event
         data object OnCancelClick : Event
         data object OnEmojiPickerClick : Event
-        data object OnCloseBottomSheet : Event
         data object OnDeleteButtonClick : Event
         data class OnCompleteButtonClick(
             val bandalartId: Long,
