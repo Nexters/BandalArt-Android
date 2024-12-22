@@ -240,9 +240,8 @@ fun BandalartBottomSheet(
                                 mainColor = bottomSheetData.bandalartData.mainColor,
                                 subColor = bottomSheetData.bandalartData.subColor,
                             ),
-                            // TODO 문제의 부분(테마가 업데이트 안되는 문제 해결)
-                            onColorSelect = {
-                                onHomeUiAction(HomeUiAction.OnColorSelect(it.mainColor, it.subColor))
+                            onColorSelect = { themeColor ->
+                                onHomeUiAction(HomeUiAction.OnColorSelect(themeColor.mainColor, themeColor.subColor))
                             },
                         )
                         Spacer(modifier = Modifier.height(3.dp))
@@ -372,7 +371,7 @@ fun BandalartBottomSheet(
                         }
                         BottomSheetCompleteButton(
                             isEnabled = (bottomSheetData.cellData.title?.trim()
-                                ?.isNotEmpty() == true) && (bottomSheetData.cellData != bottomSheetData.initialCellData || bottomSheetData.bandalartData != bottomSheetData.initialBandalartData),
+                                ?.isNotEmpty() == true) && (bottomSheetData.initialCellData != bottomSheetData.cellData || bottomSheetData.initialBandalartData != bottomSheetData.bandalartData),
                             onClick = {
                                 onHomeUiAction(HomeUiAction.OnCompleteButtonClick(bandalartId, cellData.id, cellType))
                             },
