@@ -4,52 +4,21 @@ import android.app.Activity
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.SnackbarDuration.Indefinite
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -59,21 +28,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -81,30 +41,15 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.nexters.bandalart.core.common.extension.await
-import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
-import com.nexters.bandalart.core.common.extension.getCurrentLocale
-import com.nexters.bandalart.core.common.extension.noRippleClickable
-import com.nexters.bandalart.core.common.extension.toLocalDateTime
-import com.nexters.bandalart.core.common.extension.toStringLocalDateTime
 import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.BottomSheetContent
 import com.nexters.bandalart.core.designsystem.theme.Gray100
-import com.nexters.bandalart.core.designsystem.theme.Gray300
-import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray50
-import com.nexters.bandalart.core.designsystem.theme.Gray700
-import com.nexters.bandalart.core.designsystem.theme.White
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.ThemeColor
-import com.nexters.bandalart.core.ui.getNavigationBarPadding
-import com.nexters.bandalart.feature.home.HomeScreen.Event
-import com.nexters.bandalart.feature.home.HomeScreen.State
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
@@ -114,11 +59,8 @@ import com.nexters.bandalart.feature.home.ui.HomeHeader
 import com.nexters.bandalart.feature.home.ui.HomeShareButton
 import com.nexters.bandalart.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartChart
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
@@ -127,28 +69,16 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetCompleteButton
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentPlaceholder
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentText
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetDeleteButton
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetSubTitleText
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import com.nexters.bandalart.feature.home.viewmodel.ModalType
-import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.overlay.LocalOverlayHost
-import com.slack.circuit.overlay.OverlayEffect
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import com.slack.circuitx.overlays.BottomSheetOverlay
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
-import java.time.LocalDateTime
 
 // TODO Action 와 Event 를 분리하지 말고 바로 Event 를 호출하면 될듯 (이게 MVI 가 맞나?)
 @Parcelize
@@ -225,7 +155,6 @@ data object HomeScreen : Screen {
 private const val SnackbarDuration = 1500L
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
-// TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
 @Suppress("TooGenericExceptionCaught")
 @Composable
@@ -454,11 +383,11 @@ internal fun HomeScreen(
                         stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
                     },
                     message = stringResource(R.string.delete_bandalart_dialog_message),
-                    onDeleteClicked = {
-                        onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG))
+                    onDeleteClick = {
+                        onHomeUiAction(HomeUiAction.OnDeleteBandalart(bandalart.id))
                     },
-                    onCancelClicked = {
-                        onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG))
+                    onCancelClick = {
+                        onHomeUiAction(HomeUiAction.OnCancelClick)
                     },
                 )
             }
@@ -477,11 +406,11 @@ internal fun HomeScreen(
                         CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
                         else -> stringResource(R.string.delete_bandalart_taskcell_dialog_message)
                     },
-                    onDeleteClicked = {
+                    onDeleteClick = {
                         onHomeUiAction(HomeUiAction.OnDeleteCell(cellData.id))
                     },
-                    onCancelClicked = {
-                        onHomeUiAction(HomeUiAction.OnCancelDeleteCell)
+                    onCancelClick = {
+                        onHomeUiAction(HomeUiAction.OnCancelClick)
                     },
                 )
             }
@@ -494,9 +423,10 @@ internal fun HomeScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = Gray50,
     ) { innerPadding ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
         ) {
             Column(
                 modifier = Modifier
@@ -545,7 +475,7 @@ internal fun HomeScreen(
                 HomeShareButton(
                     onShareButtonClick = {
                         onHomeUiAction(HomeUiAction.OnShareButtonClick)
-                                         },
+                    },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }

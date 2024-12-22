@@ -44,11 +44,11 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
-import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
@@ -56,7 +56,7 @@ fun HomeHeader(
     bandalartData: BandalartUiModel,
     isDropDownMenuOpened: Boolean,
     cellData: BandalartCellEntity,
-    eventSink: (Event) -> Unit,
+    onAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -73,7 +73,7 @@ fun HomeHeader(
                             .aspectRatio(1f)
                             .background(Gray100)
                             .clickable {
-                                eventSink(Event.ToggleEmojiBottomSheet(true))
+                                onAction(HomeUiAction.OnEmojiClick)
                             },
                         contentAlignment = Alignment.Center,
                     ) {
@@ -116,7 +116,7 @@ fun HomeHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clickable {
-                            eventSink(Event.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                            onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
                         },
                     letterSpacing = (-0.4).sp,
                 )
@@ -125,22 +125,16 @@ fun HomeHeader(
                     contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable {
-                            eventSink(Event.ToggleDropDownMenu(true))
-                        },
+                        .clickable { onAction(HomeUiAction.OnMenuClick) },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
-                    toggleDropDownMenu = { flag ->
-                        eventSink(Event.ToggleDropDownMenu(flag))
-                    },
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onSaveClick = {
-                        eventSink(Event.OnSaveClick)
+                    onDropDownDissmiss = {
+                        onAction(HomeUiAction.OnDropDownMenuDismiss)
                     },
-                    onDeleteClick = {
-                        eventSink(Event.OnDeleteClick)
-                    },
+                    onSaveClick = { onAction(HomeUiAction.OnSaveClick) },
+                    onDeleteClick = { onAction(HomeUiAction.OnDeleteClick) },
                 )
             }
         }
@@ -219,7 +213,7 @@ private fun HomeHeaderPreview() {
             bandalartData = dummyBandalartData,
             isDropDownMenuOpened = false,
             cellData = dummyBandalartCellData,
-            eventSink = {},
+            onAction = {},
         )
     }
 }

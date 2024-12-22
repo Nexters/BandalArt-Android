@@ -39,11 +39,11 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 fun BandalartDeleteAlertDialog(
     title: String,
     message: String?,
-    onDeleteClicked: () -> Unit,
-    onCancelClicked: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onCancelClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Dialog(onDismissRequest = { onCancelClicked() }) {
+    Dialog(onDismissRequest = { onCancelClick() }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
             color = White,
@@ -97,7 +97,7 @@ fun BandalartDeleteAlertDialog(
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp),
-                        onClick = onCancelClicked,
+                        onClick = onCancelClick,
                         colors = ButtonColors(
                             containerColor = Gray200,
                             contentColor = Gray900,
@@ -117,7 +117,7 @@ fun BandalartDeleteAlertDialog(
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp),
-                        onClick = onDeleteClicked,
+                        onClick = onDeleteClick,
                         colors = ButtonColors(
                             containerColor = Gray900,
                             contentColor = White,
@@ -146,8 +146,8 @@ private fun BandalartDeleteAlertDialogPreview() {
         BandalartDeleteAlertDialog(
             title = "반다라트를 삭제하시겠어요?",
             message = "삭제한 반다라트는 다시 복구할 수 없어요.",
-            onDeleteClicked = {},
-            onCancelClicked = {},
+            onDeleteClick = {},
+            onCancelClick = {},
         )
     }
 }
