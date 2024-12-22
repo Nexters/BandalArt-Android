@@ -1,5 +1,8 @@
 package com.nexters.bandalart.core.ui
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class ThemeColor(
     val mainColor: String,
     val subColor: String,

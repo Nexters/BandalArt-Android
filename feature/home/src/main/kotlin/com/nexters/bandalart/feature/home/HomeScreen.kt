@@ -38,6 +38,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SnackbarDuration.Indefinite
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration.Indefinite
@@ -51,6 +53,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -118,6 +121,12 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
+import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
+import com.nexters.bandalart.feature.home.viewmodel.DialogState
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
+import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
+import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetCompleteButton
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentPlaceholder
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentText
@@ -213,173 +222,31 @@ data object HomeScreen : Screen {
     }
 }
 
+private const val SnackbarDuration = 1500L
+
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO UiAction(Intent) 과 UiEvent(SideEffect) 를 명확하게 분리
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
-//@Suppress("TooGenericExceptionCaught")
-//@Composable
-//internal fun HomeRoute(
-//    navigateToComplete: (Long, String, String, String) -> Unit,
-//    onShowSnackbar: suspend (String) -> Boolean,
-//    modifier: Modifier = Modifier,
-//    homeViewModel: HomeViewModel = hiltViewModel(),
-//) {
-//    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-//    val context = LocalContext.current
-//    val scope = rememberCoroutineScope()
-//    val snackbarHostState = remember { SnackbarHostState() }
-//    val appVersion = remember {
-//        try {
-//            context.packageManager.getPackageInfo(context.packageName, 0).versionName
-//        } catch (e: PackageManager.NameNotFoundException) {
-//            Timber.tag("AppVersion").e(e, "Failed to get package info")
-//            "Unknown"
-//        }
-//    }
-//
-//    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
-//
-//    val installStateUpdatedListener = remember {
-//        InstallStateUpdatedListener { state ->
-//            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-//                scope.launch {
-//                    val snackbarResult = snackbarHostState.showSnackbar(
-//                        message = context.getString(R.string.update_ready_to_install),
-//                        actionLabel = context.getString(R.string.update_action_restart),
-//                        duration = Indefinite,
-//                    )
-//
-//                    // 재시작 버튼 클릭시
-//                    if (snackbarResult == SnackbarResult.ActionPerformed) {
-//                        appUpdateManager.completeUpdate()
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    DisposableEffect(Unit) {
-//        appUpdateManager.registerListener(installStateUpdatedListener)
-//        onDispose {
-//            appUpdateManager.unregisterListener(installStateUpdatedListener)
-//        }
-//    }
-//
-//    val appUpdateResultLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.StartIntentSenderForResult(),
-//    ) { result ->
-//        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
-//            scope.launch {
-//                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
-//                    homeViewModel.setLastRejectedUpdateVersion(versionCode)
-//                }
-//            }
-//        }
-//    }
-//
-//    LaunchedEffect(Unit) {
-//        try {
-//            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
-//
-//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-//                val availableVersionCode = appUpdateInfo.availableVersionCode()
-//                if (!isValidImmediateAppUpdate(availableVersionCode) &&
-//                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
-//                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-//                ) {
-//                    appUpdateManager.startUpdateFlowForResult(
-//                        appUpdateInfo,
-//                        appUpdateResultLauncher,
-//                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
-//                    )
-//                }
-//            }
-//        } catch (e: Exception) {
-//            Timber.e(e, "Failed to check for flexible update")
-//        }
-//    }
-//
-//    // TODO 굳이 derivedStateOf 를 사용하지 않아도 될 것 같음(쓸꺼면 제대로)
-//    val bandalartCount by remember {
-//        derivedStateOf { uiState.bandalartList.size }
-//    }
-//
-//    ObserveAsEvents(flow = homeViewModel.uiEvent) { event ->
-//        when (event) {
-//            is HomeUiEvent.NavigateToComplete -> {
-//                navigateToComplete(
-//                    event.id,
-//                    event.title,
-//                    event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
-//                    event.bandalartChart,
-//                )
-//            }
-//
-//            is HomeUiEvent.ShowSnackbar -> {
-//                scope.launch {
-//                    val job = launch {
-//                        onShowSnackbar(event.message.asString(context))
-//                    }
-//                    delay(SnackbarDuration)
-//                    job.cancel()
-//                }
-//            }
-//
-//            is HomeUiEvent.ShowToast -> {
-//                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-//            }
-//
-//            is HomeUiEvent.SaveBandalart -> {
-//                context.saveImageToGallery(event.bitmap)
-//                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
-//            }
-//
-//            is HomeUiEvent.ShareBandalart -> {
-//                context.externalShareForBitmap(event.bitmap)
-//            }
-//
-//            is HomeUiEvent.CaptureBandalart -> {
-//                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
-//            }
-//
-//            is HomeUiEvent.ShowAppVersion -> {
-//                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-//
-//    HomeScreen(
-//        uiState = uiState,
-//        bandalartCount = bandalartCount,
-//        onHomeUiAction = homeViewModel::onAction,
-//        shareBandalart = homeViewModel::shareBandalart,
-//        captureBandalart = homeViewModel::captureBandalart,
-//        saveBandalart = homeViewModel::saveBandalartImage,
-//        snackbarHostState = snackbarHostState,
-//        modifier = modifier,
-//    )
-//}
-
-// TODO Scaffold 를 통해 NavHost 를 감싸지 않았기 때문에, 모든 화면에 Scaffold 를 래핑해줘야 할 듯 하다. (innerPadding 을 적용하기 위해)
-@OptIn(ExperimentalMaterial3Api::class)
-@CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
+@Suppress("TooGenericExceptionCaught")
 @Composable
-internal fun Home(
-    state: State,
-//    onHomeUiAction: (HomeUiAction) -> Unit,
-//    shareBandalart: (ImageBitmap) -> Unit,
-//    captureBandalart: (ImageBitmap) -> Unit,
-//    saveBandalart: (ImageBitmap) -> Unit,
-//    snackbarHostState: SnackbarHostState,
+internal fun HomeRoute(
+    navigateToComplete: (Long, String, String, String) -> Unit,
+    onShowSnackbar: suspend (String) -> Boolean,
     modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val eventSink = state.eventSink
+    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val overlayHost = LocalOverlayHost.current
-    val homeGraphicsLayer = rememberGraphicsLayer()
-    val completeGraphicsLayer = rememberGraphicsLayer()
+    val appVersion = remember {
+        try {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            Timber.tag("AppVersion").e(e, "Failed to get package info")
+            "Unknown"
+        }
+    }
 
     val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
 
@@ -415,8 +282,7 @@ internal fun Home(
         if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
             scope.launch {
                 appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
-                    // homeViewModel.setLastRejectedUpdateVersion(versionCode)
-                    // eventSink(Event.SaveLastRejectedUpdateVersion(versionCode))
+                    homeViewModel.setLastRejectedUpdateVersion(versionCode)
                 }
             }
         }
@@ -429,7 +295,7 @@ internal fun Home(
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                 val availableVersionCode = appUpdateInfo.availableVersionCode()
                 if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                    // !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
                 ) {
                     appUpdateManager.startUpdateFlowForResult(
@@ -444,459 +310,184 @@ internal fun Home(
         }
     }
 
-    LaunchedEffect(key1 = state.isShared) {
-        if (state.isShared) {
-            // shareBandalart(homeGraphicsLayer.toImageBitmap())
-            eventSink(Event.ShareBandalart(homeGraphicsLayer.toImageBitmap()))
-        }
-    }
-
-    LaunchedEffect(key1 = state.isCaptured) {
-        if (state.isCaptured) {
-            if (state.isBandalartCompleted) {
-                // captureBandalart(completeGraphicsLayer.toImageBitmap())
-                eventSink(Event.CaptureBandalart(homeGraphicsLayer.toImageBitmap()))
-            } else {
-                // saveBandalart(completeGraphicsLayer.toImageBitmap())
-                eventSink(Event.SaveBandalart(homeGraphicsLayer.toImageBitmap()))
-            }
-        }
-    }
-
-    if (state.isBandalartListBottomSheetOpened) {
-        state.bandalartData?.let { bandalart ->
-            BandalartListBottomSheet(
-                bandalartList = updateBandalartListTitles(state.bandalartList, context).toImmutableList(),
-                currentBandalartId = bandalart.id,
-                eventSink = eventSink,
-            )
-        }
-    }
-
-    if (state.isEmojiBottomSheetOpened) {
-        state.bandalartData?.let { bandalart ->
-            state.bandalartCellData?.let { cell ->
-                BandalartEmojiBottomSheet(
-                    bandalartId = bandalart.id,
-                    cellId = cell.id,
-                    currentEmoji = bandalart.profileEmoji,
-                    eventSink = eventSink,
+    ObserveAsEvents(flow = homeViewModel.uiEvent) { event ->
+        when (event) {
+            is HomeUiEvent.NavigateToComplete -> {
+                navigateToComplete(
+                    event.id,
+                    event.title,
+                    event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
+                    event.bandalartChart,
                 )
             }
-        }
-    }
 
-    if (state.isEmojiBottomSheetOpened) {
-        state.bandalartData?.let { bandalart ->
-            state.bandalartCellData?.let { cell ->
-                BandalartEmojiBottomSheet(
-                    bandalartId = bandalart.id,
-                    cellId = cell.id,
-                    currentEmoji = bandalart.profileEmoji,
-                    eventSink = eventSink,
-                )
-            }
-        }
-    }
-
-    if (state.isCellBottomSheetOpened) {
-        state.bandalartData?.let { bandalart ->
-            state.clickedCellData?.let { cell ->
-                OverlayEffect {
-                    val result = show(
-                        BottomSheetOverlay<BandalartBottomSheetModel, BandalartBottomSheetResult>(
-                            model = BandalartBottomSheetModel(
-                                bandalartId = bandalart.id,
-                                cellType = state.clickedCellType,
-                                isBlankCell = cell.title.isNullOrEmpty(),
-                                initialBandalartData = bandalart,
-                                bandalartData = bandalart,
-                                cellData = cell,
-                                initialCellData = cell,
-                            ),
-                            onDismiss = { BandalartBottomSheetResult.Dismiss },
-                            // onDismiss = { Navigator.NoOp },
-                            skipPartiallyExpandedState = true,
-                        ) { model, navigator ->
-                            val context = LocalContext.current
-                            val scope = rememberCoroutineScope()
-                            val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-                            val focusManager = LocalFocusManager.current
-                            val scrollState = rememberScrollState()
-                            val currentLocale = context.getCurrentLocale()
-
-                            Column(
-                                modifier = Modifier
-                                    .background(White)
-                                    .navigationBarsPadding()
-                                    .noRippleClickable { focusManager.clearFocus() },
-                            ) {
-                                Spacer(modifier = Modifier.height(20.dp))
-                                BottomSheetTopBar(
-                                    cellType = model.cellType,
-                                    isBlankCell = model.isBlankCell,
-                                    onCloseClick = {
-                                        eventSink(Event.ToggleCellBottomSheet(false))
-                                    }
-                                )
-                                Box {
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .wrapContentHeight()
-                                            .verticalScroll(scrollState)
-                                            .padding(start = 20.dp, top = 40.dp, end = 20.dp),
-                                    ) {
-                                        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
-                                        Spacer(modifier = Modifier.height(11.dp))
-                                        Row(modifier = Modifier.fillMaxWidth()) {
-                                            if (model.cellType == CellType.MAIN) {
-                                                Box(
-                                                    modifier = Modifier
-                                                        .align(Alignment.CenterVertically)
-                                                        .padding(end = 16.dp),
-                                                ) {
-                                                    Card(
-                                                        shape = RoundedCornerShape(16.dp),
-                                                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                                                    ) {
-                                                        Box(
-                                                            modifier = Modifier
-                                                                .width(52.dp)
-                                                                .aspectRatio(1f)
-                                                                .background(Gray100)
-                                                                .clickable {
-                                                                    eventSink(Event.OnEmojiClick)
-                                                                },
-                                                            contentAlignment = Alignment.Center,
-                                                        ) {
-                                                            if (model.bandalartData.profileEmoji.isNullOrEmpty()) {
-                                                                Icon(
-                                                                    imageVector = ImageVector.vectorResource(com.nexters.bandalart.core.designsystem.R.drawable.ic_empty_emoji),
-                                                                    contentDescription = stringResource(R.string.empty_emoji_description),
-                                                                    tint = Color.Unspecified,
-                                                                )
-                                                            } else {
-                                                                Text(
-                                                                    text = model.bandalartData.profileEmoji,
-                                                                    fontSize = 22.sp,
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                    Icon(
-                                                        imageVector = ImageVector.vectorResource(com.nexters.bandalart.core.designsystem.R.drawable.ic_edit),
-                                                        contentDescription = stringResource(R.string.edit_description),
-                                                        tint = Color.Unspecified,
-                                                        modifier = Modifier
-                                                            .align(Alignment.BottomEnd)
-                                                            .offset(x = 4.dp, y = 4.dp),
-                                                    )
-                                                }
-                                            }
-                                            Column(modifier = Modifier.padding(top = 10.dp)) {
-                                                BasicTextField(
-                                                    value = model.cellData.title ?: "",
-                                                    onValueChange = { title ->
-                                                        navigator.finish(BandalartBottomSheetResult.OnTitleUpdate(title, currentLocale))
-                                                    },
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .height(24.dp)
-                                                        .clearFocusOnKeyboardDismiss(),
-                                                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                                                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                                                    maxLines = 1,
-                                                    textStyle = BottomSheetContent,
-                                                    decorationBox = { innerTextField ->
-                                                        if (model.cellData.title.isNullOrEmpty()) {
-                                                            BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_title_placeholder))
-                                                        }
-                                                        innerTextField()
-                                                    },
-                                                )
-                                                Spacer(modifier = Modifier.height(10.dp))
-                                                HorizontalDivider(
-                                                    modifier = Modifier.fillMaxWidth(),
-                                                    thickness = 1.dp,
-                                                    color = Gray300,
-                                                )
-                                            }
-                                        }
-                                        AnimatedVisibility(visible = state.isEmojiPickerOpened) {
-                                            Column {
-                                                BandalartEmojiPicker(
-                                                    modifier = Modifier
-                                                        .wrapContentSize()
-                                                        .padding(top = 4.dp)
-                                                        .animateContentSize(
-                                                            animationSpec = tween(
-                                                                durationMillis = 300,
-                                                                easing = LinearOutSlowInEasing,
-                                                            ),
-                                                        ),
-                                                    currentEmoji = model.bandalartData.profileEmoji,
-                                                    isBottomSheet = false,
-                                                    onEmojiSelect = { selectedEmoji ->
-                                                        navigator.finish(BandalartBottomSheetResult.OnEmojiSelect(selectedEmoji))
-                                                    },
-                                                )
-                                            }
-                                        }
-                                        if (model.cellType == CellType.MAIN) {
-                                            Spacer(modifier = Modifier.height(22.dp))
-                                            BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
-                                            BandalartColorPicker(
-                                                initColor = ThemeColor(
-                                                    mainColor = model.bandalartData.mainColor,
-                                                    subColor = model.bandalartData.subColor,
-                                                ),
-                                                onColorSelect = {
-                                                    navigator.finish(BandalartBottomSheetResult.OnColorSelect(it.mainColor, it.subColor))
-                                                },
-                                            )
-                                            Spacer(modifier = Modifier.height(3.dp))
-                                        }
-                                        Spacer(modifier = Modifier.height(25.dp))
-                                        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_duedate))
-                                        Spacer(modifier = Modifier.height(12.dp))
-                                        Column {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .height(24.dp)
-                                                    .clickable {
-                                                        // eventSink(Event.OnDatePickerClick)
-                                                        navigator.finish(BandalartBottomSheetResult.OnDatePickerClick)
-                                                    },
-                                                contentAlignment = Alignment.CenterStart,
-                                            ) {
-                                                if (model.cellData.dueDate.isNullOrEmpty()) {
-                                                    BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
-                                                } else {
-                                                    BottomSheetContentText(text = model.cellData.dueDate!!.toStringLocalDateTime())
-                                                }
-                                                Icon(
-                                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                                    contentDescription = stringResource(R.string.arrow_forward_description),
-                                                    modifier = Modifier
-                                                        .align(Alignment.CenterEnd)
-                                                        .size(24.dp),
-                                                    tint = Gray400,
-                                                )
-                                            }
-                                            Spacer(modifier = Modifier.height(10.dp))
-                                            HorizontalDivider(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                thickness = 1.dp,
-                                                color = Gray300,
-                                            )
-                                        }
-                                        AnimatedVisibility(visible = state.isDatePickerOpened) {
-                                            BandalartDatePicker(
-                                                onDueDateSelect = { dueDateResult ->
-                                                    navigator.finish(BandalartBottomSheetResult.OnDueDateSelect(dueDateResult.toString()))
-                                                },
-                                                currentDueDate = model.cellData.dueDate?.toLocalDateTime() ?: LocalDateTime.now(),
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.height(28.dp))
-                                        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_description))
-                                        Spacer(modifier = Modifier.height(12.dp))
-                                        Box {
-                                            Column {
-                                                BasicTextField(
-                                                    value = model.cellData.description ?: "",
-                                                    onValueChange = { description ->
-                                                        navigator.finish(BandalartBottomSheetResult.OnDescriptionUpdate(description))
-                                                    },
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .height(24.dp)
-                                                        .clearFocusOnKeyboardDismiss(),
-                                                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                                                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                                                    maxLines = 1,
-                                                    textStyle = BottomSheetContent,
-                                                    decorationBox = { innerTextField ->
-                                                        if (model.cellData.description.isNullOrEmpty()) {
-                                                            BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
-                                                        }
-                                                        innerTextField()
-                                                    },
-                                                )
-                                                Spacer(modifier = Modifier.height(10.dp))
-                                                HorizontalDivider(
-                                                    modifier = Modifier.fillMaxWidth(),
-                                                    thickness = 1.dp,
-                                                    color = Gray300,
-                                                )
-                                            }
-                                        }
-                                        if (model.cellType == CellType.TASK) {
-                                            Spacer(modifier = Modifier.height(28.dp))
-                                            BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
-                                            Spacer(modifier = Modifier.height(12.dp))
-                                            Box(modifier = Modifier.fillMaxWidth()) {
-                                                BottomSheetContentText(
-                                                    modifier = Modifier.align(Alignment.CenterStart),
-                                                    text = if (model.cellData.isCompleted) stringResource(R.string.bottomsheet_completed)
-                                                    else stringResource(R.string.bottomsheet_in_completed),
-                                                )
-                                                Switch(
-                                                    checked = model.cellData.isCompleted,
-                                                    onCheckedChange = { isCompleted ->
-                                                        navigator.finish(BandalartBottomSheetResult.OnCompletionUpdate(isCompleted))
-                                                    },
-                                                    colors = SwitchDefaults.colors(
-                                                        uncheckedThumbColor = White,
-                                                        uncheckedTrackColor = Gray300,
-                                                        uncheckedBorderColor = Gray300,
-                                                        checkedThumbColor = White,
-                                                        checkedTrackColor = Gray700,
-                                                        checkedBorderColor = Gray700,
-                                                    ),
-                                                    modifier = Modifier
-                                                        .align(Alignment.CenterEnd)
-                                                        .width(52.dp)
-                                                        .height(28.dp),
-                                                )
-                                            }
-                                            Spacer(modifier = Modifier.height(4.dp))
-                                        }
-                                        Spacer(modifier = Modifier.height(28.dp))
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .align(Alignment.CenterHorizontally)
-                                                .padding(horizontal = 8.dp)
-                                                .imePadding(),
-                                        ) {
-                                            if (!model.isBlankCell) {
-                                                BottomSheetDeleteButton(
-                                                    onClick = {
-                                                        navigator.finish(BandalartBottomSheetResult.OnDeleteButtonClick)
-                                                    },
-                                                    modifier = Modifier.weight(1f),
-                                                )
-                                                Spacer(modifier = Modifier.width(9.dp))
-                                            }
-                                            BottomSheetCompleteButton(
-                                                isEnabled = (model.cellData.title?.trim()
-                                                    ?.isNotEmpty() == true) && (model.cellData != model.initialCellData || model.bandalartData != model.initialBandalartData),
-                                                onClick = {
-                                                    navigator.finish(BandalartBottomSheetResult.OnCompleteButtonClick(model.bandalartId, model.cellData.id, model.cellType))
-                                                },
-                                                modifier = Modifier.weight(1f),
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.height(NavigationBarHeightDp + getNavigationBarPadding()))
-                                    }
-                                    if (scrollState.value > 0) {
-                                        Column(
-                                            modifier = Modifier
-                                                .background(
-                                                    brush = Brush.verticalGradient(
-                                                        colors = listOf(White, Transparent),
-                                                    ),
-                                                    shape = RectangleShape,
-                                                )
-                                                .height(77.dp)
-                                                .fillMaxWidth(),
-                                        ) {}
-                                    }
-                                    if (scrollState.value < scrollState.maxValue) {
-                                        Column(
-                                            modifier = Modifier
-                                                .background(
-                                                    brush = Brush.verticalGradient(
-                                                        colors = listOf(Transparent, White),
-                                                    ),
-                                                    shape = RectangleShape,
-                                                )
-                                                .height(77.dp)
-                                                .fillMaxWidth()
-                                                .align(Alignment.BottomCenter),
-                                        ) {}
-                                    }
-                                }
-                            }
-                        },
-                    )
-
-                    // 결과 처리
-                    when (result) {
-                        is BandalartBottomSheetResult.Dismiss -> {
-                            state.eventSink(Event.ToggleCellBottomSheet(false))
-                        }
-
-                        is BandalartBottomSheetResult.OnCompleteButtonClick -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnDeleteButtonClick -> {
-
-                        }
-
-                        is BandalartBottomSheetResult. OnDeleteDialogConfirmClick -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnDeleteDialogCancelClick -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnDatePickerClick -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnEmojiPickerClick -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnEmojiSelect -> {
-                            eventSink(Event.OnEmojiClick)
-                        }
-
-                        is BandalartBottomSheetResult.OnColorSelect -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnDueDateSelect -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnTitleUpdate -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnDescriptionUpdate -> {
-
-                        }
-
-                        is BandalartBottomSheetResult.OnCompletionUpdate -> {
-
-                        }
+            is HomeUiEvent.ShowSnackbar -> {
+                scope.launch {
+                    val job = launch {
+                        onShowSnackbar(event.message.asString(context))
                     }
+                    delay(SnackbarDuration)
+                    job.cancel()
+                }
+            }
+
+            is HomeUiEvent.ShowToast -> {
+                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+            }
+
+            is HomeUiEvent.SaveBandalart -> {
+                context.saveImageToGallery(event.bitmap)
+                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+            }
+
+            is HomeUiEvent.ShareBandalart -> {
+                context.externalShareForBitmap(event.bitmap)
+            }
+
+            is HomeUiEvent.CaptureBandalart -> {
+                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+            }
+
+            is HomeUiEvent.ShowAppVersion -> {
+                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    HomeScreen(
+        uiState = uiState,
+        onHomeUiAction = homeViewModel::onAction,
+        shareBandalart = homeViewModel::shareBandalart,
+        captureBandalart = homeViewModel::captureBandalart,
+        saveBandalart = homeViewModel::saveBandalartImage,
+        snackbarHostState = snackbarHostState,
+        modifier = modifier,
+    )
+}
+
+@Composable
+internal fun HomeScreen(
+    uiState: HomeUiState,
+    onHomeUiAction: (HomeUiAction) -> Unit,
+    shareBandalart: (ImageBitmap) -> Unit,
+    captureBandalart: (ImageBitmap) -> Unit,
+    saveBandalart: (ImageBitmap) -> Unit,
+    snackbarHostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val homeGraphicsLayer = rememberGraphicsLayer()
+    val completeGraphicsLayer = rememberGraphicsLayer()
+
+    LaunchedEffect(key1 = uiState.isSharing) {
+        if (uiState.isSharing) {
+            shareBandalart(homeGraphicsLayer.toImageBitmap())
+        }
+    }
+
+    LaunchedEffect(key1 = uiState.isCapturing) {
+        if (uiState.isCapturing) {
+            if (uiState.isBandalartCompleted) {
+                captureBandalart(completeGraphicsLayer.toImageBitmap())
+            } else {
+                saveBandalart(completeGraphicsLayer.toImageBitmap())
+            }
+        }
+    }
+
+    when (uiState.bottomSheet) {
+        is BottomSheetState.Cell -> {
+            uiState.bandalartData?.let { bandalart ->
+                uiState.clickedCellData?.let { cell ->
+                    BandalartBottomSheet(
+                        bandalartId = bandalart.id,
+                        cellType = uiState.clickedCellType,
+                        isBlankCell = cell.title.isNullOrEmpty(),
+                        cellData = cell,
+                        onHomeUiAction = onHomeUiAction,
+                        bottomSheetData = BottomSheetState.Cell(
+                            initialCellData = uiState.bottomSheet.initialCellData,
+                            cellData = uiState.bottomSheet.cellData,
+                            initialBandalartData = uiState.bottomSheet.initialBandalartData,
+                            bandalartData = uiState.bottomSheet.bandalartData,
+                            isDatePickerOpened = uiState.bottomSheet.isDatePickerOpened,
+                            isEmojiPickerOpened = uiState.bottomSheet.isEmojiPickerOpened,
+                        ),
+                    )
                 }
             }
         }
+
+        is BottomSheetState.Emoji -> {
+            uiState.bandalartData?.let { bandalart ->
+                uiState.bandalartCellData?.let { cell ->
+                    BandalartEmojiBottomSheet(
+                        bandalartId = bandalart.id,
+                        cellId = cell.id,
+                        currentEmoji = bandalart.profileEmoji,
+                        onHomeUiAction = onHomeUiAction,
+                    )
+                }
+            }
+        }
+
+        is BottomSheetState.BandalartList -> {
+            uiState.bandalartData?.let { bandalart ->
+                BandalartListBottomSheet(
+                    bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
+                    currentBandalartId = bandalart.id,
+                    onHomeUiAction = onHomeUiAction,
+                )
+            }
+        }
+
+        else -> {}
     }
 
-    if (state.isBandalartDeleteAlertDialogOpened) {
-        state.bandalartData?.let { bandalart ->
-            BandalartDeleteAlertDialog(
-                title = if (bandalart.title.isNullOrEmpty()) stringResource(R.string.delete_bandalart_dialog_empty_title)
-                else stringResource(R.string.delete_bandalart_dialog_title, bandalart.title),
-                message = stringResource(R.string.delete_bandalart_dialog_message),
-                onDeleteClicked = {
-                    eventSink(Event.OnConfirmClick(ModalType.DELETE_DIALOG))
-                },
-                onCancelClicked = {
-                    eventSink(Event.OnCancelClick(ModalType.DELETE_DIALOG))
-                },
-            )
+    when (uiState.dialog) {
+        is DialogState.BandalartDelete -> {
+            uiState.bandalartData?.let { bandalart ->
+                BandalartDeleteAlertDialog(
+                    title = if (bandalart.title.isNullOrEmpty()) {
+                        stringResource(R.string.delete_bandalart_dialog_empty_title)
+                    } else {
+                        stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
+                    },
+                    message = stringResource(R.string.delete_bandalart_dialog_message),
+                    onDeleteClicked = {
+                        onHomeUiAction(HomeUiAction.OnConfirmClick(ModalType.DELETE_DIALOG))
+                    },
+                    onCancelClicked = {
+                        onHomeUiAction(HomeUiAction.OnCancelClick(ModalType.DELETE_DIALOG))
+                    },
+                )
+            }
         }
+
+        is DialogState.CellDelete -> {
+            uiState.clickedCellData?.let { cellData ->
+                BandalartDeleteAlertDialog(
+                    title = when (uiState.clickedCellType) {
+                        CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_title, cellData.title ?: "")
+                        CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_title, cellData.title ?: "")
+                        else -> stringResource(R.string.delete_bandalart_taskcell_dialog_title, cellData.title ?: "")
+                    },
+                    message = when (uiState.clickedCellType) {
+                        CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
+                        CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
+                        else -> stringResource(R.string.delete_bandalart_taskcell_dialog_message)
+                    },
+                    onDeleteClicked = {
+                        onHomeUiAction(HomeUiAction.OnDeleteCell(cellData.id))
+                    },
+                    onCancelClicked = {
+                        onHomeUiAction(HomeUiAction.OnCancelDeleteCell)
+                    },
+                )
+            }
+        }
+
+        else -> {}
     }
 
     Scaffold(
@@ -914,8 +505,8 @@ internal fun Home(
                     .padding(bottom = 32.dp),
             ) {
                 HomeTopBar(
-                    bandalartCount = state.bandalartList.size,
-                    eventSink = eventSink,
+                    bandalartCount = uiState.bandalartList.size,
+                    onHomeUiAction = onHomeUiAction,
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -929,17 +520,17 @@ internal fun Home(
                         }
                         .background(Gray50),
                 ) {
-                    if (state.bandalartCellData != null && state.bandalartData != null) {
+                    if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
                         HomeHeader(
-                            bandalartData = state.bandalartData,
-                            isDropDownMenuOpened = state.isDropDownMenuOpened,
-                            cellData = state.bandalartCellData,
-                            eventSink = eventSink,
+                            bandalartData = uiState.bandalartData,
+                            cellData = uiState.bandalartCellData,
+                            isDropDownMenuOpened = uiState.isDropDownMenuOpened,
+                            onAction = onHomeUiAction,
                         )
                         BandalartChart(
-                            bandalartData = state.bandalartData,
-                            bandalartCellData = state.bandalartCellData,
-                            eventSink = eventSink,
+                            bandalartData = uiState.bandalartData,
+                            bandalartCellData = uiState.bandalartCellData,
+                            onHomeUiAction = onHomeUiAction,
                             modifier = Modifier
                                 .drawWithContent {
                                     completeGraphicsLayer.record { this@drawWithContent.drawContent() }
@@ -953,11 +544,8 @@ internal fun Home(
                 Spacer(modifier = Modifier.weight(1f))
                 HomeShareButton(
                     onShareButtonClick = {
-                        eventSink(Event.OnShareButtonClick)
-//                        scope.launch {
-//                            eventSink(Event.ShareBandalart(homeGraphicsLayer.toImageBitmap()))
-//                        }
-                    },
+                        onHomeUiAction(HomeUiAction.OnShareButtonClick)
+                                         },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
@@ -967,7 +555,7 @@ internal fun Home(
                 modifier = Modifier.align(Alignment.BottomCenter),
             )
 
-            if (state.isShowSkeleton) {
+            if (uiState.isShowSkeleton) {
                 BandalartSkeleton()
             }
         }
@@ -997,13 +585,17 @@ private fun updateBandalartListTitles(
 @Composable
 private fun HomeScreenSingleBandalartPreview() {
     BandalartTheme {
-        Home(
-            state = State(
+        HomeScreen(
+            uiState = HomeUiState(
                 bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
                 bandalartData = dummyBandalartData,
                 bandalartCellData = dummyBandalartChartData,
-                eventSink = {},
             ),
+            onHomeUiAction = {},
+            shareBandalart = {},
+            captureBandalart = {},
+            saveBandalart = {},
+            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
@@ -1012,13 +604,17 @@ private fun HomeScreenSingleBandalartPreview() {
 @Composable
 private fun HomeScreenMultipleBandalartPreview() {
     BandalartTheme {
-        Home(
-            state = State(
+        HomeScreen(
+            uiState = HomeUiState(
                 bandalartList = dummyBandalartList.toImmutableList(),
                 bandalartData = dummyBandalartData,
                 bandalartCellData = dummyBandalartChartData,
-                eventSink = {},
             ),
+            onHomeUiAction = {},
+            shareBandalart = {},
+            captureBandalart = {},
+            saveBandalart = {},
+            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
