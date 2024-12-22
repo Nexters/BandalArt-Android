@@ -274,9 +274,7 @@ class HomeViewModel @Inject constructor(
     fun saveBandalartImage(bitmap: ImageBitmap) {
         viewModelScope.launch {
             _uiEvent.send(HomeUiEvent.SaveBandalart(bitmap))
-            _uiState.update {
-                it.copy(isDropDownMenuOpened = false)
-            }
+            hideDropDownMenu()
         }
     }
 
@@ -297,32 +295,24 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel)
-            _uiState.update { it.copy(bottomSheet = null) }
+            hideBottomSheet()
         }
     }
 
     private fun requestShare() {
-        _uiState.update {
-            it.copy(isSharing = true)
-        }
+        _uiState.update { it.copy(isSharing = true) }
     }
 
     private fun requestCapture() {
-        _uiState.update {
-            it.copy(isCapturing = true)
-        }
+        _uiState.update { it.copy(isCapturing = true) }
     }
 
     private fun clearShareState() {
-        _uiState.update {
-            it.copy(isSharing = false)
-        }
+        _uiState.update { it.copy(isSharing = false) }
     }
 
     private fun clearCaptureState() {
-        _uiState.update {
-            it.copy(isCapturing = false)
-        }
+        _uiState.update { it.copy(isCapturing = false) }
     }
 
     fun shareBandalart(bitmap: ImageBitmap) {
