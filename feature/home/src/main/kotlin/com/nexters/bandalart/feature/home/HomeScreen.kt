@@ -89,9 +89,9 @@ internal fun HomeRoute(
     navigateToComplete: (Long, String, String, String) -> Unit,
     onShowSnackbar: suspend (String) -> Boolean,
     modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -138,7 +138,7 @@ internal fun HomeRoute(
         if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
             scope.launch {
                 appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
-                    homeViewModel.setLastRejectedUpdateVersion(versionCode)
+                    viewModel.setLastRejectedUpdateVersion(versionCode)
                 }
             }
         }
@@ -151,7 +151,7 @@ internal fun HomeRoute(
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                 val availableVersionCode = appUpdateInfo.availableVersionCode()
                 if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                    !homeViewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+                    !viewModel.isUpdateAlreadyRejected(availableVersionCode) &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
                 ) {
                     appUpdateManager.startUpdateFlowForResult(
@@ -166,7 +166,7 @@ internal fun HomeRoute(
         }
     }
 
-    ObserveAsEvents(flow = homeViewModel.uiEvent) { event ->
+    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {
             is HomeUiEvent.NavigateToComplete -> {
                 navigateToComplete(
@@ -201,7 +201,7 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.CaptureBandalart -> {
-                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+                viewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
             }
 
             is HomeUiEvent.ShowAppVersion -> {
@@ -212,10 +212,10 @@ internal fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        onHomeUiAction = homeViewModel::onAction,
-        shareBandalart = homeViewModel::shareBandalart,
-        captureBandalart = homeViewModel::captureBandalart,
-        saveBandalart = homeViewModel::saveBandalartImage,
+        onHomeUiAction = viewModel::onAction,
+        shareBandalart = viewModel::shareBandalart,
+        captureBandalart = viewModel::captureBandalart,
+        saveBandalart = viewModel::saveBandalartImage,
         snackbarHostState = snackbarHostState,
         modifier = modifier,
     )
