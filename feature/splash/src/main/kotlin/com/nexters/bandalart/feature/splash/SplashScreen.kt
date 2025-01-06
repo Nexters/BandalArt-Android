@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -126,33 +127,28 @@ internal fun Splash(
         }
     }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = Gray50,
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Gray50),
+    ) {
+        Row(
+            modifier = Modifier.align(Alignment.Center),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_app),
-                    contentDescription = stringResource(R.string.app_icon_description),
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                AppTitle()
-            }
+            Image(
+                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_app),
+                contentDescription = stringResource(R.string.app_icon_description),
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            AppTitle()
         }
     }
 }
 
 @DevicePreview
 @Composable
-private fun SplashScreenPreview() {
+private fun SplashPreview() {
     BandalartTheme {
         Splash(
             state = SplashScreen.State(

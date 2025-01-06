@@ -440,75 +440,70 @@ internal fun Home(
         else -> {}
     }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = Gray50,
-    ) { innerPadding ->
-        Box(
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Gray50),
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 32.dp),
         ) {
+            HomeTopBar(
+                bandalartCount = state.bandalartList.size,
+                eventSink = eventSink,
+            )
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Gray100,
+            )
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(bottom = 32.dp),
-            ) {
-                HomeTopBar(
-                    bandalartCount = state.bandalartList.size,
-                    eventSink = eventSink,
-                )
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Gray100,
-                )
-                Column(
-                    modifier = Modifier
-                        .drawWithContent {
-                            homeGraphicsLayer.record { this@drawWithContent.drawContent() }
-                            drawLayer(homeGraphicsLayer)
-                        }
-                        .background(Gray50),
-                ) {
-                    if (state.bandalartCellData != null && state.bandalartData != null) {
-                        HomeHeader(
-                            bandalartData = state.bandalartData,
-                            cellData = state.bandalartCellData,
-                            isDropDownMenuOpened = state.isDropDownMenuOpened,
-                            eventSink = eventSink,
-                        )
-                        BandalartChart(
-                            bandalartData = state.bandalartData,
-                            bandalartCellData = state.bandalartCellData,
-                            eventSink = eventSink,
-                            modifier = Modifier
-                                .drawWithContent {
-                                    completeGraphicsLayer.record { this@drawWithContent.drawContent() }
-                                    drawLayer(completeGraphicsLayer)
-                                }
-                                .background(Gray50),
-                        )
+                    .drawWithContent {
+                        homeGraphicsLayer.record { this@drawWithContent.drawContent() }
+                        drawLayer(homeGraphicsLayer)
                     }
-                    Spacer(modifier = Modifier.height(64.dp))
+                    .background(Gray50),
+            ) {
+                if (state.bandalartCellData != null && state.bandalartData != null) {
+                    HomeHeader(
+                        bandalartData = state.bandalartData,
+                        cellData = state.bandalartCellData,
+                        isDropDownMenuOpened = state.isDropDownMenuOpened,
+                        eventSink = eventSink,
+                    )
+                    BandalartChart(
+                        bandalartData = state.bandalartData,
+                        bandalartCellData = state.bandalartCellData,
+                        eventSink = eventSink,
+                        modifier = Modifier
+                            .drawWithContent {
+                                completeGraphicsLayer.record { this@drawWithContent.drawContent() }
+                                drawLayer(completeGraphicsLayer)
+                            }
+                            .background(Gray50),
+                    )
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                HomeShareButton(
-                    onShareButtonClick = {
-                        eventSink(Event.OnShareButtonClick)
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                )
+                Spacer(modifier = Modifier.height(64.dp))
             }
-
-            SnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier.align(Alignment.BottomCenter),
+            Spacer(modifier = Modifier.weight(1f))
+            HomeShareButton(
+                onShareButtonClick = {
+                    eventSink(Event.OnShareButtonClick)
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
+        }
 
-            if (state.isShowSkeleton) {
-                BandalartSkeleton()
-            }
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
+
+        if (state.isShowSkeleton) {
+            BandalartSkeleton()
         }
     }
 }

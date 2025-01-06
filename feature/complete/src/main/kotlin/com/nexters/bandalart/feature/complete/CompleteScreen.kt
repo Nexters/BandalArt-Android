@@ -91,16 +91,16 @@ internal fun Complete(
         iterations = LottieConstants.IterateForever,
     )
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = Gray50,
-    ) { innerPadding ->
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Gray50),
+    ) {
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Box {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding)
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {

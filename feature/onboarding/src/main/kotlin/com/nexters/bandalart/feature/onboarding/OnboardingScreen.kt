@@ -102,17 +102,16 @@ internal fun Onboarding(
         iterations = LottieConstants.IterateForever,
     )
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = Gray50,
-    ) { innerPadding ->
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Gray50),
+    ) {
         val pageCount = 2
         val pagerState = rememberPagerState(pageCount = { pageCount })
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -256,7 +255,7 @@ internal fun Onboarding(
 
 @DevicePreview
 @Composable
-private fun OnBoardingScreenPreview() {
+private fun OnBoardingPreview() {
     BandalartTheme {
         Onboarding(
             state = OnboardingScreen.State(
