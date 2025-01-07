@@ -125,7 +125,7 @@ class HomePresenter @AssistedInject constructor(
                     }
 
                     is HomeUiEvent.CaptureBandalart -> {
-                        updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+                        updateBandalartChartImageUrl(context.bitmapToFileUri(event.bitmap).toString())
                     }
 
                     is HomeUiEvent.ShowAppVersion -> {
@@ -399,6 +399,7 @@ class HomePresenter @AssistedInject constructor(
             updateSkeletonState(true)
             bandalartRepository.deleteBandalart(bandalartId)
             hideModal()
+            hideDropDownMenu()
             deleteBandalartId(scope, bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
@@ -491,7 +492,7 @@ class HomePresenter @AssistedInject constructor(
         }
     }
 
-    fun updateBandalartChartUrl(url: String) {
+    private fun updateBandalartChartImageUrl(url: String) {
         _state.update { it?.copy(bandalartChartUrl = url) }
     }
 
