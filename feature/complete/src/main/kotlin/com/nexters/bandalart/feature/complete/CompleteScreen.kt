@@ -158,9 +158,7 @@ internal fun Complete(
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))

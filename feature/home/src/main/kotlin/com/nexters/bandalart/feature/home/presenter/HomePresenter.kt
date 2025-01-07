@@ -3,21 +3,14 @@ package com.nexters.bandalart.feature.home.presenter
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
-import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
@@ -27,26 +20,18 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.ui.UiEvent
-import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.home.HomeScreen
+import com.nexters.bandalart.feature.home.HomeScreen.Event
+import com.nexters.bandalart.feature.home.HomeScreen.State
 import com.nexters.bandalart.feature.home.mapper.toUiModel
-import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
-import com.nexters.bandalart.feature.home.viewmodel.ModalType
 import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.retained.collectAsRetainedState
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.internal.rememberStableCoroutineScope
 import com.slack.circuit.runtime.presenter.Presenter
-import com.nexters.bandalart.feature.home.HomeScreen.State
-import com.nexters.bandalart.feature.home.HomeScreen.Event
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
-import com.nexters.bandalart.feature.home.viewmodel.DialogState
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.slack.circuit.retained.collectAsRetainedState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -59,7 +44,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -90,7 +74,7 @@ class HomePresenter @AssistedInject constructor(
         val scope = rememberStableCoroutineScope()
         val state by rememberRetained {
             _state.value = State(
-                eventSink = { event -> handleEvent(scope, event) }
+                eventSink = { event -> handleEvent(scope, event) },
             )
             _state
         }.collectAsRetainedState()
@@ -106,50 +90,50 @@ class HomePresenter @AssistedInject constructor(
 
         LaunchedEffect(Unit) {
             _uiEvent.receiveAsFlow().collect { event ->
-            when (event) {
-                is HomeUiEvent.NavigateToComplete -> {
-                    navigateToComplete(
-                        scope,
-                        event.id,
-                        event.title,
-                        event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
-                        event.bandalartChart,
-                    )
-                }
-
-                is HomeUiEvent.ShowSnackbar -> {
-                    scope.launch {
-                        val job = launch {
-                            onShowSnackbar(event.message.asString(context))
-                        }
-                        delay(SnackbarDuration)
-                        job.cancel()
+                when (event) {
+                    is HomeUiEvent.NavigateToComplete -> {
+                        navigateToComplete(
+                            scope,
+                            event.id,
+                            event.title,
+                            event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
+                            event.bandalartChart,
+                        )
                     }
-                }
 
-                is HomeUiEvent.ShowToast -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-                }
+                    is HomeUiEvent.ShowSnackbar -> {
+//                        scope.launch {
+//                            val job = launch {
+//                                onShowSnackbar(event.message.asString(context))
+//                            }
+//                            delay(SnackbarDuration)
+//                            job.cancel()
+//                        }
+                    }
 
-                is HomeUiEvent.SaveBandalart -> {
-                    context.saveImageToGallery(event.bitmap)
-                    Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
-                }
+                    is HomeUiEvent.ShowToast -> {
+                        Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+                    }
 
-                is HomeUiEvent.ShareBandalart -> {
-                    context.externalShareForBitmap(event.bitmap)
-                }
+                    is HomeUiEvent.SaveBandalart -> {
+                        context.saveImageToGallery(event.bitmap)
+                        Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+                    }
 
-                is HomeUiEvent.CaptureBandalart -> {
-                    homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
-                }
+                    is HomeUiEvent.ShareBandalart -> {
+                        context.externalShareForBitmap(event.bitmap)
+                    }
 
-                is HomeUiEvent.ShowAppVersion -> {
-                    Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
+                    is HomeUiEvent.CaptureBandalart -> {
+                        updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+                    }
+
+                    is HomeUiEvent.ShowAppVersion -> {
+                        Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
-    }
 
         LaunchedEffect(Unit) {
             updateSkeletonState(true)
@@ -207,11 +191,13 @@ class HomePresenter @AssistedInject constructor(
             is Event.OnDeleteButtonClick -> showCellDeleteDialog()
             is Event.OnCompleteButtonClick -> {
                 updateCell(
+                    scope = scope,
                     bandalartId = event.bandalartId,
                     cellId = event.cellId,
                     cellType = event.cellType,
                 )
             }
+
             else -> {}
         }
     }
@@ -220,7 +206,7 @@ class HomePresenter @AssistedInject constructor(
         scope.launch {
             bandalartFlow.collect { bandalart ->
                 if (bandalart.isCompleted && !bandalart.title.isNullOrEmpty()) {
-                    val isBandalartCompleted = checkCompletedBandalartId(scope,bandalart.id)
+                    val isBandalartCompleted = checkCompletedBandalartId(scope, bandalart.id)
                     if (isBandalartCompleted) {
                         delay(500L)
                         requestCapture()
@@ -243,7 +229,7 @@ class HomePresenter @AssistedInject constructor(
         bandalartId: Long,
         title: String,
         profileEmoji: String,
-        bandalartChart: String
+        bandalartChart: String,
     ) {
         scope.launch {
             _uiEvent.send(
@@ -524,12 +510,12 @@ class HomePresenter @AssistedInject constructor(
             }
 
             else -> {
-                _state.value.bandalartData?.let { bandalartData ->
+                _state.value?.bandalartData?.let { bandalartData ->
                     _state.update {
                         it?.copy(
                             clickedCellData = cellData,
                             clickedCellType = cellType,
-                            bottomSheet = BottomSheetState.Cell(
+                            bottomSheet = HomeScreen.BottomSheetState.Cell(
                                 initialCellData = cellData,
                                 cellData = cellData,
                                 initialBandalartData = bandalartData,
@@ -549,7 +535,7 @@ class HomePresenter @AssistedInject constructor(
         }
 
         _state.update {
-            val currentBottomSheet = (it?.bottomSheet as? BottomSheetState.Cell) ?: return@update it
+            val currentBottomSheet = (it?.bottomSheet as? HomeScreen.BottomSheetState.Cell) ?: return@update it
             val validatedTitle = if (title.length > maxLength) {
                 currentBottomSheet.cellData.title ?: ""
             } else title
@@ -564,7 +550,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun updateEmoji(emoji: String) {
         _state.update {
-            val currentBottomSheet = (it?.bottomSheet as? BottomSheetState.Cell) ?: return@update it
+            val currentBottomSheet = (it?.bottomSheet as? HomeScreen.BottomSheetState.Cell) ?: return@update it
             it.copy(
                 bottomSheet = currentBottomSheet.copy(
                     bandalartData = currentBottomSheet.bandalartData.copy(profileEmoji = emoji),
@@ -575,7 +561,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun updateThemeColor(mainColor: String, subColor: String) {
         _state.update {
-            val currentSheet = it?.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            val currentSheet = it?.bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return@update it
             it.copy(
                 bottomSheet = currentSheet.copy(
                     bandalartData = currentSheet.bandalartData.copy(
@@ -589,7 +575,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun updateDueDate(date: String) {
         _state.update {
-            val currentBottomSheet = (it?.bottomSheet as? BottomSheetState.Cell) ?: return@update it
+            val currentBottomSheet = (it?.bottomSheet as? HomeScreen.BottomSheetState.Cell) ?: return@update it
             it.copy(
                 bottomSheet = currentBottomSheet.copy(
                     cellData = currentBottomSheet.cellData.copy(dueDate = date),
@@ -600,7 +586,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun updateDescription(description: String) {
         _state.update {
-            val currentBottomSheet = (it?.bottomSheet as? BottomSheetState.Cell) ?: return@update it
+            val currentBottomSheet = (it?.bottomSheet as? HomeScreen.BottomSheetState.Cell) ?: return@update it
             val validatedDescription = if (description.length > 1000) {
                 currentBottomSheet.cellData.description
             } else {
@@ -616,7 +602,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun updateCompletion(isCompleted: Boolean) {
         _state.update {
-            val currentBottomSheet = (it?.bottomSheet as? BottomSheetState.Cell) ?: return@update it
+            val currentBottomSheet = (it?.bottomSheet as? HomeScreen.BottomSheetState.Cell) ?: return@update it
             it.copy(
                 bottomSheet = currentBottomSheet.copy(
                     cellData = currentBottomSheet.cellData.copy(isCompleted = isCompleted),
@@ -633,11 +619,12 @@ class HomePresenter @AssistedInject constructor(
     }
 
     private fun updateCell(
+        scope: CoroutineScope,
         bandalartId: Long,
         cellId: Long,
         cellType: CellType,
     ) {
-        val bottomSheetData = _state.value?.bottomSheet as? BottomSheetState.Cell ?: return
+        val bottomSheetData = _state.value?.bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
         val cellData = bottomSheetData.cellData
         val bandalartData = bottomSheetData.bandalartData
 
@@ -648,6 +635,7 @@ class HomePresenter @AssistedInject constructor(
         when (cellType) {
             CellType.MAIN -> {
                 updateMainCell(
+                    scope = scope,
                     bandalartId = bandalartId,
                     cellId = cellId,
                     updateBandalartMainCellModel = UpdateBandalartMainCellEntity(
@@ -663,6 +651,7 @@ class HomePresenter @AssistedInject constructor(
 
             CellType.SUB -> {
                 updateSubCell(
+                    scope = scope,
                     bandalartId = bandalartId,
                     cellId = cellId,
                     updateBandalartSubCellModel = UpdateBandalartSubCellEntity(
@@ -675,6 +664,7 @@ class HomePresenter @AssistedInject constructor(
 
             else -> {
                 updateTaskCell(
+                    scope = scope,
                     bandalartId = bandalartId,
                     cellId = cellId,
                     updateBandalartTaskCellModel = UpdateBandalartTaskCellEntity(
@@ -726,14 +716,14 @@ class HomePresenter @AssistedInject constructor(
     }
 
     private fun showDropDownMenu() {
-        _state.update { it.copy(isDropDownMenuOpened = true) }
+        _state.update { it?.copy(isDropDownMenuOpened = true) }
     }
 
     private fun showEmojiBottomSheet() {
-        _state.value.bandalartData?.let { bandalartData ->
+        _state.value?.bandalartData?.let { bandalartData ->
             _state.update {
                 it?.copy(
-                    bottomSheet = BottomSheetState.Emoji(
+                    bottomSheet = HomeScreen.BottomSheetState.Emoji(
                         bandalartId = bandalartData.id,
                         cellId = bandalartData.id,
                         currentEmoji = bandalartData.profileEmoji,
@@ -746,7 +736,7 @@ class HomePresenter @AssistedInject constructor(
     private fun showBandalartListBottomSheet() {
         _state.update {
             it?.copy(
-                bottomSheet = BottomSheetState.BandalartList(
+                bottomSheet = HomeScreen.BottomSheetState.BandalartList(
                     bandalartList = it.bandalartList,
                     currentBandalartId = it.bandalartData?.id ?: return,
                 ),
@@ -755,15 +745,15 @@ class HomePresenter @AssistedInject constructor(
     }
 
     private fun showBandalartDeleteDialog() {
-        _state.update { it?.copy(dialog = DialogState.BandalartDelete) }
+        _state.update { it?.copy(dialog = HomeScreen.DialogState.BandalartDelete) }
     }
 
     private fun showCellDeleteDialog() {
         _state.update {
             it?.copy(
-                dialog = DialogState.CellDelete(
+                dialog = HomeScreen.DialogState.CellDelete(
                     cellType = it.clickedCellType,
-                    cellTitle = (it.bottomSheet as? BottomSheetState.Cell)?.cellData?.title,
+                    cellTitle = (it.bottomSheet as? HomeScreen.BottomSheetState.Cell)?.cellData?.title,
                 ),
             )
         }
@@ -771,7 +761,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun expandEmojiPicker() {
         _state.update {
-            val currentBottomSheet = it?.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            val currentBottomSheet = it?.bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return@update it
             it.copy(
                 bottomSheet = currentBottomSheet.copy(
                     isEmojiPickerOpened = true,
@@ -782,7 +772,7 @@ class HomePresenter @AssistedInject constructor(
 
     private fun expandDatePicker() {
         _state.update {
-            val currentSheet = it?.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            val currentSheet = it?.bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return@update it
             it.copy(
                 bottomSheet = currentSheet.copy(
                     isDatePickerOpened = true,

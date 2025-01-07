@@ -110,19 +110,19 @@ data object HomeScreen : Screen {
     }
 
     sealed interface Event : CircuitUiEvent {
-//        data class NavigateToComplete(
-//            val id: Long,
-//            val title: String,
-//            val profileEmoji: String,
-//            val bandalartChartImageUri: String,
-//        ) : Event
-//
-//        data class ShowSnackbar(val message: UiText) : Event
-//        data class ShowToast(val message: UiText) : Event
-//        data class SaveBandalart(val bitmap: ImageBitmap) : Event
-//        data class ShareBandalart(val bitmap: ImageBitmap) : Event
-//        data class CaptureBandalart(val bitmap: ImageBitmap) : Event
-//        data object ShowAppVersion : Event
+        data class NavigateToComplete(
+            val id: Long,
+            val title: String,
+            val profileEmoji: String,
+            val bandalartChartImageUri: String,
+        ) : Event
+
+        data class ShowSnackbar(val message: UiText) : Event
+        data class ShowToast(val message: UiText) : Event
+        data class SaveBandalart(val bitmap: ImageBitmap) : Event
+        data class ShareBandalart(val bitmap: ImageBitmap) : Event
+        data class CaptureBandalart(val bitmap: ImageBitmap) : Event
+        data object ShowAppVersion : Event
 
         // HomeScreen UiAction
         data object OnListClick : Event
@@ -324,7 +324,7 @@ internal fun Home(
     }
 
     when (state.bottomSheet) {
-        is BottomSheetState.Cell -> {
+        is HomeScreen.BottomSheetState.Cell -> {
             state.bandalartData?.let { bandalart ->
                 state.clickedCellData?.let { cell ->
                     BandalartBottomSheet(
@@ -346,7 +346,7 @@ internal fun Home(
             }
         }
 
-        is BottomSheetState.Emoji -> {
+        is HomeScreen.BottomSheetState.Emoji -> {
             state.bandalartData?.let { bandalart ->
                 state.bandalartCellData?.let { cell ->
                     BandalartEmojiBottomSheet(
@@ -359,7 +359,7 @@ internal fun Home(
             }
         }
 
-        is BottomSheetState.BandalartList -> {
+        is HomeScreen.BottomSheetState.BandalartList -> {
             state.bandalartData?.let { bandalart ->
                 BandalartListBottomSheet(
                     bandalartList = updateBandalartListTitles(state.bandalartList, context).toImmutableList(),
@@ -373,7 +373,7 @@ internal fun Home(
     }
 
     when (state.dialog) {
-        is DialogState.BandalartDelete -> {
+        is HomeScreen.DialogState.BandalartDelete -> {
             state.bandalartData?.let { bandalart ->
                 BandalartDeleteAlertDialog(
                     title = if (bandalart.title.isNullOrEmpty()) {
@@ -392,7 +392,7 @@ internal fun Home(
             }
         }
 
-        is DialogState.CellDelete -> {
+        is HomeScreen.DialogState.CellDelete -> {
             state.clickedCellData?.let { cellData ->
                 BandalartDeleteAlertDialog(
                     title = when (state.clickedCellType) {
