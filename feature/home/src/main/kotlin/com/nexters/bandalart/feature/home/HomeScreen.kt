@@ -175,16 +175,21 @@ private const val SnackbarDuration = 1500L
 
 //// TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 //// TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
-//@Suppress("TooGenericExceptionCaught")
-//@Composable
-//internal fun HomeRoute(
-//    navigateToComplete: (Long, String, String, String) -> Unit,
-//    onShowSnackbar: suspend (String) -> Boolean,
-//    modifier: Modifier = Modifier,
-//    homeViewModel: HomeViewModel = hiltViewModel(),
-//) {
-//    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-//    val context = LocalContext.current
+@Composable
+internal fun Home(
+    // uiState: HomeUiState,
+    state: HomeScreen.State,
+    // onHomeUiAction: (HomeUiAction) -> Unit,
+    shareBandalart: (ImageBitmap) -> Unit,
+    captureBandalart: (ImageBitmap) -> Unit,
+    saveBandalart: (ImageBitmap) -> Unit,
+    snackbarHostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+) {
+    val eventSink = state.eventSink
+    val context = LocalContext.current
+    val homeGraphicsLayer = rememberGraphicsLayer()
+    val completeGraphicsLayer = rememberGraphicsLayer()
 //    val scope = rememberCoroutineScope()
 //    val snackbarHostState = remember { SnackbarHostState() }
 //    val appVersion = remember {
@@ -301,33 +306,6 @@ private const val SnackbarDuration = 1500L
 //            }
 //        }
 //    }
-//
-//    HomeScreen(
-//        uiState = uiState,
-//        onHomeUiAction = homeViewModel::onAction,
-//        shareBandalart = homeViewModel::shareBandalart,
-//        captureBandalart = homeViewModel::captureBandalart,
-//        saveBandalart = homeViewModel::saveBandalartImage,
-//        snackbarHostState = snackbarHostState,
-//        modifier = modifier,
-//    )
-//}
-
-@Composable
-internal fun Home(
-    // uiState: HomeUiState,
-    state: HomeScreen.State,
-    // onHomeUiAction: (HomeUiAction) -> Unit,
-    shareBandalart: (ImageBitmap) -> Unit,
-    captureBandalart: (ImageBitmap) -> Unit,
-    saveBandalart: (ImageBitmap) -> Unit,
-    snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
-) {
-    val eventSink = state.eventSink
-    val context = LocalContext.current
-    val homeGraphicsLayer = rememberGraphicsLayer()
-    val completeGraphicsLayer = rememberGraphicsLayer()
 
     LaunchedEffect(key1 = state.isSharing) {
         if (state.isSharing) {
