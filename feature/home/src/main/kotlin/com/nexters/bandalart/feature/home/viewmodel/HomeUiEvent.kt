@@ -13,7 +13,7 @@ sealed interface HomeUiEvent {
         val id: Long,
         val title: String,
         val profileEmoji: String,
-        val bandalartChart: String,
+        val bandalartChartImageUri: String,
     ) : HomeUiEvent
 
     data class ShowSnackbar(val message: UiText) : HomeUiEvent
@@ -49,7 +49,7 @@ sealed interface HomeUiEvent {
     data object OnAppTitleClick : HomeUiEvent
 
     // BottomSheet UiAction
-    data object OnDismiss : HomeUiAction
+    data object OnDismiss : HomeUiEvent
     data class OnCellTitleUpdate(val title: String, val locale: Locale) : HomeUiEvent
     data class OnEmojiSelect(val emoji: String) : HomeUiEvent
     data class OnColorSelect(val mainColor: String, val subColor: String) : HomeUiEvent

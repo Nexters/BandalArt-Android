@@ -20,6 +20,7 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.HomeScreen.State
@@ -92,12 +93,13 @@ class HomePresenter @AssistedInject constructor(
             _uiEvent.receiveAsFlow().collect { event ->
                 when (event) {
                     is HomeUiEvent.NavigateToComplete -> {
-                        navigateToComplete(
-                            scope,
-                            event.id,
-                            event.title,
-                            event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
-                            event.bandalartChart,
+                        navigator.goTo(
+                            CompleteScreen(
+                                bandalartId = event.id,
+                                bandalartTitle = event.title,
+                                bandalartProfileEmoji = event.profileEmoji,
+                                bandalartChartImageUri = event.bandalartChartImageUri,
+                            )
                         )
                     }
 
@@ -239,7 +241,7 @@ class HomePresenter @AssistedInject constructor(
                     id = bandalartId,
                     title = title,
                     profileEmoji = profileEmoji,
-                    bandalartChart = bandalartChart,
+                    bandalartChartImageUri = bandalartChart,
                 ),
             )
         }
