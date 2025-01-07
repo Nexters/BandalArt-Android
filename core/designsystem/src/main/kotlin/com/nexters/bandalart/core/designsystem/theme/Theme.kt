@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -59,8 +61,8 @@ fun BandalartTheme(
     SideEffect {
         val window = (view.context as Activity).window
 
-        window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
-        window.navigationBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+        window.statusBarColor = if (darkTheme) Black.toArgb() else White.toArgb()
+        window.navigationBarColor = if (darkTheme) Black.toArgb() else White.toArgb()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // remove unnecessary black screen from bars

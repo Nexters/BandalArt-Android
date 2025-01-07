@@ -1,4 +1,4 @@
-package com.nexters.bandalart.ui
+package com.nexters.bandalart
 
 //@Composable
 //fun BandalartApp() {
