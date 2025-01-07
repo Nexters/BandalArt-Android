@@ -180,7 +180,6 @@ private const val SnackbarDuration = 1500L
 @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Home(
-    // uiState: HomeUiState,
     state: HomeScreen.State,
     // onHomeUiAction: (HomeUiAction) -> Unit,
     // shareBandalart: (ImageBitmap) -> Unit,

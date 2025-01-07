@@ -30,10 +30,7 @@ class OnboardingPresenter @AssistedInject constructor(
                 is Event.NavigateToHome -> {
                     scope.launch {
                         repository.setOnboardingCompletedStatus(true)
-                        navigator.apply {
-                            goTo(HomeScreen)
-                            resetRoot(HomeScreen)
-                        }
+                        navigator.resetRoot(HomeScreen)
                     }
                 }
             }

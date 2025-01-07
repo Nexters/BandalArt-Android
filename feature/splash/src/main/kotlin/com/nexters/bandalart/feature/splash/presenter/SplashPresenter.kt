@@ -2,13 +2,16 @@ package com.nexters.bandalart.feature.splash.presenter
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import com.nexters.bandalart.core.domain.repository.OnboardingRepository
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen
 import com.nexters.bandalart.feature.splash.SplashScreen
-import com.nexters.bandalart.feature.splash.SplashScreen.State
 import com.nexters.bandalart.feature.splash.SplashScreen.Event
+import com.nexters.bandalart.feature.splash.SplashScreen.State
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.runtime.Navigator
@@ -27,26 +30,24 @@ class SplashPresenter @AssistedInject constructor(
     @Composable
     override fun present(): State {
         val scope = rememberCoroutineScope()
-
+        var isLoading by remember { mutableStateOf(true) }
         val isOnboardingCompleted by produceRetainedState(initialValue = false) {
-            repository.getOnboardingCompletedStatus()
+            value = repository.getOnboardingCompletedStatus()
+            isLoading = false
         }
 
         return State(
+            isLoading = isLoading,
             isOnboardingCompleted = isOnboardingCompleted,
         ) { event ->
             when (event) {
                 is Event.CheckOnboardingStatus -> {
-                    scope.launch {
-                        if (isOnboardingCompleted) {
-                            navigator.apply {
-                                // goTo(HomeScreen)
-                                resetRoot(HomeScreen)
-                            }
-                        } else {
-                            navigator.apply {
-                                // goTo(OnboardingScreen)
-                                resetRoot(OnboardingScreen)
+                    if (!isLoading) {
+                        scope.launch {
+                            if (isOnboardingCompleted) {
+                                navigator.resetRoot(HomeScreen)
+                            } else {
+                                navigator.resetRoot(OnboardingScreen)
                             }
                         }
                     }

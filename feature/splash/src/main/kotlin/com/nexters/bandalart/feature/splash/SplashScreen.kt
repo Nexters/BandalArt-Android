@@ -12,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -32,6 +31,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 @Parcelize
 data object SplashScreen : Screen {
     data class State(
+        val isLoading: Boolean,
         val isOnboardingCompleted: Boolean,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
@@ -107,8 +107,10 @@ internal fun Splash(
 //        }
 //    }
 
-    LaunchedEffect(Unit) {
-        eventSink(SplashScreen.Event.CheckOnboardingStatus)
+    LaunchedEffect(state.isLoading, state.isOnboardingCompleted) {
+        if (!state.isLoading) {
+            eventSink(SplashScreen.Event.CheckOnboardingStatus)
+        }
     }
 
     Box(
@@ -136,6 +138,7 @@ private fun SplashPreview() {
     BandalartTheme {
         Splash(
             state = SplashScreen.State(
+                isLoading = false,
                 isOnboardingCompleted = false,
                 eventSink = {},
             ),
