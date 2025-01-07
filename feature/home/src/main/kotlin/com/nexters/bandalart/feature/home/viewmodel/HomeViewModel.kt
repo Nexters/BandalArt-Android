@@ -283,6 +283,7 @@ class HomeViewModel @Inject constructor(
             updateSkeletonState(true)
             bandalartRepository.deleteBandalart(bandalartId)
             hideModal()
+            hideDropDownMenu()
             deleteBandalartId(bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
