@@ -50,9 +50,11 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.DialogState
 import com.nexters.bandalart.feature.home.HomeScreen.Event
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -175,15 +177,16 @@ private const val SnackbarDuration = 1500L
 
 //// TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 //// TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
+@CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Home(
     // uiState: HomeUiState,
     state: HomeScreen.State,
     // onHomeUiAction: (HomeUiAction) -> Unit,
-    shareBandalart: (ImageBitmap) -> Unit,
-    captureBandalart: (ImageBitmap) -> Unit,
-    saveBandalart: (ImageBitmap) -> Unit,
-    snackbarHostState: SnackbarHostState,
+    // shareBandalart: (ImageBitmap) -> Unit,
+    // captureBandalart: (ImageBitmap) -> Unit,
+    // saveBandalart: (ImageBitmap) -> Unit,
+    // snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
     val eventSink = state.eventSink
@@ -309,16 +312,16 @@ internal fun Home(
 
     LaunchedEffect(key1 = state.isSharing) {
         if (state.isSharing) {
-            shareBandalart(homeGraphicsLayer.toImageBitmap())
+            // shareBandalart(homeGraphicsLayer.toImageBitmap())
         }
     }
 
     LaunchedEffect(key1 = state.isCapturing) {
         if (state.isCapturing) {
             if (state.isBandalartCompleted) {
-                captureBandalart(completeGraphicsLayer.toImageBitmap())
+                // captureBandalart(completeGraphicsLayer.toImageBitmap())
             } else {
-                saveBandalart(completeGraphicsLayer.toImageBitmap())
+                // saveBandalart(completeGraphicsLayer.toImageBitmap())
             }
         }
     }
@@ -419,7 +422,7 @@ internal fun Home(
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Gray50),
     ) {
@@ -475,10 +478,10 @@ internal fun Home(
             )
         }
 
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter),
-        )
+//        SnackbarHost(
+//            hostState = snackbarHostState,
+//            modifier = Modifier.align(Alignment.BottomCenter),
+//        )
 
         if (state.isShowSkeleton) {
             BandalartSkeleton()
@@ -516,10 +519,10 @@ private fun HomeSingleBandalartPreview() {
                 bandalartCellData = dummyBandalartChartData,
                 eventSink = {},
             ),
-            shareBandalart = {},
-            captureBandalart = {},
-            saveBandalart = {},
-            snackbarHostState = remember { SnackbarHostState() },
+//            shareBandalart = {},
+//            captureBandalart = {},
+//            saveBandalart = {},
+//            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
@@ -535,10 +538,10 @@ private fun HomeMultipleBandalartPreview() {
                 bandalartCellData = dummyBandalartChartData,
                 eventSink = {},
             ),
-            shareBandalart = {},
-            captureBandalart = {},
-            saveBandalart = {},
-            snackbarHostState = remember { SnackbarHostState() },
+//            shareBandalart = {},
+//            captureBandalart = {},
+//            saveBandalart = {},
+//            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }

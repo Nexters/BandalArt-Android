@@ -40,12 +40,12 @@ class SplashPresenter @AssistedInject constructor(
                     scope.launch {
                         if (isOnboardingCompleted) {
                             navigator.apply {
-                                goTo(HomeScreen)
+                                // goTo(HomeScreen)
                                 resetRoot(HomeScreen)
                             }
                         } else {
                             navigator.apply {
-                                goTo(OnboardingScreen)
+                                // goTo(OnboardingScreen)
                                 resetRoot(OnboardingScreen)
                             }
                         }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -47,7 +48,7 @@ internal fun Splash(
     modifier: Modifier = Modifier,
 ) {
     val eventSink = state.eventSink
-    val context = LocalContext.current
+//    val context = LocalContext.current
 //    val activity = context.findActivity()
 //    val appUpdateManager: AppUpdateManager = remember { AppUpdateManagerFactory.create(context) }
 //    val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -106,8 +107,12 @@ internal fun Splash(
 //        }
 //    }
 
+    LaunchedEffect(Unit) {
+        eventSink(SplashScreen.Event.CheckOnboardingStatus)
+    }
+
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Gray50),
     ) {
