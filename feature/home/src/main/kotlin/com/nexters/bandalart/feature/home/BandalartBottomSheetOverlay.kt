@@ -79,7 +79,6 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentText
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetDeleteButton
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetSubTitleText
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.slack.circuit.overlay.OverlayNavigator
 import com.slack.circuitx.overlays.BottomSheetOverlay
 import java.time.LocalDateTime
@@ -97,8 +96,6 @@ import java.time.LocalDateTime
 //
 //}
 //
-//// TODO 이 내부에서는 CircuitContent 사용해서 Presenter 만들어서 사용하면 지금 구조와 유사하게 만들 수 있을 듯!
-//// Model 을 뭘로 넣어야할까
 //@OptIn(ExperimentalMaterial3Api::class)
 //class BandalartBottomSheetOverlay(
 //    private val model: BandalartBottomSheetModel,

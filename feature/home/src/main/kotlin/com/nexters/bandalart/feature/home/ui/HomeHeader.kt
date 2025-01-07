@@ -44,12 +44,11 @@ import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.HomeScreen
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
-import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable

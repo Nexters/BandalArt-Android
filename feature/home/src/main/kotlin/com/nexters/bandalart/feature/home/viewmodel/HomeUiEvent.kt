@@ -24,48 +24,48 @@ sealed interface HomeUiEvent {
     data object ShowAppVersion : HomeUiEvent
 
     // HomeScreen UiAction
-    data object OnListClick : HomeUiAction
-    data object OnSaveClick : HomeUiAction
-    data object OnDeleteClick : HomeUiAction
+    data object OnListClick : HomeUiEvent
+    data object OnSaveClick : HomeUiEvent
+    data object OnDeleteClick : HomeUiEvent
     data class OnEmojiSelected(
         val bandalartId: Long,
         val cellId: Long,
         val updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
-    ) : HomeUiAction
+    ) : HomeUiEvent
 
-    data object OnShareButtonClick : HomeUiAction
-    data object OnAddClick : HomeUiAction
-    data object OnMenuClick : HomeUiAction
-    data object OnDropDownMenuDismiss : HomeUiAction
-    data object OnEmojiClick : HomeUiAction
-    data class OnBandalartListItemClick(val key: Long) : HomeUiAction
+    data object OnShareButtonClick : HomeUiEvent
+    data object OnAddClick : HomeUiEvent
+    data object OnMenuClick : HomeUiEvent
+    data object OnDropDownMenuDismiss : HomeUiEvent
+    data object OnEmojiClick : HomeUiEvent
+    data class OnBandalartListItemClick(val key: Long) : HomeUiEvent
     data class OnBandalartCellClick(
         val cellType: CellType,
         val isMainCellTitleEmpty: Boolean,
         val cellData: BandalartCellEntity,
-    ) : HomeUiAction
+    ) : HomeUiEvent
 
-    data object OnCloseButtonClick : HomeUiAction
-    data object OnAppTitleClick : HomeUiAction
+    data object OnCloseButtonClick : HomeUiEvent
+    data object OnAppTitleClick : HomeUiEvent
 
     // BottomSheet UiAction
     data object OnDismiss : HomeUiAction
-    data class OnCellTitleUpdate(val title: String, val locale: Locale) : HomeUiAction
-    data class OnEmojiSelect(val emoji: String) : HomeUiAction
-    data class OnColorSelect(val mainColor: String, val subColor: String) : HomeUiAction
-    data object OnDatePickerClick : HomeUiAction
-    data class OnDueDateSelect(val date: String) : HomeUiAction
-    data class OnDescriptionUpdate(val description: String) : HomeUiAction
-    data class OnCompletionUpdate(val isCompleted: Boolean) : HomeUiAction
-    data class OnDeleteBandalart(val bandalartId: Long) : HomeUiAction
-    data class OnDeleteCell(val cellId: Long) : HomeUiAction
-    data object OnCancelClick : HomeUiAction
-    data object OnEmojiPickerClick : HomeUiAction
-    data object OnCloseBottomSheet : HomeUiAction
-    data object OnDeleteButtonClick : HomeUiAction
+    data class OnCellTitleUpdate(val title: String, val locale: Locale) : HomeUiEvent
+    data class OnEmojiSelect(val emoji: String) : HomeUiEvent
+    data class OnColorSelect(val mainColor: String, val subColor: String) : HomeUiEvent
+    data object OnDatePickerClick : HomeUiEvent
+    data class OnDueDateSelect(val date: String) : HomeUiEvent
+    data class OnDescriptionUpdate(val description: String) : HomeUiEvent
+    data class OnCompletionUpdate(val isCompleted: Boolean) : HomeUiEvent
+    data class OnDeleteBandalart(val bandalartId: Long) : HomeUiEvent
+    data class OnDeleteCell(val cellId: Long) : HomeUiEvent
+    data object OnCancelClick : HomeUiEvent
+    data object OnEmojiPickerClick : HomeUiEvent
+    data object OnCloseBottomSheet : HomeUiEvent
+    data object OnDeleteButtonClick : HomeUiEvent
     data class OnCompleteButtonClick(
         val bandalartId: Long,
         val cellId: Long,
         val cellType: CellType,
-    ) : HomeUiAction
+    ) : HomeUiEvent
 }

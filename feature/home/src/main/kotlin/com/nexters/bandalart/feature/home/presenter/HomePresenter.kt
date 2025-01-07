@@ -131,6 +131,8 @@ class HomePresenter @AssistedInject constructor(
                     is HomeUiEvent.ShowAppVersion -> {
                         Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
                     }
+
+                    else -> {}
                 }
             }
         }
