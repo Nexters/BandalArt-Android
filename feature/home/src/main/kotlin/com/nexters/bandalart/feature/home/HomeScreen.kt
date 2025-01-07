@@ -6,34 +6,44 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
+import com.nexters.bandalart.core.designsystem.theme.Gray700
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
+import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
@@ -48,8 +58,6 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
-import com.nexters.bandalart.feature.home.viewmodel.DialogState
-import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
@@ -192,6 +200,8 @@ internal fun Home(
     val context = LocalContext.current
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val height = LocalConfiguration.current.screenHeightDp
 //    val scope = rememberCoroutineScope()
 //    val snackbarHostState = remember { SnackbarHostState() }
 //    val appVersion = remember {
@@ -481,6 +491,35 @@ internal fun Home(
 //            hostState = snackbarHostState,
 //            modifier = Modifier.align(Alignment.BottomCenter),
 //        )
+
+        SnackbarHost(
+            modifier = Modifier
+                .padding(bottom = (height - 96).dp)
+                .height(36.dp)
+                .align(Alignment.TopCenter),  // Box 내에서의 위치 지정
+            hostState = snackbarHostState,
+            snackbar = {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 40.dp),
+                    shape = RoundedCornerShape(50.dp),
+                    colors = CardDefaults.cardColors(containerColor = White),
+                    elevation = CardDefaults.cardElevation(8.dp),
+                ) {
+                    Box(Modifier.fillMaxSize()) {
+                        Text(
+                            text = it.visuals.message,
+                            color = Gray700,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.W600,
+                            modifier = Modifier.align(Alignment.Center),
+                            letterSpacing = -(0.24).sp,
+                        )
+                    }
+                }
+            },
+        )
 
         if (state.isShowSkeleton) {
             BandalartSkeleton()
