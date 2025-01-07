@@ -125,7 +125,7 @@ class HomePresenter @AssistedInject constructor(
                     }
 
                     is HomeUiEvent.CaptureBandalart -> {
-                        updateBandalartChartImageUrl(context.bitmapToFileUri(event.bitmap).toString())
+                        updateBandalartChartImageUri(context.bitmapToFileUri(event.bitmap).toString())
                     }
 
                     is HomeUiEvent.ShowAppVersion -> {
@@ -492,7 +492,7 @@ class HomePresenter @AssistedInject constructor(
         }
     }
 
-    private fun updateBandalartChartImageUrl(url: String) {
+    private fun updateBandalartChartImageUri(url: String) {
         _state.update { it?.copy(bandalartChartUrl = url) }
     }
 
