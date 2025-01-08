@@ -82,7 +82,8 @@
 - Gradle Version Catalog
 
 ## Architecture
-Modularization Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
+- Modularization Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
+- [Circuit(WIP)](https://github.com/Nexters/BandalArt-Android/tree/refactor/circuit)
 
 ## Module
 ![image](https://github.com/user-attachments/assets/c45b3830-95b2-4b20-9280-7004fc812350)
