@@ -133,8 +133,6 @@ data object HomeScreen : Screen {
     }
 
     sealed interface Event : CircuitUiEvent {
-        data class CaptureBandalart(val bitmap: ImageBitmap) : Event
-        data object ShowAppVersion : Event
         data class OnShareRequested(val bitmap: ImageBitmap) : Event
         data class OnSaveRequested(val bitmap: ImageBitmap) : Event
         data class OnCaptureRequested(val bitmap: ImageBitmap) : Event

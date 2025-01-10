@@ -391,11 +391,9 @@ class HomePresenter @AssistedInject constructor(
         }
 
         fun captureBandalart(bitmap: ImageBitmap) {
-            scope.launch {
-                clearCaptureState()
-                context.bitmapToFileUri(bitmap)?.let { uri ->
-                    bandalartChartUrl = uri.toString()
-                }
+            clearCaptureState()
+            context.bitmapToFileUri(bitmap)?.let { uri ->
+                bandalartChartUrl = uri.toString()
             }
         }
 
@@ -487,11 +485,6 @@ class HomePresenter @AssistedInject constructor(
                     }
                 }
 
-                is Event.CaptureBandalart -> {
-                    clearCaptureState()
-                    bandalartChartUrl = context.bitmapToFileUri(event.bitmap).toString()
-                }
-
                 is Event.OnAppTitleClick -> showAppVersion()
                 // TODO 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
                 is Event.OnBandalartCellClick -> handleBandalartCellClick(
@@ -554,13 +547,6 @@ class HomePresenter @AssistedInject constructor(
                 is Event.OnShareRequested -> shareBandalart(event.bitmap)
                 is Event.OnSaveRequested -> saveBandalartImage(event.bitmap)
                 is Event.OnCaptureRequested -> captureBandalart(event.bitmap)
-                is Event.ShowAppVersion -> showToast(
-                    context.getString(
-                        R.string.app_version_info,
-                        appVersion
-                    )
-                )
-
                 is Event.OnUpdateCheck -> {
                     scope.launch {
                         if (!isValidImmediateAppUpdate(event.versionCode) &&
