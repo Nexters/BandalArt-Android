@@ -74,20 +74,27 @@ import java.util.Locale
 data object HomeScreen : Screen {
     data class State(
         val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
-        val bandalartData: BandalartUiModel? = null,
-        val bandalartCellData: BandalartCellEntity? = null,
-        val isShowSkeleton: Boolean = false,
-        val bandalartChartUrl: String? = null,
-        val isBandalartCompleted: Boolean = false,
-        val bottomSheet: BottomSheetState? = null,
-        val dialog: DialogState? = null,
-        val isSharing: Boolean = false,
-        val isCapturing: Boolean = false,
-        val isDropDownMenuOpened: Boolean = false,
-        val clickedCellType: CellType = CellType.MAIN,
-        val clickedCellData: BandalartCellEntity? = null,
+         val bandalartData: BandalartUiModel? = null,
+         val bandalartCellData: BandalartCellEntity? = null,
+         val bandalartChartUrl: String? = null,
+         val isBandalartCompleted: Boolean = false,
+         val bottomSheet: BottomSheetState? = null,
+         val dialog: DialogState? = null,
+         val isSharing: Boolean = false,
+         val isCapturing: Boolean = false,
+         val isDropDownMenuOpened: Boolean = false,
+         val clickedCellType: CellType = CellType.MAIN,
+         val clickedCellData: BandalartCellEntity? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
+
+//    sealed interface SideEffect {
+//        data object SaveRequest : SideEffect
+//        data object ShareRequest : SideEffect
+//        data object CaptureRequest : SideEffect
+//        data class ShowToast(val message: UiText) : SideEffect
+//        data class ShowSnackbar(val message: UiText) : SideEffect
+//    }
 
     sealed interface BottomSheetState {
         data class Cell(
@@ -120,19 +127,11 @@ data object HomeScreen : Screen {
     }
 
     sealed interface Event : CircuitUiEvent {
-        data class NavigateToComplete(
-            val id: Long,
-            val title: String,
-            val profileEmoji: String,
-            val bandalartChartImageUri: String,
-        ) : Event
-
-        data class ShowSnackbar(val message: UiText) : Event
-        data class ShowToast(val message: UiText) : Event
-        data class SaveBandalart(val bitmap: ImageBitmap) : Event
-        data class ShareBandalart(val bitmap: ImageBitmap) : Event
         data class CaptureBandalart(val bitmap: ImageBitmap) : Event
         data object ShowAppVersion : Event
+        data class OnShareRequested(val bitmap: ImageBitmap) : Event
+        data class OnSaveRequested(val bitmap: ImageBitmap) : Event
+        data class OnCaptureRequested(val bitmap: ImageBitmap) : Event
 
         // HomeScreen UiAction
         data object OnListClick : Event
@@ -189,11 +188,6 @@ private const val SnackbarDuration = 1500L
 @Composable
 internal fun Home(
     state: HomeScreen.State,
-    // onHomeUiAction: (HomeUiAction) -> Unit,
-    // shareBandalart: (ImageBitmap) -> Unit,
-    // captureBandalart: (ImageBitmap) -> Unit,
-    // saveBandalart: (ImageBitmap) -> Unit,
-    // snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
     val eventSink = state.eventSink
@@ -275,62 +269,20 @@ internal fun Home(
 //        }
 //    }
 //
-//    ObserveAsEvents(flow = homeViewModel.uiEvent) { event ->
-//        when (event) {
-//            is HomeUiEvent.NavigateToComplete -> {
-//                navigateToComplete(
-//                    event.id,
-//                    event.title,
-//                    event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
-//                    event.bandalartChart,
-//                )
-//            }
-//
-//            is HomeUiEvent.ShowSnackbar -> {
-//                scope.launch {
-//                    val job = launch {
-//                        onShowSnackbar(event.message.asString(context))
-//                    }
-//                    delay(SnackbarDuration)
-//                    job.cancel()
-//                }
-//            }
-//
-//            is HomeUiEvent.ShowToast -> {
-//                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-//            }
-//
-//            is HomeUiEvent.SaveBandalart -> {
-//                context.saveImageToGallery(event.bitmap)
-//                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
-//            }
-//
-//            is HomeUiEvent.ShareBandalart -> {
-//                context.externalShareForBitmap(event.bitmap)
-//            }
-//
-//            is HomeUiEvent.CaptureBandalart -> {
-//                homeViewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
-//            }
-//
-//            is HomeUiEvent.ShowAppVersion -> {
-//                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     LaunchedEffect(key1 = state.isSharing) {
         if (state.isSharing) {
-            // shareBandalart(homeGraphicsLayer.toImageBitmap())
+            eventSink(Event.OnShareRequested(homeGraphicsLayer.toImageBitmap()))
         }
     }
 
     LaunchedEffect(key1 = state.isCapturing) {
         if (state.isCapturing) {
+            val bitmap = completeGraphicsLayer.toImageBitmap()
             if (state.isBandalartCompleted) {
-                // captureBandalart(completeGraphicsLayer.toImageBitmap())
+                eventSink(Event.OnCaptureRequested(bitmap))
             } else {
-                // saveBandalart(completeGraphicsLayer.toImageBitmap())
+                eventSink(Event.OnSaveRequested(bitmap))
             }
         }
     }
@@ -521,9 +473,9 @@ internal fun Home(
             },
         )
 
-        if (state.isShowSkeleton) {
-            BandalartSkeleton()
-        }
+//        if (state.isShowSkeleton) {
+//            BandalartSkeleton()
+//        }
     }
 }
 
