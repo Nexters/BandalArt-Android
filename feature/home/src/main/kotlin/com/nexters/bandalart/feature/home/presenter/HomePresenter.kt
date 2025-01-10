@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
+import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
@@ -72,6 +73,8 @@ class HomePresenter @AssistedInject constructor(
         var isCapturing by rememberRetained { mutableStateOf(false) }
         var clickedCellType by rememberRetained { mutableStateOf(CellType.MAIN) }
         var clickedCellData by rememberRetained { mutableStateOf(BandalartCellEntity()) }
+        var updateVersionCode by rememberRetained { mutableStateOf<Int?>(null) }
+        var showUpdateConfirm by rememberRetained { mutableStateOf(false) }
 
         val scope = rememberStableCoroutineScope()
         val snackbarHostState = remember { SnackbarHostState() }
@@ -85,26 +88,20 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        // 반다라트 완료 상태 관찰
-        LaunchedEffect(bandalartData) {
-            bandalartData?.let { bandalart ->
-                if (bandalart.isCompleted && bandalart.title?.isNotEmpty() == true) {
-                    val isCompleted = checkCompletedBandalartId(bandalart.id)
-                    if (isCompleted) {
-                        delay(500L)
-                        isCapturing = true
-                        delay(500L)
-                        navigator.goTo(
-                            CompleteScreen(
-                                bandalartId = bandalart.id,
-                                bandalartTitle = bandalart.title,
-                                bandalartProfileEmoji = bandalart.profileEmoji.orEmpty(),
-                                bandalartChartImageUri = bandalartChartUrl,
-                            )
-                        )
-                    }
-                }
-            }
+        fun requestCapture() {
+            isCapturing = true
+        }
+
+        fun requestShare() {
+            isSharing = true
+        }
+
+        fun clearShareState() {
+            isSharing = false
+        }
+
+        fun clearCaptureState() {
+            isCapturing = false
         }
 
         suspend fun getBandalartMainCell(bandalartId: Long) {
@@ -183,49 +180,6 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        LaunchedEffect(Unit) {
-            bandalartRepository.getBandalartList()
-                .map { list -> list.map { it.toUiModel() } }
-                .collect { list ->
-                    bandalartList = list.toPersistentList()
-
-                    // 이전 반다라트 목록 상태 조회
-                    val prevBandalartList = bandalartRepository.getPrevBandalartList()
-
-                    // 새로 업데이트 된 상태와 이전 상태를 비교
-                    val completedKeys = list.filter { bandalart ->
-                        val prevBandalart = prevBandalartList.find { it.first == bandalart.id }
-                        prevBandalart != null && !prevBandalart.second && bandalart.isCompleted
-                    }.map { it.id }
-
-                    // 이번에 목표를 달성한 반다라트가 존재하는 경우
-                    if (completedKeys.isNotEmpty()) {
-                        getBandalart(completedKeys[0], true)
-                        return@collect
-                    }
-
-                    // 데이터를 동기화
-                    list.forEach { bandalart ->
-                        bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
-                    }
-
-                    // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
-                    if (list.isEmpty()) {
-                        createBandalart()
-                    } else {
-                        // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
-                        val recentBandalartId = getRecentBandalartId()
-                        // 가장 최근에 확인한 반다라트 표가 존재하는 경우
-                        if (list.any { it.id == recentBandalartId }) {
-                            getBandalart(recentBandalartId)
-                        } else {
-                            // 목록에 가장 첫번째 표를 화면에 띄움
-                            getBandalart(list[0].id)
-                        }
-                    }
-                }
-        }
-
         fun showBandalartListBottomSheet() {
             bottomSheet = HomeScreen.BottomSheetState.BandalartList(
                 bandalartList = bandalartList,
@@ -263,22 +217,6 @@ class HomePresenter @AssistedInject constructor(
         fun expandDatePicker() {
             val currentSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
             bottomSheet = currentSheet.copy(isDatePickerOpened = true)
-        }
-
-        fun requestCapture() {
-            isCapturing = true
-        }
-
-        fun requestShare() {
-            isSharing = true
-        }
-
-        fun clearShareState() {
-            isSharing = false
-        }
-
-        fun clearCaptureState() {
-            isCapturing = false
         }
 
         fun hideDropDownMenu() {
@@ -461,6 +399,71 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
+        // 반다라트 완료 상태 관찰
+        LaunchedEffect(bandalartData) {
+            bandalartData?.let { bandalart ->
+                if (bandalart.isCompleted && bandalart.title?.isNotEmpty() == true) {
+                    val isCompleted = checkCompletedBandalartId(bandalart.id)
+                    if (isCompleted) {
+                        delay(500L)
+                        requestCapture()
+                        delay(500L)
+                        navigator.goTo(
+                            CompleteScreen(
+                                bandalartId = bandalart.id,
+                                bandalartTitle = bandalart.title,
+                                bandalartProfileEmoji = bandalart.profileEmoji.orEmpty(),
+                                bandalartChartImageUri = bandalartChartUrl,
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            bandalartRepository.getBandalartList()
+                .map { list -> list.map { it.toUiModel() } }
+                .collect { list ->
+                    bandalartList = list.toPersistentList()
+
+                    // 이전 반다라트 목록 상태 조회
+                    val prevBandalartList = bandalartRepository.getPrevBandalartList()
+
+                    // 새로 업데이트 된 상태와 이전 상태를 비교
+                    val completedKeys = list.filter { bandalart ->
+                        val prevBandalart = prevBandalartList.find { it.first == bandalart.id }
+                        prevBandalart != null && !prevBandalart.second && bandalart.isCompleted
+                    }.map { it.id }
+
+                    // 이번에 목표를 달성한 반다라트가 존재하는 경우
+                    if (completedKeys.isNotEmpty()) {
+                        getBandalart(completedKeys[0], true)
+                        return@collect
+                    }
+
+                    // 데이터를 동기화
+                    list.forEach { bandalart ->
+                        bandalartRepository.upsertBandalartId(bandalart.id, bandalart.isCompleted)
+                    }
+
+                    // 반다라트 목록이 존재하지 않을 경우, 새로운 반다라트를 생성
+                    if (list.isEmpty()) {
+                        createBandalart()
+                    } else {
+                        // 가장 최근에 확인한 반다라트 표를 화면에 띄우는 경우
+                        val recentBandalartId = getRecentBandalartId()
+                        // 가장 최근에 확인한 반다라트 표가 존재하는 경우
+                        if (list.any { it.id == recentBandalartId }) {
+                            getBandalart(recentBandalartId)
+                        } else {
+                            // 목록에 가장 첫번째 표를 화면에 띄움
+                            getBandalart(list[0].id)
+                        }
+                    }
+                }
+        }
+
         fun handleEvent(event: Event) {
             when (event) {
                 is Event.OnListClick -> showBandalartListBottomSheet()
@@ -557,6 +560,34 @@ class HomePresenter @AssistedInject constructor(
                         appVersion
                     )
                 )
+
+                is Event.OnUpdateCheck -> {
+                    scope.launch {
+                        if (!isValidImmediateAppUpdate(event.versionCode) &&
+                            !isUpdateAlreadyRejected(event.versionCode)
+                        ) {
+                            updateVersionCode = event.versionCode
+                        }
+                    }
+                }
+
+                is Event.OnUpdateDownloadComplete -> {
+                    showUpdateConfirm = true
+                }
+
+                is Event.OnUpdateDownloaded -> {
+                    showUpdateConfirm = false
+                }
+
+                is Event.OnUpdateCanceled -> {
+                    scope.launch {
+                        updateVersionCode?.let {
+                            setLastRejectedUpdateVersion(it)
+                        }
+                        updateVersionCode = null
+                        showUpdateConfirm = false
+                    }
+                }
             }
         }
 
@@ -573,6 +604,8 @@ class HomePresenter @AssistedInject constructor(
             isDropDownMenuOpened = isDropDownMenuOpened,
             clickedCellType = clickedCellType,
             clickedCellData = clickedCellData,
+            updateVersionCode = updateVersionCode,
+            showUpdateConfirm = showUpdateConfirm,
             eventSink = { event -> handleEvent(event) },
         )
     }
