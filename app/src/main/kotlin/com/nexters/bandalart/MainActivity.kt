@@ -52,41 +52,8 @@ class MainActivity : ComponentActivity() {
                 val backStack = rememberSaveableBackStack(root = SplashScreen)
                 val navigator = rememberCircuitNavigator(backStack)
 
-                val snackbarHostState = remember { SnackbarHostState() }
-                val height = LocalConfiguration.current.screenHeightDp
-
                 CircuitCompositionLocals(circuit) {
-                    Scaffold(
-                        snackbarHost = {
-                            SnackbarHost(
-                                modifier = Modifier
-                                    .padding(bottom = (height - 96).dp)
-                                    .height(36.dp),
-                                hostState = snackbarHostState,
-                                snackbar = {
-                                    Card(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 40.dp),
-                                        shape = RoundedCornerShape(50.dp),
-                                        colors = CardDefaults.cardColors(containerColor = White),
-                                        elevation = CardDefaults.cardElevation(8.dp),
-                                    ) {
-                                        Box(Modifier.fillMaxSize()) {
-                                            Text(
-                                                text = it.visuals.message,
-                                                color = Gray700,
-                                                fontSize = 12.sp,
-                                                fontWeight = FontWeight.W600,
-                                                modifier = Modifier.align(Alignment.Center),
-                                                letterSpacing = -(0.24).sp,
-                                            )
-                                        }
-                                    }
-                                },
-                            )
-                        },
-                    ) { innerPadding ->
+                    Scaffold { innerPadding ->
                         ContentWithOverlays {
                             NavigableCircuitContent(
                                 navigator = navigator,

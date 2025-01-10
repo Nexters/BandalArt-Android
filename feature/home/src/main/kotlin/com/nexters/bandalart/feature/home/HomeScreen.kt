@@ -190,6 +190,7 @@ data object HomeScreen : Screen {
 
 // TODO 공유하기 기능이 동작하지 않는 문제 해결
 // TODO Toast, Snackbar 가 보이지 않는 문제 해결
+// TODO 옵션 버튼이 눌리지 않는 문제 해결
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
 @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
@@ -383,7 +384,7 @@ internal fun Home(
             }
         }
 
-        else -> {}
+        null -> {}
     }
 
     Box(
@@ -442,11 +443,6 @@ internal fun Home(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
-
-//        SnackbarHost(
-//            hostState = snackbarHostState,
-//            modifier = Modifier.align(Alignment.BottomCenter),
-//        )
 
         SnackbarHost(
             modifier = Modifier
