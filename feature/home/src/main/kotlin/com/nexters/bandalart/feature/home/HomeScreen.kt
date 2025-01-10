@@ -69,7 +69,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.parcelize.Parcelize
 import java.util.Locale
 
-// TODO Action 와 Event 를 분리하지 말고 바로 Event 를 호출하면 될듯 (이게 MVI 가 맞나?)
+// TODO 이게 MVI 가 맞나?
 @Parcelize
 data object HomeScreen : Screen {
     data class State(
@@ -87,14 +87,6 @@ data object HomeScreen : Screen {
          val clickedCellData: BandalartCellEntity? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
-
-//    sealed interface SideEffect {
-//        data object SaveRequest : SideEffect
-//        data object ShareRequest : SideEffect
-//        data object CaptureRequest : SideEffect
-//        data class ShowToast(val message: UiText) : SideEffect
-//        data class ShowSnackbar(val message: UiText) : SideEffect
-//    }
 
     sealed interface BottomSheetState {
         data class Cell(

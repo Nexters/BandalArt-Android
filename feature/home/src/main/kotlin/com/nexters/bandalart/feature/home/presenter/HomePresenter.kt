@@ -12,10 +12,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
+import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
@@ -155,12 +157,20 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
+        suspend fun showSnackbar(message: String) {
+            snackbarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short,
+            )
+        }
+
+        fun showToast(message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+
         suspend fun createBandalart() {
             if ((bandalartList.size + 1) > 5) {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.limit_create_bandalart),
-                    duration = SnackbarDuration.Short,
-                )
+                showSnackbar(context.getString(R.string.limit_create_bandalart))
                 return
             }
 
@@ -169,14 +179,10 @@ class HomePresenter @AssistedInject constructor(
                 getBandalart(bandalart.id)
                 setRecentBandalartId(bandalart.id)
                 upsertBandalartId(bandalart.id, bandalart.isCompleted)
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.create_bandalart),
-                    duration = SnackbarDuration.Short,
-                )
+                showSnackbar(context.getString(R.string.create_bandalart))
             }
         }
 
-        // 초기 데이터 로딩
         LaunchedEffect(Unit) {
             bandalartRepository.getBandalartList()
                 .map { list -> list.map { it.toUiModel() } }
@@ -220,38 +226,258 @@ class HomePresenter @AssistedInject constructor(
                 }
         }
 
-        fun handleEvent(event: Event) {
-            when (event) {
-                is Event.OnListClick -> {
-                    bottomSheet = HomeScreen.BottomSheetState.BandalartList(
-                        bandalartList = bandalartList,
-                        currentBandalartId = bandalartData?.id ?: return,
+        fun showBandalartListBottomSheet() {
+            bottomSheet = HomeScreen.BottomSheetState.BandalartList(
+                bandalartList = bandalartList,
+                currentBandalartId = bandalartData?.id ?: return,
+            )
+        }
+
+        fun showEmojiBottomSheet() {
+            bandalartData?.let { bandalartData ->
+                bottomSheet = HomeScreen.BottomSheetState.Emoji(
+                    bandalartId = bandalartData.id,
+                    cellId = bandalartData.id,
+                    currentEmoji = bandalartData.profileEmoji,
+                )
+            }
+        }
+
+        fun showBandalartDeleteDialog() {
+            dialog = HomeScreen.DialogState.BandalartDelete
+        }
+
+        fun showAppVersion() {
+            Toast.makeText(
+                context,
+                context.getString(R.string.app_version_info, appVersion),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        fun expandEmojiPicker() {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentBottomSheet.copy(isEmojiPickerOpened = true)
+        }
+
+        fun expandDatePicker() {
+            val currentSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentSheet.copy(isDatePickerOpened = true)
+        }
+
+        fun requestCapture() {
+            isCapturing = true
+        }
+
+        fun requestShare() {
+            isSharing = true
+        }
+
+        fun clearShareState() {
+            isSharing = false
+        }
+
+        fun clearCaptureState() {
+            isCapturing = false
+        }
+
+        fun hideDropDownMenu() {
+            isDropDownMenuOpened = false
+        }
+
+        fun hideDialog() {
+            dialog = null
+        }
+
+        fun hideBottomSheet() {
+            bottomSheet = null
+        }
+
+        fun hideModal() {
+            hideDialog()
+            hideBottomSheet()
+        }
+
+        fun updateCellTitle(title: String, locale: Locale) {
+            val currentBottomSheet =
+                bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            val maxLength = when (locale.language) {
+                Locale.KOREAN.language, Locale.JAPAN.language -> 15
+                else -> 24
+            }
+
+            val validatedTitle = if (title.length > maxLength) {
+                currentBottomSheet.cellData.title ?: ""
+            } else title
+
+            bottomSheet = currentBottomSheet.copy(
+                cellData = currentBottomSheet.cellData.copy(title = validatedTitle),
+            )
+        }
+
+        fun updateDescription(description: String) {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            val validatedDescription = if (description.length > 1000) {
+                currentBottomSheet.cellData.description
+            } else {
+                description
+            }
+            bottomSheet = currentBottomSheet.copy(
+                cellData = currentBottomSheet.cellData.copy(description = validatedDescription),
+            )
+        }
+
+        fun updateDueDate(date: String) {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentBottomSheet.copy(
+                cellData = currentBottomSheet.cellData.copy(dueDate = date),
+            )
+        }
+
+        fun updateThemeColor(mainColor: String, subColor: String) {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentBottomSheet.copy(
+                bandalartData = currentBottomSheet.bandalartData.copy(
+                    mainColor = mainColor,
+                    subColor = subColor,
+                ),
+            )
+        }
+
+        fun updateEmoji(emoji: String) {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Emoji ?: return
+            bottomSheet = currentBottomSheet.copy(currentEmoji = emoji)
+        }
+
+        fun updateCompletion(isCompleted: Boolean) {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentBottomSheet.copy(
+                cellData = currentBottomSheet.cellData.copy(isCompleted = isCompleted),
+            )
+        }
+
+        suspend fun updateCell(
+            bandalartId: Long,
+            cellId: Long,
+            cellType: CellType,
+        ) {
+            val bottomSheetData =
+                bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            val cellData = bottomSheetData.cellData
+
+            val trimmedTitle = cellData.title?.trim()
+            val description = cellData.description
+            val dueDate = cellData.dueDate?.ifEmpty { null }
+
+            when (cellType) {
+                CellType.MAIN -> {
+                    updateMainCell(
+                        bandalartId = bandalartId,
+                        cellId = cellId,
+                        updateBandalartMainCellModel = UpdateBandalartMainCellEntity(
+                            title = trimmedTitle,
+                            description = description,
+                            dueDate = dueDate,
+                            profileEmoji = bottomSheetData.bandalartData.profileEmoji,
+                            mainColor = bottomSheetData.bandalartData.mainColor,
+                            subColor = bottomSheetData.bandalartData.subColor,
+                        ),
                     )
                 }
 
-                is Event.OnSaveClick -> {
-                    isCapturing = true
+                CellType.SUB -> {
+                    updateSubCell(
+                        bandalartId = bandalartId,
+                        cellId = cellId,
+                        updateBandalartSubCellModel = UpdateBandalartSubCellEntity(
+                            title = trimmedTitle,
+                            description = description,
+                            dueDate = dueDate,
+                        ),
+                    )
                 }
 
-                is Event.OnDeleteClick -> {
-                    dialog = HomeScreen.DialogState.BandalartDelete
+                else -> {
+                    updateTaskCell(
+                        bandalartId = bandalartId,
+                        cellId = cellId,
+                        updateBandalartTaskCellModel = UpdateBandalartTaskCellEntity(
+                            title = trimmedTitle,
+                            description = description,
+                            dueDate = dueDate,
+                            isCompleted = cellData.isCompleted,
+                        ),
+                    )
+                }
+            }
+        }
+
+        fun handleBandalartCellClick(
+            cellType: CellType,
+            isMainCellTitleEmpty: Boolean,
+            cellData: BandalartCellEntity,
+        ) {
+            when {
+                cellType != CellType.MAIN && isMainCellTitleEmpty -> {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.please_input_main_goal),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
+                else -> {
+                    clickedCellData = cellData
+                    clickedCellType = cellType
+                    bottomSheet = bandalartData?.let {
+                        HomeScreen.BottomSheetState.Cell(
+                            initialCellData = cellData,
+                            cellData = cellData,
+                            initialBandalartData = it,
+                            bandalartData = it,
+                        )
+                    }
+                }
+            }
+        }
+
+        fun shareBandalart(bitmap: ImageBitmap) {
+            clearShareState()
+            context.externalShareForBitmap(bitmap)
+        }
+
+        fun saveBandalartImage(bitmap: ImageBitmap) {
+            clearCaptureState()
+            context.saveImageToGallery(bitmap)
+            showToast(context.getString(R.string.save_bandalart_image))
+        }
+
+        fun captureBandalart(bitmap: ImageBitmap) {
+            scope.launch {
+                clearCaptureState()
+                context.bitmapToFileUri(bitmap)?.let { uri ->
+                    bandalartChartUrl = uri.toString()
+                }
+            }
+        }
+
+        fun handleEvent(event: Event) {
+            when (event) {
+                is Event.OnListClick -> showBandalartListBottomSheet()
+                is Event.OnSaveClick -> requestCapture()
+                is Event.OnDeleteClick -> showBandalartDeleteDialog()
                 is Event.OnEmojiSelected -> {
                     scope.launch {
-                        bandalartRepository.updateBandalartEmoji(
+                        updateBandalartEmoji(
                             event.bandalartId,
                             event.cellId,
-                            event.updateBandalartEmojiModel,
+                            event.updateBandalartEmojiModel
                         )
-                        dialog = null
+                        hideBottomSheet()
                     }
                 }
 
-                is Event.OnShareButtonClick -> {
-                    isSharing = true
-                }
-
+                is Event.OnShareButtonClick -> requestShare()
                 is Event.OnAddClick -> {
                     scope.launch {
                         createBandalart()
@@ -259,154 +485,44 @@ class HomePresenter @AssistedInject constructor(
                 }
 
                 is Event.CaptureBandalart -> {
-                    isCapturing = false
+                    clearCaptureState()
                     bandalartChartUrl = context.bitmapToFileUri(event.bitmap).toString()
                 }
 
-                is Event.OnAppTitleClick -> {
-                    Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
-                }
-
+                is Event.OnAppTitleClick -> showAppVersion()
                 // TODO 태스크셀이고 상위 서브셀이 비어있을 때(테스트셀이 자신의 부모를 알고있어야 구현 가능 함)
-                is Event.OnBandalartCellClick -> {
-                    when {
-                        event.cellType != CellType.MAIN && bandalartData?.title.isNullOrEmpty() -> {
-                            Toast.makeText(context, context.getString(R.string.please_input_main_goal), Toast.LENGTH_SHORT).show()
-                        }
-
-                        else -> {
-                            clickedCellData = event.cellData
-                            clickedCellType = event.cellType
-                            bottomSheet = bandalartData?.let {
-                                HomeScreen.BottomSheetState.Cell(
-                                    initialCellData = event.cellData,
-                                    cellData = event.cellData,
-                                    initialBandalartData = it,
-                                    bandalartData = it,
-                                )
-                            }
-                        }
-                    }
-                }
+                is Event.OnBandalartCellClick -> handleBandalartCellClick(
+                    event.cellType,
+                    event.isMainCellTitleEmpty,
+                    event.cellData,
+                )
 
                 is Event.OnBandalartListItemClick -> {
                     scope.launch {
-                        bottomSheet = null
+                        setRecentBandalartId(event.key)
+                        getBandalart(event.key)
+                        hideBottomSheet()
                     }
                 }
 
-                is Event.OnCancelClick -> {
-                    dialog = null
-                }
-
-                is Event.OnCellTitleUpdate -> {
-                    val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
-                    val maxLength = when (event.locale.language) {
-                        Locale.KOREAN.language, Locale.JAPAN.language -> 15
-                        else -> 24
-                    }
-
-                    val validatedTitle = if (event.title.length > maxLength) {
-                        currentBottomSheet.cellData.title ?: ""
-                    } else event.title
-
-                    bottomSheet = currentBottomSheet.copy(
-                        cellData = currentBottomSheet.cellData.copy(title = validatedTitle),
-                    )
-                }
-
-                is Event.OnCloseButtonClick -> {
-                    bottomSheet = null
-                }
-
-                is Event.OnColorSelect -> {
-                    val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
-                    bottomSheet = currentBottomSheet.copy(
-                        bandalartData = currentBottomSheet.bandalartData.copy(
-                            mainColor = event.mainColor,
-                            subColor = event.subColor,
-                        ),
-                    )
-                }
-
+                is Event.OnCancelClick -> hideDialog()
+                is Event.OnCellTitleUpdate -> updateCellTitle(event.title, event.locale)
+                is Event.OnCloseButtonClick -> hideBottomSheet()
+                is Event.OnColorSelect -> updateThemeColor(event.mainColor, event.subColor)
                 is Event.OnCompleteButtonClick -> {
                     scope.launch {
-                        val bottomSheetData = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return@launch
-                        val cellData = bottomSheetData.cellData
-
-                        val trimmedTitle = cellData.title?.trim()
-                        val description = cellData.description
-                        val dueDate = cellData.dueDate?.ifEmpty { null }
-
-                        when (event.cellType) {
-                            CellType.MAIN -> {
-                                updateMainCell(
-                                    bandalartId = event.bandalartId,
-                                    cellId = event.cellId,
-                                    updateBandalartMainCellModel = UpdateBandalartMainCellEntity(
-                                        title = trimmedTitle,
-                                        description = description,
-                                        dueDate = dueDate,
-                                        profileEmoji = bottomSheetData.bandalartData.profileEmoji,
-                                        mainColor = bottomSheetData.bandalartData.mainColor,
-                                        subColor = bottomSheetData.bandalartData.subColor,
-                                    ),
-                                )
-                            }
-
-                            CellType.SUB -> {
-                                updateSubCell(
-                                    bandalartId = event.bandalartId,
-                                    cellId = event.cellId,
-                                    updateBandalartSubCellModel = UpdateBandalartSubCellEntity(
-                                        title = trimmedTitle,
-                                        description = description,
-                                        dueDate = dueDate,
-                                    ),
-                                )
-                            }
-
-                            else -> {
-                                updateTaskCell(
-                                    bandalartId = event.bandalartId,
-                                    cellId = event.cellId,
-                                    updateBandalartTaskCellModel = UpdateBandalartTaskCellEntity(
-                                        title = trimmedTitle,
-                                        description = description,
-                                        dueDate = dueDate,
-                                        isCompleted = cellData.isCompleted,
-                                    ),
-                                )
-                            }
-                        }
+                        updateCell(event.bandalartId, event.cellId, event.cellType)
                     }
                 }
 
-                is Event.OnCompletionUpdate -> {
-                    val currentBottomSheet = (bottomSheet as? HomeScreen.BottomSheetState.Cell) ?: return
-                    bottomSheet = currentBottomSheet.copy(
-                        cellData = currentBottomSheet.cellData.copy(isCompleted = event.isCompleted),
-                    )
-                }
-
-                is Event.OnDatePickerClick -> {
-                    val currentSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
-                    bottomSheet = currentSheet.copy(
-                        isDatePickerOpened = true,
-                    )
-                }
-
+                is Event.OnCompletionUpdate -> updateCompletion(event.isCompleted)
+                is Event.OnDatePickerClick -> expandDatePicker()
                 is Event.OnDeleteBandalart -> {
                     scope.launch {
-                        bandalartRepository.deleteBandalart(event.bandalartId)
-                        dialog = null
-                        bottomSheet = null
-                        isDropDownMenuOpened = false
-                        deleteBandalartId(event.bandalartId)
-                        snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.delete_bandalart),
-                            duration = SnackbarDuration.Short,
-                        )
+                        deleteBandalart(event.bandalartId)
+                        hideModal()
+                        hideDropDownMenu()
+                        showSnackbar(context.getString(R.string.delete_bandalart))
                     }
                 }
 
@@ -419,101 +535,29 @@ class HomePresenter @AssistedInject constructor(
 
                 is Event.OnDeleteCell -> {
                     scope.launch {
-                        bandalartRepository.deleteBandalartCell(event.cellId)
+                        deleteCell(event.cellId)
+                        hideModal()
                     }
                 }
 
-                is Event.OnDescriptionUpdate -> {
-                    val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
-                    val validatedDescription = if (event.description.length > 1000) {
-                        currentBottomSheet.cellData.description
-                    } else {
-                        event.description
-                    }
-                    bottomSheet = currentBottomSheet.copy(
-                        cellData = currentBottomSheet.cellData.copy(description = validatedDescription),
+                is Event.OnDescriptionUpdate -> updateDescription(event.description)
+                is Event.OnDismiss -> hideBottomSheet()
+                is Event.OnDropDownMenuDismiss -> hideDropDownMenu()
+                is Event.OnDueDateSelect -> updateDueDate(event.date)
+                is Event.OnEmojiClick -> showEmojiBottomSheet()
+                is Event.OnEmojiPickerClick -> expandEmojiPicker()
+                is Event.OnEmojiSelect -> updateEmoji(event.emoji)
+                is Event.OnMenuClick -> hideDropDownMenu()
+                is Event.OnShareRequested -> shareBandalart(event.bitmap)
+                is Event.OnSaveRequested -> saveBandalartImage(event.bitmap)
+                is Event.OnCaptureRequested -> captureBandalart(event.bitmap)
+                is Event.ShowAppVersion -> showToast(
+                    context.getString(
+                        R.string.app_version_info,
+                        appVersion
                     )
-                }
-
-                is Event.OnDismiss -> {
-                    bottomSheet = null
-                }
-
-                is Event.OnDropDownMenuDismiss -> {
-                    isDropDownMenuOpened = false
-                }
-
-                is Event.OnDueDateSelect -> {
-                    val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
-                    bottomSheet = currentBottomSheet.copy(
-                        cellData = currentBottomSheet.cellData.copy(dueDate = event.date),
-                    )
-                }
-
-                is Event.OnEmojiClick -> {
-                    bandalartData?.let { bandalartData ->
-                        bottomSheet = HomeScreen.BottomSheetState.Emoji(
-                            bandalartId = bandalartData.id,
-                            cellId = bandalartData.id,
-                            currentEmoji = bandalartData.profileEmoji,
-                        )
-                    }
-                }
-
-                is Event.OnEmojiPickerClick -> {
-                    val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
-                    bottomSheet = currentBottomSheet.copy(
-                        isEmojiPickerOpened = true,
-                    )
-                }
-
-                is Event.OnEmojiSelect -> {
-                    val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Emoji ?: return
-                    bottomSheet = currentBottomSheet.copy(
-                        currentEmoji = event.emoji,
-                    )
-                }
-
-                is Event.OnMenuClick -> {
-                    isDropDownMenuOpened = true
-                }
-
-                is Event.OnShareRequested -> {
-                    scope.launch {
-                        isSharing = false
-                        context.externalShareForBitmap(event.bitmap)
-                    }
-                }
-
-                is Event.OnSaveRequested -> {
-                    scope.launch {
-                        isCapturing = false
-                        context.saveImageToGallery(event.bitmap)
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.save_bandalart_image),
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                }
-
-                is Event.OnCaptureRequested -> {
-                    scope.launch {
-                        isCapturing = false
-                        context.bitmapToFileUri(event.bitmap)?.let { uri ->
-                            bandalartChartUrl = uri.toString()
-                        }
-                    }
-                }
-
-                is Event.ShowAppVersion -> {
-                    Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
-                }
+                )
             }
-        }
-
-        fun updateBandalartChartImageUri(url: String) {
-            bandalartChartUrl = url
         }
 
         return State(
@@ -538,7 +582,11 @@ class HomePresenter @AssistedInject constructor(
         cellId: Long,
         updateBandalartMainCellModel: UpdateBandalartMainCellEntity,
     ) {
-        bandalartRepository.updateBandalartMainCell(bandalartId, cellId, updateBandalartMainCellModel)
+        bandalartRepository.updateBandalartMainCell(
+            bandalartId,
+            cellId,
+            updateBandalartMainCellModel
+        )
         bandalartRepository.getBandalart(bandalartId)
     }
 
@@ -555,7 +603,19 @@ class HomePresenter @AssistedInject constructor(
         cellId: Long,
         updateBandalartTaskCellModel: UpdateBandalartTaskCellEntity,
     ) {
-        bandalartRepository.updateBandalartTaskCell(bandalartId, cellId, updateBandalartTaskCellModel)
+        bandalartRepository.updateBandalartTaskCell(
+            bandalartId,
+            cellId,
+            updateBandalartTaskCellModel
+        )
+    }
+
+    private suspend fun updateBandalartEmoji(
+        bandalartId: Long,
+        cellId: Long,
+        updateBandalartEmojiModel: UpdateBandalartEmojiEntity,
+    ) {
+        bandalartRepository.updateBandalartEmoji(bandalartId, cellId, updateBandalartEmojiModel)
     }
 
     private suspend fun getRecentBandalartId(): Long {
@@ -579,6 +639,15 @@ class HomePresenter @AssistedInject constructor(
 
     private suspend fun deleteBandalartId(bandalartId: Long) {
         bandalartRepository.deleteCompletedBandalartId(bandalartId)
+    }
+
+    private suspend fun deleteCell(cellId: Long) {
+        bandalartRepository.deleteBandalartCell(cellId)
+    }
+
+    private suspend fun deleteBandalart(bandalartId: Long) {
+        bandalartRepository.deleteBandalart(bandalartId)
+        deleteBandalartId(bandalartId)
     }
 
     suspend fun setLastRejectedUpdateVersion(versionCode: Int) {
