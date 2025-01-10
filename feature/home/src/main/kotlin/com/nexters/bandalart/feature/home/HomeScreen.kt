@@ -339,7 +339,7 @@ internal fun Home(
             }
         }
 
-        else -> {}
+        null -> {}
     }
 
     when (state.dialog) {
