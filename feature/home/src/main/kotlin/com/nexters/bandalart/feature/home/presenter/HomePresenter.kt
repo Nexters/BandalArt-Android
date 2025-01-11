@@ -669,11 +669,11 @@ class HomePresenter @AssistedInject constructor(
         deleteBandalartId(bandalartId)
     }
 
-    suspend fun setLastRejectedUpdateVersion(versionCode: Int) {
+    private suspend fun setLastRejectedUpdateVersion(versionCode: Int) {
         inAppUpdateRepository.setLastRejectedUpdateVersion(versionCode)
     }
 
-    suspend fun isUpdateAlreadyRejected(versionCode: Int): Boolean {
+    private suspend fun isUpdateAlreadyRejected(versionCode: Int): Boolean {
         return inAppUpdateRepository.isUpdateAlreadyRejected(versionCode)
     }
 
