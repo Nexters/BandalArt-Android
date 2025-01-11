@@ -41,8 +41,10 @@
 - Kotlin Language : 2.0.21
 
 ### Language
-
 - Kotlin
+### Architecture
+- Modularization Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
+- [Circuit(WIP)](https://github.com/Nexters/BandalArt-Android/tree/refactor/circuit)
 
 ### Libraries
 
@@ -70,6 +72,7 @@
 - Facebook Shimmer
 - Firebase(Analytics, Crashlytics)
 - [Compose-Stable-Marker](https://github.com/skydoves/compose-stable-marker)
+- [Circuit](https://slackhq.github.io/circuit/)
 
 #### Test & Code analysis
 - Kotest
@@ -80,9 +83,6 @@
 #### Gradle Dependency
 
 - Gradle Version Catalog
-
-## Architecture
-Modularization Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
 
 ## Module
 ![image](https://github.com/user-attachments/assets/c45b3830-95b2-4b20-9280-7004fc812350)
@@ -123,4 +123,3 @@ Modularization Based on [Now in Android](https://github.com/android/nowinandroid
 |<img src="https://github.com/Nexters/BandalArt-Android/assets/51016231/e7b05305-b831-4c81-8635-84b478726c55" width=200>|<img src="https://github.com/Nexters/BandalArt-Android/assets/51016231/bbcf9941-5fbb-4f8a-8e8d-8f78db396808" width=200>|
 |[@easyhooon](https://github.com/easyhooon)|[@likppi10](https://github.com/likppi10)|
 <br/>
-
