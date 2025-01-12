@@ -26,5 +26,3 @@ val Error = Color(0xFFFF2727)
 
 val MainColor = Color(0xFF3FFFBA)
 val SubColor = Color(0xFF111827)
-
-val Transparent = Color(0x00000000)

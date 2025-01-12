@@ -525,10 +525,6 @@ private fun HomeSingleBandalartPreview() {
                 bandalartCellData = dummyBandalartChartData,
                 eventSink = {},
             ),
-//            shareBandalart = {},
-//            captureBandalart = {},
-//            saveBandalart = {},
-//            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
@@ -544,10 +540,6 @@ private fun HomeMultipleBandalartPreview() {
                 bandalartCellData = dummyBandalartChartData,
                 eventSink = {},
             ),
-//            shareBandalart = {},
-//            captureBandalart = {},
-//            saveBandalart = {},
-//            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }
