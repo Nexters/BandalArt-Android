@@ -16,7 +16,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,8 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -41,47 +38,42 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
-import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
+import com.nexters.bandalart.feature.onboarding.OnboardingScreen.Event
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.parcelize.Parcelize
 import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
-@Composable
-internal fun OnBoardingRoute(
-    navigateToHome: (NavOptions) -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = hiltViewModel(),
-) {
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is OnBoardingUiEvent.NavigateToHome -> {
-                val options = NavOptions.Builder()
-                    .setPopUpTo(Route.Onboarding, inclusive = true)
-                    .build()
-                navigateToHome(options)
-            }
-        }
-    }
+@Parcelize
+data object OnboardingScreen : Screen {
+    data class State(
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    OnBoardingScreen(
-        setOnboardingCompletedStatus = viewModel::setOnboardingCompletedStatus,
-        modifier = modifier,
-    )
+    sealed interface Event : CircuitUiEvent {
+        data object NavigateToHome : Event
+    }
 }
 
+@CircuitInject(OnboardingScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun OnBoardingScreen(
-    setOnboardingCompletedStatus: (Boolean) -> Unit,
+internal fun Onboarding(
+    state: OnboardingScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val eventSink = state.eventSink
     val context = LocalContext.current
     val currentLocale = context.getCurrentLocale()
     val configuration = LocalConfiguration.current
@@ -108,9 +100,10 @@ internal fun OnBoardingScreen(
         iterations = LottieConstants.IterateForever,
     )
 
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = Gray50,
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Gray50),
     ) {
         val pageCount = 2
         val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -225,7 +218,9 @@ internal fun OnBoardingScreen(
                             }
                             if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                                 BandalartButton(
-                                    onClick = { setOnboardingCompletedStatus(true) },
+                                    onClick = {
+                                        eventSink(Event.NavigateToHome)
+                                    },
                                     text = stringResource(R.string.onboarding_start),
                                     modifier = Modifier
                                         .wrapContentWidth()
@@ -236,7 +231,9 @@ internal fun OnBoardingScreen(
                                 )
                             } else {
                                 BandalartButton(
-                                    onClick = { setOnboardingCompletedStatus(true) },
+                                    onClick = {
+                                        eventSink(Event.NavigateToHome)
+                                    },
                                     text = stringResource(R.string.onboarding_start),
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -256,10 +253,12 @@ internal fun OnBoardingScreen(
 
 @DevicePreview
 @Composable
-private fun OnBoardingScreenPreview() {
+private fun OnBoardingPreview() {
     BandalartTheme {
-        OnBoardingScreen(
-            setOnboardingCompletedStatus = {},
+        Onboarding(
+            state = OnboardingScreen.State(
+                eventSink = {},
+            ),
         )
     }
 }

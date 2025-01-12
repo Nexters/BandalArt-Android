@@ -7,7 +7,7 @@
 
     <application
         android:name="com.nexters.bandalart.BandalartApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
         android:roundIcon="@mipmap/ic_launcher_round"

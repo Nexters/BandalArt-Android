@@ -88,7 +88,6 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
-androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidx-compose-material3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
@@ -136,7 +135,8 @@ circuit-foundation = { group = "com.slack.circuit", name = "circuit-foundation",
 circuit-codegen-annotation = { group = "com.slack.circuit", name = "circuit-codegen-annotations", version.ref = "circuit" }
 circuit-codegen-ksp = { group = "com.slack.circuit", name = "circuit-codegen", version.ref = "circuit" }
 circuitx-android = { group = "com.slack.circuit", name = "circuitx-android", version.ref = "circuit" }
-circuitx-overlay = { group = "com.slack.circuit", name = "circuitx-overlays", version.ref = "circuit" }
+circuitx-overlays = { group = "com.slack.circuit", name = "circuitx-overlays", version.ref = "circuit" }
+circuitx-gesture-navigation = { group = "com.slack.circuit", name = "circuitx-gesture-navigation", version.ref = "circuit" }
 
 test-kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "test-kotest" }
 test-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "test-kotest" }
@@ -189,7 +189,6 @@ androidx-compose = [
     "androidx-compose-animation",
     "androidx-compose-foundation",
     "androidx-compose-foundation-layout",
-    "androidx-compose-material-iconsExtended",
     "androidx-compose-material3",
     "androidx-compose-runtime",
     "androidx-compose-runtime-tracing",
@@ -226,7 +225,8 @@ okhttp = [
 circuit = [
     "circuit-foundation",
     "circuitx-android",
-    "circuitx-overlay"
+    "circuitx-overlays",
+    "circuitx-gesture-navigation",
 ]
 
 landscapist = [

@@ -4,12 +4,12 @@ import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,11 +21,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavOptions
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -33,24 +31,41 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.common.extension.findActivity
-import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
-import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
+@Parcelize
+data object SplashScreen : Screen {
+    data class State(
+        val isOnboardingCompleted: Boolean,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
+
+    sealed interface Event : CircuitUiEvent {
+        data object CheckOnboardingStatus : Event
+    }
+}
+
 @Suppress("TooGenericExceptionCaught")
+@CircuitInject(SplashScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun SplashRoute(
-    navigateToOnBoarding: (NavOptions) -> Unit,
-    navigateToHome: (NavOptions) -> Unit,
-    viewModel: SplashViewModel = hiltViewModel(),
+internal fun Splash(
+    state: SplashScreen.State,
+    modifier: Modifier = Modifier,
 ) {
+    val eventSink = state.eventSink
     val context = LocalContext.current
     val activity = context.findActivity()
     val appUpdateManager: AppUpdateManager = remember { AppUpdateManagerFactory.create(context) }
@@ -81,14 +96,14 @@ internal fun SplashRoute(
                         AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                     )
                 } else {
-                    viewModel.checkOnboardingStatus()
+                    eventSink(SplashScreen.Event.CheckOnboardingStatus)
                 }
             } else {
-                viewModel.checkOnboardingStatus()
+                eventSink(SplashScreen.Event.CheckOnboardingStatus)
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to check for immediate update")
-            viewModel.checkOnboardingStatus()
+            eventSink(SplashScreen.Event.CheckOnboardingStatus)
         }
     }
 
@@ -110,55 +125,34 @@ internal fun SplashRoute(
         }
     }
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is SplashUiEvent.NavigateToOnBoarding -> {
-                val options = NavOptions.Builder()
-                    .setPopUpTo(Route.Splash, inclusive = true)
-                    .build()
-                navigateToOnBoarding(options)
-            }
-
-            is SplashUiEvent.NavigateToHome -> {
-                val options = NavOptions.Builder()
-                    .setPopUpTo(Route.Splash, inclusive = true)
-                    .build()
-                navigateToHome(options)
-            }
-        }
-    }
-
-    SplashScreen()
-}
-
-@Composable
-internal fun SplashScreen(
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = Gray50,
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Gray50),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_app),
-                    contentDescription = stringResource(R.string.app_icon_description),
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                AppTitle()
-            }
+        Row(
+            modifier = Modifier.align(Alignment.Center),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_app),
+                contentDescription = stringResource(R.string.app_icon_description),
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            AppTitle()
         }
     }
 }
 
 @DevicePreview
 @Composable
-private fun SplashScreenPreview() {
+private fun SplashPreview() {
     BandalartTheme {
-        SplashScreen()
+        Splash(
+            state = SplashScreen.State(
+                isOnboardingCompleted = false,
+                eventSink = {},
+            ),
+        )
     }
 }

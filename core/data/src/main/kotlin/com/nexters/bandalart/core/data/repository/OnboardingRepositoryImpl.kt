@@ -2,6 +2,7 @@ package com.nexters.bandalart.core.data.repository
 
 import com.nexters.bandalart.core.datastore.BandalartDataStore
 import com.nexters.bandalart.core.domain.repository.OnboardingRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class OnboardingRepositoryImpl @Inject constructor(
@@ -11,7 +12,7 @@ internal class OnboardingRepositoryImpl @Inject constructor(
         bandalartDataStore.setOnboardingCompletedStatus(flag)
     }
 
-    override suspend fun getOnboardingCompletedStatus(): Boolean {
-        return bandalartDataStore.getOnboardingCompletedStatus()
+    override fun flowIsOnboardingCompleted(): Flow<Boolean> {
+        return bandalartDataStore.flowIsOnboardingCompleted()
     }
 }

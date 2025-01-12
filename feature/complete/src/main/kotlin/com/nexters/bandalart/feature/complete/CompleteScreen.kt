@@ -1,7 +1,7 @@
 package com.nexters.bandalart.feature.complete
 
 import android.content.res.Configuration
-import android.widget.Toast
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,22 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.nexters.bandalart.core.common.extension.saveUriToGallery
-import com.nexters.bandalart.core.common.extension.shareImage
-import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
@@ -47,50 +40,43 @@ import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.feature.complete.ui.CompleteBandalart
 import com.nexters.bandalart.feature.complete.ui.CompleteTopBar
-import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
-import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
-import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
-import com.nexters.bandalart.feature.complete.viewmodel.CompleteViewModel
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.parcelize.Parcelize
 
-@Composable
-internal fun CompleteRoute(
-    onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: CompleteViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+@Parcelize
+data class CompleteScreen(
+    val bandalartId: Long,
+    val bandalartTitle: String,
+    val bandalartProfileEmoji: String,
+    val bandalartChartImageUri: String,
+) : Screen {
+    data class State(
+        val id: Long = 0L,
+        val title: String = "",
+        val profileEmoji: String = "",
+        val isShared: Boolean = false,
+        val bandalartChartImageUri: String = "",
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is CompleteUiEvent.NavigateBack -> {
-                onNavigateBack()
-            }
-
-            is CompleteUiEvent.SaveBandalart -> {
-                context.saveUriToGallery(event.imageUri)
-                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
-            }
-
-            is CompleteUiEvent.ShareBandalart -> {
-                context.shareImage(event.imageUri)
-            }
-        }
+    sealed interface Event : CircuitUiEvent {
+        data object NavigateBack : Event
+        data class SaveBandalart(val imageUri: Uri) : Event
+        data class ShareBandalart(val imageUri: Uri) : Event
     }
-
-    CompleteScreen(
-        uiState = uiState,
-        onAction = viewModel::onAction,
-        modifier = modifier,
-    )
 }
 
+@CircuitInject(CompleteScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun CompleteScreen(
-    uiState: CompleteUiState,
-    onAction: (CompleteUiAction) -> Unit,
+internal fun Complete(
+    state: CompleteScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val eventSink = state.eventSink
     val configuration = LocalConfiguration.current
 
     val composition by rememberLottieComposition(
@@ -103,9 +89,10 @@ internal fun CompleteScreen(
         iterations = LottieConstants.IterateForever,
     )
 
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = Gray50,
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Gray50),
     ) {
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Box {
@@ -116,7 +103,11 @@ internal fun CompleteScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
+                    CompleteTopBar(
+                        onNavigateBack = {
+                            eventSink(CompleteScreen.Event.NavigateBack)
+                        },
+                    )
                     Text(
                         text = stringResource(R.string.complete_title),
                         modifier = modifier,
@@ -131,16 +122,25 @@ internal fun CompleteScreen(
                     Text(text = "🥳", fontSize = 100.sp)
                     Spacer(modifier = Modifier.height(32.dp))
                     CompleteBandalart(
-                        profileEmoji = uiState.profileEmoji,
-                        title = uiState.title,
+                        profileEmoji = state.profileEmoji,
+                        title = state.title,
                         // bandalartChartImageUri = uiState.bandalartChartImageUri,
                         modifier = Modifier.width(328.dp),
                     )
                     Spacer(modifier = Modifier.height(32.dp))
-                    // MVP 제외
-                    // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
                     BandalartButton(
-                        onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
+                        onClick = {
+                            eventSink(CompleteScreen.Event.SaveBandalart(Uri.parse(state.bandalartChartImageUri)))
+                        },
+                        text = stringResource(R.string.complete_save),
+                        modifier = Modifier
+                            .width(328.dp)
+                            .padding(bottom = 32.dp),
+                    )
+                    BandalartButton(
+                        onClick = {
+                            eventSink(CompleteScreen.Event.ShareBandalart(Uri.parse(state.bandalartChartImageUri)))
+                        },
                         text = stringResource(R.string.complete_share),
                         modifier = Modifier
                             .width(328.dp)
@@ -160,7 +160,11 @@ internal fun CompleteScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
+                    CompleteTopBar(
+                        onNavigateBack = {
+                            eventSink(CompleteScreen.Event.NavigateBack)
+                        },
+                    )
                     Spacer(modifier = Modifier.height(40.dp))
                     Text(
                         text = stringResource(R.string.complete_title),
@@ -174,8 +178,8 @@ internal fun CompleteScreen(
                     )
                     Box(modifier = Modifier.fillMaxSize()) {
                         CompleteBandalart(
-                            profileEmoji = uiState.profileEmoji,
-                            title = uiState.title,
+                            profileEmoji = state.profileEmoji,
+                            title = state.title,
                             // bandalartChartImageUri = uiState.bandalartChartImageUri,
                             modifier = Modifier.align(Alignment.Center),
                         )
@@ -183,7 +187,9 @@ internal fun CompleteScreen(
                             modifier = Modifier.align(Alignment.BottomCenter),
                         ) {
                             BandalartButton(
-                                onClick = { onAction(CompleteUiAction.OnSaveButtonClick) },
+                                onClick = {
+                                    eventSink(CompleteScreen.Event.SaveBandalart(Uri.parse(state.bandalartChartImageUri)))
+                                },
                                 text = stringResource(R.string.complete_save),
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -192,7 +198,9 @@ internal fun CompleteScreen(
                                     .background(Gray900),
                             )
                             BandalartButton(
-                                onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
+                                onClick = {
+                                    eventSink(CompleteScreen.Event.ShareBandalart(Uri.parse(state.bandalartChartImageUri)))
+                                },
                                 text = stringResource(R.string.complete_share),
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -210,15 +218,15 @@ internal fun CompleteScreen(
 
 @DevicePreview
 @Composable
-private fun CompleteScreenPreview() {
+private fun CompletePreview() {
     BandalartTheme {
-        CompleteScreen(
-            uiState = CompleteUiState(
+        Complete(
+            state = CompleteScreen.State(
                 id = 0L,
                 title = "발전하는 예진",
                 profileEmoji = "😎",
+                eventSink = {},
             ),
-            onAction = {},
         )
     }
 }

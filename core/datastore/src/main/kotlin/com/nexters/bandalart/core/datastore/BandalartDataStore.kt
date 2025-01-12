@@ -11,6 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -116,9 +117,9 @@ class BandalartDataStore @Inject constructor(
         }
     }
 
-    suspend fun getOnboardingCompletedStatus() = dataStore.data
+    fun flowIsOnboardingCompleted() = dataStore.data
         .catch { exception ->
             if (exception is IOException) emit(emptyPreferences())
             else throw exception
-        }.first()[onboardingCompletedKey] ?: false
+        }.map { preferences -> preferences[onboardingCompletedKey] ?: false }
 }

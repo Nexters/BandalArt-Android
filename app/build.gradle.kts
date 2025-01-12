@@ -63,7 +63,6 @@ dependencies {
         projects.core.network,
         projects.core.ui,
         projects.core.common,
-        projects.core.navigation,
 
         projects.feature.complete,
         projects.feature.home,
@@ -77,5 +76,9 @@ dependencies {
         libs.androidx.navigation.compose,
         libs.androidx.hilt.navigation.compose,
         libs.timber,
+
+        libs.bundles.circuit
     )
+    api(libs.circuit.codegen.annotation)
+    ksp(libs.circuit.codegen.ksp)
 }
