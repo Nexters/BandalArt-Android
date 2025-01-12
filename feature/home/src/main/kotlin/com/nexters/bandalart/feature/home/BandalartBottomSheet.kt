@@ -86,7 +86,6 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentText
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetDeleteButton
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetSubTitleText
 import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -97,7 +96,7 @@ fun BandalartBottomSheet(
     cellType: CellType,
     isBlankCell: Boolean,
     cellData: BandalartCellEntity,
-    bottomSheetData: BottomSheetState.Cell,
+    bottomSheetData: HomeScreen.BottomSheetState.Cell,
     eventSink: (Event) -> Unit,
 ) {
     val context = LocalContext.current
@@ -423,7 +422,7 @@ private fun BandalartMainCellBottomSheetPreview() {
             cellType = CellType.MAIN,
             isBlankCell = false,
             cellData = dummyBandalartCellData,
-            bottomSheetData = BottomSheetState.Cell(
+            bottomSheetData = HomeScreen.BottomSheetState.Cell(
                 initialCellData = dummyBandalartCellData,
                 cellData = dummyBandalartCellData,
                 initialBandalartData = dummyBandalartData,
@@ -443,7 +442,7 @@ private fun BandalartSubCellBottomSheetPreview() {
             cellType = CellType.SUB,
             isBlankCell = false,
             cellData = dummyBandalartCellData,
-            bottomSheetData = BottomSheetState.Cell(
+            bottomSheetData = HomeScreen.BottomSheetState.Cell(
                 initialCellData = dummyBandalartCellData,
                 cellData = dummyBandalartCellData,
                 initialBandalartData = dummyBandalartData,
@@ -463,7 +462,7 @@ private fun BandalartTaskCellBottomSheetPreview() {
             cellType = CellType.TASK,
             isBlankCell = true,
             cellData = dummyBandalartCellData,
-            bottomSheetData = BottomSheetState.Cell(
+            bottomSheetData = HomeScreen.BottomSheetState.Cell(
                 initialCellData = dummyBandalartCellData,
                 cellData = dummyBandalartCellData,
                 initialBandalartData = dummyBandalartData,

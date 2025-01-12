@@ -68,7 +68,6 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartChart
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
@@ -302,7 +301,7 @@ internal fun Home(
                         isBlankCell = cell.title.isNullOrEmpty(),
                         cellData = cell,
                         eventSink = eventSink,
-                        bottomSheetData = BottomSheetState.Cell(
+                        bottomSheetData = HomeScreen.BottomSheetState.Cell(
                             initialCellData = state.bottomSheet.initialCellData,
                             cellData = state.bottomSheet.cellData,
                             initialBandalartData = state.bottomSheet.initialBandalartData,
