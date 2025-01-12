@@ -283,6 +283,7 @@ class HomeViewModel @Inject constructor(
             updateSkeletonState(true)
             bandalartRepository.deleteBandalart(bandalartId)
             hideModal()
+            hideDropDownMenu()
             deleteBandalartId(bandalartId)
             _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
         }
@@ -430,10 +431,10 @@ class HomeViewModel @Inject constructor(
 
     private fun updateThemeColor(mainColor: String, subColor: String) {
         _uiState.update {
-            val currentSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            val currentBottomSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
             it.copy(
-                bottomSheet = currentSheet.copy(
-                    bandalartData = currentSheet.bandalartData.copy(
+                bottomSheet = currentBottomSheet.copy(
+                    bandalartData = currentBottomSheet.bandalartData.copy(
                         mainColor = mainColor,
                         subColor = subColor,
                     ),

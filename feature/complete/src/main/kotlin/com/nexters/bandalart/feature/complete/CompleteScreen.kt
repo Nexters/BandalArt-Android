@@ -50,6 +50,7 @@ import com.nexters.bandalart.feature.complete.ui.CompleteTopBar
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
+import com.nexters.bandalart.feature.complete.viewmodel.CompleteViewModel
 
 @Composable
 internal fun CompleteRoute(
