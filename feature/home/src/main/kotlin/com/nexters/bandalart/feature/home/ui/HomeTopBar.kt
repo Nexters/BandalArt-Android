@@ -109,7 +109,7 @@ private fun HomeTopBarSingleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 1,
-            eventSink = {}
+            eventSink = {},
         )
     }
 }
@@ -120,7 +120,7 @@ private fun HomeTopBarMultipleBandalartPreview() {
     BandalartTheme {
         HomeTopBar(
             bandalartCount = 2,
-            eventSink = {}
+            eventSink = {},
         )
     }
 }

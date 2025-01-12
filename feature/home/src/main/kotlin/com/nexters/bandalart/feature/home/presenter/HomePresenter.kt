@@ -3,8 +3,6 @@ package com.nexters.bandalart.feature.home.presenter
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
-import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
@@ -208,7 +205,7 @@ class HomePresenter @AssistedInject constructor(
             Toast.makeText(
                 context,
                 context.getString(R.string.app_version_info, appVersion),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
 
@@ -413,7 +410,7 @@ class HomePresenter @AssistedInject constructor(
                                 bandalartTitle = bandalart.title,
                                 bandalartProfileEmoji = bandalart.profileEmoji.orEmpty(),
                                 bandalartChartImageUri = bandalartChartUrl,
-                            )
+                            ),
                         )
                     }
                 }
@@ -473,7 +470,7 @@ class HomePresenter @AssistedInject constructor(
                         updateBandalartEmoji(
                             event.bandalartId,
                             event.cellId,
-                            event.updateBandalartEmojiModel
+                            event.updateBandalartEmojiModel,
                         )
                         hideBottomSheet()
                     }
@@ -610,7 +607,7 @@ class HomePresenter @AssistedInject constructor(
         bandalartRepository.updateBandalartMainCell(
             bandalartId,
             cellId,
-            updateBandalartMainCellModel
+            updateBandalartMainCellModel,
         )
         bandalartRepository.getBandalart(bandalartId)
     }
@@ -631,7 +628,7 @@ class HomePresenter @AssistedInject constructor(
         bandalartRepository.updateBandalartTaskCell(
             bandalartId,
             cellId,
-            updateBandalartTaskCellModel
+            updateBandalartTaskCellModel,
         )
     }
 

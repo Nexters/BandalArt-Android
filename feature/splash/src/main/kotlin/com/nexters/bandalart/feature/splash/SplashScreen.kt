@@ -58,6 +58,7 @@ data object SplashScreen : Screen {
     }
 }
 
+@Suppress("TooGenericExceptionCaught")
 @CircuitInject(SplashScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Splash(

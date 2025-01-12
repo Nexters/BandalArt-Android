@@ -32,7 +32,7 @@ class CompletePresenter @AssistedInject constructor(
         LaunchedEffect(Unit) {
             bandalartRepository.upsertBandalartId(
                 bandalartId = screen.bandalartId,
-                isCompleted = true
+                isCompleted = true,
             )
         }
 
@@ -49,6 +49,7 @@ class CompletePresenter @AssistedInject constructor(
                     context.saveUriToGallery(event.imageUri)
                     Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
                 }
+
                 is Event.ShareBandalart -> {
                     context.shareImage(event.imageUri)
                 }
@@ -61,7 +62,7 @@ class CompletePresenter @AssistedInject constructor(
     fun interface Factory {
         fun create(
             navigator: Navigator,
-            screen: CompleteScreen
+            screen: CompleteScreen,
         ): CompletePresenter
     }
 }
