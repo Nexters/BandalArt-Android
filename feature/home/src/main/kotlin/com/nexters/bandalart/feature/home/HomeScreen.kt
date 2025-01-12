@@ -34,7 +34,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -76,9 +76,13 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import java.util.Locale
+
+private const val SnackbarDuration = 1500L
 
 @Parcelize
 data object HomeScreen : Screen {
@@ -261,7 +265,7 @@ internal fun Home(
                 val result = snackbarHostState.showSnackbar(
                     message = context.getString(R.string.update_ready_to_install),
                     actionLabel = context.getString(R.string.update_action_restart),
-                    duration = SnackbarDuration.Indefinite,
+                    duration = Indefinite,
                 )
 
                 if (result == SnackbarResult.ActionPerformed) {
@@ -278,7 +282,11 @@ internal fun Home(
     LaunchedEffect(key1 = state.sideEffect) {
         when (val sideEffect = state.sideEffect) {
             is HomeScreen.SideEffect.ShowSnackbar -> {
-                snackbarHostState.showSnackbar(sideEffect.message)
+                val job = launch {
+                    snackbarHostState.showSnackbar(sideEffect.message)
+                }
+                delay(SnackbarDuration)
+                job.cancel()
                 eventSink(Event.InitSideEffect)
             }
 
