@@ -41,6 +41,7 @@ data object SplashScreen : Screen {
     }
 }
 
+// TODO 인앱 업데이트 복원
 @CircuitInject(SplashScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Splash(
