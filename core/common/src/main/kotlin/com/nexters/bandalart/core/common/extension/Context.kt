@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat.PNG
 import android.net.Uri
@@ -29,10 +30,12 @@ fun Context.externalShareForBitmap(bitmap: ImageBitmap) {
         val file = File(bitmap.saveToDisk(this))
         val uri = FileProvider.getUriForFile(this, "$packageName.provider", file)
 
-        ShareCompat.IntentBuilder(this)
+        val intentBuilder = ShareCompat.IntentBuilder(this)
             .setStream(uri)
             .setType("image/png")
-            .startChooser()
+
+        intentBuilder.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intentBuilder.startChooser()
     } catch (e: Exception) {
         Timber.e("[externalShareFoBitmap] message: ${e.message}")
     }

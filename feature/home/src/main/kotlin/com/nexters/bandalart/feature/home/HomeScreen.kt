@@ -187,9 +187,8 @@ data object HomeScreen : Screen {
     }
 }
 
-// TODO 공유하기 기능이 동작하지 않는 문제 해결
-// TODO Toast, Snackbar 가 보이지 않는 문제 해결
-// TODO 옵션 버튼이 눌리지 않는 문제 해결
+// TODO 공유하기 기능이 동작하지 않는 문제 해결(Calling startActivity() from outside of an Activity context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?)
+// TODO Snackbar 가 보이지 않는 문제 해결
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
 @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
@@ -223,7 +222,7 @@ internal fun Home(
     }
 
     val appUpdateResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult()
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
         if (result.resultCode == Activity.RESULT_CANCELED) {
             eventSink(Event.OnUpdateCanceled)
@@ -253,14 +252,14 @@ internal fun Home(
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
                     appUpdateResultLauncher,
-                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
+                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
                 )
 
                 // 업데이트 준비되면 스낵바 표시
                 val result = snackbarHostState.showSnackbar(
                     message = context.getString(R.string.update_ready_to_install),
                     actionLabel = context.getString(R.string.update_action_restart),
-                    duration = SnackbarDuration.Indefinite
+                    duration = SnackbarDuration.Indefinite,
                 )
 
                 if (result == SnackbarResult.ActionPerformed) {

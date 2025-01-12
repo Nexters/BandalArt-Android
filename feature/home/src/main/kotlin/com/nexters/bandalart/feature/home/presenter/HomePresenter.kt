@@ -50,7 +50,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Locale
 
-// TODO Presenter 에 context 못쓰지 않나? 여기서 이벤트 구현하는게 맞나? -> 쓸 수 있음
 // TODO Navigation 을 app 모듈 또는 main 모듈에서 전역으로 관리하는게 아니다보니, feature 모듈간에 순환참조가 발생할 것 같은데...
 // TODO Intent 와 SideEffect 가 구분되지 않는다... 어쩌지
 class HomePresenter @AssistedInject constructor(
@@ -167,7 +166,7 @@ class HomePresenter @AssistedInject constructor(
 
         suspend fun createBandalart() {
             if ((bandalartList.size + 1) > 5) {
-                showSnackbar(context.getString(R.string.limit_create_bandalart))
+                showToast(context.getString(R.string.limit_create_bandalart))
                 return
             }
 
@@ -199,6 +198,10 @@ class HomePresenter @AssistedInject constructor(
 
         fun showBandalartDeleteDialog() {
             dialog = HomeScreen.DialogState.BandalartDelete
+        }
+
+        fun showDropDownMenu() {
+            isDropDownMenuOpened = true
         }
 
         fun showAppVersion() {
@@ -357,11 +360,7 @@ class HomePresenter @AssistedInject constructor(
         ) {
             when {
                 cellType != CellType.MAIN && isMainCellTitleEmpty -> {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.please_input_main_goal),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(context.getString(R.string.please_input_main_goal))
                 }
 
                 else -> {
@@ -543,7 +542,7 @@ class HomePresenter @AssistedInject constructor(
                 is Event.OnEmojiClick -> showEmojiBottomSheet()
                 is Event.OnEmojiPickerClick -> expandEmojiPicker()
                 is Event.OnEmojiSelect -> updateEmoji(event.emoji)
-                is Event.OnMenuClick -> hideDropDownMenu()
+                is Event.OnMenuClick -> showDropDownMenu()
                 is Event.OnShareRequested -> shareBandalart(event.bitmap)
                 is Event.OnSaveRequested -> saveBandalartImage(event.bitmap)
                 is Event.OnCaptureRequested -> captureBandalart(event.bitmap)
