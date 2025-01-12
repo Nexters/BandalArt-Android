@@ -80,7 +80,6 @@ import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import java.util.Locale
 
-// TODO 이게 MVI 가 맞나?
 @Parcelize
 data object HomeScreen : Screen {
     data class State(
@@ -98,6 +97,7 @@ data object HomeScreen : Screen {
         val clickedCellData: BandalartCellEntity? = null,
         val updateVersionCode: Int? = null,
         val showUpdateConfirm: Boolean = false,
+        val sideEffect: SideEffect? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 
@@ -131,6 +131,10 @@ data object HomeScreen : Screen {
         ) : DialogState
     }
 
+    sealed interface SideEffect {
+        data class ShowSnackbar(val message: String) : SideEffect
+    }
+
     sealed interface Event : CircuitUiEvent {
         data class OnShareRequested(val bitmap: ImageBitmap) : Event
         data class OnSaveRequested(val bitmap: ImageBitmap) : Event
@@ -139,6 +143,7 @@ data object HomeScreen : Screen {
         data object OnUpdateDownloadComplete : Event
         data class OnUpdateDownloaded(val doUpdate: Boolean) : Event
         data object OnUpdateCanceled : Event
+        data object InitSideEffect : Event
 
         // HomeScreen UiAction
         data object OnListClick : Event
@@ -187,7 +192,6 @@ data object HomeScreen : Screen {
     }
 }
 
-// TODO Snackbar 가 보이지 않는 문제 해결
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
 @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
@@ -201,7 +205,6 @@ internal fun Home(
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
     val snackbarHostState = remember { SnackbarHostState() }
-    val height = LocalConfiguration.current.screenHeightDp
 
     val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
 
@@ -269,6 +272,17 @@ internal fun Home(
             } catch (e: Exception) {
                 Timber.e(e, "Failed to start update flow")
             }
+        }
+    }
+
+    LaunchedEffect(key1 = state.sideEffect) {
+        when (val sideEffect = state.sideEffect) {
+            is HomeScreen.SideEffect.ShowSnackbar -> {
+                snackbarHostState.showSnackbar(sideEffect.message)
+                eventSink(Event.InitSideEffect)
+            }
+
+            null -> {}
         }
     }
 
@@ -443,7 +457,7 @@ internal fun Home(
 
         SnackbarHost(
             modifier = Modifier
-                .padding(bottom = (height - 96).dp)
+                .padding(top = 64.dp)
                 .height(36.dp)
                 .align(Alignment.TopCenter),
             hostState = snackbarHostState,
@@ -454,7 +468,7 @@ internal fun Home(
                         .padding(horizontal = 40.dp),
                     shape = RoundedCornerShape(50.dp),
                     colors = CardDefaults.cardColors(containerColor = White),
-                    elevation = CardDefaults.cardElevation(8.dp),
+                    elevation = CardDefaults.cardElevation(4.dp),
                 ) {
                     Box(Modifier.fillMaxSize()) {
                         Text(

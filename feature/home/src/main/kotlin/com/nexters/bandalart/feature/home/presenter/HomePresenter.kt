@@ -51,8 +51,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Locale
 
-// TODO Navigation 을 app 모듈 또는 main 모듈에서 전역으로 관리하는게 아니다보니, feature 모듈간에 순환참조가 발생할 것 같은데...
-// TODO Intent 와 SideEffect 가 구분되지 않는다... 어쩌지
 class HomePresenter @AssistedInject constructor(
     @ApplicationContext private val context: Context,
     @Assisted private val navigator: Navigator,
@@ -75,9 +73,9 @@ class HomePresenter @AssistedInject constructor(
         var clickedCellData by rememberRetained { mutableStateOf(BandalartCellEntity()) }
         var updateVersionCode by rememberRetained { mutableStateOf<Int?>(null) }
         var showUpdateConfirm by rememberRetained { mutableStateOf(false) }
+        var sideEffect by rememberRetained { mutableStateOf<HomeScreen.SideEffect?>(null) }
 
         val scope = rememberStableCoroutineScope()
-        val snackbarHostState = remember { SnackbarHostState() }
 
         val appVersion = remember {
             try {
@@ -102,6 +100,10 @@ class HomePresenter @AssistedInject constructor(
 
         fun clearCaptureState() {
             isCapturing = false
+        }
+
+        fun clearSideEffect() {
+            sideEffect = null
         }
 
         suspend fun getBandalartMainCell(bandalartId: Long) {
@@ -154,11 +156,8 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        suspend fun showSnackbar(message: String) {
-            snackbarHostState.showSnackbar(
-                message = message,
-                duration = SnackbarDuration.Short,
-            )
+        fun showSnackbar(message: String) {
+            sideEffect = HomeScreen.SideEffect.ShowSnackbar(message = message)
         }
 
         fun showToast(message: String) {
@@ -576,6 +575,10 @@ class HomePresenter @AssistedInject constructor(
                         showUpdateConfirm = false
                     }
                 }
+
+                is Event.InitSideEffect -> {
+                    clearSideEffect()
+                }
             }
         }
 
@@ -594,6 +597,7 @@ class HomePresenter @AssistedInject constructor(
             clickedCellData = clickedCellData,
             updateVersionCode = updateVersionCode,
             showUpdateConfirm = showUpdateConfirm,
+            sideEffect = sideEffect,
             eventSink = { event -> handleEvent(event) },
         )
     }
