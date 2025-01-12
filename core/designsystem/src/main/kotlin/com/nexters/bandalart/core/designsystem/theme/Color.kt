@@ -21,12 +21,8 @@ val Gray700 = Color(0xFF374151)
 val Gray800 = Color(0xFF1F2937)
 val Gray900 = Color(0xFF111827)
 
-val White = Color(0xFFFFFFFF)
-val Black = Color(0xFF060A27)
 val Gray = Color(0xFFDDE0FF)
 val Error = Color(0xFFFF2727)
 
 val MainColor = Color(0xFF3FFFBA)
 val SubColor = Color(0xFF111827)
-
-val Transparent = Color(0x00000000)
