@@ -29,6 +29,7 @@ import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.HomeScreen.State
+import com.nexters.bandalart.feature.home.ShareScreen
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -380,7 +381,9 @@ class HomePresenter @AssistedInject constructor(
 
         fun shareBandalart(bitmap: ImageBitmap) {
             clearShareState()
-            context.externalShareForBitmap(bitmap)
+            context.bitmapToFileUri(bitmap)?.let { uri ->
+                navigator.goTo(ShareScreen(uri.toString()))
+            }
         }
 
         fun saveBandalartImage(bitmap: ImageBitmap) {

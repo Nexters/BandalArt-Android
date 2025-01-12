@@ -30,12 +30,10 @@ fun Context.externalShareForBitmap(bitmap: ImageBitmap) {
         val file = File(bitmap.saveToDisk(this))
         val uri = FileProvider.getUriForFile(this, "$packageName.provider", file)
 
-        val intentBuilder = ShareCompat.IntentBuilder(this)
+        ShareCompat.IntentBuilder(this)
             .setStream(uri)
             .setType("image/png")
-
-        intentBuilder.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intentBuilder.startChooser()
+            .startChooser()
     } catch (e: Exception) {
         Timber.e("[externalShareFoBitmap] message: ${e.message}")
     }
