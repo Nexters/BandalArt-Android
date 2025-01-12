@@ -23,48 +23,48 @@ import kotlinx.collections.immutable.persistentListOf
  * @param clickedCellType 클릭한 반다라트 셀의 타입(메인, 서브, 태스크)
  * @param clickedCellData 클릭한 반다라트 셀의 데이터
  */
-data class HomeUiState(
-    val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
-    val bandalartData: BandalartUiModel? = null,
-    val bandalartCellData: BandalartCellEntity? = null,
-    val isShowSkeleton: Boolean = false,
-    val bandalartChartUrl: String? = null,
-    val isBandalartCompleted: Boolean = false,
-    val bottomSheet: BottomSheetState? = null,
-    val dialog: DialogState? = null,
-    val isSharing: Boolean = false,
-    val isCapturing: Boolean = false,
-    val isDropDownMenuOpened: Boolean = false,
-    val clickedCellType: CellType = CellType.MAIN,
-    val clickedCellData: BandalartCellEntity? = null,
-)
-
-sealed interface BottomSheetState {
-    data class Cell(
-        val initialCellData: BandalartCellEntity,
-        val cellData: BandalartCellEntity,
-        val initialBandalartData: BandalartUiModel,
-        val bandalartData: BandalartUiModel,
-        val isDatePickerOpened: Boolean = false,
-        val isEmojiPickerOpened: Boolean = false,
-    ) : BottomSheetState
-
-    data class BandalartList(
-        val bandalartList: ImmutableList<BandalartUiModel>,
-        val currentBandalartId: Long,
-    ) : BottomSheetState
-
-    data class Emoji(
-        val bandalartId: Long,
-        val cellId: Long,
-        val currentEmoji: String?,
-    ) : BottomSheetState
-}
-
-sealed interface DialogState {
-    data object BandalartDelete : DialogState
-    data class CellDelete(
-        val cellType: CellType,
-        val cellTitle: String?,
-    ) : DialogState
-}
+//data class HomeUiState(
+//    val bandalartList: ImmutableList<BandalartUiModel> = persistentListOf(),
+//    val bandalartData: BandalartUiModel? = null,
+//    val bandalartCellData: BandalartCellEntity? = null,
+//    val isShowSkeleton: Boolean = false,
+//    val bandalartChartUrl: String? = null,
+//    val isBandalartCompleted: Boolean = false,
+//    val bottomSheet: BottomSheetState? = null,
+//    val dialog: DialogState? = null,
+//    val isSharing: Boolean = false,
+//    val isCapturing: Boolean = false,
+//    val isDropDownMenuOpened: Boolean = false,
+//    val clickedCellType: CellType = CellType.MAIN,
+//    val clickedCellData: BandalartCellEntity? = null,
+//)
+//
+//sealed interface BottomSheetState {
+//    data class Cell(
+//        val initialCellData: BandalartCellEntity,
+//        val cellData: BandalartCellEntity,
+//        val initialBandalartData: BandalartUiModel,
+//        val bandalartData: BandalartUiModel,
+//        val isDatePickerOpened: Boolean = false,
+//        val isEmojiPickerOpened: Boolean = false,
+//    ) : BottomSheetState
+//
+//    data class BandalartList(
+//        val bandalartList: ImmutableList<BandalartUiModel>,
+//        val currentBandalartId: Long,
+//    ) : BottomSheetState
+//
+//    data class Emoji(
+//        val bandalartId: Long,
+//        val cellId: Long,
+//        val currentEmoji: String?,
+//    ) : BottomSheetState
+//}
+//
+//sealed interface DialogState {
+//    data object BandalartDelete : DialogState
+//    data class CellDelete(
+//        val cellType: CellType,
+//        val cellTitle: String?,
+//    ) : DialogState
+//}
