@@ -49,7 +49,6 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 @Parcelize
 data object SplashScreen : Screen {
     data class State(
-        val isLoading: Boolean,
         val isOnboardingCompleted: Boolean,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
@@ -125,12 +124,6 @@ internal fun Splash(
         }
     }
 
-    LaunchedEffect(state.isLoading, state.isOnboardingCompleted) {
-        if (!state.isLoading) {
-            eventSink(SplashScreen.Event.CheckOnboardingStatus)
-        }
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -156,7 +149,6 @@ private fun SplashPreview() {
     BandalartTheme {
         Splash(
             state = SplashScreen.State(
-                isLoading = false,
                 isOnboardingCompleted = false,
                 eventSink = {},
             ),

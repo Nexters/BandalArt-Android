@@ -1,5 +1,7 @@
 package com.nexters.bandalart.core.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+
 interface OnboardingRepository {
     /**
      * 온보딩 완료 여부 저장
@@ -11,5 +13,5 @@ interface OnboardingRepository {
     /**
      * 온보딩 완료 여부 조회
      */
-    suspend fun getOnboardingCompletedStatus(): Boolean
+    fun flowIsOnboardingCompleted(): Flow<Boolean>
 }
