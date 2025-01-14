@@ -30,6 +30,8 @@
 ## Article
 [[Circuit] AAC ViewModel -> Circuit Presenter](https://velog.io/@mraz3068/AAC-ViewModel-to-Circuit-Presenter)
 
+[[Circuit] Interop](https://velog.io/@mraz3068/Circuit-Interop)
+
 [In-app update 적용해보기 with Compose](https://velog.io/@mraz3068/Implementing-In-app-update-with-Compose)
 
 [Custom Splash Screen 만드는 방법(Splash Screen API을 사용하는 경우)](https://velog.io/@mraz3068/How-to-make-Custom-Splash-Screen-with-Splash-Screen-API)
