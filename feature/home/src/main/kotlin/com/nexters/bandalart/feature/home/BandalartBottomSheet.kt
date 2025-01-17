@@ -41,6 +41,9 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -104,6 +107,16 @@ fun BandalartBottomSheet(
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
     val currentLocale = context.getCurrentLocale()
+
+    val isCompleteButtonEnabled by remember {
+        derivedStateOf {
+            val isTitleNotEmpty = bottomSheetData.cellData.title?.trim()?.isNotEmpty() == true
+            val isDataChanged = bottomSheetData.initialCellData != bottomSheetData.cellData ||
+                bottomSheetData.initialBandalartData != bottomSheetData.bandalartData
+
+            isTitleNotEmpty && isDataChanged
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -371,8 +384,7 @@ fun BandalartBottomSheet(
                             Spacer(modifier = Modifier.width(9.dp))
                         }
                         BottomSheetCompleteButton(
-                            isEnabled = (bottomSheetData.cellData.title?.trim()
-                                ?.isNotEmpty() == true) && (bottomSheetData.initialCellData != bottomSheetData.cellData || bottomSheetData.initialBandalartData != bottomSheetData.bandalartData),
+                            isEnabled = isCompleteButtonEnabled,
                             onClick = {
                                 eventSink(Event.OnCompleteButtonClick(bandalartId, cellData.id, cellType))
                             },
