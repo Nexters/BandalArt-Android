@@ -1,4 +1,4 @@
-package com.nexters.bandalart.feature.home
+package com.nexters.bandalart.feature.home.ui.bandalart
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -24,9 +24,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -46,26 +43,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.extension.noRippleClickable
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.common.extension.toStringLocalDateTime
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.BottomSheetContent
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
@@ -76,19 +67,11 @@ import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
+import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartColorPicker
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDatePicker
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiPicker
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetCompleteButton
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentPlaceholder
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetContentText
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetDeleteButton
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetSubTitleText
-import com.nexters.bandalart.feature.home.ui.bandalart.BottomSheetTopBar
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -116,6 +99,14 @@ fun BandalartBottomSheet(
 
             isTitleNotEmpty && isDataChanged
         }
+    }
+
+    val showTopGradient by remember(scrollState.value) {
+        derivedStateOf { scrollState.value > 0 }
+    }
+
+    val showBottomGradient by remember(scrollState.value) {
+        derivedStateOf { scrollState.value < scrollState.maxValue }
     }
 
     ModalBottomSheet(
@@ -198,25 +189,13 @@ fun BandalartBottomSheet(
                             }
                         }
                         Column(modifier = Modifier.padding(top = 10.dp)) {
-                            BasicTextField(
+                            BandalartTextField(
                                 value = bottomSheetData.cellData.title ?: "",
                                 onValueChange = { title ->
                                     eventSink(Event.OnCellTitleUpdate(title, currentLocale))
                                 },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(24.dp)
-                                    .clearFocusOnKeyboardDismiss(),
-                                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                                maxLines = 1,
-                                textStyle = BottomSheetContent,
-                                decorationBox = { innerTextField ->
-                                    if (bottomSheetData.cellData.title.isNullOrEmpty()) {
-                                        BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_title_placeholder))
-                                    }
-                                    innerTextField()
-                                },
+                                placeholder = stringResource(R.string.bottomsheet_title_placeholder),
+                                modifier = Modifier.fillMaxWidth(),
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             HorizontalDivider(
@@ -307,25 +286,13 @@ fun BandalartBottomSheet(
                     Spacer(modifier = Modifier.height(12.dp))
                     Box {
                         Column {
-                            BasicTextField(
+                            BandalartTextField(
                                 value = bottomSheetData.cellData.description ?: "",
                                 onValueChange = { description ->
                                     eventSink(Event.OnDescriptionUpdate(description))
                                 },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(24.dp)
-                                    .clearFocusOnKeyboardDismiss(),
-                                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                                maxLines = 1,
-                                textStyle = BottomSheetContent,
-                                decorationBox = { innerTextField ->
-                                    if (bottomSheetData.cellData.description.isNullOrEmpty()) {
-                                        BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_description_placeholder))
-                                    }
-                                    innerTextField()
-                                },
+                                placeholder = stringResource(R.string.bottomsheet_description_placeholder),
+                                modifier = Modifier.fillMaxWidth(),
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             HorizontalDivider(
@@ -393,32 +360,16 @@ fun BandalartBottomSheet(
                     }
                     Spacer(modifier = Modifier.height(NavigationBarHeightDp + getNavigationBarPadding()))
                 }
-                if (scrollState.value > 0) {
-                    Column(
-                        modifier = Modifier
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(White, Transparent),
-                                ),
-                                shape = RectangleShape,
-                            )
-                            .height(77.dp)
-                            .fillMaxWidth(),
-                    ) {}
+
+                if (showTopGradient) {
+                    ScrollGradientOverlay(isTop = true)
                 }
-                if (scrollState.value < scrollState.maxValue) {
-                    Column(
-                        modifier = Modifier
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(Transparent, White),
-                                ),
-                                shape = RectangleShape,
-                            )
-                            .height(77.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.BottomCenter),
-                    ) {}
+
+                if (showBottomGradient) {
+                    ScrollGradientOverlay(
+                        isTop = false,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
                 }
             }
         }

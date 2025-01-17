@@ -363,12 +363,12 @@ class HomePresenter @AssistedInject constructor(
                 else -> {
                     clickedCellData = cellData
                     clickedCellType = cellType
-                    bottomSheet = bandalartData?.let {
+                    bottomSheet = bandalartData?.let { bandalartData ->
                         HomeScreen.BottomSheetState.Cell(
                             initialCellData = cellData,
                             cellData = cellData,
-                            initialBandalartData = it,
-                            bandalartData = it,
+                            initialBandalartData = bandalartData,
+                            bandalartData = bandalartData,
                         )
                     }
                 }
