@@ -15,17 +15,17 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun ScrollGradientOverlay(
     isTop: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Spacer(
         modifier = modifier
             .background(
                 brush = Brush.verticalGradient(
-                    colors = if (isTop) listOf(White, Transparent) else listOf(Transparent, White)
+                    colors = if (isTop) listOf(White, Transparent) else listOf(Transparent, White),
                 ),
                 shape = RectangleShape,
             )
             .height(77.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     )
 }

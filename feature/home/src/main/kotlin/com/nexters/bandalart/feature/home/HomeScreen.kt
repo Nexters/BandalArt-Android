@@ -162,7 +162,6 @@ data object HomeScreen : Screen {
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
-@Suppress("TooGenericExceptionCaught")
 @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Home(

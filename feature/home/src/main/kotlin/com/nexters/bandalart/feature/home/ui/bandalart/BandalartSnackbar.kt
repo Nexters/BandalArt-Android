@@ -22,7 +22,7 @@ import com.nexters.bandalart.core.ui.ComponentPreview
 @Composable
 internal fun BandalartSnackbar(
     message: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier

@@ -30,6 +30,7 @@ fun BottomSheetTitleText(
             CellType.SUB -> R.string.bottomsheet_header_subcell_enter_title
             CellType.TASK -> R.string.bottomsheet_header_taskcell_enter_title
         }
+
         else -> when (cellType) {
             CellType.MAIN -> R.string.bottomsheet_header_maincell_edit_title
             CellType.SUB -> R.string.bottomsheet_header_subcell_edit_title

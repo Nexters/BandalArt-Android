@@ -16,7 +16,7 @@ internal fun HandleHomeEffects(
     snackbarHostState: SnackbarHostState,
     homeGraphicsLayer: GraphicsLayer,
     completeGraphicsLayer: GraphicsLayer,
-    eventSink: (HomeScreen.Event) -> Unit
+    eventSink: (HomeScreen.Event) -> Unit,
 ) {
     LaunchedEffect(state.sideEffect) {
         when (val sideEffect = state.sideEffect) {
@@ -28,6 +28,7 @@ internal fun HandleHomeEffects(
                 job.cancel()
                 eventSink(HomeScreen.Event.InitSideEffect)
             }
+
             null -> {}
         }
     }

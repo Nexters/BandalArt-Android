@@ -75,6 +75,7 @@ import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
+// TODO 완료 버튼이 활성화 되지 않는 문제 해결
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BandalartBottomSheet(
@@ -368,7 +369,7 @@ fun BandalartBottomSheet(
                 if (showBottomGradient) {
                     ScrollGradientOverlay(
                         isTop = false,
-                        modifier = Modifier.align(Alignment.BottomCenter)
+                        modifier = Modifier.align(Alignment.BottomCenter),
                     )
                 }
             }

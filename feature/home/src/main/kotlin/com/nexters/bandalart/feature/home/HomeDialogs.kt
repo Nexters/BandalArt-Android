@@ -10,7 +10,7 @@ import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialo
 @Composable
 internal fun HomeDialogs(
     state: HomeScreen.State,
-    eventSink: (Event) -> Unit
+    eventSink: (Event) -> Unit,
 ) {
     when (state.dialog) {
         is HomeScreen.DialogState.BandalartDelete -> {

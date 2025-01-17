@@ -21,7 +21,7 @@ internal fun BandalartTextField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
-    focusManager: FocusManager = LocalFocusManager.current
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
     BasicTextField(
         value = value,
@@ -38,7 +38,7 @@ internal fun BandalartTextField(
                 BottomSheetContentPlaceholder(text = placeholder)
             }
             innerTextField()
-        }
+        },
     )
 }
 
@@ -49,6 +49,6 @@ private fun BandalartTextFieldPreview() {
         value = "",
         onValueChange = {},
         modifier = Modifier.fillMaxWidth(),
-        placeholder = "Placeholder"
+        placeholder = "Placeholder",
     )
 }

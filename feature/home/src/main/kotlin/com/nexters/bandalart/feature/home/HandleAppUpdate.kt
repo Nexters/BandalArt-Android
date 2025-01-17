@@ -23,11 +23,12 @@ import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.HomeScreen.State
 import timber.log.Timber
 
+@Suppress("TooGenericExceptionCaught")
 @Composable
 internal fun HandleAppUpdate(
     state: State,
     snackbarHostState: SnackbarHostState,
-    eventSink: (Event) -> Unit
+    eventSink: (Event) -> Unit,
 ) {
     val context = LocalContext.current
 
