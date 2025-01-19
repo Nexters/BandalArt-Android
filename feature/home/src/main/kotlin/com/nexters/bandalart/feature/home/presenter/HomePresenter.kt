@@ -280,7 +280,6 @@ class HomePresenter @AssistedInject constructor(
             bottomSheet = currentBottomSheet.copy(
                 cellData = currentBottomSheet.cellData.copy(dueDate = date),
             )
-            bandalartCellData = bandalartCellData?.copy(dueDate = date)
             shrinkDatePicker()
         }
 
@@ -300,7 +299,6 @@ class HomePresenter @AssistedInject constructor(
             bottomSheet = currentBottomSheet.copy(
                 bandalartData = currentBottomSheet.bandalartData.copy(profileEmoji = emoji),
             )
-            bandalartData = bandalartData?.copy(profileEmoji = emoji)
             shrinkEmojiPicker()
         }
 
