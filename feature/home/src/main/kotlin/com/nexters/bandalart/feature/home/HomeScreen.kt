@@ -1,7 +1,6 @@
 package com.nexters.bandalart.feature.home
 
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -34,7 +33,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,9 +53,6 @@ import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
-import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
@@ -65,11 +60,7 @@ import com.nexters.bandalart.feature.home.ui.HomeHeader
 import com.nexters.bandalart.feature.home.ui.HomeShareButton
 import com.nexters.bandalart.feature.home.ui.HomeTopBar
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartChart
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
-import com.nexters.bandalart.feature.home.ui.bandalart.BandalartListBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartSkeleton
-import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
-import com.nexters.bandalart.feature.home.viewmodel.DialogState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
@@ -231,7 +222,6 @@ internal fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val homeGraphicsLayer = rememberGraphicsLayer()
     val completeGraphicsLayer = rememberGraphicsLayer()
 
@@ -251,100 +241,15 @@ internal fun HomeScreen(
         }
     }
 
-    when (uiState.bottomSheet) {
-        is BottomSheetState.Cell -> {
-            uiState.bandalartData?.let { bandalart ->
-                uiState.clickedCellData?.let { cell ->
-                    BandalartBottomSheet(
-                        bandalartId = bandalart.id,
-                        cellType = uiState.clickedCellType,
-                        isBlankCell = cell.title.isNullOrEmpty(),
-                        cellData = cell,
-                        onHomeUiAction = onHomeUiAction,
-                        bottomSheetData = BottomSheetState.Cell(
-                            initialCellData = uiState.bottomSheet.initialCellData,
-                            cellData = uiState.bottomSheet.cellData,
-                            initialBandalartData = uiState.bottomSheet.initialBandalartData,
-                            bandalartData = uiState.bottomSheet.bandalartData,
-                            isDatePickerOpened = uiState.bottomSheet.isDatePickerOpened,
-                            isEmojiPickerOpened = uiState.bottomSheet.isEmojiPickerOpened,
-                        ),
-                    )
-                }
-            }
-        }
+    HomeBottomSheets(
+        uiState = uiState,
+        onHomeUiAction = onHomeUiAction,
+    )
 
-        is BottomSheetState.Emoji -> {
-            uiState.bandalartData?.let { bandalart ->
-                uiState.bandalartCellData?.let { cell ->
-                    BandalartEmojiBottomSheet(
-                        bandalartId = bandalart.id,
-                        cellId = cell.id,
-                        currentEmoji = bandalart.profileEmoji,
-                        onHomeUiAction = onHomeUiAction,
-                    )
-                }
-            }
-        }
-
-        is BottomSheetState.BandalartList -> {
-            uiState.bandalartData?.let { bandalart ->
-                BandalartListBottomSheet(
-                    bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
-                    currentBandalartId = bandalart.id,
-                    onHomeUiAction = onHomeUiAction,
-                )
-            }
-        }
-
-        else -> {}
-    }
-
-    when (uiState.dialog) {
-        is DialogState.BandalartDelete -> {
-            uiState.bandalartData?.let { bandalart ->
-                BandalartDeleteAlertDialog(
-                    title = if (bandalart.title.isNullOrEmpty()) {
-                        stringResource(R.string.delete_bandalart_dialog_empty_title)
-                    } else {
-                        stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
-                    },
-                    message = stringResource(R.string.delete_bandalart_dialog_message),
-                    onDeleteClick = {
-                        onHomeUiAction(HomeUiAction.OnDeleteBandalart(bandalart.id))
-                    },
-                    onCancelClick = {
-                        onHomeUiAction(HomeUiAction.OnCancelClick)
-                    },
-                )
-            }
-        }
-
-        is DialogState.CellDelete -> {
-            uiState.clickedCellData?.let { cellData ->
-                BandalartDeleteAlertDialog(
-                    title = when (uiState.clickedCellType) {
-                        CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_title, cellData.title ?: "")
-                        CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_title, cellData.title ?: "")
-                        else -> stringResource(R.string.delete_bandalart_taskcell_dialog_title, cellData.title ?: "")
-                    },
-                    message = when (uiState.clickedCellType) {
-                        CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
-                        CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
-                        else -> stringResource(R.string.delete_bandalart_taskcell_dialog_message)
-                    },
-                    onDeleteClick = {
-                        onHomeUiAction(HomeUiAction.OnDeleteCell(cellData.id))
-                    },
-                    onCancelClick = {
-                        onHomeUiAction(HomeUiAction.OnCancelClick)
-                    },
-                )
-            }
-        }
-
-        else -> {}
-    }
+    HomeDialogs(
+        uiState = uiState,
+        onHomeUiAction = onHomeUiAction,
+    )
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -409,25 +314,6 @@ internal fun HomeScreen(
             if (uiState.isShowSkeleton) {
                 BandalartSkeleton()
             }
-        }
-    }
-}
-
-private fun updateBandalartListTitles(
-    list: List<BandalartUiModel>,
-    context: Context,
-): List<BandalartUiModel> {
-    var counter = 1
-    return list.map { item ->
-        if (item.title.isNullOrEmpty()) {
-            val updatedTitle = context.getString(R.string.bandalart_list_empty_title, counter)
-            counter += 1
-            item.copy(
-                title = updatedTitle,
-                isGeneratedTitle = true,
-            )
-        } else {
-            item
         }
     }
 }

@@ -28,6 +28,7 @@ include(
     ":core:database",
     ":core:designsystem",
     ":core:domain",
+    ":core:navigation",
     ":core:network",
     ":core:ui",
     ":core:common",
