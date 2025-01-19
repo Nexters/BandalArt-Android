@@ -214,9 +214,19 @@ class HomePresenter @AssistedInject constructor(
             bottomSheet = currentBottomSheet.copy(isEmojiPickerOpened = true)
         }
 
+        fun shrinkEmojiPicker() {
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentBottomSheet.copy(isEmojiPickerOpened = false)
+        }
+
         fun expandDatePicker() {
             val currentSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
             bottomSheet = currentSheet.copy(isDatePickerOpened = true)
+        }
+
+        fun shrinkDatePicker() {
+            val currentSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentSheet.copy(isDatePickerOpened = false)
         }
 
         fun hideDropDownMenu() {
@@ -270,6 +280,8 @@ class HomePresenter @AssistedInject constructor(
             bottomSheet = currentBottomSheet.copy(
                 cellData = currentBottomSheet.cellData.copy(dueDate = date),
             )
+            bandalartCellData = bandalartCellData?.copy(dueDate = date)
+            shrinkDatePicker()
         }
 
         fun updateThemeColor(mainColor: String, subColor: String) {
@@ -280,11 +292,16 @@ class HomePresenter @AssistedInject constructor(
                     subColor = subColor,
                 ),
             )
+            bandalartData = bandalartData?.copy(mainColor = mainColor, subColor = subColor)
         }
 
         fun updateEmoji(emoji: String) {
-            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Emoji ?: return
-            bottomSheet = currentBottomSheet.copy(currentEmoji = emoji)
+            val currentBottomSheet = bottomSheet as? HomeScreen.BottomSheetState.Cell ?: return
+            bottomSheet = currentBottomSheet.copy(
+                bandalartData = currentBottomSheet.bandalartData.copy(profileEmoji = emoji),
+            )
+            bandalartData = bandalartData?.copy(profileEmoji = emoji)
+            shrinkEmojiPicker()
         }
 
         fun updateCompletion(isCompleted: Boolean) {

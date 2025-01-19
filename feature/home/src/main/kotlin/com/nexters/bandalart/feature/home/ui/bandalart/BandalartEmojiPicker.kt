@@ -111,12 +111,12 @@ fun BandalartEmojiPicker(
                                     .background(color = Gray100)
                                     .clickable {
                                         if (selectedEmoji == emojiItem) {
-                                            selectedEmoji = null
+                                            return@clickable
                                         } else {
                                             prevSelectedEmoji = selectedEmoji
                                             selectedEmoji = emojiItem
+                                            onEmojiSelect(emojiItem)
                                         }
-                                        onEmojiSelect(selectedEmoji!!)
                                     },
                                 contentAlignment = Alignment.Center,
                             ) {
