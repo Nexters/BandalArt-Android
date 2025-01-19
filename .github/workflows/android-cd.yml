@@ -37,7 +37,7 @@ jobs:
     #       id: decode_keystore
     #       uses: timheuer/base64-to-file@v1
     #       with:
-    #         fileName: '/app/bandalart.jks'
+    #         fileName: '/composeApp/bandalart.jks'
     #         encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
 
     #     - name: Generate keystore.properties
@@ -85,7 +85,7 @@ jobs:
             #   id: decode_keystore
             #   uses: timheuer/base64-to-file@v1
             #   with:
-            #     fileName: '/app/bandalart.jks'
+            #     fileName: '/composeApp/bandalart.jks'
             #     encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
 
             -   name: Generate Keystore file from Github Secrets

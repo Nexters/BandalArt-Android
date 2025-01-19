@@ -21,14 +21,13 @@ buildCache {
 }
 
 include(
-    ":app",
+    ":composeApp",
 
     ":core:data",
     ":core:datastore",
     ":core:database",
     ":core:designsystem",
     ":core:domain",
-    ":core:network",
     ":core:ui",
     ":core:common",
 

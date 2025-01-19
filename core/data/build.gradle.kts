@@ -20,7 +20,6 @@ dependencies {
         projects.core.domain,
         projects.core.datastore,
         projects.core.database,
-        projects.core.network,
 
         libs.bundles.ktor.client,
         libs.timber,

@@ -1,7 +1,6 @@
 package com.nexters.bandalart.core.data.di
 
 import com.nexters.bandalart.core.data.repository.BandalartRepositoryImpl
-import com.nexters.bandalart.core.data.repository.GuestLoginTokenRepositoryImpl
 import com.nexters.bandalart.core.data.repository.InAppUpdateRepositoryImpl
 import com.nexters.bandalart.core.data.repository.OnboardingRepositoryImpl
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
