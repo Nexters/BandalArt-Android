@@ -427,6 +427,7 @@ class HomeViewModel @Inject constructor(
                 ),
             )
         }
+        shrinkEmojiPicker()
     }
 
     private fun updateThemeColor(mainColor: String, subColor: String) {
@@ -452,6 +453,7 @@ class HomeViewModel @Inject constructor(
                 ),
             )
         }
+        shrinkDatePicker()
     }
 
     private fun updateDescription(description: String) {
@@ -626,9 +628,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             val currentBottomSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
             it.copy(
-                bottomSheet = currentBottomSheet.copy(
-                    isEmojiPickerOpened = true,
-                ),
+                bottomSheet = currentBottomSheet.copy(isEmojiPickerOpened = true),
             )
         }
     }
@@ -637,9 +637,25 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             val currentSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
             it.copy(
-                bottomSheet = currentSheet.copy(
-                    isDatePickerOpened = true,
-                ),
+                bottomSheet = currentSheet.copy(isDatePickerOpened = true),
+            )
+        }
+    }
+
+    private fun shrinkEmojiPicker() {
+        _uiState.update {
+            val currentBottomSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            it.copy(
+                bottomSheet = currentBottomSheet.copy(isEmojiPickerOpened = false),
+            )
+        }
+    }
+
+    private fun shrinkDatePicker() {
+        _uiState.update {
+            val currentSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
+            it.copy(
+                bottomSheet = currentSheet.copy(isDatePickerOpened = true),
             )
         }
     }
