@@ -17,6 +17,8 @@ plugins {
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.kotlin.multiplatform.library) apply false
 }
 
 buildscript {

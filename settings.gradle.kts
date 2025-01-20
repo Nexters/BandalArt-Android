@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":composeApp")
+
+
 rootProject.name = "bandalart-android"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -21,7 +24,7 @@ buildCache {
 }
 
 include(
-    ":composeApp",
+    ":app",
 
     ":core:data",
     ":core:datastore",

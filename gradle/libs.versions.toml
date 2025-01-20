@@ -8,7 +8,7 @@ minorVersion = "2"
 patchVersion = "0"
 packageName = "com.nexters.bandalart.android"
 
-android-gradle-plugin = "8.5.2"
+android-gradle-plugin = "8.8.0"
 gradle-dependency-handler-extensions = "1.1.0"
 
 google-secrets = "2.0.1"
@@ -58,6 +58,15 @@ coil-compose = "2.7.0"
 landscapist = "2.3.6"
 
 test-kotest = "5.8.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+kotlinStdlib = "2.0.21"
+kotlinTest = "2.0.21"
+runner = "1.5.2"
+core = "1.5.0"
 
 [libraries]
 
@@ -145,6 +154,15 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 landscapist-bom = { group = "com.github.skydoves", name = "landscapist-bom", version.ref = "landscapist" }
 landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
 landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-placeholder" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 
@@ -182,6 +200,8 @@ bandalart-android-retrofit = { id = "bandalart.android.retrofit", version = "uns
 bandalart-android-room = { id = "bandalart.android.room", version = "unspecified" }
 bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
 bandalart-kotest = { id = "bandalart.kotest", version = "unspecified" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin-core" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-gradle-plugin" }
 
 [bundles]
 

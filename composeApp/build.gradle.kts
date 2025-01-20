@@ -1,83 +1,99 @@
-@file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
-
-import java.util.Properties
-
 plugins {
-    alias(libs.plugins.bandalart.android.application)
-    alias(libs.plugins.bandalart.android.application.compose)
-    alias(libs.plugins.bandalart.android.firebase)
-    alias(libs.plugins.bandalart.android.hilt)
-    alias(libs.plugins.google.secrets)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
 }
 
-android {
-    namespace = "com.nexters.bandalart"
+kotlin {
 
-    signingConfigs {
-        create("release") {
-            val propertiesFile = rootProject.file("keystore.properties")
-            val properties = Properties()
-            properties.load(propertiesFile.inputStream())
-            storeFile = file(properties["STORE_FILE"] as String)
-            storePassword = properties["STORE_PASSWORD"] as String
-            keyAlias = properties["KEY_ALIAS"] as String
-            keyPassword = properties["KEY_PASSWORD"] as String
+// Target declarations - add or remove as needed below. These define
+// which platforms this KMP module supports.
+// See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
+    androidLibrary {
+        namespace = "com.nexters.bandalart.composeapp"
+        compileSdk = 35
+        minSdk = 24
+
+        withHostTestBuilder {
+        }
+
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
     }
 
-    buildTypes {
-        getByName("debug") {
-            isDebuggable = true
-            applicationIdSuffix = ".dev"
-            manifestPlaceholders += mapOf(
-                "appName" to "@string/app_name_dev",
-            )
-        }
+// For iOS targets, this is also where you should
+// configure native binary output. For more information, see:
+// https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
 
-        getByName("release") {
-            isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
-            manifestPlaceholders += mapOf(
-                "appName" to "@string/app_name",
-            )
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
+// A step-by-step guide on how to include this library in an XCode
+// project can be found here:
+// https://developer.android.com/kotlin/multiplatform/migrate
+    val xcfName = "composeAppKit"
+
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
         }
     }
 
-    buildFeatures {
-        buildConfig = true
+    iosArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
     }
-}
 
-dependencies {
-    implementations(
-        projects.core.data,
-        projects.core.datastore,
-        projects.core.designsystem,
-        projects.core.domain,
-        projects.core.ui,
-        projects.core.common,
+    iosSimulatorArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
 
-        projects.feature.complete,
-        projects.feature.home,
-        projects.feature.onboarding,
-        projects.feature.splash,
+// Source set declarations.
+// Declaring a target automatically creates a source set with the same name. By default, the
+// Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
+// common to share sources between related targets.
+// See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.kotlin.stdlib)
+                // Add KMP dependencies here
+            }
+        }
 
-        libs.androidx.activity.compose,
-        libs.androidx.splash,
-        libs.androidx.startup,
-        libs.androidx.core,
-        libs.androidx.navigation.compose,
-        libs.androidx.hilt.navigation.compose,
-        libs.timber,
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
 
-        libs.bundles.circuit
-    )
-    api(libs.circuit.codegen.annotation)
-    ksp(libs.circuit.codegen.ksp)
+        androidMain {
+            dependencies {
+                // Add Android-specific dependencies here. Note that this source set depends on
+                // commonMain by default and will correctly pull the Android artifacts of any KMP
+                // dependencies declared in commonMain.
+            }
+        }
+
+        getByName("androidDeviceTest") {
+            dependencies {
+                implementation(libs.androidx.runner)
+                implementation(libs.core)
+                implementation(libs.androidx.junit)
+            }
+        }
+
+        iosMain {
+            dependencies {
+                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
+                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
+                // part of KMP’s default source set hierarchy. Note that this source set depends
+                // on common by default and will correctly pull the iOS artifacts of any
+                // KMP dependencies declared in commonMain.
+            }
+        }
+    }
+
 }
