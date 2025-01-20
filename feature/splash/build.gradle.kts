@@ -21,6 +21,8 @@ dependencies {
         projects.feature.home,
         projects.feature.onboarding,
 
+        libs.androidx.activity.compose,
+
         libs.app.update,
         libs.app.update.ktx,
 

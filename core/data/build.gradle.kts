@@ -3,7 +3,6 @@
 plugins {
     alias(libs.plugins.bandalart.android.library)
     alias(libs.plugins.bandalart.android.hilt)
-    alias(libs.plugins.bandalart.android.retrofit)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -21,7 +20,6 @@ dependencies {
         projects.core.datastore,
         projects.core.database,
 
-        libs.bundles.ktor.client,
         libs.timber,
     )
 }

@@ -72,8 +72,6 @@ dependencies {
         libs.androidx.splash,
         libs.androidx.startup,
         libs.androidx.core,
-        libs.androidx.navigation.compose,
-        libs.androidx.hilt.navigation.compose,
         libs.timber,
 
         libs.bundles.circuit

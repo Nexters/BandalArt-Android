@@ -23,6 +23,7 @@ dependencies {
         libs.kotlinx.collections.immutable,
         libs.kotlinx.datetime,
 
+        libs.androidx.activity.compose,
         libs.androidx.core,
 
         libs.app.update,
