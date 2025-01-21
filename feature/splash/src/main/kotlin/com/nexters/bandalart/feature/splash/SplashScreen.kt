@@ -42,8 +42,8 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.android.components.ActivityRetainedComponent
+import io.github.aakira.napier.Napier
 import kotlinx.parcelize.Parcelize
-import timber.log.Timber
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Parcelize
@@ -102,7 +102,7 @@ internal fun Splash(
                 eventSink(SplashScreen.Event.CheckOnboardingStatus)
             }
         } catch (e: Exception) {
-            Timber.e(e, "Failed to check for immediate update")
+            Napier.e("Failed to check for immediate update", e)
             eventSink(SplashScreen.Event.CheckOnboardingStatus)
         }
     }
@@ -120,7 +120,7 @@ internal fun Splash(
                     )
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to check update status on resume")
+                Napier.e("Failed to check update status on resume", e)
             }
         }
     }

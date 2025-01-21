@@ -21,7 +21,7 @@ import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.HomeScreen.State
-import timber.log.Timber
+import io.github.aakira.napier.Napier
 
 @Suppress("TooGenericExceptionCaught")
 @Composable
@@ -67,7 +67,7 @@ internal fun HandleAppUpdate(
                 eventSink(Event.OnUpdateCheck(appUpdateInfo.availableVersionCode()))
             }
         } catch (e: Exception) {
-            Timber.e(e, "Failed to check for flexible update")
+            Napier.e("Failed to check for flexible update", e)
         }
     }
 
@@ -96,7 +96,7 @@ internal fun HandleAppUpdate(
                     eventSink(Event.OnUpdateCanceled)
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to start update flow")
+                Napier.e("Failed to start update flow", e)
             }
         }
     }

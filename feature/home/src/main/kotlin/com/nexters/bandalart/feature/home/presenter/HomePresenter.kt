@@ -40,12 +40,12 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.Locale
 
 class HomePresenter @AssistedInject constructor(
@@ -78,7 +78,7 @@ class HomePresenter @AssistedInject constructor(
             try {
                 context.packageManager.getPackageInfo(context.packageName, 0).versionName
             } catch (e: PackageManager.NameNotFoundException) {
-                Timber.tag("AppVersion").e(e, "Failed to get package info")
+                Napier.e("Failed to get package info", e, tag = "AppVersion")
                 "Unknown"
             }
         }

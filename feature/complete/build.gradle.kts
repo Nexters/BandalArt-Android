@@ -19,7 +19,7 @@ ksp {
 dependencies {
     implementations(
         libs.lottie.compose,
-        libs.timber,
+        libs.napier,
         libs.coil.compose,
 
         libs.bundles.landscapist,
