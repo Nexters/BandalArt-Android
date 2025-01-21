@@ -55,6 +55,7 @@ circuit = "0.25.0"
 compose-stable-marker = "1.0.4"
 coil-compose = "2.7.0"
 landscapist = "2.3.6"
+uri-kmp = "0.0.19"
 
 test-kotest = "5.8.1"
 junit = "4.13.2"
@@ -137,6 +138,8 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 landscapist-bom = { group = "com.github.skydoves", name = "landscapist-bom", version.ref = "landscapist" }
 landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
 landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-placeholder" }
+uri-kmp = { group = "com.eygraber", name = "uri-kmp", version.ref = "uri-kmp" }
+
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
