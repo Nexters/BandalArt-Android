@@ -21,6 +21,6 @@ dependencies {
         projects.feature.home,
 
         libs.lottie.compose,
-        libs.timber,
+        libs.napier,
     )
 }

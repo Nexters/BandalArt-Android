@@ -10,7 +10,5 @@ android {
 }
 
 dependencies {
-    implementations(
-        libs.timber,
-    )
+    implementation(libs.napier)
 }

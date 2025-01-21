@@ -20,6 +20,6 @@ dependencies {
         projects.core.datastore,
         projects.core.database,
 
-        libs.timber,
+        libs.napier,
     )
 }

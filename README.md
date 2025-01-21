@@ -72,7 +72,7 @@
 - Dagger Hilt
 - ~Ktor~
 - ~Retrofit~
-- Timber
+- ~Timber~, Napier
 - Lottie
 - Facebook Shimmer
 - Firebase(Analytics, Crashlytics)

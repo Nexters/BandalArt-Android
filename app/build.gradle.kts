@@ -72,7 +72,7 @@ dependencies {
         libs.androidx.splash,
         libs.androidx.startup,
         libs.androidx.core,
-        libs.timber,
+        libs.napier,
 
         libs.bundles.circuit
     )

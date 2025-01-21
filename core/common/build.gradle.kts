@@ -31,6 +31,6 @@ dependencies {
         libs.app.update,
         libs.app.update.ktx,
 
-        libs.timber,
+        libs.napier,
     )
 }
