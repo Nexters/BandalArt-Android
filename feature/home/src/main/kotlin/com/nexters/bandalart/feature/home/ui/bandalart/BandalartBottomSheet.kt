@@ -73,6 +73,7 @@ import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import timber.log.Timber
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -92,13 +93,19 @@ fun BandalartBottomSheet(
     val scrollState = rememberScrollState()
     val currentLocale = context.getCurrentLocale()
 
-    val isCompleteButtonEnabled by remember {
+    val isCompleteButtonEnabled by remember(
+        bottomSheetData.cellData.title,
+        bottomSheetData.initialCellData,
+        bottomSheetData.cellData,
+        bottomSheetData.initialBandalartData,
+        bottomSheetData.bandalartData,
+    ) {
         derivedStateOf {
             val isTitleNotEmpty = bottomSheetData.cellData.title?.trim()?.isNotEmpty() == true
-            val isDataChanged = bottomSheetData.initialCellData != bottomSheetData.cellData ||
-                bottomSheetData.initialBandalartData != bottomSheetData.bandalartData
+            val isCellDataChanged = bottomSheetData.initialCellData != bottomSheetData.cellData
+            val isBandalartDataChanged = bottomSheetData.initialBandalartData != bottomSheetData.bandalartData
 
-            isTitleNotEmpty && isDataChanged
+            isTitleNotEmpty && (isCellDataChanged || isBandalartDataChanged)
         }
     }
 
@@ -193,10 +200,7 @@ fun BandalartBottomSheet(
                                 value = bottomSheetData.cellData.title ?: "",
                                 onValueChange = { title ->
                                     onHomeUiAction(
-                                        HomeUiAction.OnCellTitleUpdate(
-                                            title,
-                                            currentLocale,
-                                        ),
+                                        HomeUiAction.OnCellTitleUpdate(title, currentLocale),
                                     )
                                 },
                                 placeholder = stringResource(R.string.bottomsheet_title_placeholder),
