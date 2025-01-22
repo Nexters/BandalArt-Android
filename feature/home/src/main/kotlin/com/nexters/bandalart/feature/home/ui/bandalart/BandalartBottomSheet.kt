@@ -92,7 +92,13 @@ fun BandalartBottomSheet(
     val scrollState = rememberScrollState()
     val currentLocale = context.getCurrentLocale()
 
-    val isCompleteButtonEnabled by remember {
+    val isCompleteButtonEnabled by remember(
+        bottomSheetData.cellData.title,
+        bottomSheetData.cellData,
+        bottomSheetData.bandalartData,
+        bottomSheetData.initialCellData,
+        bottomSheetData.initialBandalartData,
+    ) {
         derivedStateOf {
             val isTitleNotEmpty = bottomSheetData.cellData.title?.trim()?.isNotEmpty() == true
             val isDataChanged = bottomSheetData.initialCellData != bottomSheetData.cellData ||
