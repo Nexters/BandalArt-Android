@@ -73,7 +73,6 @@ import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import timber.log.Timber
 import java.time.LocalDateTime
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
