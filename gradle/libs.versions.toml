@@ -11,7 +11,6 @@ packageName = "com.nexters.bandalart"
 android-gradle-plugin = "8.8.0"
 gradle-dependency-handler-extensions = "1.1.0"
 
-google-secrets = "2.0.1"
 google-service = "4.4.2"
 
 kotlin-core = "2.0.21"
@@ -26,6 +25,7 @@ kotlinx-collections-immutable = "0.3.8"
 
 hilt = "2.52"
 
+compose-multiplatform = "1.7.3"
 androidx-core = "1.13.1"
 androidx-datastore = "1.1.1"
 androidx-lifecycle-runtime = "2.8.7"
@@ -57,6 +57,7 @@ coil-compose = "2.7.0"
 landscapist = "2.3.6"
 uri-kmp = "0.0.19"
 kotlin-inject = "0.7.2"
+kotlin-inject-anvil = "0.1.2"
 
 test-kotest = "5.8.1"
 junit = "4.13.2"
@@ -118,7 +119,7 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "kotlin-detekt" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
-napier = { group = "io.github.aakira", name = "napier", version.ref = "napier"}
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "facebook-shimmer" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
@@ -127,7 +128,7 @@ compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-
 
 circuit-foundation = { group = "com.slack.circuit", name = "circuit-foundation", version.ref = "circuit" }
 circuit-codegen-annotation = { group = "com.slack.circuit", name = "circuit-codegen-annotations", version.ref = "circuit" }
-circuit-codegen-ksp = { group = "com.slack.circuit", name = "circuit-codegen", version.ref = "circuit" }
+circuit-codegen = { group = "com.slack.circuit", name = "circuit-codegen", version.ref = "circuit" }
 circuitx-android = { group = "com.slack.circuit", name = "circuitx-android", version.ref = "circuit" }
 circuitx-overlays = { group = "com.slack.circuit", name = "circuitx-overlays", version.ref = "circuit" }
 circuitx-gesture-navigation = { group = "com.slack.circuit", name = "circuitx-gesture-navigation", version.ref = "circuit" }
@@ -149,12 +150,14 @@ core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 kotlin-inject-compiler = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
 kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }
+kotlin-inject-anvil-compiler = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "compiler", version.ref = "kotlin-inject-anvil" }
+kotlin-inject-anvil-runtime = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "runtime", version.ref = "kotlin-inject-anvil" }
+kotlin-inject-anvil-runtime-optional = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "runtime-optional", version.ref = "kotlin-inject-anvil" }
 
 [plugins]
 
 gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
 
-google-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "google-secrets" }
 google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-core" }
@@ -163,6 +166,8 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-core" }
 kotlin-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "kotlin-ktlint-gradle" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-core" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-core" }
+
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
@@ -213,4 +218,12 @@ landscapist = [
     "landscapist-bom",
     "landscapist-coil",
     "landscapist-placeholder",
+]
+
+kotlin-inject = [
+    "kotlin-inject-compiler",
+    "kotlin-inject-runtime",
+    "kotlin-inject-anvil-compiler",
+    "kotlin-inject-anvil-runtime",
+    "kotlin-inject-anvil-runtime-optional",
 ]

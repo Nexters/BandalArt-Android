@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -60,6 +64,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                implementation(libs.kotlin.inject.runtime)
             }
         }
 
@@ -95,4 +100,18 @@ kotlin {
             }
         }
     }
+}
+
+ksp {
+    // arg("me.tatarka.inject.generateCompanionExtensions", "true")
+    arg("circuit.codegen.lenient", "true")
+    arg("circuit.codegen.mode", "kotlin_inject_anvil")
+    arg("kotlin-inject-anvil-contributing-annotations", "com.slack.circuit.codegen.annotations.CircuitInject")
+}
+
+dependencies {
+    ksp(libs.androidx.room.compiler)
+    ksp(libs.kotlin.inject.compiler)
+    ksp(libs.kotlin.inject.anvil.compiler)
+    ksp(libs.circuit.codegen)
 }

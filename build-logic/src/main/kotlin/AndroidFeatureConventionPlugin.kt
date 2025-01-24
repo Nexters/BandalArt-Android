@@ -25,7 +25,7 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.circuit)
             api(libs.circuit.codegen.annotation)
-            ksp(libs.circuit.codegen.ksp)
+            ksp(libs.circuit.codegen)
         }
     },
 )
