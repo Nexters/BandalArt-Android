@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
+import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -100,7 +101,12 @@ data object HomeScreen : Screen {
     }
 
     sealed interface SideEffect {
-        data class ShowSnackbar(val message: String) : SideEffect
+        data class ShowSnackbar(val message: UiText) : SideEffect
+        data class ShowToast(val message: UiText) : SideEffect
+        data object ShowAppVersion : SideEffect
+        data class SaveImage(val bitmap: ImageBitmap) : SideEffect
+        data class ShareImage(val bitmap: ImageBitmap) : SideEffect
+        data class CaptureImage(val bitmap: ImageBitmap) : SideEffect
     }
 
     sealed interface Event : CircuitUiEvent {
@@ -111,6 +117,7 @@ data object HomeScreen : Screen {
         data object OnUpdateDownloadComplete : Event
         data class OnUpdateDownloaded(val doUpdate: Boolean) : Event
         data object OnUpdateCanceled : Event
+        data class CaptureFinished(val bandalartChartUrl: String) : Event
         data object InitSideEffect : Event
 
         // HomeScreen UiAction

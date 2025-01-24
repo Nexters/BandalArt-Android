@@ -31,6 +31,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
@@ -60,13 +61,21 @@ data class CompleteScreen(
         val profileEmoji: String = "",
         val isShared: Boolean = false,
         val bandalartChartImageUri: String = "",
+        val sideEffect: SideEffect? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
+
+    sealed interface SideEffect {
+        data class ShowToast(val message: UiText) : SideEffect
+        data class SaveImage(val imageUri: Uri) : SideEffect
+        data class ShareImage(val imageUri: Uri) : SideEffect
+    }
 
     sealed interface Event : CircuitUiEvent {
         data object NavigateBack : Event
         data class SaveBandalart(val imageUri: Uri) : Event
         data class ShareBandalart(val imageUri: Uri) : Event
+        data object InitSideEffect : Event
     }
 }
 
@@ -78,6 +87,11 @@ internal fun Complete(
 ) {
     val eventSink = state.eventSink
     val configuration = LocalConfiguration.current
+
+    HandleCompleteEffects(
+        state = state,
+        eventSink = eventSink,
+    )
 
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(
