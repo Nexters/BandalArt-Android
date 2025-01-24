@@ -56,7 +56,7 @@ compose-stable-marker = "1.0.4"
 coil-compose = "2.7.0"
 landscapist = "2.3.6"
 uri-kmp = "0.0.19"
-anvil = "0.4.1"
+kotlin-inject = "0.7.2"
 
 test-kotest = "5.8.1"
 junit = "4.13.2"
@@ -147,8 +147,8 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 core = { group = "androidx.test", name = "core", version.ref = "core" }
 
-anvil-annotations = { module = "dev.zacsweers.anvil:annotations", version.ref = "anvil" }
-anvil-annotations-optional = { module = "dev.zacsweers.anvil:annotations-optional", version.ref = "anvil" }
+kotlin-inject-compiler = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
+kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }
 
 [plugins]
 
@@ -170,8 +170,6 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-core" }
 
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
-
-anvil = { id = "dev.zacsweers.anvil", version.ref = "anvil" }
 
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
