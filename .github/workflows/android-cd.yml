@@ -77,10 +77,6 @@ jobs:
                 with:
                     gradle-home-cache-cleanup: true
 
-            -   name: Generate secrets.properties
-                run: |
-                    echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
-
             # - name: Decode Keystore
             #   id: decode_keystore
             #   uses: timheuer/base64-to-file@v1
