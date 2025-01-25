@@ -283,7 +283,7 @@ internal fun HomeScreen(
                             bandalartData = uiState.bandalartData,
                             cellData = uiState.bandalartCellData,
                             isDropDownMenuOpened = uiState.isDropDownMenuOpened,
-                            onAction = onHomeUiAction,
+                            onHomeUiAction = onHomeUiAction,
                         )
                         BandalartChart(
                             bandalartData = uiState.bandalartData,

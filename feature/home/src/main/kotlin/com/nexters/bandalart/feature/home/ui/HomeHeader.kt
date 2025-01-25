@@ -56,7 +56,7 @@ fun HomeHeader(
     bandalartData: BandalartUiModel,
     isDropDownMenuOpened: Boolean,
     cellData: BandalartCellEntity,
-    onAction: (HomeUiAction) -> Unit,
+    onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -73,7 +73,7 @@ fun HomeHeader(
                             .aspectRatio(1f)
                             .background(Gray100)
                             .clickable {
-                                onAction(HomeUiAction.OnEmojiClick)
+                                onHomeUiAction(HomeUiAction.OnEmojiClick)
                             },
                         contentAlignment = Alignment.Center,
                     ) {
@@ -116,7 +116,7 @@ fun HomeHeader(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clickable {
-                            onAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
+                            onHomeUiAction(HomeUiAction.OnBandalartCellClick(CellType.MAIN, bandalartData.title.isNullOrEmpty(), cellData))
                         },
                     letterSpacing = (-0.4).sp,
                 )
@@ -125,12 +125,12 @@ fun HomeHeader(
                     contentDescription = stringResource(R.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable { onAction(HomeUiAction.OnMenuClick) },
+                        .clickable { onHomeUiAction(HomeUiAction.OnMenuClick) },
                     tint = Color.Unspecified,
                 )
                 BandalartDropDownMenu(
                     isDropDownMenuOpened = isDropDownMenuOpened,
-                    onAction = onAction,
+                    onAction = onHomeUiAction,
                 )
             }
         }
@@ -209,7 +209,7 @@ private fun HomeHeaderPreview() {
             bandalartData = dummyBandalartData,
             isDropDownMenuOpened = false,
             cellData = dummyBandalartCellData,
-            onAction = {},
+            onHomeUiAction = {},
         )
     }
 }
