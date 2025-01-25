@@ -1,39 +1,48 @@
 package com.nexters.bandalart.feature.complete.presenter
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.nexters.bandalart.core.common.extension.saveUriToGallery
-import com.nexters.bandalart.core.common.extension.shareImage
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.complete.CompleteScreen
-import com.nexters.bandalart.feature.complete.CompleteScreen.State
 import com.nexters.bandalart.feature.complete.CompleteScreen.Event
+import com.nexters.bandalart.feature.complete.CompleteScreen.State
 import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 class CompletePresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     @Assisted private val screen: CompleteScreen,
-    @ApplicationContext private val context: Context,
     private val bandalartRepository: BandalartRepository,
 ) : Presenter<State> {
 
     @Composable
     override fun present(): State {
+        var sideEffect by rememberRetained { mutableStateOf<CompleteScreen.SideEffect?>(null) }
+
         LaunchedEffect(Unit) {
             bandalartRepository.upsertBandalartId(
                 bandalartId = screen.bandalartId,
                 isCompleted = true,
             )
+        }
+
+        fun showToast(message: UiText) {
+            sideEffect = CompleteScreen.SideEffect.ShowToast(message)
+        }
+
+        fun clearSideEffect() {
+            sideEffect = null
         }
 
         return State(
@@ -46,13 +55,15 @@ class CompletePresenter @AssistedInject constructor(
             when (event) {
                 is Event.NavigateBack -> navigator.pop()
                 is Event.SaveBandalart -> {
-                    context.saveUriToGallery(event.imageUri)
-                    Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+                    sideEffect = CompleteScreen.SideEffect.SaveImage(event.imageUri)
+                    showToast(UiText.StringResource(R.string.save_bandalart_image))
                 }
 
                 is Event.ShareBandalart -> {
-                    context.shareImage(event.imageUri)
+                    sideEffect = CompleteScreen.SideEffect.ShareImage(event.imageUri)
                 }
+
+                is Event.InitSideEffect -> clearSideEffect()
             }
         }
     }

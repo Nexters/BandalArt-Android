@@ -1,18 +1,13 @@
 package com.nexters.bandalart.feature.home.presenter
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
-import com.nexters.bandalart.core.common.extension.bitmapToFileUri
-import com.nexters.bandalart.core.common.extension.saveImageToGallery
+import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
@@ -26,7 +21,6 @@ import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.HomeScreen.State
-import com.nexters.bandalart.feature.home.ShareScreen
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -39,8 +33,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
-import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
@@ -49,7 +41,6 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 class HomePresenter @AssistedInject constructor(
-    @ApplicationContext private val context: Context,
     @Assisted private val navigator: Navigator,
     private val bandalartRepository: BandalartRepository,
     private val inAppUpdateRepository: InAppUpdateRepository,
@@ -73,15 +64,6 @@ class HomePresenter @AssistedInject constructor(
         var sideEffect by rememberRetained { mutableStateOf<HomeScreen.SideEffect?>(null) }
 
         val scope = rememberStableCoroutineScope()
-
-        val appVersion = remember {
-            try {
-                context.packageManager.getPackageInfo(context.packageName, 0).versionName
-            } catch (e: PackageManager.NameNotFoundException) {
-                Napier.e("Failed to get package info", e, tag = "AppVersion")
-                "Unknown"
-            }
-        }
 
         fun requestCapture() {
             isCapturing = true
@@ -153,17 +135,17 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        fun showSnackbar(message: String) {
+        fun showSnackbar(message: UiText) {
             sideEffect = HomeScreen.SideEffect.ShowSnackbar(message = message)
         }
 
-        fun showToast(message: String) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        fun showToast(message: UiText) {
+            sideEffect = HomeScreen.SideEffect.ShowToast(message = message)
         }
 
         suspend fun createBandalart() {
             if ((bandalartList.size + 1) > 5) {
-                showToast(context.getString(R.string.limit_create_bandalart))
+                showToast(UiText.StringResource(R.string.limit_create_bandalart))
                 return
             }
 
@@ -172,7 +154,7 @@ class HomePresenter @AssistedInject constructor(
                 getBandalart(bandalart.id)
                 setRecentBandalartId(bandalart.id)
                 upsertBandalartId(bandalart.id, bandalart.isCompleted)
-                showSnackbar(context.getString(R.string.create_bandalart))
+                showSnackbar(UiText.StringResource(R.string.create_bandalart))
             }
         }
 
@@ -202,11 +184,7 @@ class HomePresenter @AssistedInject constructor(
         }
 
         fun showAppVersion() {
-            Toast.makeText(
-                context,
-                context.getString(R.string.app_version_info, appVersion),
-                Toast.LENGTH_SHORT,
-            ).show()
+            sideEffect = HomeScreen.SideEffect.ShowAppVersion
         }
 
         fun expandEmojiPicker() {
@@ -372,7 +350,7 @@ class HomePresenter @AssistedInject constructor(
         ) {
             when {
                 cellType != CellType.MAIN && isMainCellTitleEmpty -> {
-                    showToast(context.getString(R.string.please_input_main_goal))
+                    showToast(UiText.StringResource(R.string.please_input_main_goal))
                 }
 
                 else -> {
@@ -392,22 +370,17 @@ class HomePresenter @AssistedInject constructor(
 
         fun shareBandalart(bitmap: ImageBitmap) {
             clearShareState()
-            context.bitmapToFileUri(bitmap)?.let { uri ->
-                navigator.goTo(ShareScreen(uri.toString()))
-            }
+            sideEffect = HomeScreen.SideEffect.ShareImage(bitmap)
         }
 
         fun saveBandalartImage(bitmap: ImageBitmap) {
             clearCaptureState()
-            context.saveImageToGallery(bitmap)
-            showToast(context.getString(R.string.save_bandalart_image))
+            sideEffect = HomeScreen.SideEffect.SaveImage(bitmap)
         }
 
         fun captureBandalart(bitmap: ImageBitmap) {
             clearCaptureState()
-            context.bitmapToFileUri(bitmap)?.let { uri ->
-                bandalartChartUrl = uri.toString()
-            }
+            sideEffect = HomeScreen.SideEffect.CaptureImage(bitmap)
         }
 
         // 반다라트 완료 상태 관찰
@@ -531,7 +504,7 @@ class HomePresenter @AssistedInject constructor(
                         deleteBandalart(event.bandalartId)
                         hideModal()
                         hideDropDownMenu()
-                        showSnackbar(context.getString(R.string.delete_bandalart))
+                        showSnackbar(UiText.StringResource(R.string.delete_bandalart))
                     }
                 }
 
@@ -586,6 +559,10 @@ class HomePresenter @AssistedInject constructor(
                         updateVersionCode = null
                         showUpdateConfirm = false
                     }
+                }
+
+                is Event.CaptureFinished -> {
+                    bandalartChartUrl = event.bandalartChartUrl
                 }
 
                 is Event.InitSideEffect -> {
