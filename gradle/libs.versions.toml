@@ -187,6 +187,7 @@ bandalart-android-library = { id = "bandalart.android.library", version = "unspe
 bandalart-android-library-compose = { id = "bandalart.android.library.compose", version = "unspecified" }
 bandalart-android-feature = { id = "bandalart.android.feature", version = "unspecified" }
 bandalart-android-hilt = { id = "bandalart.android.hilt", version = "unspecified" }
+bandalart-kotlin-inject = { id = "bandalart.kotlin.inject", version = "unspecified" }
 bandalart-android-room = { id = "bandalart.android.room", version = "unspecified" }
 bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
 bandalart-kotest = { id = "bandalart.kotest", version = "unspecified" }

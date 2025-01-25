@@ -15,6 +15,7 @@ gradlePlugin {
         "android.library.compose" to "AndroidLibraryComposeConventionPlugin",
         "android.feature" to "AndroidFeatureConventionPlugin",
         "android.hilt" to "AndroidHiltConventionPlugin",
+        "kotlin.inject" to "KotlinInjectConventionPlugin",
         "android.room" to "AndroidRoomConventionPlugin",
         "jvm.kotlin" to "JvmKotlinConventionPlugin",
         "kotest" to "KotestConventionPlugin",
