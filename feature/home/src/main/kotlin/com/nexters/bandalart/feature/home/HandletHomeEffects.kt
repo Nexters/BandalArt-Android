@@ -15,9 +15,9 @@ import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.HomeScreen.Event
 import com.nexters.bandalart.feature.home.HomeScreen.SideEffect
 import com.nexters.bandalart.feature.home.HomeScreen.State
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 private const val SNACKBAR_DURATION = 1500L
 
@@ -34,7 +34,7 @@ internal fun HandleHomeEffects(
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
         } catch (e: PackageManager.NameNotFoundException) {
-            Timber.tag("AppVersion").e(e, "Failed to get package info")
+            Napier.e(e, tag = "AppVersion") { "Failed to get package info" }
             "Unknown"
         }
     }
