@@ -56,6 +56,7 @@ circuit = "0.25.0"
 compose-stable-marker = "1.0.4"
 coil-compose = "2.7.0"
 landscapist = "2.3.6"
+koin = "4.1.0-Beta1"
 
 test-kotest = "5.8.1"
 
@@ -102,6 +103,11 @@ androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navig
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
