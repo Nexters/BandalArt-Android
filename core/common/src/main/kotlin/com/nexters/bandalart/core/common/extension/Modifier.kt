@@ -16,11 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.layout.LayoutModifier
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
@@ -115,4 +118,11 @@ fun Modifier.aspectRatioBasedOnOrientation(aspectRatio: Float): Modifier {
             }
         },
     )
+}
+
+fun Modifier.captureToGraphicsLayer(
+    graphicsLayer: GraphicsLayer,
+) = this.drawWithContent {
+    graphicsLayer.record { this@drawWithContent.drawContent() }
+    drawLayer(graphicsLayer)
 }

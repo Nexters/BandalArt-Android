@@ -28,9 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -44,6 +42,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.nexters.bandalart.core.common.extension.await
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
+import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
@@ -272,10 +271,7 @@ internal fun HomeScreen(
                 )
                 Column(
                     modifier = Modifier
-                        .drawWithContent {
-                            homeGraphicsLayer.record { this@drawWithContent.drawContent() }
-                            drawLayer(homeGraphicsLayer)
-                        }
+                        .captureToGraphicsLayer(homeGraphicsLayer)
                         .background(Gray50),
                 ) {
                     if (uiState.bandalartCellData != null && uiState.bandalartData != null) {
@@ -290,10 +286,7 @@ internal fun HomeScreen(
                             bandalartCellData = uiState.bandalartCellData,
                             onHomeUiAction = onHomeUiAction,
                             modifier = Modifier
-                                .drawWithContent {
-                                    completeGraphicsLayer.record { this@drawWithContent.drawContent() }
-                                    drawLayer(completeGraphicsLayer)
-                                }
+                                .captureToGraphicsLayer(completeGraphicsLayer)
                                 .background(Gray50),
                         )
                     }
