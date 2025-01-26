@@ -1,4 +1,4 @@
-import com.netxters.bandalart.android.convention.Plugins.KOTLIN_PARCELIZE
+import com.netxters.bandalart.android.convention.Plugins
 import com.netxters.bandalart.android.convention.api
 import com.netxters.bandalart.android.convention.applyPlugins
 import com.netxters.bandalart.android.convention.implementation
@@ -12,8 +12,8 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
         applyPlugins(
             "bandalart.android.library",
             "bandalart.android.library.compose",
-            "bandalart.android.hilt",
-            KOTLIN_PARCELIZE,
+            "bandalart.kotlin.inject",
+            Plugins.KOTLIN_PARCELIZE,
         )
 
         dependencies {
@@ -24,6 +24,7 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
 
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.circuit)
+            implementation(libs.bundles.kotlin.inject)
             api(libs.circuit.codegen.annotation)
             ksp(libs.circuit.codegen)
         }

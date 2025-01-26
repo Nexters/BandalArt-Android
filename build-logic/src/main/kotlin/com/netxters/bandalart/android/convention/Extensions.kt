@@ -34,7 +34,7 @@ internal val Project.androidExtensions: CommonExtension<*, *, *, *, *, *>
         }
     }
 
-internal inline operator fun <T : Any, C : NamedDomainObjectContainer<T>> C.invoke(
+internal operator fun <T : Any, C : NamedDomainObjectContainer<T>> C.invoke(
     configuration: Action<NamedDomainObjectContainerScope<T>>,
 ): C =
     apply {
