@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.bandalart.android.application.compose)
     alias(libs.plugins.bandalart.android.firebase)
     alias(libs.plugins.bandalart.android.hilt)
-    alias(libs.plugins.google.secrets)
 }
 
 android {

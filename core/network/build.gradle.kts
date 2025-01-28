@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.bandalart.android.library)
     alias(libs.plugins.bandalart.android.hilt)
     alias(libs.plugins.bandalart.android.retrofit)
-    alias(libs.plugins.google.secrets)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -23,8 +22,4 @@ dependencies {
         libs.bundles.ktor.client,
         libs.timber,
     )
-}
-
-secrets {
-    defaultPropertiesFileName = "secrets.properties"
 }

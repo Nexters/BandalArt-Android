@@ -11,7 +11,6 @@ packageName = "com.nexters.bandalart.android"
 android-gradle-plugin = "8.5.2"
 gradle-dependency-handler-extensions = "1.1.0"
 
-google-secrets = "2.0.1"
 google-service = "4.4.2"
 
 kotlin-core = "2.0.21"
@@ -156,7 +155,6 @@ landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-p
 
 gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
 
-google-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "google-secrets" }
 google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-core" }
