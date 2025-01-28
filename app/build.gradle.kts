@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.bandalart.android.application)
     alias(libs.plugins.bandalart.android.application.compose)
     alias(libs.plugins.bandalart.android.firebase)
-    alias(libs.plugins.bandalart.android.hilt)
+    alias(libs.plugins.bandalart.kotlin.inject)
 }
 
 android {
@@ -53,9 +53,16 @@ android {
     }
 }
 
+ksp {
+    arg("circuit.codegen.mode", "kotlin_inject_anvil")
+    arg("kotlin-inject-anvil-contributing-annotations", "com.slack.circuit.codegen.annotations.CircuitInject")
+    arg("circuit.codegen.lenient", "true")
+}
+
 dependencies {
     implementations(
         projects.core.data,
+        projects.core.database,
         projects.core.datastore,
         projects.core.designsystem,
         projects.core.domain,
@@ -71,10 +78,13 @@ dependencies {
         libs.androidx.splash,
         libs.androidx.startup,
         libs.androidx.core,
+        libs.androidx.datastore.preferences,
         libs.napier,
 
-        libs.bundles.circuit
+        libs.bundles.circuit,
+        libs.bundles.kotlin.inject,
     )
     api(libs.circuit.codegen.annotation)
     ksp(libs.circuit.codegen)
+    ksp(libs.kotlin.inject.compiler)
 }

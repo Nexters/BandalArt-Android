@@ -10,7 +10,6 @@ dependencies {
         libs.compose.stable.marker,
     )
     implementations(
-        libs.javax.inject,
         libs.kotlinx.coroutines.core,
     )
 }

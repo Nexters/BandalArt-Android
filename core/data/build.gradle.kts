@@ -2,7 +2,7 @@
 
 plugins {
     alias(libs.plugins.bandalart.android.library)
-    alias(libs.plugins.bandalart.android.hilt)
+    alias(libs.plugins.bandalart.kotlin.inject)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -20,6 +20,7 @@ dependencies {
         projects.core.datastore,
         projects.core.database,
 
+        libs.kotlinx.coroutines.core,
         libs.napier,
     )
 }

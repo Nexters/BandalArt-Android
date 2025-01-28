@@ -13,7 +13,9 @@ android {
 }
 
 ksp {
-    arg("circuit.codegen.mode", "hilt")
+    arg("circuit.codegen.mode", "kotlin_inject_anvil")
+    arg("kotlin-inject-anvil-contributing-annotations", "com.slack.circuit.codegen.annotations.CircuitInject")
+    arg("circuit.codegen.lenient", "true")
 }
 
 dependencies {
