@@ -1,6 +1,6 @@
 package com.nexters.bandalart.core.datastore.di
 
-import javax.inject.Qualifier
+import me.tatarka.inject.annotations.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)

@@ -15,12 +15,13 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-class CompletePresenter @AssistedInject constructor(
+@CircuitInject(CompleteScreen::class, AppScope::class)
+@Inject
+class CompletePresenter(
     @Assisted private val navigator: Navigator,
     @Assisted private val screen: CompleteScreen,
     private val bandalartRepository: BandalartRepository,
@@ -66,14 +67,5 @@ class CompletePresenter @AssistedInject constructor(
                 is Event.InitSideEffect -> clearSideEffect()
             }
         }
-    }
-
-    @CircuitInject(CompleteScreen::class, ActivityRetainedComponent::class)
-    @AssistedFactory
-    fun interface Factory {
-        fun create(
-            navigator: Navigator,
-            screen: CompleteScreen,
-        ): CompletePresenter
     }
 }

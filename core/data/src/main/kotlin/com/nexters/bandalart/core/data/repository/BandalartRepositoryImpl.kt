@@ -13,9 +13,14 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-internal class BandalartRepositoryImpl @Inject constructor(
+@ContributesBinding(AppScope::class)
+@SingleIn(AppScope::class)
+class BandalartRepositoryImpl @Inject constructor(
     private val bandalartDataStore: BandalartDataStore,
     private val bandalartDao: BandalartDao,
 ) : BandalartRepository {

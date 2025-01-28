@@ -41,9 +41,9 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import dagger.hilt.android.components.ActivityRetainedComponent
 import io.github.aakira.napier.Napier
 import kotlinx.parcelize.Parcelize
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Parcelize
@@ -59,7 +59,7 @@ data object SplashScreen : Screen {
 }
 
 @Suppress("TooGenericExceptionCaught")
-@CircuitInject(SplashScreen::class, ActivityRetainedComponent::class)
+@CircuitInject(SplashScreen::class, AppScope::class)
 @Composable
 internal fun Splash(
     state: SplashScreen.State,

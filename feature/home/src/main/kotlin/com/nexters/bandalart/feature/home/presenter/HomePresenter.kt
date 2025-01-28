@@ -20,7 +20,6 @@ import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.complete.CompleteScreen
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.home.HomeScreen.Event
-import com.nexters.bandalart.feature.home.HomeScreen.State
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
@@ -29,24 +28,25 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.internal.rememberStableCoroutineScope
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import java.util.Locale
 
-class HomePresenter @AssistedInject constructor(
+@CircuitInject(HomeScreen::class, AppScope::class)
+@Inject
+class HomePresenter(
     @Assisted private val navigator: Navigator,
     private val bandalartRepository: BandalartRepository,
     private val inAppUpdateRepository: InAppUpdateRepository,
-) : Presenter<State> {
+) : Presenter<HomeScreen.State> {
     @Composable
-    override fun present(): State {
+    override fun present(): HomeScreen.State {
         var bandalartList by rememberRetained { mutableStateOf(persistentListOf<BandalartUiModel>()) }
         var bandalartData by rememberRetained { mutableStateOf<BandalartUiModel?>(null) }
         var bandalartCellData by rememberRetained { mutableStateOf<BandalartCellEntity?>(null) }
@@ -571,7 +571,7 @@ class HomePresenter @AssistedInject constructor(
             }
         }
 
-        return State(
+        return HomeScreen.State(
             bandalartList = bandalartList,
             bandalartData = bandalartData,
             bandalartCellData = bandalartCellData,
@@ -670,11 +670,5 @@ class HomePresenter @AssistedInject constructor(
 
     private suspend fun isUpdateAlreadyRejected(versionCode: Int): Boolean {
         return inAppUpdateRepository.isUpdateAlreadyRejected(versionCode)
-    }
-
-    @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
-    @AssistedFactory
-    fun interface Factory {
-        fun create(navigator: Navigator): HomePresenter
     }
 }

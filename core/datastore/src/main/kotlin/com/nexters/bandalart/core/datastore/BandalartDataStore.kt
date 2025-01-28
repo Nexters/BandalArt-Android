@@ -7,13 +7,18 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import java.io.IOException
-import javax.inject.Inject
+import com.nexters.bandalart.core.datastore.di.Bandalart
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import me.tatarka.inject.annotations.Inject
+import me.tatarka.inject.annotations.Provides
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
+import java.io.IOException
 
 class BandalartDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>,
@@ -122,4 +127,12 @@ class BandalartDataStore @Inject constructor(
             if (exception is IOException) emit(emptyPreferences())
             else throw exception
         }.map { preferences -> preferences[onboardingCompletedKey] ?: false }
+}
+
+@ContributesTo(AppScope::class)
+@SingleIn(AppScope::class)
+interface DataStoreComponent {
+    @Provides
+    fun provideBandalartDataStore(@Bandalart dataStore: DataStore<Preferences>): BandalartDataStore =
+        BandalartDataStore(dataStore)
 }

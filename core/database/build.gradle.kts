@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage", "INLINE_FROM_HIGHER_PLATFORM")
+
 plugins {
     alias(libs.plugins.bandalart.android.library)
     alias(libs.plugins.bandalart.kotlin.inject)
@@ -10,5 +12,9 @@ android {
 }
 
 dependencies {
-    implementation(libs.napier)
+    implementations(
+        projects.core.common,
+
+        libs.napier,
+    )
 }

@@ -45,8 +45,8 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.parcelize.Parcelize
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @Parcelize
 data class CompleteScreen(
@@ -79,7 +79,7 @@ data class CompleteScreen(
     }
 }
 
-@CircuitInject(CompleteScreen::class, ActivityRetainedComponent::class)
+@CircuitInject(CompleteScreen::class, AppScope::class)
 @Composable
 internal fun Complete(
     state: CompleteScreen.State,

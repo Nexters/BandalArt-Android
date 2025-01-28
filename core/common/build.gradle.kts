@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.bandalart.android.library)
     alias(libs.plugins.bandalart.android.library.compose)
+    alias(libs.plugins.bandalart.kotlin.inject)
 }
 
 android {

@@ -42,11 +42,11 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.parcelize.Parcelize
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import java.util.Locale
 
 @Parcelize
@@ -169,7 +169,7 @@ data object HomeScreen : Screen {
 
 // TODO 서브 셀을 먼저 채워야 태스크 셀을 채울 수 있도록 validation 추가
 // TODO 텍스트를 컴포저블로 각각 분리하지 말고, 폰트를 적용하는 방식으로 변경
-@CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
+@CircuitInject(HomeScreen::class, AppScope::class)
 @Composable
 internal fun Home(
     state: HomeScreen.State,

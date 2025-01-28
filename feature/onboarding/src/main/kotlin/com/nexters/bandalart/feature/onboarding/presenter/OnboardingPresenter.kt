@@ -5,27 +5,25 @@ import com.nexters.bandalart.core.domain.repository.OnboardingRepository
 import com.nexters.bandalart.feature.home.HomeScreen
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen
 import com.nexters.bandalart.feature.onboarding.OnboardingScreen.Event
-import com.nexters.bandalart.feature.onboarding.OnboardingScreen.State
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.internal.rememberStableCoroutineScope
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-class OnboardingPresenter @AssistedInject constructor(
+@CircuitInject(OnboardingScreen::class, AppScope::class)
+@Inject
+class OnboardingPresenter(
     @Assisted private val navigator: Navigator,
     private val repository: OnboardingRepository,
-) : Presenter<State> {
-
+) : Presenter<OnboardingScreen.State> {
     @Composable
-    override fun present(): State {
+    override fun present(): OnboardingScreen.State {
         val scope = rememberStableCoroutineScope()
-
-        return State { event ->
+        return OnboardingScreen.State { event ->
             when (event) {
                 is Event.NavigateToHome -> {
                     scope.launch {
@@ -35,11 +33,5 @@ class OnboardingPresenter @AssistedInject constructor(
                 }
             }
         }
-    }
-
-    @CircuitInject(OnboardingScreen::class, ActivityRetainedComponent::class)
-    @AssistedFactory
-    fun interface Factory {
-        fun create(navigator: Navigator): OnboardingPresenter
     }
 }
