@@ -7,40 +7,26 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import java.io.IOException
-import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.IOException
+import javax.inject.Inject
 
 class BandalartDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>,
 ) {
 
     private companion object {
-        private const val GUEST_LOGIN_TOKEN = "guest_login_token"
         private const val RECENT_BANDALART_ID = "recent_bandalart_id"
         private const val COMPLETED_BANDALART_LIST_ID = "completed_bandalart_list_id"
         private const val ONBOARDING_COMPLETED_ID = "completed_onboarding_id"
     }
 
-    private val guestLoginTokenKey = stringPreferencesKey(GUEST_LOGIN_TOKEN)
     private val recentBandalartKey = longPreferencesKey(RECENT_BANDALART_ID)
     private val completedBandalartListKey = stringPreferencesKey(COMPLETED_BANDALART_LIST_ID)
     private val onboardingCompletedKey = booleanPreferencesKey(ONBOARDING_COMPLETED_ID)
-
-    suspend fun setGuestLoginToken(guestLoginToken: String) {
-        dataStore.edit { preferences ->
-            preferences[guestLoginTokenKey] = guestLoginToken
-        }
-    }
-
-    suspend fun getGuestLoginToken() = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) emit(emptyPreferences())
-            else throw exception
-        }.first()[guestLoginTokenKey] ?: ""
 
     suspend fun setRecentBandalartId(recentBandalartId: Long) {
         dataStore.edit { preferences ->
