@@ -1,8 +1,8 @@
 [versions]
 
 minSdk = "28"
-targetSdk = "34"
-compileSdk = "34"
+targetSdk = "35"
+compileSdk = "35"
 majorVersion = "2"
 minorVersion = "2"
 patchVersion = "0"
@@ -13,34 +13,34 @@ gradle-dependency-handler-extensions = "1.1.0"
 
 google-service = "4.4.2"
 
-kotlin-core = "2.0.21"
-kotlin-detekt = "1.23.6"
-kotlin-ktlint-gradle = "11.6.1"
+kotlin-core = "2.1.0"
+kotlin-detekt = "1.23.7"
+kotlin-ktlint-gradle = "12.1.2"
 kotlin-ktlint-source = "0.50.0"
 
-kotlinx-coroutines = "1.9.0"
+kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.1"
-kotlinx-serialization = "1.7.3"
+kotlinx-serialization = "1.8.0"
 kotlinx-collections-immutable = "0.3.8"
 
-hilt = "2.52"
+hilt = "2.55"
 
 compose-multiplatform = "1.7.3"
-androidx-core = "1.13.1"
-androidx-datastore = "1.1.1"
+androidx-core = "1.15.0"
+androidx-datastore = "1.1.2"
 androidx-lifecycle-runtime = "2.8.7"
 androidx-splash = "1.0.1"
 androidx-startup = "1.2.0"
-androidx-activity-compose = "1.9.3"
-androidx-compose-bom = "2024.11.00"
+androidx-activity-compose = "1.10.0"
+androidx-compose-bom = "2025.01.01"
 androidx-compose-material3 = "1.3.1"
-androidx-compose-runtime-tracing = "1.7.5"
+androidx-compose-runtime-tracing = "1.7.7"
 androidx-navigation = "2.8.4"
 androidx-hilt-navigation-compose = "1.2.0"
-androidx-room = "2.7.0-alpha12"
+androidx-room = "2.7.0-alpha13"
 app-update = "2.1.0"
 
-desugar-jdk-libs = "2.1.3"
+desugar-jdk-libs = "2.1.4"
 javax-inject = "1"
 ktor-client = "2.3.12"
 retrofit = "2.11.0"
@@ -48,9 +48,9 @@ okhttp = "5.0.0-alpha.14"
 lottie-compose = "6.1.0"
 napier = "2.7.1"
 facebook-shimmer = "0.5.0"
-firebase-bom = "33.6.0"
+firebase-bom = "33.8.0"
 firebase-crashlytics = "3.0.2"
-ksp = "2.0.21-1.0.27"
+ksp = "2.1.0-1.0.29"
 circuit = "0.25.0"
 compose-stable-marker = "1.0.4"
 coil-compose = "2.7.0"
@@ -60,15 +60,7 @@ kotlin-inject = "0.7.2"
 kotlin-inject-anvil = "0.1.2"
 
 test-kotest = "5.8.1"
-junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-appcompat = "1.7.0"
-material = "1.12.0"
-kotlinStdlib = "2.0.21"
-kotlinTest = "2.0.21"
-runner = "1.5.2"
-core = "1.5.0"
+kotlinStdlib = "2.1.0"
 
 [libraries]
 
@@ -142,11 +134,7 @@ landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
 landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-placeholder" }
 uri-kmp = { group = "com.eygraber", name = "uri-kmp", version.ref = "uri-kmp" }
 
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
-androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 kotlin-inject-compiler = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
 kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }
