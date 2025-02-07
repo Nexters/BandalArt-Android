@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -35,28 +36,45 @@ kotlin {
     }
 
     sourceSets {
+        androidMain {
+            dependencies {
+                implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
+
+                implementation(libs.kotlin.inject.anvil.runtime)
+                implementation(libs.kotlin.inject.anvil.runtime.optional)
+            }
+        }
+
         commonMain {
             dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlin.inject.runtime)
                 implementation(libs.kotlin.inject.anvil.runtime)
                 implementation(libs.kotlin.inject.anvil.runtime.optional)
                 implementation(libs.bundles.circuit)
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-            }
-        }
 
-        androidMain {
-            dependencies {
-                implementation(libs.kotlin.inject.anvil.runtime)
-                implementation(libs.kotlin.inject.anvil.runtime.optional)
+                api(libs.androidx.datastore)
+                api(libs.androidx.datastore.preferences)
+
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqlite.bundled)
             }
         }
 
         iosMain {}
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 ksp {

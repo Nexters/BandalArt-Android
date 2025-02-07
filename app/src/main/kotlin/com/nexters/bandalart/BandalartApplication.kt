@@ -24,13 +24,13 @@ class BandalartApplication : Application() {
 @MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
 interface BandalartComponent {
-    val bandalartDao: BandalartDao
-
-    @Bandalart
-    val bandalartDataStore: DataStore<Preferences>
-
-    @InAppUpdate
-    val inAppUpdateDataStore: DataStore<Preferences>
+//    val bandalartDao: BandalartDao
+//
+//    @Bandalart
+//    val bandalartDataStore: DataStore<Preferences>
+//
+//    @InAppUpdate
+//    val inAppUpdateDataStore: DataStore<Preferences>
 
     fun circuit(): Circuit
 
