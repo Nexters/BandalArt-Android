@@ -16,7 +16,7 @@ import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.coil.CoilImageState
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.placeholder.placeholder.PlaceholderPlugin
-import timber.log.Timber
+import io.github.aakira.napier.Napier
 
 @Composable
 fun NetworkImage(
@@ -47,7 +47,7 @@ fun NetworkImage(
             ),
             onImageStateChanged = { state ->
                 if (state is CoilImageState.Failure) {
-                    Timber.e(state.reason)
+                    Napier.e("CoilImageState.Failure", state.reason)
                 }
             },
         )

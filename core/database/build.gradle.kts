@@ -10,7 +10,7 @@ android {
 
 dependencies {
     implementations(
-        libs.timber,
+        libs.napier,
         platform(libs.koin.bom),
         libs.koin.core,
     )

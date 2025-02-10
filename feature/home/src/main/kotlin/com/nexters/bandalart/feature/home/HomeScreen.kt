@@ -63,11 +63,11 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import timber.log.Timber
 
 private const val SnackbarDuration = 1500L
 
@@ -89,7 +89,7 @@ internal fun HomeRoute(
         try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
         } catch (e: PackageManager.NameNotFoundException) {
-            Timber.tag("AppVersion").e(e, "Failed to get package info")
+            Napier.e("Failed to get package info", e, tag = "AppVersion")
             "Unknown"
         }
     }
@@ -152,7 +152,7 @@ internal fun HomeRoute(
                 }
             }
         } catch (e: Exception) {
-            Timber.e(e, "Failed to check for flexible update")
+            Napier.e("Failed to check for flexible update", e)
         }
     }
 

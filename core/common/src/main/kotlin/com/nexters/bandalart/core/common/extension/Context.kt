@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
-import timber.log.Timber
+import io.github.aakira.napier.Napier
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -34,7 +34,7 @@ fun Context.externalShareForBitmap(bitmap: ImageBitmap) {
             .setType("image/png")
             .startChooser()
     } catch (e: Exception) {
-        Timber.e("[externalShareFoBitmap] message: ${e.message}")
+        Napier.e("[externalShareFoBitmap] message: ${e.message}")
     }
 }
 
@@ -44,7 +44,7 @@ fun Context.bitmapToFileUri(bitmap: ImageBitmap): Uri? {
         val file = File(bitmap.saveToDisk(this))
         FileProvider.getUriForFile(this, "$packageName.provider", file)
     } catch (e: Exception) {
-        Timber.e("Failed to convert bitmap to URI: ${e.message}")
+        Napier.e("Failed to convert bitmap to URI: ${e.message}")
         null
     }
 }
@@ -57,7 +57,7 @@ fun Context.shareImage(imageUri: Uri) {
             .setType("image/png")
             .startChooser()
     } catch (e: Exception) {
-        Timber.e("Failed to share image: ${e.message}")
+        Napier.e("Failed to share image: ${e.message}")
     }
 }
 
@@ -100,7 +100,7 @@ fun Context.saveImageToGallery(bitmap: ImageBitmap) {
             }
         }
     } catch (e: Exception) {
-        Timber.e("Failed to save image to gallery: ${e.message}")
+        Napier.e("Failed to save image to gallery: ${e.message}")
     }
 }
 
@@ -115,7 +115,7 @@ fun Context.saveUriToGallery(imageUri: Uri) {
         copyUriContent(imageUri, destinationUri)
         updatePendingStatus(destinationUri, contentValues)
     } catch (e: Exception) {
-        Timber.e("Failed to save image to gallery: ${e.message}")
+        Napier.e("Failed to save image to gallery: ${e.message}")
     }
 }
 

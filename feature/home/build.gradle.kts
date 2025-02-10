@@ -24,6 +24,6 @@ dependencies {
 
         libs.lottie.compose,
         libs.facebook.shimmer,
-        libs.timber,
+        libs.napier,
     )
 }

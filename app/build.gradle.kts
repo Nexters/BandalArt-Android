@@ -72,7 +72,7 @@ dependencies {
         libs.androidx.startup,
         libs.androidx.core,
         libs.androidx.navigation.compose,
-        libs.timber,
+        libs.napier,
 
         platform(libs.koin.bom),
         libs.koin.core,

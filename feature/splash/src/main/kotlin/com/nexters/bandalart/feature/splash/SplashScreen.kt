@@ -40,8 +40,8 @@ import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
+import io.github.aakira.napier.Napier
 import org.koin.compose.viewmodel.koinViewModel
-import timber.log.Timber
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Suppress("TooGenericExceptionCaught")
@@ -87,7 +87,7 @@ internal fun SplashRoute(
                 viewModel.checkOnboardingStatus()
             }
         } catch (e: Exception) {
-            Timber.e(e, "Failed to check for immediate update")
+            Napier.e( "Failed to check for immediate update", e)
             viewModel.checkOnboardingStatus()
         }
     }
@@ -105,7 +105,7 @@ internal fun SplashRoute(
                     )
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to check update status on resume")
+                Napier.e("Failed to check update status on resume", e)
             }
         }
     }

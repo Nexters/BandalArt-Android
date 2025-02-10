@@ -39,7 +39,7 @@ app-update = "2.1.0"
 desugar-jdk-libs = "2.1.4"
 javax-inject = "1"
 lottie-compose = "6.1.0"
-timber = "5.0.1"
+napier = "2.7.1"
 facebook-shimmer = "0.5.0"
 firebase-bom = "33.9.0"
 firebase-crashlytics = "3.0.3"
@@ -106,7 +106,7 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "kotlin-detekt" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose" }
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier"}
 facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "facebook-shimmer" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }

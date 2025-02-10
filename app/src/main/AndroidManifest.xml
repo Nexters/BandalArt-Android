@@ -22,7 +22,7 @@
             tools:node="merge">
 
             <meta-data
-                android:name="com.nexters.bandalart.initializer.TimberInitializer"
+                android:name="com.nexters.bandalart.initializer.NapierInitializer"
                 android:value="androidx.startup" />
 
             <meta-data

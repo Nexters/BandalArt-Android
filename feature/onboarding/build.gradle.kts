@@ -15,6 +15,6 @@ android {
 dependencies {
     implementations(
         libs.lottie.compose,
-        libs.timber,
+        libs.napier,
     )
 }

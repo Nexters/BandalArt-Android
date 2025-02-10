@@ -18,6 +18,6 @@ dependencies {
         libs.app.update.ktx,
 
         libs.lottie.compose,
-        libs.timber,
+        libs.napier,
     )
 }
