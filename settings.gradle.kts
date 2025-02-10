@@ -21,7 +21,7 @@ buildCache {
 }
 
 include(
-    ":app",
+    ":androidApp",
     ":composeApp",
 
     ":core:data",
