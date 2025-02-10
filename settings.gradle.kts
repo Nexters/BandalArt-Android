@@ -22,6 +22,7 @@ buildCache {
 
 include(
     ":app",
+    ":composeApp",
 
     ":core:data",
     ":core:datastore",
