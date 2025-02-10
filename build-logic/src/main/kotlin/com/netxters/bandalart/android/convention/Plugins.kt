@@ -13,8 +13,6 @@ internal object Plugins {
     const val ANDROID_LIBRARY = "com.android.library"
 
     const val ANDROIDX_ROOM = "androidx.room"
-
-    const val HILT = "dagger.hilt.android.plugin"
     const val KSP = "com.google.devtools.ksp"
 
     const val GOOGLE_SERVICES = "com.google.gms.google-services"

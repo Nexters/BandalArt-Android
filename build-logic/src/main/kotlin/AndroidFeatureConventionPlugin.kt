@@ -10,7 +10,6 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
         applyPlugins(
             "bandalart.android.library",
             "bandalart.android.library.compose",
-            // "bandalart.android.hilt",
             KOTLIN_PARCELIZE,
         )
 
@@ -22,7 +21,6 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
             implementation(project(path = ":core:navigation"))
 
             implementation(libs.androidx.navigation.compose)
-            // implementation(libs.androidx.hilt.navigation.compose)
             implementation(libs.bundles.androidx.lifecycle)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)

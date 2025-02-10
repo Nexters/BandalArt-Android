@@ -6,7 +6,7 @@ compileSdk = "35"
 majorVersion = "2"
 minorVersion = "2"
 patchVersion = "0"
-packageName = "com.nexters.bandalart.android"
+packageName = "com.nexters.bandalart"
 
 android-gradle-plugin = "8.5.2"
 gradle-dependency-handler-extensions = "1.1.0"
@@ -18,13 +18,10 @@ kotlin-detekt = "1.23.6"
 kotlin-ktlint-gradle = "12.1.2"
 kotlin-ktlint-source = "0.50.0"
 
-kotlinx-coroutines = "1.9.0"
+kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.1"
-kotlinx-serialization = "1.7.3"
-kotlinx-serialization-converter = "1.0.0"
+kotlinx-serialization = "1.8.0"
 kotlinx-collections-immutable = "0.3.8"
-
-hilt = "2.55"
 
 androidx-core = "1.15.0"
 androidx-datastore = "1.1.2"
@@ -36,15 +33,11 @@ androidx-compose-bom = "2025.01.01"
 androidx-compose-material3 = "1.3.1"
 androidx-compose-runtime-tracing = "1.7.7"
 androidx-navigation = "2.8.6"
-androidx-hilt-navigation-compose = "1.2.0"
 androidx-room = "2.6.1"
 app-update = "2.1.0"
 
 desugar-jdk-libs = "2.1.4"
 javax-inject = "1"
-ktor-client = "2.3.12"
-retrofit = "2.11.0"
-okhttp = "5.0.0-alpha.14"
 lottie-compose = "6.1.0"
 timber = "5.0.1"
 facebook-shimmer = "0.5.0"
@@ -97,10 +90,6 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
-androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
-
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
@@ -112,20 +101,6 @@ koin-androidx-startup = {group = "io.insert-koin", name = "koin-androidx-startup
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
-
-ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-client" }
-ktor-client-engine-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor-client" }
-ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor-client" }
-ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor-client" }
-ktor-client-json = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor-client" }
-ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor-client" }
-ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
-
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter" }
-
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "kotlin-detekt" }
@@ -161,7 +136,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-core" }
 
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
@@ -176,8 +150,6 @@ bandalart-android-firebase = { id = "bandalart.android.firebase", version = "uns
 bandalart-android-library = { id = "bandalart.android.library", version = "unspecified" }
 bandalart-android-library-compose = { id = "bandalart.android.library.compose", version = "unspecified" }
 bandalart-android-feature = { id = "bandalart.android.feature", version = "unspecified" }
-bandalart-android-hilt = { id = "bandalart.android.hilt", version = "unspecified" }
-bandalart-android-retrofit = { id = "bandalart.android.retrofit", version = "unspecified" }
 bandalart-android-room = { id = "bandalart.android.room", version = "unspecified" }
 bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
 bandalart-kotest = { id = "bandalart.kotest", version = "unspecified" }
@@ -200,26 +172,6 @@ androidx-compose = [
 androidx-lifecycle = [
     "androidx-lifecycle-runtime-compose",
     "androidx-lifecycle-viewmodel-compose",
-]
-
-ktor-client = [
-    "ktor-client-core",
-    "ktor-client-engine-cio",
-    "ktor-client-content-negotiation",
-    "ktor-client-okhttp",
-    "ktor-client-json",
-    "ktor-client-logging",
-    "ktor-serialization",
-]
-
-retrofit = [
-    "retrofit",
-    "retrofit-kotlinx-serialization-converter",
-]
-
-okhttp = [
-    "okhttp",
-    "okhttp-logging-interceptor",
 ]
 
 landscapist = [

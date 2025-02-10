@@ -9,9 +9,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.logger.Level
 import org.koin.dsl.koinConfiguration
 
-// @HiltAndroidApp
-// class BandalartApplication : Application()
-
 @OptIn(KoinExperimentalAPI::class)
 class BandalartApplication : Application(), KoinStartup {
     override fun onKoinStartup() =
