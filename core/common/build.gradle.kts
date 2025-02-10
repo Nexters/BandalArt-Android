@@ -32,6 +32,5 @@ dependencies {
         libs.app.update.ktx,
 
         libs.timber,
-        libs.bundles.retrofit,
     )
 }
