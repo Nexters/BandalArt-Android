@@ -2,9 +2,8 @@ package com.nexters.bandalart.core.data.repository
 
 import com.nexters.bandalart.core.datastore.InAppUpdateDataStore
 import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
-import javax.inject.Inject
 
-internal class InAppUpdateRepositoryImpl @Inject constructor(
+internal class InAppUpdateRepositoryImpl(
     private val inAppUpdateDataStore: InAppUpdateDataStore,
 ) : InAppUpdateRepository {
     override suspend fun setLastRejectedUpdateVersion(rejectedVersionCode: Int) {

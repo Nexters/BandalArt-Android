@@ -77,6 +77,6 @@ tasks.register("release") {
     mustRunAfter(tasks["clean"])
 }
 
-apply {
-    from("gradle/projectDependencyGraph.gradle")
-}
+// apply {
+//     from("gradle/projectDependencyGraph.gradle")
+// }

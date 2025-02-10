@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.bandalart.android.application)
     alias(libs.plugins.bandalart.android.application.compose)
     alias(libs.plugins.bandalart.android.firebase)
-    alias(libs.plugins.bandalart.android.hilt)
+    // alias(libs.plugins.bandalart.android.hilt)
 }
 
 android {
@@ -75,5 +75,9 @@ dependencies {
         libs.androidx.navigation.compose,
         libs.androidx.hilt.navigation.compose,
         libs.timber,
+
+        platform(libs.koin.bom),
+        libs.koin.core,
+        libs.koin.androidx.startup,
     )
 }

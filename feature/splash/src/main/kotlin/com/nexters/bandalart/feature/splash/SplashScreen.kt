@@ -21,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,6 +40,7 @@ import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
+import org.koin.compose.viewmodel.koinViewModel
 import timber.log.Timber
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -49,7 +49,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 internal fun SplashRoute(
     navigateToOnBoarding: (NavOptions) -> Unit,
     navigateToHome: (NavOptions) -> Unit,
-    viewModel: SplashViewModel = hiltViewModel(),
+    viewModel: SplashViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()

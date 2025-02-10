@@ -3,23 +3,28 @@ package com.nexters.bandalart.core.database.di
 import android.content.Context
 import androidx.room.Room
 import com.nexters.bandalart.core.database.BandalartDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
+// @Module
+// @InstallIn(SingletonComponent::class)
+// object DatabaseModule {
+//
+//     @Singleton
+//     @Provides
+//     fun provideBandalartDatabase(@ApplicationContext context: Context): BandalartDatabase =
+//         Room.databaseBuilder(
+//             context.applicationContext,
+//             BandalartDatabase::class.java,
+//             "bandalart_database",
+//         ).build()
+// }
 
-    @Singleton
-    @Provides
-    fun provideBandalartDatabase(@ApplicationContext context: Context): BandalartDatabase =
+val databaseModule = module {
+    single {
         Room.databaseBuilder(
-            context.applicationContext,
+            get<Context>().applicationContext,
             BandalartDatabase::class.java,
             "bandalart_database",
         ).build()
+    }
 }

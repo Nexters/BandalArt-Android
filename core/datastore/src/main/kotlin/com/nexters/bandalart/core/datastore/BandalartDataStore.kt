@@ -12,9 +12,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.IOException
-import javax.inject.Inject
 
-class BandalartDataStore @Inject constructor(
+class BandalartDataStore(
     private val dataStore: DataStore<Preferences>,
 ) {
 

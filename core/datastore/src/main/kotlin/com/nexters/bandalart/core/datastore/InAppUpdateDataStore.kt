@@ -8,9 +8,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import java.io.IOException
-import javax.inject.Inject
 
-class InAppUpdateDataStore @Inject constructor(
+class InAppUpdateDataStore(
     private val dataStore: DataStore<Preferences>,
 ) {
 

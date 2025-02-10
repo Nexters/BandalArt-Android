@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -51,6 +50,7 @@ import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 import com.nexters.bandalart.core.designsystem.R as DesignR
 
@@ -58,7 +58,7 @@ import com.nexters.bandalart.core.designsystem.R as DesignR
 internal fun OnBoardingRoute(
     navigateToHome: (NavOptions) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = hiltViewModel(),
+    viewModel: OnboardingViewModel = koinViewModel(),
 ) {
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {

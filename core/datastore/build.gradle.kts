@@ -2,7 +2,7 @@
 
 plugins {
     alias(libs.plugins.bandalart.android.library)
-    alias(libs.plugins.bandalart.android.hilt)
+    // alias(libs.plugins.bandalart.android.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -18,5 +18,8 @@ dependencies {
     implementations(
         libs.kotlinx.serialization.json,
         libs.androidx.datastore.preferences,
+
+        platform(libs.koin.bom),
+        libs.koin.core
     )
 }

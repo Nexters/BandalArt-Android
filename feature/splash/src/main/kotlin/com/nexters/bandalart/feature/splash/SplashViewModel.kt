@@ -4,19 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.domain.repository.OnboardingRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 sealed interface SplashUiEvent {
     data object NavigateToOnBoarding : SplashUiEvent
     data object NavigateToHome : SplashUiEvent
 }
 
-@HiltViewModel
-class SplashViewModel @Inject constructor(
+class SplashViewModel(
     private val onboardingRepository: OnboardingRepository,
     private val bandalartRepository: BandalartRepository,
 ) : ViewModel() {

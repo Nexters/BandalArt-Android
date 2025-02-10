@@ -2,7 +2,7 @@
 
 plugins {
     alias(libs.plugins.bandalart.android.library)
-    alias(libs.plugins.bandalart.android.hilt)
+    // alias(libs.plugins.bandalart.android.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -19,6 +19,11 @@ dependencies {
         projects.core.domain,
         projects.core.datastore,
         projects.core.database,
+
+        libs.kotlinx.coroutines.core,
+
         libs.timber,
+        platform(libs.koin.bom),
+        libs.koin.core,
     )
 }

@@ -1,17 +1,19 @@
 package com.nexters.bandalart.core.database.di
 
-import com.nexters.bandalart.core.database.BandalartDao
 import com.nexters.bandalart.core.database.BandalartDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DaoModule {
-    @Provides
-    fun provideBandalartDao(
-        database: BandalartDatabase,
-    ): BandalartDao = database.bandalartDao()
+// @Module
+// @InstallIn(SingletonComponent::class)
+// object DaoModule {
+//     @Provides
+//     fun provideBandalartDao(
+//         database: BandalartDatabase,
+//     ): BandalartDao = database.bandalartDao()
+// }
+
+val daoModule = module {
+    includes(databaseModule)
+
+    single { get<BandalartDatabase>().bandalartDao() }
 }
