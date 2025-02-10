@@ -26,10 +26,6 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.hilt.navigation.compose)
             implementation(libs.bundles.androidx.lifecycle)
-
-            implementation(libs.bundles.circuit)
-            api(libs.circuit.codegen.annotation)
-            ksp(libs.circuit.codegen.ksp)
         }
     },
 )
