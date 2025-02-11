@@ -15,22 +15,15 @@ kotlin {
         minSdk = 28
     }
 
-    val xcfName = "composeAppKit"
+    val xcfName = "bandalartKit"
 
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            export(libs.androidx.lifecycle.viewmodel)
             baseName = xcfName
         }
     }
@@ -67,10 +60,10 @@ kotlin {
     }
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
 dependencies {
     ksp(libs.androidx.room.compiler)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
