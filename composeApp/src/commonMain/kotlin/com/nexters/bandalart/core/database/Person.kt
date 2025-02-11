@@ -1,4 +1,4 @@
-package com.nexters.bandalart.database
+package com.nexters.bandalart.core.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,4 +1,4 @@
-package com.nexters.bandalart
+package com.nexters.bandalart.core.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory

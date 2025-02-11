@@ -26,8 +26,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import com.nexters.bandalart.database.PeopleDao
-import com.nexters.bandalart.database.Person
+import com.nexters.bandalart.core.database.PeopleDao
+import com.nexters.bandalart.core.database.Person
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview

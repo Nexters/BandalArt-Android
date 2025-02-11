@@ -3,6 +3,7 @@ package com.nexters.bandalart.database
 import android.content.Context
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.nexters.bandalart.core.database.PeopleDatabase
 
 fun getDatabaseBuilder(ctx: Context): PeopleDatabase {
     val appContext = ctx.applicationContext
