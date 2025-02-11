@@ -50,6 +50,10 @@ kotlin {
 
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
+
+                api(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
             }
         }
 
