@@ -20,7 +20,11 @@ class SplashViewModel(
     private val _uiEvent = Channel<SplashUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun checkOnboardingStatus() {
+    init {
+        checkOnboardingStatus()
+    }
+
+    private fun checkOnboardingStatus() {
         viewModelScope.launch {
             val onboardingCompletedStatus = onboardingRepository.getOnboardingCompletedStatus()
             if (onboardingCompletedStatus) {

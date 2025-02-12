@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.ic_app
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
 import com.skydoves.landscapist.coil3.CoilImageState

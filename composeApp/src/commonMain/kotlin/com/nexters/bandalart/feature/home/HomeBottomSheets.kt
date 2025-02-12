@@ -1,8 +1,6 @@
 package com.nexters.bandalart.feature.home
 
-import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import bandalart.composeapp.generated.resources.Res
 import bandalart.composeapp.generated.resources.bandalart_list_empty_title
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
@@ -13,13 +11,13 @@ import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.getString
 
 @Composable
 internal fun HomeBottomSheets(
     uiState: HomeUiState,
     onHomeUiAction: (HomeUiAction) -> Unit,
 ) {
-    val context = LocalContext.current
     when (uiState.bottomSheet) {
         is BottomSheetState.Cell -> {
             uiState.bandalartData?.let { bandalart ->
@@ -59,7 +57,7 @@ internal fun HomeBottomSheets(
         is BottomSheetState.BandalartList -> {
             uiState.bandalartData?.let { bandalart ->
                 BandalartListBottomSheet(
-                    bandalartList = updateBandalartListTitles(uiState.bandalartList, context).toImmutableList(),
+                    bandalartList = updateBandalartListTitles(uiState.bandalartList).toImmutableList(),
                     currentBandalartId = bandalart.id,
                     onHomeUiAction = onHomeUiAction,
                 )
@@ -70,14 +68,11 @@ internal fun HomeBottomSheets(
     }
 }
 
-private fun updateBandalartListTitles(
-    list: List<BandalartUiModel>,
-    context: Context,
-): List<BandalartUiModel> {
+private suspend fun updateBandalartListTitles(list: List<BandalartUiModel>): List<BandalartUiModel> {
     var counter = 1
     return list.map { item ->
         if (item.title.isNullOrEmpty()) {
-            val updatedTitle = context.getString(Res.string.bandalart_list_empty_title, counter)
+            val updatedTitle = getString(Res.string.bandalart_list_empty_title, counter)
             counter += 1
             item.copy(
                 title = updatedTitle,
