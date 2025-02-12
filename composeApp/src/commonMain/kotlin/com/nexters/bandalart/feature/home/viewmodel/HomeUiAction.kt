@@ -1,9 +1,9 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
+import com.nexters.bandalart.core.common.Locale
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.feature.home.model.CellType
-import java.util.Locale
 
 sealed interface HomeUiAction {
     // HomeScreen UiAction

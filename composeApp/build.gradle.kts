@@ -36,8 +36,6 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
-
-                // implementation(libs.multiplatform.locale)
             }
         }
 
@@ -72,7 +70,6 @@ kotlin {
                 implementation(libs.napier)
                 implementation(libs.uri.kmp)
                 implementation(libs.compottie)
-                // implementation(libs.multiplatform.locale)
                 implementation(libs.filekit.core)
                 implementation(libs.cmptoast)
 

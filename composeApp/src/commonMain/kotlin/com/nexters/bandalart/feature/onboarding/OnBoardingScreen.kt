@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,8 +32,9 @@ import bandalart.composeapp.generated.resources.ic_onboarding_kr
 import bandalart.composeapp.generated.resources.onboarding_first_title
 import bandalart.composeapp.generated.resources.onboarding_second_title
 import bandalart.composeapp.generated.resources.onboarding_start
+import com.nexters.bandalart.core.common.Language
 import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
-import com.nexters.bandalart.core.common.extension.getCurrentLocale
+import com.nexters.bandalart.core.common.getLocale
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
@@ -46,7 +46,6 @@ import com.nexters.bandalart.core.ui.component.PagerIndicator
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
-import java.util.Locale
 
 private const val ONBOARDING_KR_LOTTIE_FILE = "files/onboarding_kr.json"
 private const val ONBOARDING_EN_LOTTIE_FILE = "files/onboarding_en.json"
@@ -79,8 +78,6 @@ internal fun OnBoardingScreen(
     setOnboardingCompletedStatus: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val currentLocale = context.getCurrentLocale()
     // val configuration = LocalConfiguration.current
 
     Surface(
@@ -132,8 +129,8 @@ internal fun OnBoardingScreen(
                                         .background(Gray50),
                                     contentAlignment = Alignment.Center,
                                 ) {
-                                    when (currentLocale.language) {
-                                        Locale.KOREAN.language -> {
+                                    when (getLocale().language) {
+                                        Language.KOREAN -> {
                                             Image(
                                                 imageVector = vectorResource(Res.drawable.ic_onboarding_kr),
                                                 contentDescription = stringResource(Res.string.delete_description),
@@ -141,7 +138,7 @@ internal fun OnBoardingScreen(
                                             )
                                         }
 
-                                        Locale.ENGLISH.language -> {
+                                        Language.ENGLISH -> {
                                             Image(
                                                 imageVector = vectorResource(Res.drawable.ic_onboarding_en),
                                                 contentDescription = stringResource(Res.string.delete_description),
@@ -191,9 +188,9 @@ internal fun OnBoardingScreen(
                                         contentAlignment = Alignment.Center,
                                     ) {
                                         LottieImage(
-                                            jsonString = when (currentLocale.language) {
-                                                Locale.KOREAN.language -> ONBOARDING_KR_LOTTIE_FILE
-                                                Locale.ENGLISH.language -> ONBOARDING_EN_LOTTIE_FILE
+                                            jsonString = when (getLocale().language) {
+                                                Language.KOREAN -> ONBOARDING_KR_LOTTIE_FILE
+                                                Language.ENGLISH -> ONBOARDING_EN_LOTTIE_FILE
                                                 else -> ONBOARDING_EN_LOTTIE_FILE
                                             },
                                             iterations = Int.MAX_VALUE,

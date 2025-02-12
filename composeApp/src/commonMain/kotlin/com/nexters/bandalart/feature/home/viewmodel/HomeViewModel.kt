@@ -8,6 +8,8 @@ import bandalart.composeapp.generated.resources.create_bandalart
 import bandalart.composeapp.generated.resources.delete_bandalart
 import bandalart.composeapp.generated.resources.limit_create_bandalart
 import bandalart.composeapp.generated.resources.please_input_main_goal
+import com.nexters.bandalart.core.common.Language
+import com.nexters.bandalart.core.common.Locale
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
@@ -31,7 +33,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.getString
-import java.util.Locale
 
 class HomeViewModel(
     private val bandalartRepository: BandalartRepository,
@@ -401,7 +402,7 @@ class HomeViewModel(
 
     private fun updateCellTitle(title: String, locale: Locale) {
         val maxLength = when (locale.language) {
-            Locale.KOREAN.language, Locale.JAPAN.language -> 15
+            Language.KOREAN, Language.JAPANESE -> 15
             else -> 24
         }
 
