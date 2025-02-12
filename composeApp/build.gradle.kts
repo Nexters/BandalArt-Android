@@ -38,12 +38,20 @@ kotlin {
 
         commonMain {
             dependencies {
+                // compileOnly(libs.compose.stable.marker)
+
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.serialization.json)
+
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+
+                implementation(libs.jetbrains.androidx.navigation.compose)
 
                 api(libs.androidx.datastore)
                 api(libs.androidx.datastore.preferences)
@@ -54,6 +62,8 @@ kotlin {
                 api(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
+
+                implementation(libs.napier)
             }
         }
 
