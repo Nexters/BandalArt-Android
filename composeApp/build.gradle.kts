@@ -68,6 +68,7 @@ kotlin {
                 implementation(libs.uri.kmp)
                 implementation(libs.compottie)
                 implementation(libs.buildkonfig)
+                implementation(libs.multiplatform.locale)
             }
         }
 
