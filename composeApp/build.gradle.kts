@@ -10,6 +10,8 @@ plugins {
 }
 
 kotlin {
+    tasks.create("testClasses")
+
     androidLibrary {
         namespace = "com.nexters.bandalart"
         compileSdk = 35
