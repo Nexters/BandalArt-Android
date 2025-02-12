@@ -19,7 +19,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,11 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavOptions
 import bandalart_android.composeapp.generated.resources.Res
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
@@ -46,6 +40,7 @@ import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.component.BandalartButton
+import com.nexters.bandalart.core.ui.component.LottieImage
 import com.nexters.bandalart.core.ui.component.PagerIndicator
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -83,28 +78,6 @@ internal fun OnBoardingScreen(
     val context = LocalContext.current
     val currentLocale = context.getCurrentLocale()
     val configuration = LocalConfiguration.current
-
-    val composition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(
-            when (currentLocale.language) {
-                Locale.KOREAN.language -> {
-                    com.nexters.bandalart.core.designsystem.R.raw.lottie_onboarding_kr
-                }
-
-                Locale.ENGLISH.language -> {
-                    com.nexters.bandalart.core.designsystem.R.raw.lottie_onboarding_en
-                }
-
-                else -> {
-                    com.nexters.bandalart.core.designsystem.R.raw.lottie_onboarding_en
-                }
-            },
-        ),
-    )
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = LottieConstants.IterateForever,
-    )
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -172,6 +145,14 @@ internal fun OnBoardingScreen(
                                             )
                                         }
 
+                                        Locale.JAPANESE.language -> {
+                                            Image(
+                                                imageVector = vectorResource(Res.drawable.ic_onboarding_jp),
+                                                contentDescription = stringResource(Res.string.delete_description),
+                                                modifier = Modifier.fillMaxSize(),
+                                            )
+                                        }
+
                                         else -> {
                                             Image(
                                                 imageVector = vectorResource(Res.drawable.ic_onboarding_en),
@@ -213,10 +194,15 @@ internal fun OnBoardingScreen(
                                             .background(Gray50),
                                         contentAlignment = Alignment.Center,
                                     ) {
-                                        LottieAnimation(
-                                            composition = composition,
-                                            progress = { progress },
-                                            modifier = Modifier.fillMaxSize(),
+                                        LottieImage(
+                                            jsonString = when (currentLocale.language) {
+                                                Locale.KOREAN.language -> Res.raw.lottie_onboarding_kr
+                                                Locale.ENGLISH.language -> Res.raw.lottie_onboarding_en
+                                                Locale.JAPANESE.language -> Res.raw.lottie_onboarding_jp
+                                                else -> Res.raw.lottie_onboarding_en
+                                            },
+                                            iterations = Int.MAX_VALUE,
+                                            modifier = Modifier.fillMaxSize()
                                         )
                                     }
                                 }
