@@ -10,16 +10,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.noRippleClickable
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
@@ -32,14 +28,6 @@ fun LoadingIndicator(
         modifier = modifier.noRippleClickable { },
         contentAlignment = Alignment.Center,
     ) {
-        val composition by rememberLottieComposition(
-            spec = LottieCompositionSpec.RawRes(com.nexters.bandalart.core.designsystem.R.raw.lottie_loading_animation),
-        )
-        val progress by animateLottieCompositionAsState(
-            composition = composition,
-            iterations = 30,
-        )
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -55,12 +43,12 @@ fun LoadingIndicator(
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 colors = CardDefaults.cardColors(White),
             ) {
-                LottieAnimation(
+                LottieImage(
+                    jsonString = Res.raw.lottie_loading_animation,
+                    iterations = Int.MAX_VALUE,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(5.dp),
-                    composition = composition,
-                    progress = { progress },
+                        .padding(5.dp)
                 )
             }
         }

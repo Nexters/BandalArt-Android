@@ -23,17 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.saveUriToGallery
 import com.nexters.bandalart.core.common.extension.shareImage
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
@@ -42,14 +37,15 @@ import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
+import com.nexters.bandalart.core.ui.component.LottieImage
 import com.nexters.bandalart.feature.complete.ui.CompleteBandalart
 import com.nexters.bandalart.feature.complete.ui.CompleteTopBar
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteViewModel
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -69,7 +65,7 @@ internal fun CompleteRoute(
 
             is CompleteUiEvent.SaveBandalart -> {
                 context.saveUriToGallery(event.imageUri)
-                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(Res.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
             }
 
             is CompleteUiEvent.ShareBandalart -> {
@@ -93,16 +89,6 @@ internal fun CompleteScreen(
 ) {
     val configuration = LocalConfiguration.current
 
-    val composition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(
-            com.nexters.bandalart.core.designsystem.R.raw.lottie_finish,
-        ),
-    )
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = LottieConstants.IterateForever,
-    )
-
     Surface(
         modifier = modifier.fillMaxSize(),
         color = Gray50,
@@ -118,7 +104,7 @@ internal fun CompleteScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
                     Text(
-                        text = stringResource(R.string.complete_title),
+                        text = stringResource(Res.string.complete_title),
                         modifier = modifier,
                         color = Gray900,
                         fontFamily = pretendard,
@@ -141,7 +127,7 @@ internal fun CompleteScreen(
                     // SaveImageButton(modifier = Modifier.align(Alignment.BottomCenter))
                     BandalartButton(
                         onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                        text = stringResource(R.string.complete_share),
+                        text = stringResource(Res.string.complete_share),
                         modifier = Modifier
                             .width(328.dp)
                             .padding(bottom = 32.dp),
@@ -150,10 +136,10 @@ internal fun CompleteScreen(
             }
         } else {
             Box {
-                LottieAnimation(
-                    composition = composition,
-                    progress = { progress },
-                    modifier = Modifier.align(Alignment.TopCenter),
+                LottieImage(
+                    jsonString = Res.raw.lottie_finish,
+                    iterations = Int.MAX_VALUE,
+                    modifier = Modifier.align(Alignment.TopCenter)
                 )
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -163,7 +149,7 @@ internal fun CompleteScreen(
                     CompleteTopBar(onNavigateBack = { onAction(CompleteUiAction.OnBackButtonClick) })
                     Spacer(modifier = Modifier.height(40.dp))
                     Text(
-                        text = stringResource(R.string.complete_title),
+                        text = stringResource(Res.string.complete_title),
                         modifier = modifier,
                         color = Gray900,
                         fontFamily = pretendard,
@@ -184,7 +170,7 @@ internal fun CompleteScreen(
                         ) {
                             BandalartButton(
                                 onClick = { onAction(CompleteUiAction.OnSaveButtonClick) },
-                                text = stringResource(R.string.complete_save),
+                                text = stringResource(Res.string.complete_save),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 24.dp, vertical = 8.dp)
@@ -193,7 +179,7 @@ internal fun CompleteScreen(
                             )
                             BandalartButton(
                                 onClick = { onAction(CompleteUiAction.OnShareButtonClick) },
-                                text = stringResource(R.string.complete_share),
+                                text = stringResource(Res.string.complete_share),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 8.dp, bottom = 32.dp, start = 24.dp, end = 24.dp)
