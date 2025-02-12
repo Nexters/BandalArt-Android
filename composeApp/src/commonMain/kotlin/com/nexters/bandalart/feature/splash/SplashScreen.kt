@@ -31,7 +31,6 @@ internal fun SplashRoute(
     viewModel: SplashViewModel = koinViewModel(),
 ) {
 //    val context = LocalContext.current
-//    val activity = context.findActivity()
 //    val appUpdateManager: AppUpdateManager = remember { AppUpdateManagerFactory.create(context) }
 //    val lifecycle = LocalLifecycleOwner.current.lifecycle
 //    val lifecycleState by lifecycle.currentStateFlow.collectAsStateWithLifecycle()
