@@ -1,5 +1,7 @@
 package com.nexters.bandalart.core.common.utils
 
+import kotlinx.datetime.Clock
+
 internal interface MultipleEventsCutter {
     fun processEvent(event: () -> Unit)
 
@@ -11,7 +13,7 @@ internal fun MultipleEventsCutter.Companion.get(): MultipleEventsCutter =
 
 private class MultipleEventsCutterImpl : MultipleEventsCutter {
     private val now: Long
-        get() = System.currentTimeMillis()
+        get() = Clock.System.now().toEpochMilliseconds()
 
     private var lastEventTimeMs: Long = 0
 

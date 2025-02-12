@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import io.github.aakira.napier.Napier
+import kotlinx.datetime.Clock
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -62,7 +63,7 @@ fun Context.shareImage(imageUri: Uri) {
 }
 
 private fun ImageBitmap.saveToDisk(context: Context): String {
-    val fileName = "shared_image_${System.currentTimeMillis()}.png"
+    val fileName = "shared_image_${Clock.System.now().toEpochMilliseconds()}.png"
     val cachePath = File(context.cacheDir, "images").also { it.mkdirs() }
     val file = File(cachePath, fileName)
     val outputStream = FileOutputStream(file)
@@ -77,7 +78,7 @@ private fun ImageBitmap.saveToDisk(context: Context): String {
 @Suppress("TooGenericExceptionCaught")
 fun Context.saveImageToGallery(bitmap: ImageBitmap) {
     try {
-        val fileName = "bandalart_${System.currentTimeMillis()}.png"
+        val fileName = "bandalart_${Clock.System.now().toEpochMilliseconds()}.png"
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
             put(MediaStore.Images.Media.MIME_TYPE, "image/png")
@@ -107,7 +108,7 @@ fun Context.saveImageToGallery(bitmap: ImageBitmap) {
 @Suppress("TooGenericExceptionCaught")
 fun Context.saveUriToGallery(imageUri: Uri) {
     try {
-        val fileName = "bandalart_${System.currentTimeMillis()}.png"
+        val fileName = "bandalart_${Clock.System.now().toEpochMilliseconds()}.png"
         val contentValues = createContentValues(fileName)
         val destinationUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
             ?: return
