@@ -9,8 +9,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import bandalart.composeapp.generated.resources.Res
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.coil.CoilImage
-import com.skydoves.landscapist.coil.CoilImageState
+import com.skydoves.landscapist.coil3.CoilImage
+import com.skydoves.landscapist.coil3.CoilImageState
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.placeholder.placeholder.PlaceholderPlugin
 import io.github.aakira.napier.Napier

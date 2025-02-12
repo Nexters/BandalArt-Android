@@ -74,7 +74,8 @@ kotlin {
                 implementation(libs.filekit.core)
 
                 implementation(libs.coil3.compose)
-                // implementation(libs.bundles.landscapist)
+                implementation(libs.landscapist.coil3)
+                implementation(libs.landscapist.placeholder)
             }
         }
 
