@@ -7,9 +7,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,15 +47,15 @@ fun BandalartEmojiBottomSheet(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartEmojiBottomSheetPreview() {
-    BandalartTheme {
-        BandalartEmojiBottomSheet(
-            bandalartId = 0L,
-            cellId = 0L,
-            currentEmoji = "😎",
-            onHomeUiAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartEmojiBottomSheetPreview() {
+//    BandalartTheme {
+//        BandalartEmojiBottomSheet(
+//            bandalartId = 0L,
+//            cellId = 0L,
+//            currentEmoji = "😎",
+//            onHomeUiAction = {},
+//        )
+//    }
+//}

@@ -32,11 +32,9 @@ import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.saveUriToGallery
 import com.nexters.bandalart.core.common.extension.shareImage
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.LottieImage
 import com.nexters.bandalart.feature.complete.ui.CompleteBandalart
@@ -194,17 +192,17 @@ internal fun CompleteScreen(
     }
 }
 
-@DevicePreview
-@Composable
-private fun CompleteScreenPreview() {
-    BandalartTheme {
-        CompleteScreen(
-            uiState = CompleteUiState(
-                id = 0L,
-                title = "발전하는 예진",
-                profileEmoji = "😎",
-            ),
-            onAction = {},
-        )
-    }
-}
+//@DevicePreview
+//@Composable
+//private fun CompleteScreenPreview() {
+//    BandalartTheme {
+//        CompleteScreen(
+//            uiState = CompleteUiState(
+//                id = 0L,
+//                title = "발전하는 예진",
+//                profileEmoji = "😎",
+//            ),
+//            onAction = {},
+//        )
+//    }
+//}

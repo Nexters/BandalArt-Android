@@ -25,11 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
-import com.nexters.bandalart.core.ui.ComponentPreview
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -117,14 +115,14 @@ fun CompleteBandalart(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun CompleteBandalartPreview() {
-    BandalartTheme {
-        CompleteBandalart(
-            profileEmoji = "😎",
-            title = "발전하는 예진",
-            // bandalartChartImageUri = "",
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun CompleteBandalartPreview() {
+//    BandalartTheme {
+//        CompleteBandalart(
+//            profileEmoji = "😎",
+//            title = "발전하는 예진",
+//            // bandalartChartImageUri = "",
+//        )
+//    }
+//}

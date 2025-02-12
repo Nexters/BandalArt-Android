@@ -1,8 +1,6 @@
 package com.nexters.bandalart.feature.home.ui.bandalart
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
@@ -10,11 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -53,29 +49,29 @@ fun BottomSheetCompleteButton(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BottomSheetDeleteButtonPreview() {
-    BandalartTheme {
-        BottomSheetDeleteButton(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetCompleteButtonPreview() {
-    BandalartTheme {
-        BottomSheetCompleteButton(
-            isEnabled = false,
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetDeleteButtonPreview() {
+//    BandalartTheme {
+//        BottomSheetDeleteButton(
+//            onClick = {},
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(horizontal = 16.dp),
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetCompleteButtonPreview() {
+//    BandalartTheme {
+//        BottomSheetCompleteButton(
+//            isEnabled = false,
+//            onClick = {},
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(horizontal = 16.dp),
+//        )
+//    }
+//}

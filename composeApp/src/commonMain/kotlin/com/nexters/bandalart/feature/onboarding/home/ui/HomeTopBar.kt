@@ -22,10 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.component.AppTitle
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import org.jetbrains.compose.resources.stringResource
@@ -101,24 +99,24 @@ internal fun HomeTopBar(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun HomeTopBarSingleBandalartPreview() {
-    BandalartTheme {
-        HomeTopBar(
-            bandalartCount = 1,
-            onHomeUiAction = {},
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun HomeTopBarMultipleBandalartPreview() {
-    BandalartTheme {
-        HomeTopBar(
-            bandalartCount = 2,
-            onHomeUiAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun HomeTopBarSingleBandalartPreview() {
+//    BandalartTheme {
+//        HomeTopBar(
+//            bandalartCount = 1,
+//            onHomeUiAction = {},
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun HomeTopBarMultipleBandalartPreview() {
+//    BandalartTheme {
+//        HomeTopBar(
+//            bandalartCount = 2,
+//            onHomeUiAction = {},
+//        )
+//    }
+//}

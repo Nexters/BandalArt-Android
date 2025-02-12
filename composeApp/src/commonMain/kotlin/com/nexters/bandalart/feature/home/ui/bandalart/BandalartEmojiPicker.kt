@@ -26,10 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray400
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import kotlinx.collections.immutable.persistentListOf
 
@@ -134,14 +132,14 @@ fun BandalartEmojiPicker(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartEmojiPickerPreview() {
-    BandalartTheme {
-        BandalartEmojiPicker(
-            currentEmoji = "😎",
-            isBottomSheet = false,
-            onEmojiSelect = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartEmojiPickerPreview() {
+//    BandalartTheme {
+//        BandalartEmojiPicker(
+//            currentEmoji = "😎",
+//            isBottomSheet = false,
+//            onEmojiSelect = {},
+//        )
+//    }
+//}

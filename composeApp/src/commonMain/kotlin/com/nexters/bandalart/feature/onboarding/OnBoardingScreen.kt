@@ -33,12 +33,10 @@ import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.navigation.Route
-import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.LottieImage
 import com.nexters.bandalart.core.ui.component.PagerIndicator
@@ -238,12 +236,12 @@ internal fun OnBoardingScreen(
     }
 }
 
-@DevicePreview
-@Composable
-private fun OnBoardingScreenPreview() {
-    BandalartTheme {
-        OnBoardingScreen(
-            setOnboardingCompletedStatus = {},
-        )
-    }
-}
+//@DevicePreview
+//@Composable
+//private fun OnBoardingScreenPreview() {
+//    BandalartTheme {
+//        OnBoardingScreen(
+//            setOnboardingCompletedStatus = {},
+//        )
+//    }
+//}

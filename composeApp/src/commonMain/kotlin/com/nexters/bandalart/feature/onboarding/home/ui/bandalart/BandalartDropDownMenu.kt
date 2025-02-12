@@ -23,11 +23,9 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Error
 import com.nexters.bandalart.core.designsystem.theme.Gray800
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -118,13 +116,13 @@ fun BandalartDropDownMenu(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartDropDownMenuPreview() {
-    BandalartTheme {
-        BandalartDropDownMenu(
-            isDropDownMenuOpened = true,
-            onAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartDropDownMenuPreview() {
+//    BandalartTheme {
+//        BandalartDropDownMenu(
+//            isDropDownMenuOpened = true,
+//            onAction = {},
+//        )
+//    }
+//}

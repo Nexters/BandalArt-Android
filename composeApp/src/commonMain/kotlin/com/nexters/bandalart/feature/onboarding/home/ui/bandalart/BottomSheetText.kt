@@ -4,16 +4,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.designsystem.theme.Gray400
-import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.CellType
 import org.jetbrains.compose.resources.stringResource
 
@@ -49,139 +44,139 @@ fun BottomSheetTitleText(
     )
 }
 
-@Composable
-fun BottomSheetSubTitleText(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = text,
-        color = Gray600,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.W700,
-        modifier = modifier,
-        textAlign = TextAlign.Start,
-        letterSpacing = (-0.24).sp,
-        lineHeight = 22.4.sp,
-    )
-}
-
-@Composable
-fun BottomSheetContentPlaceholder(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = text,
-        color = Gray400,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W400,
-        modifier = modifier,
-        textAlign = TextAlign.Start,
-        letterSpacing = (-0.32).sp,
-        lineHeight = 22.4.sp,
-    )
-}
-
-@Composable
-fun BottomSheetContentText(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = text,
-        textAlign = TextAlign.Start,
-        color = Gray600,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W600,
-        modifier = modifier,
-        letterSpacing = (-0.32).sp,
-        lineHeight = 22.4.sp,
-    )
-}
-
-@Composable
-fun BottomSheetButtonText(
-    text: String,
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = text,
-        textAlign = TextAlign.Start,
-        color = color,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W700,
-        modifier = modifier,
-        letterSpacing = (-0.32).sp,
-        lineHeight = 21.sp,
-    )
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetMainCellTitleTextPreview() {
-    BandalartTheme {
-        BottomSheetTitleText(
-            cellType = CellType.MAIN,
-            isBlankCell = false,
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetSubCellTitleTextPreview() {
-    BandalartTheme {
-        BottomSheetTitleText(
-            cellType = CellType.SUB,
-            isBlankCell = false,
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetBlankCellTitleTextPreview() {
-    BandalartTheme {
-        BottomSheetTitleText(
-            cellType = CellType.TASK,
-            isBlankCell = true,
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetSubTitleTextPreview() {
-    BandalartTheme {
-        BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_title))
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetContentPlaceholderPreview() {
-    BandalartTheme {
-        BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_title_placeholder))
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetContentTextPreview() {
-    BandalartTheme {
-        BottomSheetContentText(text = stringResource(Res.string.bottomsheet_completed))
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetButtonTextPreview() {
-    BandalartTheme {
-        BottomSheetButtonText(
-            text = stringResource(Res.string.bottomsheet_done),
-            color = Gray400,
-        )
-    }
-}
+//@Composable
+//fun BottomSheetSubTitleText(
+//    text: String,
+//    modifier: Modifier = Modifier,
+//) {
+//    Text(
+//        text = text,
+//        color = Gray600,
+//        fontSize = 12.sp,
+//        fontWeight = FontWeight.W700,
+//        modifier = modifier,
+//        textAlign = TextAlign.Start,
+//        letterSpacing = (-0.24).sp,
+//        lineHeight = 22.4.sp,
+//    )
+//}
+//
+//@Composable
+//fun BottomSheetContentPlaceholder(
+//    text: String,
+//    modifier: Modifier = Modifier,
+//) {
+//    Text(
+//        text = text,
+//        color = Gray400,
+//        fontSize = 16.sp,
+//        fontWeight = FontWeight.W400,
+//        modifier = modifier,
+//        textAlign = TextAlign.Start,
+//        letterSpacing = (-0.32).sp,
+//        lineHeight = 22.4.sp,
+//    )
+//}
+//
+//@Composable
+//fun BottomSheetContentText(
+//    text: String,
+//    modifier: Modifier = Modifier,
+//) {
+//    Text(
+//        text = text,
+//        textAlign = TextAlign.Start,
+//        color = Gray600,
+//        fontSize = 16.sp,
+//        fontWeight = FontWeight.W600,
+//        modifier = modifier,
+//        letterSpacing = (-0.32).sp,
+//        lineHeight = 22.4.sp,
+//    )
+//}
+//
+//@Composable
+//fun BottomSheetButtonText(
+//    text: String,
+//    color: Color,
+//    modifier: Modifier = Modifier,
+//) {
+//    Text(
+//        text = text,
+//        textAlign = TextAlign.Start,
+//        color = color,
+//        fontSize = 16.sp,
+//        fontWeight = FontWeight.W700,
+//        modifier = modifier,
+//        letterSpacing = (-0.32).sp,
+//        lineHeight = 21.sp,
+//    )
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetMainCellTitleTextPreview() {
+//    BandalartTheme {
+//        BottomSheetTitleText(
+//            cellType = CellType.MAIN,
+//            isBlankCell = false,
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetSubCellTitleTextPreview() {
+//    BandalartTheme {
+//        BottomSheetTitleText(
+//            cellType = CellType.SUB,
+//            isBlankCell = false,
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetBlankCellTitleTextPreview() {
+//    BandalartTheme {
+//        BottomSheetTitleText(
+//            cellType = CellType.TASK,
+//            isBlankCell = true,
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetSubTitleTextPreview() {
+//    BandalartTheme {
+//        BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_title))
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetContentPlaceholderPreview() {
+//    BandalartTheme {
+//        BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_title_placeholder))
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetContentTextPreview() {
+//    BandalartTheme {
+//        BottomSheetContentText(text = stringResource(Res.string.bottomsheet_completed))
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetButtonTextPreview() {
+//    BandalartTheme {
+//        BottomSheetButtonText(
+//            text = stringResource(Res.string.bottomsheet_done),
+//            color = Gray400,
+//        )
+//    }
+//}

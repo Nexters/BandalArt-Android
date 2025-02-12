@@ -33,17 +33,13 @@ import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.common.extension.toFormatDate
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import org.jetbrains.compose.resources.stringResource
@@ -199,15 +195,15 @@ fun HomeHeader(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun HomeHeaderPreview() {
-    BandalartTheme {
-        HomeHeader(
-            bandalartData = dummyBandalartData,
-            isDropDownMenuOpened = false,
-            cellData = dummyBandalartCellData,
-            onHomeUiAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun HomeHeaderPreview() {
+//    BandalartTheme {
+//        HomeHeader(
+//            bandalartData = dummyBandalartData,
+//            isDropDownMenuOpened = false,
+//            cellData = dummyBandalartCellData,
+//            onHomeUiAction = {},
+//        )
+//    }
+//}

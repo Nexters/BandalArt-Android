@@ -13,9 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -43,10 +41,10 @@ fun CompleteTopBar(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun CompleteTopBarPreview() {
-    BandalartTheme {
-        CompleteTopBar(onNavigateBack = {})
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun CompleteTopBarPreview() {
+//    BandalartTheme {
+//        CompleteTopBar(onNavigateBack = {})
+//    }
+//}

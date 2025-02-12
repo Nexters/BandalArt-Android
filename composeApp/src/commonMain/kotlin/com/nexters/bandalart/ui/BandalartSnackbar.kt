@@ -15,9 +15,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray700
-import com.nexters.bandalart.core.ui.ComponentPreview
 
 @Composable
 internal fun BandalartSnackbar(
@@ -45,10 +43,10 @@ internal fun BandalartSnackbar(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartSnackbarPreview() {
-    BandalartTheme {
-        BandalartSnackbar(message = "새로운 반다라트를 생성했어요")
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartSnackbarPreview() {
+//    BandalartTheme {
+//        BandalartSnackbar(message = "새로운 반다라트를 생성했어요")
+//    }
+//}

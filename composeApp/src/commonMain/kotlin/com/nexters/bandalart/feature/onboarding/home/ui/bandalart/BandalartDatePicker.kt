@@ -32,11 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.ui.ComponentPreview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
@@ -244,70 +242,70 @@ fun selectedDateWithValidate(year: String, month: String, day: String): LocalDat
     }T00:00".toLocalDateTime()
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartDatePickerPreview() {
-    BandalartTheme {
-        BandalartDatePicker(
-            onDueDateSelect = {},
-            currentDueDate = LocalDateTime.now(),
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun DateSelectionSectionPreview() {
-    BandalartTheme {
-        DateSelectionSection(
-            onYearChosen = {},
-            onMonthChosen = {},
-            onDayChosen = {},
-            currentYear = 2024,
-            currentMonth = 12,
-            currentDay = 31,
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun InfiniteYearItemsPickerPreview() {
-    BandalartTheme {
-        InfiniteItemsPicker(
-            items = years.toImmutableList(),
-            isYear = true,
-            isMonth = false,
-            firstIndex = Int.MAX_VALUE / 2 + (2024 - years.first()),
-            onItemSelected = {},
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun InfiniteMonthItemsPickerPreview() {
-    BandalartTheme {
-        InfiniteItemsPicker(
-            items = monthsNumber.toImmutableList(),
-            isYear = false,
-            isMonth = true,
-            firstIndex = Int.MAX_VALUE / 2 + (31 - 1),
-            onItemSelected = {},
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun InfiniteDayItemsPickerPreview() {
-    BandalartTheme {
-        InfiniteItemsPicker(
-            items = days.toImmutableList(),
-            isYear = false,
-            isMonth = false,
-            firstIndex = Int.MAX_VALUE / 2 + (31 - 3),
-            onItemSelected = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartDatePickerPreview() {
+//    BandalartTheme {
+//        BandalartDatePicker(
+//            onDueDateSelect = {},
+//            currentDueDate = LocalDateTime.now(),
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun DateSelectionSectionPreview() {
+//    BandalartTheme {
+//        DateSelectionSection(
+//            onYearChosen = {},
+//            onMonthChosen = {},
+//            onDayChosen = {},
+//            currentYear = 2024,
+//            currentMonth = 12,
+//            currentDay = 31,
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun InfiniteYearItemsPickerPreview() {
+//    BandalartTheme {
+//        InfiniteItemsPicker(
+//            items = years.toImmutableList(),
+//            isYear = true,
+//            isMonth = false,
+//            firstIndex = Int.MAX_VALUE / 2 + (2024 - years.first()),
+//            onItemSelected = {},
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun InfiniteMonthItemsPickerPreview() {
+//    BandalartTheme {
+//        InfiniteItemsPicker(
+//            items = monthsNumber.toImmutableList(),
+//            isYear = false,
+//            isMonth = true,
+//            firstIndex = Int.MAX_VALUE / 2 + (31 - 1),
+//            onItemSelected = {},
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun InfiniteDayItemsPickerPreview() {
+//    BandalartTheme {
+//        InfiniteItemsPicker(
+//            items = days.toImmutableList(),
+//            isYear = false,
+//            isMonth = false,
+//            firstIndex = Int.MAX_VALUE / 2 + (31 - 3),
+//            onItemSelected = {},
+//        )
+//    }
+//}

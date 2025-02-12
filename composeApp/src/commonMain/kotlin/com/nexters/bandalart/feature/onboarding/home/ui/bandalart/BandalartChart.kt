@@ -16,13 +16,10 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
@@ -115,18 +112,18 @@ fun BandalartChart(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartChartPreview() {
-    BandalartTheme {
-        BandalartChart(
-            bandalartCellData = dummyBandalartChartData,
-            bandalartData = BandalartUiModel(
-                id = 0L,
-                mainColor = "#3FFFBA",
-                subColor = "#111827",
-            ),
-            onHomeUiAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartChartPreview() {
+//    BandalartTheme {
+//        BandalartChart(
+//            bandalartCellData = dummyBandalartChartData,
+//            bandalartData = BandalartUiModel(
+//                id = 0L,
+//                mainColor = "#3FFFBA",
+//                subColor = "#111827",
+//            ),
+//            onHomeUiAction = {},
+//        )
+//    }
+//}

@@ -17,9 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.CellType
 import org.jetbrains.compose.resources.stringResource
 
@@ -52,38 +50,38 @@ fun BottomSheetTopBar(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BottomSheetMainCellTopBarPreview() {
-    BandalartTheme {
-        BottomSheetTopBar(
-            cellType = CellType.MAIN,
-            isBlankCell = false,
-            onCloseClick = {},
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetSubCellTopBarPreview() {
-    BandalartTheme {
-        BottomSheetTopBar(
-            cellType = CellType.SUB,
-            isBlankCell = false,
-            onCloseClick = {},
-        )
-    }
-}
-
-@ComponentPreview
-@Composable
-private fun BottomSheetBlankCellTopBarPreview() {
-    BandalartTheme {
-        BottomSheetTopBar(
-            cellType = CellType.TASK,
-            isBlankCell = true,
-            onCloseClick = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetMainCellTopBarPreview() {
+//    BandalartTheme {
+//        BottomSheetTopBar(
+//            cellType = CellType.MAIN,
+//            isBlankCell = false,
+//            onCloseClick = {},
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetSubCellTopBarPreview() {
+//    BandalartTheme {
+//        BottomSheetTopBar(
+//            cellType = CellType.SUB,
+//            isBlankCell = false,
+//            onCloseClick = {},
+//        )
+//    }
+//}
+//
+//@ComponentPreview
+//@Composable
+//private fun BottomSheetBlankCellTopBarPreview() {
+//    BandalartTheme {
+//        BottomSheetTopBar(
+//            cellType = CellType.TASK,
+//            isBlankCell = true,
+//            onCloseClick = {},
+//        )
+//    }
+//}

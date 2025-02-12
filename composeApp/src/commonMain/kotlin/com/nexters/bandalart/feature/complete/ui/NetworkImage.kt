@@ -8,8 +8,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.coil.CoilImageState
@@ -54,13 +52,13 @@ fun NetworkImage(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun NetworkImagePreview() {
-    BandalartTheme {
-        NetworkImage(
-            imageUri = "",
-            contentDescription = "",
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun NetworkImagePreview() {
+//    BandalartTheme {
+//        NetworkImage(
+//            imageUri = "",
+//            contentDescription = "",
+//        )
+//    }
+//}

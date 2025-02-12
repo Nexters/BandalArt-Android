@@ -25,11 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -137,15 +135,15 @@ fun BandalartDeleteAlertDialog(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartDeleteAlertDialogPreview() {
-    BandalartTheme {
-        BandalartDeleteAlertDialog(
-            title = "반다라트를 삭제하시겠어요?",
-            message = "삭제한 반다라트는 다시 복구할 수 없어요.",
-            onDeleteClick = {},
-            onCancelClick = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartDeleteAlertDialogPreview() {
+//    BandalartTheme {
+//        BandalartDeleteAlertDialog(
+//            title = "반다라트를 삭제하시겠어요?",
+//            message = "삭제한 반다라트는 다시 복구할 수 없어요.",
+//            onDeleteClick = {},
+//            onCancelClick = {},
+//        )
+//    }
+//}

@@ -24,10 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -105,14 +103,14 @@ fun NetworkErrorAlertDialog(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun NetworkErrorAlertDialogPreview() {
-    BandalartTheme {
-        NetworkErrorAlertDialog(
-            title = "네트워크 문제로 표를\n불러오지 못했어요",
-            message = "다시 시도해주시기 바랍니다.",
-            onConfirmClick = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun NetworkErrorAlertDialogPreview() {
+//    BandalartTheme {
+//        NetworkErrorAlertDialog(
+//            title = "네트워크 문제로 표를\n불러오지 못했어요",
+//            message = "다시 시도해주시기 바랍니다.",
+//            onConfirmClick = {},
+//        )
+//    }
+//}

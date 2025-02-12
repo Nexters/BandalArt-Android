@@ -30,10 +30,8 @@ import com.nexters.bandalart.core.database.PeopleDao
 import com.nexters.bandalart.core.database.Person
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-@Preview
 fun App(
     peopleDao: PeopleDao,
     prefs: DataStore<Preferences>

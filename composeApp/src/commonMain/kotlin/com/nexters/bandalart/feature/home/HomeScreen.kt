@@ -1,10 +1,7 @@
 package com.nexters.bandalart.feature.home
 
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,13 +33,8 @@ import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
-import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
 import com.nexters.bandalart.feature.home.ui.HomeHeader
 import com.nexters.bandalart.feature.home.ui.HomeShareButton
 import com.nexters.bandalart.feature.home.ui.HomeTopBar
@@ -53,7 +45,6 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
 import io.github.aakira.napier.Napier
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -300,40 +291,40 @@ internal fun HomeScreen(
     }
 }
 
-@DevicePreview
-@Composable
-private fun HomeScreenSingleBandalartPreview() {
-    BandalartTheme {
-        HomeScreen(
-            uiState = HomeUiState(
-                bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
-                bandalartData = dummyBandalartData,
-                bandalartCellData = dummyBandalartChartData,
-            ),
-            onHomeUiAction = {},
-            shareBandalart = {},
-            captureBandalart = {},
-            saveBandalart = {},
-            snackbarHostState = remember { SnackbarHostState() },
-        )
-    }
-}
-
-@DevicePreview
-@Composable
-private fun HomeScreenMultipleBandalartPreview() {
-    BandalartTheme {
-        HomeScreen(
-            uiState = HomeUiState(
-                bandalartList = dummyBandalartList.toImmutableList(),
-                bandalartData = dummyBandalartData,
-                bandalartCellData = dummyBandalartChartData,
-            ),
-            onHomeUiAction = {},
-            shareBandalart = {},
-            captureBandalart = {},
-            saveBandalart = {},
-            snackbarHostState = remember { SnackbarHostState() },
-        )
-    }
-}
+//@DevicePreview
+//@Composable
+//private fun HomeScreenSingleBandalartPreview() {
+//    BandalartTheme {
+//        HomeScreen(
+//            uiState = HomeUiState(
+//                bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
+//                bandalartData = dummyBandalartData,
+//                bandalartCellData = dummyBandalartChartData,
+//            ),
+//            onHomeUiAction = {},
+//            shareBandalart = {},
+//            captureBandalart = {},
+//            saveBandalart = {},
+//            snackbarHostState = remember { SnackbarHostState() },
+//        )
+//    }
+//}
+//
+//@DevicePreview
+//@Composable
+//private fun HomeScreenMultipleBandalartPreview() {
+//    BandalartTheme {
+//        HomeScreen(
+//            uiState = HomeUiState(
+//                bandalartList = dummyBandalartList.toImmutableList(),
+//                bandalartData = dummyBandalartData,
+//                bandalartCellData = dummyBandalartChartData,
+//            ),
+//            onHomeUiAction = {},
+//            shareBandalart = {},
+//            captureBandalart = {},
+//            saveBandalart = {},
+//            snackbarHostState = remember { SnackbarHostState() },
+//        )
+//    }
+//}

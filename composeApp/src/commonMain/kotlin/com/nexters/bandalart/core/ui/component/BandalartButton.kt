@@ -1,7 +1,6 @@
 package com.nexters.bandalart.core.ui.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -12,12 +11,8 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.clickableSingle
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.pretendard
-import com.nexters.bandalart.core.ui.ComponentPreview
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BandalartButton(
@@ -43,14 +38,14 @@ fun BandalartButton(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartButtonPreview() {
-    BandalartTheme {
-        BandalartButton(
-            onClick = {},
-            text = stringResource(Res.string.complete_save),
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartButtonPreview() {
+//    BandalartTheme {
+//        BandalartButton(
+//            onClick = {},
+//            text = stringResource(Res.string.complete_save),
+//            modifier = Modifier.fillMaxWidth(),
+//        )
+//    }
+//}

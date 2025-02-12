@@ -24,13 +24,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray500
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
@@ -263,22 +261,22 @@ private fun getCellBackgroundColor(
     else -> White
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartCellPreview() {
-    BandalartTheme {
-        BandalartCell(
-            bandalartData = BandalartUiModel(
-                id = 0L,
-                mainColor = "#FF3FFFBA",
-                subColor = "#FF111827",
-            ),
-            cellType = CellType.MAIN,
-            cellData = BandalartCellEntity(
-                title = "메인 목표",
-                isCompleted = false,
-            ),
-            onHomeUiAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartCellPreview() {
+//    BandalartTheme {
+//        BandalartCell(
+//            bandalartData = BandalartUiModel(
+//                id = 0L,
+//                mainColor = "#FF3FFFBA",
+//                subColor = "#FF111827",
+//            ),
+//            cellType = CellType.MAIN,
+//            cellData = BandalartCellEntity(
+//                title = "메인 목표",
+//                isCompleted = false,
+//            ),
+//            onHomeUiAction = {},
+//        )
+//    }
+//}

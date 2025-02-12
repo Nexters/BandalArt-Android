@@ -8,13 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
-import com.nexters.bandalart.core.ui.ComponentPreview
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import java.util.Locale
 
 @Composable
@@ -70,26 +67,26 @@ fun AppEnglishTitle(
     )
 }
 
-@ComponentPreview
-@Composable
-private fun AppTitlePreview() {
-    BandalartTheme {
-        AppTitle()
-    }
-}
-
-@Preview(locale = "ko-rKR", showBackground = true)
-@Composable
-private fun AppKoreanTitlePreview() {
-    BandalartTheme {
-        AppKoreanTitle()
-    }
-}
-
-@Preview(locale = "en-rUS", showBackground = true)
-@Composable
-private fun AppEnglishTitlePreview() {
-    BandalartTheme {
-        AppEnglishTitle()
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun AppTitlePreview() {
+//    BandalartTheme {
+//        AppTitle()
+//    }
+//}
+//
+//@Preview(locale = "ko-rKR", showBackground = true)
+//@Composable
+//private fun AppKoreanTitlePreview() {
+//    BandalartTheme {
+//        AppKoreanTitle()
+//    }
+//}
+//
+//@Preview(locale = "en-rUS", showBackground = true)
+//@Composable
+//private fun AppEnglishTitlePreview() {
+//    BandalartTheme {
+//        AppEnglishTitle()
+//    }
+//}

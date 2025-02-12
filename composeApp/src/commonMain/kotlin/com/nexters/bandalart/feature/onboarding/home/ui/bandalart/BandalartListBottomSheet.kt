@@ -36,19 +36,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray800
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
-import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,14 +158,14 @@ fun BandalartListBottomSheet(
     }
 }
 
-@ComponentPreview
-@Composable
-private fun BandalartListBottomSheetPreview() {
-    BandalartTheme {
-        BandalartListBottomSheet(
-            bandalartList = dummyBandalartList.toImmutableList(),
-            currentBandalartId = 0L,
-            onHomeUiAction = {},
-        )
-    }
-}
+//@ComponentPreview
+//@Composable
+//private fun BandalartListBottomSheetPreview() {
+//    BandalartTheme {
+//        BandalartListBottomSheet(
+//            bandalartList = dummyBandalartList.toImmutableList(),
+//            currentBandalartId = 0L,
+//            onHomeUiAction = {},
+//        )
+//    }
+//}

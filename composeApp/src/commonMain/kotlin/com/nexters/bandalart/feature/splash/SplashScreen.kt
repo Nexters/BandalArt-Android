@@ -14,10 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavOptions
 import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
-import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.navigation.Route
-import com.nexters.bandalart.core.ui.DevicePreview
 import com.nexters.bandalart.core.ui.component.AppTitle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -134,10 +132,10 @@ internal fun SplashScreen(
     }
 }
 
-@DevicePreview
-@Composable
-private fun SplashScreenPreview() {
-    BandalartTheme {
-        SplashScreen()
-    }
-}
+//@DevicePreview
+//@Composable
+//private fun SplashScreenPreview() {
+//    BandalartTheme {
+//        SplashScreen()
+//    }
+//}
