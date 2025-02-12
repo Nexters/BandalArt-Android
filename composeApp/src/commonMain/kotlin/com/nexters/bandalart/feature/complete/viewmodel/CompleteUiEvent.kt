@@ -1,6 +1,6 @@
 package com.nexters.bandalart.feature.complete.viewmodel
 
-import android.net.Uri
+import com.eygraber.uri.Uri
 
 sealed interface CompleteUiEvent {
     data object NavigateBack : CompleteUiEvent

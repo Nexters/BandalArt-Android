@@ -1,10 +1,10 @@
 package com.nexters.bandalart.feature.complete.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.eygraber.uri.Uri
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.navigation.Route
 import kotlinx.coroutines.channels.Channel
