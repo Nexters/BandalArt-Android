@@ -48,10 +48,9 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.extension.noRippleClickable
@@ -65,7 +64,6 @@ import com.nexters.bandalart.core.designsystem.theme.Gray700
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.ThemeColor
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.CellType
@@ -73,8 +71,9 @@ import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import java.time.LocalDateTime
-import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,7 +146,7 @@ fun BandalartBottomSheet(
                         .verticalScroll(scrollState)
                         .padding(start = 20.dp, top = 40.dp, end = 20.dp),
                 ) {
-                    BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
+                    BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_title))
                     Spacer(modifier = Modifier.height(11.dp))
                     Row(modifier = Modifier.fillMaxWidth()) {
                         if (cellType == CellType.MAIN) {
@@ -172,8 +171,8 @@ fun BandalartBottomSheet(
                                     ) {
                                         if (bottomSheetData.bandalartData.profileEmoji.isNullOrEmpty()) {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
-                                                contentDescription = stringResource(R.string.empty_emoji_description),
+                                                imageVector = vectorResource(Res.drawable.ic_empty_emoji),
+                                                contentDescription = stringResource(Res.string.empty_emoji_description),
                                                 tint = Color.Unspecified,
                                             )
                                         } else {
@@ -185,8 +184,8 @@ fun BandalartBottomSheet(
                                     }
                                 }
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
-                                    contentDescription = stringResource(R.string.edit_description),
+                                    imageVector = vectorResource(Res.drawable.ic_edit),
+                                    contentDescription = stringResource(Res.string.edit_description),
                                     tint = Color.Unspecified,
                                     modifier = Modifier
                                         .align(Alignment.BottomEnd)
@@ -202,7 +201,7 @@ fun BandalartBottomSheet(
                                         HomeUiAction.OnCellTitleUpdate(title, currentLocale),
                                     )
                                 },
-                                placeholder = stringResource(R.string.bottomsheet_title_placeholder),
+                                placeholder = stringResource(Res.string.bottomsheet_title_placeholder),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(24.dp)
@@ -238,7 +237,7 @@ fun BandalartBottomSheet(
                     }
                     if (cellType == CellType.MAIN) {
                         Spacer(modifier = Modifier.height(22.dp))
-                        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_color))
+                        BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_color))
                         BandalartColorPicker(
                             initColor = ThemeColor(
                                 mainColor = bottomSheetData.bandalartData.mainColor,
@@ -256,7 +255,7 @@ fun BandalartBottomSheet(
                         Spacer(modifier = Modifier.height(3.dp))
                     }
                     Spacer(modifier = Modifier.height(25.dp))
-                    BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_duedate))
+                    BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_duedate))
                     Spacer(modifier = Modifier.height(12.dp))
                     Column {
                         Box(
@@ -269,13 +268,13 @@ fun BandalartBottomSheet(
                             contentAlignment = Alignment.CenterStart,
                         ) {
                             if (bottomSheetData.cellData.dueDate.isNullOrEmpty()) {
-                                BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_duedate_placeholder))
+                                BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_duedate_placeholder))
                             } else {
-                                BottomSheetContentText(text = bottomSheetData.cellData.dueDate!!.toStringLocalDateTime())
+                                BottomSheetContentText(text = bottomSheetData.cellData.dueDate.toStringLocalDateTime())
                             }
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = stringResource(R.string.arrow_forward_description),
+                                contentDescription = stringResource(Res.string.arrow_forward_description),
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
                                     .size(24.dp),
@@ -299,7 +298,7 @@ fun BandalartBottomSheet(
                         )
                     }
                     Spacer(modifier = Modifier.height(28.dp))
-                    BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_description))
+                    BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_description))
                     Spacer(modifier = Modifier.height(12.dp))
                     Box {
                         Column {
@@ -308,7 +307,7 @@ fun BandalartBottomSheet(
                                 onValueChange = { description ->
                                     onHomeUiAction(HomeUiAction.OnDescriptionUpdate(description))
                                 },
-                                placeholder = stringResource(R.string.bottomsheet_description_placeholder),
+                                placeholder = stringResource(Res.string.bottomsheet_description_placeholder),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(24.dp)
@@ -321,16 +320,16 @@ fun BandalartBottomSheet(
                                 color = Gray300,
                             )
                         }
-                    }
+                    }e
                     if (cellType == CellType.TASK) {
                         Spacer(modifier = Modifier.height(28.dp))
-                        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_is_completed))
+                        BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_is_completed))
                         Spacer(modifier = Modifier.height(12.dp))
                         Box(modifier = Modifier.fillMaxWidth()) {
                             BottomSheetContentText(
                                 modifier = Modifier.align(Alignment.CenterStart),
-                                text = if (bottomSheetData.cellData.isCompleted) stringResource(R.string.bottomsheet_completed)
-                                else stringResource(R.string.bottomsheet_in_completed),
+                                text = if (bottomSheetData.cellData.isCompleted) stringResource(Res.string.bottomsheet_completed)
+                                else stringResource(Res.string.bottomsheet_in_completed),
                             )
                             Switch(
                                 checked = bottomSheetData.cellData.isCompleted,

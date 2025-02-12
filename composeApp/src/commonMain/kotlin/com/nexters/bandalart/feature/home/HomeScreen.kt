@@ -15,13 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,24 +30,16 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.install.InstallStateUpdatedListener
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.nexters.bandalart.core.common.extension.await
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
 import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
-import com.nexters.bandalart.core.common.utils.isValidImmediateAppUpdate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
@@ -94,67 +83,67 @@ internal fun HomeRoute(
         }
     }
 
-    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+//    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+//
+//    val installStateUpdatedListener = remember {
+//        InstallStateUpdatedListener { state ->
+//            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+//                scope.launch {
+//                    val snackbarResult = snackbarHostState.showSnackbar(
+//                        message = context.getString(R.string.update_ready_to_install),
+//                        actionLabel = context.getString(R.string.update_action_restart),
+//                        duration = Indefinite,
+//                    )
+//
+//                    // 재시작 버튼 클릭시
+//                    if (snackbarResult == SnackbarResult.ActionPerformed) {
+//                        appUpdateManager.completeUpdate()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-    val installStateUpdatedListener = remember {
-        InstallStateUpdatedListener { state ->
-            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                scope.launch {
-                    val snackbarResult = snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.update_ready_to_install),
-                        actionLabel = context.getString(R.string.update_action_restart),
-                        duration = Indefinite,
-                    )
+//    DisposableEffect(Unit) {
+//        appUpdateManager.registerListener(installStateUpdatedListener)
+//        onDispose {
+//            appUpdateManager.unregisterListener(installStateUpdatedListener)
+//        }
+//    }
+//
+//    val appUpdateResultLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.StartIntentSenderForResult(),
+//    ) { result ->
+//        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
+//            scope.launch {
+//                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
+//                    viewModel.setLastRejectedUpdateVersion(versionCode)
+//                }
+//            }
+//        }
+//    }
 
-                    // 재시작 버튼 클릭시
-                    if (snackbarResult == SnackbarResult.ActionPerformed) {
-                        appUpdateManager.completeUpdate()
-                    }
-                }
-            }
-        }
-    }
-
-    DisposableEffect(Unit) {
-        appUpdateManager.registerListener(installStateUpdatedListener)
-        onDispose {
-            appUpdateManager.unregisterListener(installStateUpdatedListener)
-        }
-    }
-
-    val appUpdateResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult(),
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_CANCELED && result.data != null) {
-            scope.launch {
-                appUpdateManager.appUpdateInfo.await().availableVersionCode().let { versionCode ->
-                    viewModel.setLastRejectedUpdateVersion(versionCode)
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        try {
-            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
-
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                val availableVersionCode = appUpdateInfo.availableVersionCode()
-                if (!isValidImmediateAppUpdate(availableVersionCode) &&
-                    !viewModel.isUpdateAlreadyRejected(availableVersionCode) &&
-                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-                ) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        appUpdateResultLauncher,
-                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            Napier.e("Failed to check for flexible update", e)
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        try {
+//            val appUpdateInfo = appUpdateManager.appUpdateInfo.await()
+//
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+//                val availableVersionCode = appUpdateInfo.availableVersionCode()
+//                if (!isValidImmediateAppUpdate(availableVersionCode) &&
+//                    !viewModel.isUpdateAlreadyRejected(availableVersionCode) &&
+//                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+//                ) {
+//                    appUpdateManager.startUpdateFlowForResult(
+//                        appUpdateInfo,
+//                        appUpdateResultLauncher,
+//                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
+//                    )
+//                }
+//            }
+//        } catch (e: Exception) {
+//            Napier.e("Failed to check for flexible update", e)
+//        }
+//    }
 
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {
@@ -162,7 +151,7 @@ internal fun HomeRoute(
                 navigateToComplete(
                     event.id,
                     event.title,
-                    event.profileEmoji.ifEmpty { context.getString(R.string.home_default_emoji) },
+                    event.profileEmoji.ifEmpty { context.getString(Res.string.home_default_emoji) },
                     event.bandalartChart,
                 )
             }
@@ -183,7 +172,7 @@ internal fun HomeRoute(
 
             is HomeUiEvent.SaveBandalart -> {
                 context.saveImageToGallery(event.bitmap)
-                Toast.makeText(context, context.getString(R.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(Res.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
             }
 
             is HomeUiEvent.ShareBandalart -> {
@@ -195,7 +184,7 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShowAppVersion -> {
-                Toast.makeText(context, context.getString(R.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(Res.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
             }
         }
     }

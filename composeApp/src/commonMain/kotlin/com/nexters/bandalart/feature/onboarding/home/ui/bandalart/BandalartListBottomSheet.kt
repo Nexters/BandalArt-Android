@@ -31,11 +31,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray600
@@ -43,13 +43,13 @@ import com.nexters.bandalart.core.designsystem.theme.Gray800
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.nexters.bandalart.core.ui.NavigationBarHeightDp
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.getNavigationBarPadding
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartList
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +83,7 @@ fun BandalartListBottomSheet(
                     .padding(horizontal = 16.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.bandalart_list_title),
+                    text = stringResource(Res.string.bandalart_list_title),
                     color = Gray900,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W700,
@@ -101,7 +101,7 @@ fun BandalartListBottomSheet(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = stringResource(R.string.clear_description),
+                        contentDescription = stringResource(Res.string.clear_description),
                         tint = Gray900,
                     )
                 }
@@ -142,13 +142,13 @@ fun BandalartListBottomSheet(
                             Row {
                                 Icon(
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(R.string.add_description),
+                                    contentDescription = stringResource(Res.string.add_description),
                                     tint = Gray600,
                                     modifier = Modifier.size(20.dp),
                                 )
                                 Spacer(modifier = Modifier.padding(start = 4.dp))
                                 Text(
-                                    text = stringResource(R.string.bandalart_list_add),
+                                    text = stringResource(Res.string.bandalart_list_add),
                                     color = Gray800,
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.W600,

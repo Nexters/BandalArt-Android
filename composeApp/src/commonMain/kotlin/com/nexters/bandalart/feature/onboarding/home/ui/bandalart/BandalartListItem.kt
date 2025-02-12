@@ -27,11 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
@@ -39,10 +38,10 @@ import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun BandalartListItem(
@@ -78,8 +77,8 @@ fun BandalartListItem(
                 ) {
                     if (bandalartItem.profileEmoji.isNullOrEmpty()) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
-                            contentDescription = stringResource(R.string.empty_emoji_description),
+                            imageVector = vectorResource(Res.drawable.ic_empty_emoji),
+                            contentDescription = stringResource(Res.string.empty_emoji_description),
                             tint = Color.Unspecified,
                         )
                     } else {
@@ -108,12 +107,12 @@ fun BandalartListItem(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(R.string.check_description),
+                            contentDescription = stringResource(Res.string.check_description),
                             tint = Gray900,
                             modifier = Modifier.size(13.dp),
                         )
                         Text(
-                            text = stringResource(R.string.home_complete),
+                            text = stringResource(Res.string.home_complete),
                             color = Gray900,
                             fontWeight = FontWeight.W600,
                             fontSize = 10.sp,
@@ -134,7 +133,7 @@ fun BandalartListItem(
                     ) {
                         Text(
                             text = stringResource(
-                                R.string.home_complete_ratio,
+                                Res.string.home_complete_ratio,
                                 bandalartItem.completionRatio,
                             ),
                             color = Gray900,
@@ -157,7 +156,7 @@ fun BandalartListItem(
             Box(modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = stringResource(R.string.arrow_forward_description),
+                    contentDescription = stringResource(Res.string.arrow_forward_description),
                     tint = Gray400,
                     modifier = Modifier.size(16.dp),
                 )

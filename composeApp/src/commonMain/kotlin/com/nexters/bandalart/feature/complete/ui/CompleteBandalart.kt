@@ -22,19 +22,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import org.jetbrains.compose.resources.stringResource
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun CompleteBandalart(
@@ -48,7 +46,7 @@ fun CompleteBandalart(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(R.string.complete_chart),
+            text = stringResource(Res.string.complete_chart),
             color = Gray400,
             fontWeight = FontWeight.W600,
             fontSize = 14.sp,
@@ -83,10 +81,10 @@ fun CompleteBandalart(
                                 .background(Gray100),
                             contentAlignment = Alignment.Center,
                         ) {
-                            if (profileEmoji == stringResource(R.string.home_default_emoji)) {
+                            if (profileEmoji == stringResource(Res.string.home_default_emoji)) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
-                                    contentDescription = stringResource(R.string.empty_emoji_description),
+                                    imageVector = vectorResource(Res.drawable.ic_empty_emoji),
+                                    contentDescription = stringResource(Res.string.empty_emoji_description),
                                     tint = Color.Unspecified,
                                 )
                             } else {

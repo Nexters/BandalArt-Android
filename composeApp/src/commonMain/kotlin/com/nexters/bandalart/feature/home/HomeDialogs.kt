@@ -1,13 +1,13 @@
 package com.nexters.bandalart.feature.home
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.nexters.bandalart.core.ui.R
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.viewmodel.DialogState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun HomeDialogs(
@@ -19,11 +19,11 @@ internal fun HomeDialogs(
             uiState.bandalartData?.let { bandalart ->
                 BandalartDeleteAlertDialog(
                     title = if (bandalart.title.isNullOrEmpty()) {
-                        stringResource(R.string.delete_bandalart_dialog_empty_title)
+                        stringResource(Res.string.delete_bandalart_dialog_empty_title)
                     } else {
-                        stringResource(R.string.delete_bandalart_dialog_title, bandalart.title)
+                        stringResource(Res.string.delete_bandalart_dialog_title, bandalart.title)
                     },
-                    message = stringResource(R.string.delete_bandalart_dialog_message),
+                    message = stringResource(Res.string.delete_bandalart_dialog_message),
                     onDeleteClick = {
                         onHomeUiAction(HomeUiAction.OnDeleteBandalart(bandalart.id))
                     },
@@ -37,14 +37,14 @@ internal fun HomeDialogs(
             uiState.clickedCellData?.let { cellData ->
                 BandalartDeleteAlertDialog(
                     title = when (uiState.clickedCellType) {
-                        CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_title, cellData.title ?: "")
-                        CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_title, cellData.title ?: "")
-                        else -> stringResource(R.string.delete_bandalart_taskcell_dialog_title, cellData.title ?: "")
+                        CellType.MAIN -> stringResource(Res.string.delete_bandalart_maincell_dialog_title, cellData.title ?: "")
+                        CellType.SUB -> stringResource(Res.string.delete_bandalart_subcell_dialog_title, cellData.title ?: "")
+                        else -> stringResource(Res.string.delete_bandalart_taskcell_dialog_title, cellData.title ?: "")
                     },
                     message = when (uiState.clickedCellType) {
-                        CellType.MAIN -> stringResource(R.string.delete_bandalart_maincell_dialog_message)
-                        CellType.SUB -> stringResource(R.string.delete_bandalart_subcell_dialog_message)
-                        else -> stringResource(R.string.delete_bandalart_taskcell_dialog_message)
+                        CellType.MAIN -> stringResource(Res.string.delete_bandalart_maincell_dialog_message)
+                        CellType.SUB -> stringResource(Res.string.delete_bandalart_subcell_dialog_message)
+                        else -> stringResource(Res.string.delete_bandalart_taskcell_dialog_message)
                     },
                     onDeleteClick = {
                         onHomeUiAction(HomeUiAction.OnDeleteCell(cellData.id))

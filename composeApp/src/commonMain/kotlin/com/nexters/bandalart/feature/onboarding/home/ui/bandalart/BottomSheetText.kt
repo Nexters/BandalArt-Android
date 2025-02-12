@@ -5,17 +5,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.CellType
+import org.jetbrains.compose.resources.stringResource
 
 // TODO 텍스트들을 굳이 Composable 로 뺄 필요가 있나 생각(font 를 정의해서 넣으면 되는데)
 @Composable
@@ -26,19 +26,19 @@ fun BottomSheetTitleText(
 ) {
     val titleResId = when {
         isBlankCell -> when (cellType) {
-            CellType.MAIN -> R.string.bottomsheet_header_maincell_enter_title
-            CellType.SUB -> R.string.bottomsheet_header_subcell_enter_title
-            CellType.TASK -> R.string.bottomsheet_header_taskcell_enter_title
+            CellType.MAIN -> Res.string.bottomsheet_header_maincell_enter_title
+            CellType.SUB -> Res.string.bottomsheet_header_subcell_enter_title
+            CellType.TASK -> Res.string.bottomsheet_header_taskcell_enter_title
         }
         else -> when (cellType) {
-            CellType.MAIN -> R.string.bottomsheet_header_maincell_edit_title
-            CellType.SUB -> R.string.bottomsheet_header_subcell_edit_title
-            CellType.TASK -> R.string.bottomsheet_header_taskcell_edit_title
+            CellType.MAIN -> Res.string.bottomsheet_header_maincell_edit_title
+            CellType.SUB -> Res.string.bottomsheet_header_subcell_edit_title
+            CellType.TASK -> Res.string.bottomsheet_header_taskcell_edit_title
         }
     }
 
     Text(
-        text = stringResource(id = titleResId),
+        text = stringResource(titleResId),
         color = Gray900,
         fontSize = 16.sp,
         fontWeight = FontWeight.W700,
@@ -155,7 +155,7 @@ private fun BottomSheetBlankCellTitleTextPreview() {
 @Composable
 private fun BottomSheetSubTitleTextPreview() {
     BandalartTheme {
-        BottomSheetSubTitleText(text = stringResource(R.string.bottomsheet_title))
+        BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_title))
     }
 }
 
@@ -163,7 +163,7 @@ private fun BottomSheetSubTitleTextPreview() {
 @Composable
 private fun BottomSheetContentPlaceholderPreview() {
     BandalartTheme {
-        BottomSheetContentPlaceholder(text = stringResource(R.string.bottomsheet_title_placeholder))
+        BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_title_placeholder))
     }
 }
 
@@ -171,7 +171,7 @@ private fun BottomSheetContentPlaceholderPreview() {
 @Composable
 private fun BottomSheetContentTextPreview() {
     BandalartTheme {
-        BottomSheetContentText(text = stringResource(R.string.bottomsheet_completed))
+        BottomSheetContentText(text = stringResource(Res.string.bottomsheet_completed))
     }
 }
 
@@ -180,7 +180,7 @@ private fun BottomSheetContentTextPreview() {
 private fun BottomSheetButtonTextPreview() {
     BandalartTheme {
         BottomSheetButtonText(
-            text = stringResource(R.string.bottomsheet_done),
+            text = stringResource(Res.string.bottomsheet_done),
             color = Gray400,
         )
     }

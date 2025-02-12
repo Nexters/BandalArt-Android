@@ -37,18 +37,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray200
@@ -60,11 +58,11 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.feature.home.model.CellType
 import kotlinx.collections.immutable.persistentListOf
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 data class SkeletonSubCell(
     val rowCnt: Int,
@@ -101,7 +99,7 @@ fun BandalartSkeletonScreen(
                 ) {
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = stringResource(R.string.bandalart),
+                            text = stringResource(Res.string.bandalart),
                             color = Gray900,
                             fontSize = 28.sp,
                             fontWeight = FontWeight.W400,
@@ -135,15 +133,15 @@ fun BandalartSkeletonScreen(
                                         contentAlignment = Alignment.Center,
                                     ) {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_empty_emoji),
-                                            contentDescription = stringResource(R.string.empty_emoji_description),
+                                            imageVector = vectorResource(Res.drawable.ic_empty_emoji),
+                                            contentDescription = stringResource(Res.string.empty_emoji_description),
                                             tint = Color.Unspecified,
                                         )
                                     }
                                 }
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
-                                    contentDescription = stringResource(R.string.edit_description),
+                                    imageVector = vectorResource(Res.drawable.ic_edit),
+                                    contentDescription = stringResource(Res.string.edit_description),
                                     modifier = Modifier
                                         .align(Alignment.BottomEnd)
                                         .offset(x = 4.dp, y = 4.dp),
@@ -157,7 +155,7 @@ fun BandalartSkeletonScreen(
                                     .wrapContentHeight(),
                             ) {
                                 Text(
-                                    text = stringResource(R.string.skeleton_title),
+                                    text = stringResource(Res.string.skeleton_title),
                                     color = Gray900,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.W700,
@@ -167,8 +165,8 @@ fun BandalartSkeletonScreen(
                                     letterSpacing = (-0.4).sp,
                                 )
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_option),
-                                    contentDescription = stringResource(R.string.option_description),
+                                    imageVector = vectorResource(Res.drawable.ic_option),
+                                    contentDescription = stringResource(Res.string.option_description),
                                     modifier = Modifier.align(Alignment.CenterEnd),
                                     tint = Color.Unspecified,
                                 )
@@ -181,7 +179,7 @@ fun BandalartSkeletonScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = stringResource(R.string.skeleton_complete_ratio),
+                            text = stringResource(Res.string.skeleton_complete_ratio),
                             color = Gray600,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.W500,
@@ -217,12 +215,12 @@ fun BandalartSkeletonScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_share),
-                            contentDescription = stringResource(R.string.share_description),
+                            imageVector = vectorResource(Res.drawable.ic_share),
+                            contentDescription = stringResource(Res.string.share_description),
                             tint = Color.Unspecified,
                         )
                         Text(
-                            text = stringResource(R.string.home_share),
+                            text = stringResource(Res.string.home_share),
                             color = Gray900,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.W700,
@@ -263,7 +261,7 @@ fun BandalartSkeletonChart(
             for (index in subCellList.indices) {
                 Box(
                     modifier
-                        .layoutId(stringResource(R.string.home_layout_id, index + 1))
+                        .layoutId(stringResource(Res.string.home_layout_id, index + 1))
                         .clip(RoundedCornerShape(12.dp))
                         .background(color = Gray200),
                 ) {
@@ -279,7 +277,7 @@ fun BandalartSkeletonChart(
             }
             Box(
                 modifier
-                    .layoutId(stringResource(R.string.home_main_id))
+                    .layoutId(stringResource(Res.string.home_main_id))
                     .clip(RoundedCornerShape(10.dp))
                     .background(brush = taskBrush),
             ) {
@@ -292,11 +290,11 @@ fun BandalartSkeletonChart(
             }
         },
     ) { measurables, constraints ->
-        val sub1 = measurables.first { it.layoutId == context.getString(R.string.home_sub1_id) }
-        val sub2 = measurables.first { it.layoutId == context.getString(R.string.home_sub2_id) }
-        val sub3 = measurables.first { it.layoutId == context.getString(R.string.home_sub3_id) }
-        val sub4 = measurables.first { it.layoutId == context.getString(R.string.home_sub4_id) }
-        val main = measurables.first { it.layoutId == context.getString(R.string.home_main_id) }
+        val sub1 = measurables.first { it.layoutId == context.getString(Res.string.home_sub1_id) }
+        val sub2 = measurables.first { it.layoutId == context.getString(Res.string.home_sub2_id) }
+        val sub3 = measurables.first { it.layoutId == context.getString(Res.string.home_sub3_id) }
+        val sub4 = measurables.first { it.layoutId == context.getString(Res.string.home_sub4_id) }
+        val main = measurables.first { it.layoutId == context.getString(Res.string.home_main_id) }
 
         val chartWidth = paddedMaxWidth.roundToPx()
         val mainWidth = chartWidth / 5
@@ -431,7 +429,7 @@ private fun BandalartSkeletonScreenPreview() {
             ),
             repeatMode = RepeatMode.Reverse,
         ),
-        label = stringResource(R.string.skeleton_trans_animate_label),
+        label = stringResource(Res.string.skeleton_trans_animate_label),
     )
 
     val mainBrush = Brush.linearGradient(

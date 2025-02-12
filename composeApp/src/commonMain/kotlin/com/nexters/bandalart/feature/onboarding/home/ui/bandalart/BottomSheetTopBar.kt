@@ -15,13 +15,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.CellType
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BottomSheetTopBar(
@@ -45,7 +45,7 @@ fun BottomSheetTopBar(
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = stringResource(R.string.clear_description),
+                contentDescription = stringResource(Res.string.clear_description),
                 tint = Gray900,
             )
         }

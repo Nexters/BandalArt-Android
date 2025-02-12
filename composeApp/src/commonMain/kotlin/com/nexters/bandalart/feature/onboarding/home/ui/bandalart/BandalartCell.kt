@@ -20,11 +20,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray400
@@ -33,11 +32,11 @@ import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 data class CellInfo(
     val isSubCell: Boolean = false,
@@ -140,7 +139,7 @@ private fun SubCellContent(
         EmptySubCellContent(cellTextColor)
     } else {
         FilledCellContent(
-            title = cellData.title!!,
+            title = cellData.title,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
             fontWeight = FontWeight.W700,
@@ -156,7 +155,7 @@ private fun TaskCellContent(cellData: BandalartCellEntity) {
         EmptyTaskContent()
     } else {
         FilledCellContent(
-            title = cellData.title!!,
+            title = cellData.title,
             isCompleted = cellData.isCompleted,
             textColor = cellTextColor,
             fontWeight = FontWeight.W500,
@@ -169,13 +168,13 @@ private fun EmptyMainCellContent(textColor: Color) {
     Box(contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
-                cellText = stringResource(R.string.home_main_cell),
+                cellText = stringResource(Res.string.home_main_cell),
                 cellTextColor = textColor,
                 fontWeight = FontWeight.W700,
             )
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.add_description),
+                contentDescription = stringResource(Res.string.add_description),
                 tint = textColor,
                 modifier = Modifier
                     .size(20.dp)
@@ -190,13 +189,13 @@ private fun EmptySubCellContent(textColor: Color) {
     Box(contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CellText(
-                cellText = stringResource(R.string.home_sub_cell),
+                cellText = stringResource(Res.string.home_sub_cell),
                 cellTextColor = textColor,
                 fontWeight = FontWeight.W700,
             )
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.add_description),
+                contentDescription = stringResource(Res.string.add_description),
                 tint = textColor,
                 modifier = Modifier
                     .size(20.dp)
@@ -210,7 +209,7 @@ private fun EmptySubCellContent(textColor: Color) {
 private fun EmptyTaskContent() {
     Icon(
         imageVector = Icons.Default.Add,
-        contentDescription = stringResource(R.string.add_description),
+        contentDescription = stringResource(Res.string.add_description),
         tint = Gray500,
         modifier = Modifier.size(20.dp),
     )
@@ -236,8 +235,8 @@ private fun FilledCellContent(
 
         if (isCompleted) {
             Icon(
-                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_cell_check),
-                contentDescription = stringResource(R.string.complete_description),
+                imageVector = vectorResource(Res.drawable.ic_cell_check),
+                contentDescription = stringResource(Res.string.complete_description),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .offset(x = (-4).dp, y = (-4).dp),

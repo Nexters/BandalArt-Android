@@ -26,20 +26,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.stringResource
 import java.time.LocalDateTime
 
 private val years = (2000..2050).map { it }
@@ -70,7 +70,7 @@ fun BandalartDatePicker(
                 ),
         ) {
             Text(
-                text = stringResource(R.string.bottomsheet_reset),
+                text = stringResource(Res.string.bottomsheet_reset),
                 color = Gray900,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W700,
@@ -81,7 +81,7 @@ fun BandalartDatePicker(
                 fontFamily = pretendard,
             )
             Text(
-                text = stringResource(id = R.string.bottomsheet_done),
+                text = stringResource(Res.string.bottomsheet_done),
                 color = Gray900,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W700,
@@ -209,9 +209,9 @@ fun InfiniteItemsPicker(
                 ) {
                     Text(
                         text = when {
-                            isYear -> stringResource(R.string.datepicker_year, items[itemIndex].toString())
-                            isMonth -> stringResource(R.string.datepicker_month, items[itemIndex].toString())
-                            else -> stringResource(R.string.datepicker_day, items[itemIndex].toString())
+                            isYear -> stringResource(Res.string.datepicker_year, items[itemIndex].toString())
+                            isMonth -> stringResource(Res.string.datepicker_month, items[itemIndex].toString())
+                            else -> stringResource(Res.string.datepicker_day, items[itemIndex].toString())
                         },
                         modifier = Modifier
                             .fillMaxWidth()

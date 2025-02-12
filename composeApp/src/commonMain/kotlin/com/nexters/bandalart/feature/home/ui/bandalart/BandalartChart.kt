@@ -12,20 +12,20 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartChartData
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BandalartChart(
@@ -55,7 +55,7 @@ fun BandalartChart(
             for (index in subCellList.indices) {
                 Box(
                     modifier = Modifier
-                        .layoutId(stringResource(R.string.home_layout_id, index + 1))
+                        .layoutId(stringResource(Res.string.home_layout_id, index + 1))
                         .clip(RoundedCornerShape(12.dp))
                         .background(color = Gray300),
                 ) {
@@ -70,7 +70,7 @@ fun BandalartChart(
             }
             Box(
                 modifier = Modifier
-                    .layoutId(stringResource(R.string.home_main_id))
+                    .layoutId(stringResource(Res.string.home_main_id))
                     .clip(RoundedCornerShape(10.dp))
                     .background(color = bandalartData.mainColor.toColor()),
             ) {
@@ -83,11 +83,11 @@ fun BandalartChart(
             }
         },
     ) { measurables, constraints ->
-        val sub1 = measurables.first { it.layoutId == context.getString(R.string.home_sub1_id) }
-        val sub2 = measurables.first { it.layoutId == context.getString(R.string.home_sub2_id) }
-        val sub3 = measurables.first { it.layoutId == context.getString(R.string.home_sub3_id) }
-        val sub4 = measurables.first { it.layoutId == context.getString(R.string.home_sub4_id) }
-        val main = measurables.first { it.layoutId == context.getString(R.string.home_main_id) }
+        val sub1 = measurables.first { it.layoutId == context.getString(Res.string.home_sub1_id) }
+        val sub2 = measurables.first { it.layoutId == context.getString(Res.string.home_sub2_id) }
+        val sub3 = measurables.first { it.layoutId == context.getString(Res.string.home_sub3_id) }
+        val sub4 = measurables.first { it.layoutId == context.getString(Res.string.home_sub4_id) }
+        val main = measurables.first { it.layoutId == context.getString(Res.string.home_main_id) }
 
         val chartWidth = paddedMaxWidth.roundToPx()
         val mainWidth = chartWidth / 5

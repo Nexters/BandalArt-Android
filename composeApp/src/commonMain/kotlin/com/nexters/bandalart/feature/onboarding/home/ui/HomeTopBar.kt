@@ -19,19 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.AppTitle
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 internal fun HomeTopBar(
@@ -72,12 +71,12 @@ internal fun HomeTopBar(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (bandalartCount > 1) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(DesignR.drawable.ic_hamburger),
-                            contentDescription = stringResource(R.string.hamburger_description),
+                            imageVector = vectorResource(Res.drawable.ic_hamburger),
+                            contentDescription = stringResource(Res.string.hamburger_description),
                             tint = Color.Unspecified,
                         )
                         Text(
-                            text = stringResource(R.string.home_list),
+                            text = stringResource(Res.string.home_list),
                             color = Gray600,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W700,
@@ -86,12 +85,12 @@ internal fun HomeTopBar(
                     } else {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add_description),
+                            contentDescription = stringResource(Res.string.add_description),
                             tint = Gray600,
                             modifier = Modifier.size(20.dp),
                         )
                         Text(
-                            text = stringResource(R.string.home_add),
+                            text = stringResource(Res.string.home_add),
                             color = Gray600,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W700,

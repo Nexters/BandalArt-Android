@@ -23,16 +23,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavOptions
+import bandalart_android.composeapp.generated.resources.Res
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -47,12 +45,12 @@ import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.DevicePreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.PagerIndicator
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
-import com.nexters.bandalart.core.designsystem.R as DesignR
 
 @Composable
 internal fun OnBoardingRoute(
@@ -136,7 +134,7 @@ internal fun OnBoardingScreen(
                         ) {
                             Spacer(modifier = Modifier.height(50.dp))
                             Text(
-                                text = stringResource(R.string.onboarding_first_title),
+                                text = stringResource(Res.string.onboarding_first_title),
                                 modifier = modifier,
                                 color = Gray900,
                                 fontFamily = pretendard,
@@ -160,24 +158,24 @@ internal fun OnBoardingScreen(
                                     when (currentLocale.language) {
                                         Locale.KOREAN.language -> {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_onboarding_kr),
-                                                contentDescription = stringResource(R.string.delete_description),
+                                                imageVector = vectorResource(Res.drawable.ic_onboarding_kr),
+                                                contentDescription = stringResource(Res.string.delete_description),
                                                 modifier = Modifier.fillMaxSize(),
                                             )
                                         }
 
                                         Locale.ENGLISH.language -> {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_onboarding_en),
-                                                contentDescription = stringResource(R.string.delete_description),
+                                                imageVector = vectorResource(Res.drawable.ic_onboarding_en),
+                                                contentDescription = stringResource(Res.string.delete_description),
                                                 modifier = Modifier.fillMaxSize(),
                                             )
                                         }
 
                                         else -> {
                                             Image(
-                                                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_onboarding_en),
-                                                contentDescription = stringResource(R.string.delete_description),
+                                                imageVector = vectorResource(Res.drawable.ic_onboarding_en),
+                                                contentDescription = stringResource(Res.string.delete_description),
                                                 modifier = Modifier.fillMaxSize(),
                                             )
                                         }
@@ -195,7 +193,7 @@ internal fun OnBoardingScreen(
                             ) {
                                 Spacer(modifier = Modifier.height(50.dp))
                                 Text(
-                                    text = stringResource(R.string.onboarding_second_title),
+                                    text = stringResource(Res.string.onboarding_second_title),
                                     modifier = modifier,
                                     color = Gray900,
                                     fontFamily = pretendard,
@@ -226,7 +224,7 @@ internal fun OnBoardingScreen(
                             if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                                 BandalartButton(
                                     onClick = { setOnboardingCompletedStatus(true) },
-                                    text = stringResource(R.string.onboarding_start),
+                                    text = stringResource(Res.string.onboarding_start),
                                     modifier = Modifier
                                         .wrapContentWidth()
                                         .align(Alignment.BottomEnd)
@@ -237,7 +235,7 @@ internal fun OnBoardingScreen(
                             } else {
                                 BandalartButton(
                                     onClick = { setOnboardingCompletedStatus(true) },
-                                    text = stringResource(R.string.onboarding_start),
+                                    text = stringResource(Res.string.onboarding_start),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .align(Alignment.BottomCenter)

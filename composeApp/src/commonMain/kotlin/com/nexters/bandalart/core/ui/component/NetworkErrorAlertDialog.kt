@@ -18,20 +18,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun NetworkErrorAlertDialog(
@@ -51,8 +50,8 @@ fun NetworkErrorAlertDialog(
                     .padding(top = 24.dp),
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(DesignR.drawable.ic_circle_cross),
-                    contentDescription = stringResource(R.string.delete_description),
+                    imageVector = vectorResource(Res.drawable.ic_circle_cross),
+                    contentDescription = stringResource(Res.string.delete_description),
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     tint = Color.Unspecified,
                 )

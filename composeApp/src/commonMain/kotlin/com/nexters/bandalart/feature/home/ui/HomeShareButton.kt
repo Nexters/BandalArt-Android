@@ -13,19 +13,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.clickableSingle
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun HomeShareButton(
@@ -45,12 +43,12 @@ fun HomeShareButton(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(DesignR.drawable.ic_share),
-                contentDescription = stringResource(R.string.share_description),
+                imageVector = vectorResource(Res.drawable.ic_share),
+                contentDescription = stringResource(Res.string.share_description),
                 tint = Color.Unspecified,
             )
             Text(
-                text = stringResource(com.nexters.bandalart.core.ui.R.string.home_share),
+                text = stringResource(Res.string.home_share),
                 color = Gray900,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W700,

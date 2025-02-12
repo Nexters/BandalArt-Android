@@ -11,15 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.res.stringResource
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.ui.ComponentPreview
+import org.jetbrains.compose.resources.stringResource
 
 private val shimmerMainColors = listOf(
     Gray200,
@@ -53,7 +53,7 @@ fun BandalartSkeleton(
             ),
             repeatMode = RepeatMode.Reverse,
         ),
-        label = stringResource(R.string.skeleton_trans_animate_label),
+        label = stringResource(Res.string.skeleton_trans_animate_label),
     )
     val mainBrush = Brush.linearGradient(
         colors = shimmerMainColors,

@@ -28,11 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.common.extension.toFormatDate
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
@@ -42,14 +41,14 @@ import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartCellData
 import com.nexters.bandalart.feature.home.model.dummy.dummyBandalartData
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDropDownMenu
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun HomeHeader(
@@ -79,8 +78,8 @@ fun HomeHeader(
                     ) {
                         if (bandalartData.profileEmoji.isNullOrEmpty()) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_empty_emoji),
-                                contentDescription = stringResource(R.string.empty_emoji_description),
+                                imageVector = vectorResource(Res.drawable.ic_empty_emoji),
+                                contentDescription = stringResource(Res.string.empty_emoji_description),
                                 tint = Color.Unspecified,
                             )
                         } else {
@@ -93,8 +92,8 @@ fun HomeHeader(
                 }
                 if (bandalartData.profileEmoji.isNullOrEmpty()) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(DesignR.drawable.ic_edit),
-                        contentDescription = stringResource(R.string.edit_description),
+                        imageVector = vectorResource(Res.drawable.ic_edit),
+                        contentDescription = stringResource(Res.string.edit_description),
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .offset(x = 4.dp, y = 4.dp),
@@ -121,8 +120,8 @@ fun HomeHeader(
                     letterSpacing = (-0.4).sp,
                 )
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_option),
-                    contentDescription = stringResource(R.string.option_description),
+                    imageVector = vectorResource(Res.drawable.ic_option),
+                    contentDescription = stringResource(Res.string.option_description),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .clickable { onHomeUiAction(HomeUiAction.OnMenuClick) },
@@ -140,7 +139,7 @@ fun HomeHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.home_complete_ratio, bandalartData.completionRatio),
+                text = stringResource(Res.string.home_complete_ratio, bandalartData.completionRatio),
                 color = Gray600,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W500,
@@ -176,12 +175,12 @@ fun HomeHeader(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(com.nexters.bandalart.core.ui.R.string.check_description),
+                            contentDescription = stringResource(Res.string.check_description),
                             tint = Gray900,
                             modifier = Modifier.size(13.dp),
                         )
                         Text(
-                            text = stringResource(com.nexters.bandalart.core.ui.R.string.home_complete),
+                            text = stringResource(Res.string.home_complete),
                             color = Gray900,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.W600,

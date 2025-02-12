@@ -19,20 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Error
 import com.nexters.bandalart.core.designsystem.theme.Gray800
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
-import com.nexters.bandalart.core.designsystem.R as DesignR
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun BandalartDropDownMenu(
@@ -61,7 +60,7 @@ fun BandalartDropDownMenu(
             text = {
                 Row {
                     Icon(
-                        imageVector = ImageVector.vectorResource(id = DesignR.drawable.ic_gallery),
+                        imageVector = vectorResource(Res.drawable.ic_gallery),
                         contentDescription = "Gallery Icon",
                         modifier = Modifier
                             .size(24.dp)
@@ -69,7 +68,7 @@ fun BandalartDropDownMenu(
                         tint = Color.Unspecified,
                     )
                     Text(
-                        text = stringResource(R.string.dropdown_save),
+                        text = stringResource(Res.string.dropdown_save),
                         color = Gray800,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.W500,
@@ -93,15 +92,15 @@ fun BandalartDropDownMenu(
             text = {
                 Row {
                     Icon(
-                        imageVector = ImageVector.vectorResource(DesignR.drawable.ic_trash),
-                        contentDescription = stringResource(R.string.delete_description),
+                        imageVector = vectorResource(Res.drawable.ic_trash),
+                        contentDescription = stringResource(Res.string.delete_description),
                         modifier = Modifier
                             .size(24.dp)
                             .align(CenterVertically),
                         tint = Color.Unspecified,
                     )
                     Text(
-                        text = stringResource(R.string.dropdown_delete),
+                        text = stringResource(Res.string.dropdown_delete),
                         color = Error,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.W500,
