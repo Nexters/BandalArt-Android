@@ -28,6 +28,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.app_version_info
+import bandalart.composeapp.generated.resources.home_default_emoji
+import bandalart.composeapp.generated.resources.save_bandalart_image
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap

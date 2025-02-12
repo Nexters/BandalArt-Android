@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.bandalart_list_empty_title
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet

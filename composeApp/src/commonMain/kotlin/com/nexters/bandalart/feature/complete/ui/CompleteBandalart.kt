@@ -25,6 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.complete_chart
+import bandalart.composeapp.generated.resources.empty_emoji_description
+import bandalart.composeapp.generated.resources.home_default_emoji
+import bandalart.composeapp.generated.resources.ic_empty_emoji
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400

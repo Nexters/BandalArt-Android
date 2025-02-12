@@ -15,6 +15,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.home_layout_id
+import bandalart.composeapp.generated.resources.home_main_id
+import bandalart.composeapp.generated.resources.home_sub1_id
+import bandalart.composeapp.generated.resources.home_sub2_id
+import bandalart.composeapp.generated.resources.home_sub3_id
+import bandalart.composeapp.generated.resources.home_sub4_id
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity

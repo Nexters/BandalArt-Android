@@ -36,6 +36,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.add_description
+import bandalart.composeapp.generated.resources.bandalart_list_add
+import bandalart.composeapp.generated.resources.bandalart_list_title
+import bandalart.composeapp.generated.resources.clear_description
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray800

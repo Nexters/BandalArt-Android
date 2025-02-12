@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavOptions
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.app_icon_description
+import bandalart.composeapp.generated.resources.ic_app
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.navigation.Route

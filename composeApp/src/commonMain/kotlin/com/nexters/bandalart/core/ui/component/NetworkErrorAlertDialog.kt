@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.delete_description
+import bandalart.composeapp.generated.resources.ic_circle_cross
+import bandalart.composeapp.generated.resources.network_error_retry_message
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import org.jetbrains.compose.resources.stringResource

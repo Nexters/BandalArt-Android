@@ -22,6 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.add_description
+import bandalart.composeapp.generated.resources.hamburger_description
+import bandalart.composeapp.generated.resources.home_add
+import bandalart.composeapp.generated.resources.home_list
+import bandalart.composeapp.generated.resources.ic_hamburger
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.pretendard
 import com.nexters.bandalart.core.ui.component.AppTitle

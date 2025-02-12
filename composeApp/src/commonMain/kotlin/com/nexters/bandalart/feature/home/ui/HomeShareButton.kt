@@ -17,6 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.home_share
+import bandalart.composeapp.generated.resources.ic_share
+import bandalart.composeapp.generated.resources.share_description
 import com.nexters.bandalart.core.common.extension.clickableSingle
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900

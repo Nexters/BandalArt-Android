@@ -9,6 +9,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.bottomsheet_header_maincell_edit_title
+import bandalart.composeapp.generated.resources.bottomsheet_header_maincell_enter_title
+import bandalart.composeapp.generated.resources.bottomsheet_header_subcell_edit_title
+import bandalart.composeapp.generated.resources.bottomsheet_header_subcell_enter_title
+import bandalart.composeapp.generated.resources.bottomsheet_header_taskcell_edit_title
+import bandalart.composeapp.generated.resources.bottomsheet_header_taskcell_enter_title
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900

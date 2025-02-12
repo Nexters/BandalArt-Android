@@ -30,6 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.arrow_forward_description
+import bandalart.composeapp.generated.resources.check_description
+import bandalart.composeapp.generated.resources.empty_emoji_description
+import bandalart.composeapp.generated.resources.home_complete
+import bandalart.composeapp.generated.resources.home_complete_ratio
+import bandalart.composeapp.generated.resources.ic_empty_emoji
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300

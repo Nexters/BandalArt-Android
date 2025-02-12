@@ -2,6 +2,15 @@ package com.nexters.bandalart.feature.home
 
 import androidx.compose.runtime.Composable
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.delete_bandalart_dialog_empty_title
+import bandalart.composeapp.generated.resources.delete_bandalart_dialog_message
+import bandalart.composeapp.generated.resources.delete_bandalart_dialog_title
+import bandalart.composeapp.generated.resources.delete_bandalart_maincell_dialog_message
+import bandalart.composeapp.generated.resources.delete_bandalart_maincell_dialog_title
+import bandalart.composeapp.generated.resources.delete_bandalart_subcell_dialog_message
+import bandalart.composeapp.generated.resources.delete_bandalart_subcell_dialog_title
+import bandalart.composeapp.generated.resources.delete_bandalart_taskcell_dialog_message
+import bandalart.composeapp.generated.resources.delete_bandalart_taskcell_dialog_title
 import com.nexters.bandalart.feature.home.model.CellType
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartDeleteAlertDialog
 import com.nexters.bandalart.feature.home.viewmodel.DialogState

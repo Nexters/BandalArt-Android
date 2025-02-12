@@ -4,6 +4,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.create_bandalart
+import bandalart.composeapp.generated.resources.delete_bandalart
+import bandalart.composeapp.generated.resources.limit_create_bandalart
+import bandalart.composeapp.generated.resources.please_input_main_goal
 import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity

@@ -31,6 +31,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.bottomsheet_done
+import bandalart.composeapp.generated.resources.bottomsheet_reset
+import bandalart.composeapp.generated.resources.datepicker_day
+import bandalart.composeapp.generated.resources.datepicker_month
+import bandalart.composeapp.generated.resources.datepicker_year
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
