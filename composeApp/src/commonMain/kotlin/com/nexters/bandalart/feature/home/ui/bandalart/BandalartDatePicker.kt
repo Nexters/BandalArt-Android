@@ -1,8 +1,5 @@
-@file:SuppressLint("FrequentlyChangedStateReadInComposition")
-
 package com.nexters.bandalart.feature.home.ui.bandalart
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -169,7 +166,6 @@ fun DateSelectionSection(
     }
 }
 
-@SuppressLint("StringFormatInvalid")
 @Composable
 fun InfiniteItemsPicker(
     items: ImmutableList<Int>,

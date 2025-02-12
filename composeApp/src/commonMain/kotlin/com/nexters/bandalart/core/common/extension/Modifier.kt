@@ -1,12 +1,8 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package com.nexters.bandalart.core.common.extension
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +27,6 @@ import androidx.compose.ui.unit.Constraints
 import com.nexters.bandalart.core.common.utils.MultipleEventsCutter
 import com.nexters.bandalart.core.common.utils.get
 
-@SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(
         indication = null,
