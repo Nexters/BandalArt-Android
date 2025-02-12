@@ -45,6 +45,9 @@ import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 
+private const val ONBOARDING_KR_LOTTIE_FILE = "files/onboarding_kr.json"
+private const val ONBOARDING_EN_LOTTIE_FILE = "files/onboarding_en.json"
+
 @Composable
 internal fun OnBoardingRoute(
     navigateToHome: (NavOptions) -> Unit,
@@ -143,14 +146,6 @@ internal fun OnBoardingScreen(
                                             )
                                         }
 
-                                        Locale.JAPANESE.language -> {
-                                            Image(
-                                                imageVector = vectorResource(Res.drawable.ic_onboarding_jp),
-                                                contentDescription = stringResource(Res.string.delete_description),
-                                                modifier = Modifier.fillMaxSize(),
-                                            )
-                                        }
-
                                         else -> {
                                             Image(
                                                 imageVector = vectorResource(Res.drawable.ic_onboarding_en),
@@ -194,10 +189,9 @@ internal fun OnBoardingScreen(
                                     ) {
                                         LottieImage(
                                             jsonString = when (currentLocale.language) {
-                                                Locale.KOREAN.language -> Res.raw.lottie_onboarding_kr
-                                                Locale.ENGLISH.language -> Res.raw.lottie_onboarding_en
-                                                Locale.JAPANESE.language -> Res.raw.lottie_onboarding_jp
-                                                else -> Res.raw.lottie_onboarding_en
+                                                Locale.KOREAN.language -> ONBOARDING_KR_LOTTIE_FILE
+                                                Locale.ENGLISH.language -> ONBOARDING_EN_LOTTIE_FILE
+                                                else -> ONBOARDING_EN_LOTTIE_FILE
                                             },
                                             iterations = Int.MAX_VALUE,
                                             modifier = Modifier.fillMaxSize()

@@ -15,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
-import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.noRippleClickable
+
+private const val LOADING_ANIMATION_LOTTIE_FILE = "files/loading_animation.json"
 
 @Composable
 fun LoadingIndicator(
@@ -42,7 +43,7 @@ fun LoadingIndicator(
                 colors = CardDefaults.cardColors(White),
             ) {
                 LottieImage(
-                    jsonString = Res.raw.lottie_loading_animation,
+                    jsonString = LOADING_ANIMATION_LOTTIE_FILE,
                     iterations = Int.MAX_VALUE,
                     modifier = Modifier
                         .fillMaxSize()

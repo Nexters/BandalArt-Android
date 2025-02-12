@@ -29,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.complete_save
+import bandalart.composeapp.generated.resources.complete_share
+import bandalart.composeapp.generated.resources.complete_title
+import bandalart.composeapp.generated.resources.save_bandalart_image
 import com.nexters.bandalart.core.common.extension.saveUriToGallery
 import com.nexters.bandalart.core.common.extension.shareImage
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
@@ -45,6 +49,8 @@ import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+
+private const val FINISH_LOTTIE_FILE = "files/finish.json"
 
 @Composable
 internal fun CompleteRoute(
@@ -135,7 +141,7 @@ internal fun CompleteScreen(
         } else {
             Box {
                 LottieImage(
-                    jsonString = Res.raw.lottie_finish,
+                    jsonString = FINISH_LOTTIE_FILE,
                     iterations = Int.MAX_VALUE,
                     modifier = Modifier.align(Alignment.TopCenter)
                 )
