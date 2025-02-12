@@ -48,8 +48,8 @@ firebase-bom = "33.9.0"
 firebase-crashlytics = "3.0.3"
 ksp = "2.1.10-1.0.29"
 compose-stable-marker = "1.0.5"
-coil-compose = "2.7.0"
-landscapist = "2.3.6"
+coil3 = "3.1.0"
+landscapist = "2.4.6"
 koin = "4.1.0-Beta1"
 uri-kmp = "0.0.19"
 compottie = "2.0.0-rc04"
@@ -127,9 +127,9 @@ compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-
 test-kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "test-kotest" }
 test-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "test-kotest" }
 
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
+coil3-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
 landscapist-bom = { group = "com.github.skydoves", name = "landscapist-bom", version.ref = "landscapist" }
-landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
+landscapist-coil3 = { group = "com.github.skydoves", name = "landscapist-coil3" }
 landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-placeholder" }
 
 uri-kmp = { group = "com.eygraber", name = "uri-kmp", version.ref = "uri-kmp" }
@@ -193,6 +193,6 @@ androidx-compose = [
 
 landscapist = [
     "landscapist-bom",
-    "landscapist-coil",
+    "landscapist-coil3",
     "landscapist-placeholder",
 ]

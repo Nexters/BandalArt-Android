@@ -72,6 +72,9 @@ kotlin {
                 implementation(libs.compottie)
                 // implementation(libs.multiplatform.locale)
                 implementation(libs.filekit.core)
+
+                implementation(libs.coil3.compose)
+                // implementation(libs.bundles.landscapist)
             }
         }
 
