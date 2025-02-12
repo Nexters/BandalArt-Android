@@ -1,5 +1,7 @@
 package com.nexters.bandalart.core.navigation
 
+import kotlinx.serialization.Serializable
+
 sealed interface Route {
     @Serializable
     data object Splash : Route

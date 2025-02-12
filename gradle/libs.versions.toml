@@ -172,6 +172,7 @@ bandalart-jvm-kotlin = { id = "bandalart.jvm.kotlin", version = "unspecified" }
 bandalart-kotest = { id = "bandalart.kotest", version = "unspecified" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin-core" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-gradle-plugin" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 
 [bundles]
 

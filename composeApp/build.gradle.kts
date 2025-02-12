@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {

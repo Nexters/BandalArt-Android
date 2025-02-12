@@ -1,6 +1,6 @@
 package com.nexters.bandalart.core.ui
 
-import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview(
     name = "Portrait",

@@ -4,17 +4,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import bandalart_android.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.designsystem.theme.koronaOneRegular
 import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import java.util.Locale
 
 @Composable
@@ -43,7 +43,7 @@ fun AppKoreanTitle(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = stringResource(R.string.bandalart),
+        text = stringResource(Res.string.bandalart),
         color = Gray900,
         fontSize = 28.sp,
         fontWeight = FontWeight.W400,
@@ -59,7 +59,7 @@ fun AppEnglishTitle(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = stringResource(R.string.bandalart),
+        text = stringResource(Res.string.bandalart),
         color = Gray900,
         fontSize = 18.sp,
         fontWeight = FontWeight.W400,
