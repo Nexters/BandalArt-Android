@@ -23,19 +23,4 @@ buildCache {
 include(
     ":androidApp",
     ":composeApp",
-
-    ":core:data",
-    ":core:datastore",
-    ":core:database",
-    ":core:designsystem",
-    ":core:domain",
-    ":core:navigation",
-    ":core:ui",
-    ":core:common",
-    ":core:navigation",
-
-    ":feature:complete",
-    ":feature:home",
-    ":feature:onboarding",
-    ":feature:splash",
 )

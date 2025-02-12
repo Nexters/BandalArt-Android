@@ -54,19 +54,6 @@ android {
 
 dependencies {
     implementations(
-        projects.core.data,
-        projects.core.datastore,
-        projects.core.designsystem,
-        projects.core.domain,
-        projects.core.ui,
-        projects.core.common,
-        projects.core.navigation,
-
-        projects.feature.complete,
-        projects.feature.home,
-        projects.feature.onboarding,
-        projects.feature.splash,
-
         libs.androidx.activity.compose,
         libs.androidx.splash,
         libs.androidx.startup,

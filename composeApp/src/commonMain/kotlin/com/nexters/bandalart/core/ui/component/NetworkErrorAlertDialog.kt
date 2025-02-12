@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -93,7 +92,7 @@ fun NetworkErrorAlertDialog(
                         colors = ButtonDefaults.buttonColors(containerColor = Gray900),
                     ) {
                         Text(
-                            text = stringResource(R.string.network_error_retry_message),
+                            text = stringResource(Res.string.network_error_retry_message),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W600,
                             color = White,

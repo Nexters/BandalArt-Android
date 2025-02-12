@@ -3,7 +3,6 @@ package com.nexters.bandalart.core.common.utils
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import org.jetbrains.compose.resources.stringResource
 
 sealed class UiText {
