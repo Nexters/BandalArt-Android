@@ -8,7 +8,6 @@ import bandalart.composeapp.generated.resources.create_bandalart
 import bandalart.composeapp.generated.resources.delete_bandalart
 import bandalart.composeapp.generated.resources.limit_create_bandalart
 import bandalart.composeapp.generated.resources.please_input_main_goal
-import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartMainCellEntity
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.compose.resources.getString
 import java.util.Locale
 
 class HomeViewModel(
@@ -254,7 +254,7 @@ class HomeViewModel(
     private fun createBandalart() {
         viewModelScope.launch {
             if (_uiState.value.bandalartList.size + 1 > 5) {
-                _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(Res.string.limit_create_bandalart)))
+                _uiEvent.send(HomeUiEvent.ShowToast(getString(Res.string.limit_create_bandalart)))
                 return@launch
             }
 
@@ -267,7 +267,7 @@ class HomeViewModel(
                 setRecentBandalartId(bandalart.id)
                 // 새로운 반다라트를 로컬에 저장
                 upsertBandalartId(bandalart.id)
-                _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(Res.string.create_bandalart)))
+                _uiEvent.send(HomeUiEvent.ShowSnackbar(getString(Res.string.create_bandalart)))
             }
         }
     }
@@ -286,7 +286,7 @@ class HomeViewModel(
             hideModal()
             hideDropDownMenu()
             deleteBandalartId(bandalartId)
-            _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(Res.string.delete_bandalart)))
+            _uiEvent.send(HomeUiEvent.ShowSnackbar(getString(Res.string.delete_bandalart)))
         }
     }
 
@@ -376,7 +376,7 @@ class HomeViewModel(
         when {
             cellType != CellType.MAIN && isMainCellTitleEmpty -> {
                 viewModelScope.launch {
-                    _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(Res.string.please_input_main_goal)))
+                    _uiEvent.send(HomeUiEvent.ShowToast(getString(Res.string.please_input_main_goal)))
                 }
             }
 

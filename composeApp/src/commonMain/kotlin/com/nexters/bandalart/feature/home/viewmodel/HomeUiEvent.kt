@@ -1,7 +1,6 @@
 package com.nexters.bandalart.feature.home.viewmodel
 
 import androidx.compose.ui.graphics.ImageBitmap
-import com.nexters.bandalart.core.common.utils.UiText
 
 sealed interface HomeUiEvent {
     data class NavigateToComplete(
@@ -11,8 +10,8 @@ sealed interface HomeUiEvent {
         val bandalartChart: String,
     ) : HomeUiEvent
 
-    data class ShowSnackbar(val message: UiText) : HomeUiEvent
-    data class ShowToast(val message: UiText) : HomeUiEvent
+    data class ShowSnackbar(val message: String) : HomeUiEvent
+    data class ShowToast(val message: String) : HomeUiEvent
     data class SaveBandalart(val bitmap: ImageBitmap) : HomeUiEvent
     data class ShareBandalart(val bitmap: ImageBitmap) : HomeUiEvent
     data class CaptureBandalart(val bitmap: ImageBitmap) : HomeUiEvent

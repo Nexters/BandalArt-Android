@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +42,9 @@ import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteViewModel
+import kotlinx.coroutines.launch
 import multiplatform.network.cmptoast.showToast
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -55,6 +58,7 @@ internal fun CompleteRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {
@@ -64,7 +68,9 @@ internal fun CompleteRoute(
 
             is CompleteUiEvent.SaveBandalart -> {
                 context.saveUriToGallery(event.imageUri)
-                showToast(context.getString(Res.string.save_bandalart_image))
+                scope.launch {
+                    showToast(getString(Res.string.save_bandalart_image))
+                }
             }
 
             is CompleteUiEvent.ShareBandalart -> {

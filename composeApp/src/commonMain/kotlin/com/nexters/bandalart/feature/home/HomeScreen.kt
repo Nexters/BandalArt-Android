@@ -50,6 +50,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import multiplatform.network.cmptoast.showToast
+import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
 
 private const val SnackbarDuration = 1500L
@@ -153,7 +154,7 @@ internal fun HomeRoute(
             is HomeUiEvent.ShowSnackbar -> {
                 scope.launch {
                     val job = launch {
-                        onShowSnackbar(event.message.asString(context))
+                        onShowSnackbar(event.message)
                     }
                     delay(SnackbarDuration)
                     job.cancel()
@@ -161,7 +162,9 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShowToast -> {
-                showToast(event.message.asString(context))
+                scope.launch {
+                    showToast(event.message)
+                }
             }
 
             is HomeUiEvent.SaveBandalart -> {
