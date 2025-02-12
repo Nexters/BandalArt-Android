@@ -1,7 +1,6 @@
 package com.nexters.bandalart.feature.home
 
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,6 +49,7 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import multiplatform.network.cmptoast.showToast
 import org.koin.compose.viewmodel.koinViewModel
 
 private const val SnackbarDuration = 1500L
@@ -161,12 +161,12 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShowToast -> {
-                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+                showToast(event.message.asString(context))
             }
 
             is HomeUiEvent.SaveBandalart -> {
                 context.saveImageToGallery(event.bitmap)
-                Toast.makeText(context, context.getString(Res.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+                showToast(context.getString(Res.string.save_bandalart_image))
             }
 
             is HomeUiEvent.ShareBandalart -> {
@@ -178,7 +178,7 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShowAppVersion -> {
-                Toast.makeText(context, context.getString(Res.string.app_version_info, appVersion), Toast.LENGTH_SHORT).show()
+                showToast(context.getString(Res.string.app_version_info, appVersion))
             }
         }
     }

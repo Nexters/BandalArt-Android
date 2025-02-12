@@ -56,6 +56,7 @@ compottie = "2.0.0-rc04"
 buildkonfig = "0.15.2"
 multiplatform-locale = "0.9.0"
 filekit = "0.8.8"
+cmptoast = "1.0.4"
 
 test-kotest = "5.8.1"
 
@@ -137,6 +138,7 @@ compottie = { group = "io.github.alexzhirkevich", name = "compottie", version.re
 multiplatform-locale = { group = "com.vanniktech", name = "multiplatform-locale", version = "multiplatform-locale" }
 filekit-core = { group = "io.github.vinceglb", name = "filekit-core", version.ref = "filekit" }
 filekit-compose = { group = "io.github.vinceglb", name = "filekit-compose", version.ref = "filekit" }
+cmptoast = { group = "network.chaintech", name = "cmptoast", version.ref = "cmptoast" }
 
 [plugins]
 

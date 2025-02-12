@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.complete
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +41,7 @@ import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiAction
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiEvent
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteUiState
 import com.nexters.bandalart.feature.complete.viewmodel.CompleteViewModel
+import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -64,7 +64,7 @@ internal fun CompleteRoute(
 
             is CompleteUiEvent.SaveBandalart -> {
                 context.saveUriToGallery(event.imageUri)
-                Toast.makeText(context, context.getString(Res.string.save_bandalart_image), Toast.LENGTH_SHORT).show()
+                showToast(context.getString(Res.string.save_bandalart_image))
             }
 
             is CompleteUiEvent.ShareBandalart -> {
