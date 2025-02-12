@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -108,7 +107,7 @@ fun HomeHeader(
                     .wrapContentHeight(),
             ) {
                 Text(
-                    text = bandalartData.title ?: stringResource(com.nexters.bandalart.core.ui.R.string.home_empty_title),
+                    text = bandalartData.title ?: stringResource(Res.string.home_empty_title),
                     color = if (bandalartData.title.isNullOrEmpty()) Gray300 else Gray900,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,

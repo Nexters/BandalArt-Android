@@ -11,12 +11,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.designsystem.theme.Gray900
 import com.nexters.bandalart.core.ui.ComponentPreview
-import com.nexters.bandalart.core.ui.R
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -37,7 +36,7 @@ fun CompleteTopBar(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.arrow_forward_description),
+                contentDescription = stringResource(Res.string.arrow_forward_description),
                 tint = Gray900,
             )
         }

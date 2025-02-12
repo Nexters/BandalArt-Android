@@ -3,7 +3,7 @@ package com.nexters.bandalart.feature.onboarding.home
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.nexters.bandalart.core.ui.R
+import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.feature.home.model.BandalartUiModel
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartBottomSheet
 import com.nexters.bandalart.feature.home.ui.bandalart.BandalartEmojiBottomSheet
@@ -76,7 +76,7 @@ private fun updateBandalartListTitles(
     var counter = 1
     return list.map { item ->
         if (item.title.isNullOrEmpty()) {
-            val updatedTitle = context.getString(R.string.bandalart_list_empty_title, counter)
+            val updatedTitle = context.getString(Res.string.bandalart_list_empty_title, counter)
             counter += 1
             item.copy(
                 title = updatedTitle,

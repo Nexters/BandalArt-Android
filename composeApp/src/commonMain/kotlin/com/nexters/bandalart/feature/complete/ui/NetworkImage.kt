@@ -7,8 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
-import com.nexters.bandalart.core.designsystem.R
+import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.core.ui.ComponentPreview
 import com.skydoves.landscapist.ImageOptions
@@ -29,7 +28,7 @@ fun NetworkImage(
 ) {
     if (LocalInspectionMode.current) {
         Image(
-            painter = painterResource(id = R.drawable.ic_app),
+            painter = painterResource(Res.drawable.ic_app),
             contentDescription = "Example Image Icon",
             modifier = modifier,
         )

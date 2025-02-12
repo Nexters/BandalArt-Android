@@ -3,6 +3,7 @@ package com.nexters.bandalart.feature.home.viewmodel
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import bandalart.composeapp.generated.resources.Res
 import com.nexters.bandalart.core.common.utils.UiText
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartEmojiEntity
@@ -11,7 +12,6 @@ import com.nexters.bandalart.core.domain.entity.UpdateBandalartSubCellEntity
 import com.nexters.bandalart.core.domain.entity.UpdateBandalartTaskCellEntity
 import com.nexters.bandalart.core.domain.repository.BandalartRepository
 import com.nexters.bandalart.core.domain.repository.InAppUpdateRepository
-import com.nexters.bandalart.core.ui.R
 import com.nexters.bandalart.feature.home.mapper.toUiModel
 import com.nexters.bandalart.feature.home.model.CellType
 import kotlinx.collections.immutable.toImmutableList
@@ -250,7 +250,7 @@ class HomeViewModel(
     private fun createBandalart() {
         viewModelScope.launch {
             if (_uiState.value.bandalartList.size + 1 > 5) {
-                _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.limit_create_bandalart)))
+                _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(Res.string.limit_create_bandalart)))
                 return@launch
             }
 
@@ -263,7 +263,7 @@ class HomeViewModel(
                 setRecentBandalartId(bandalart.id)
                 // 새로운 반다라트를 로컬에 저장
                 upsertBandalartId(bandalart.id)
-                _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.create_bandalart)))
+                _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(Res.string.create_bandalart)))
             }
         }
     }
@@ -282,7 +282,7 @@ class HomeViewModel(
             hideModal()
             hideDropDownMenu()
             deleteBandalartId(bandalartId)
-            _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(R.string.delete_bandalart)))
+            _uiEvent.send(HomeUiEvent.ShowSnackbar(UiText.StringResource(Res.string.delete_bandalart)))
         }
     }
 
@@ -372,7 +372,7 @@ class HomeViewModel(
         when {
             cellType != CellType.MAIN && isMainCellTitleEmpty -> {
                 viewModelScope.launch {
-                    _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(R.string.please_input_main_goal)))
+                    _uiEvent.send(HomeUiEvent.ShowToast(UiText.StringResource(Res.string.please_input_main_goal)))
                 }
             }
 
