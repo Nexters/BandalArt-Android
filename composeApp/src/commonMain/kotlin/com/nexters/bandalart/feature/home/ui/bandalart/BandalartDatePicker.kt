@@ -33,6 +33,7 @@ import bandalart.composeapp.generated.resources.bottomsheet_reset
 import bandalart.composeapp.generated.resources.datepicker_day
 import bandalart.composeapp.generated.resources.datepicker_month
 import bandalart.composeapp.generated.resources.datepicker_year
+import com.nexters.bandalart.core.common.extension.LocalDateTime
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
@@ -40,7 +41,6 @@ import com.nexters.bandalart.core.designsystem.theme.pretendard
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
-import java.time.LocalDateTime
 
 private val years = (2000..2050).map { it }
 private val monthsNumber = (1..12).map { it }

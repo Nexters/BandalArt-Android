@@ -45,7 +45,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,11 +64,12 @@ import bandalart.composeapp.generated.resources.edit_description
 import bandalart.composeapp.generated.resources.empty_emoji_description
 import bandalart.composeapp.generated.resources.ic_edit
 import bandalart.composeapp.generated.resources.ic_empty_emoji
+import com.nexters.bandalart.core.common.extension.LocalDateTime
 import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
-import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.extension.noRippleClickable
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.common.extension.toStringLocalDateTime
+import com.nexters.bandalart.core.common.getLocale
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray400
@@ -83,7 +83,6 @@ import com.nexters.bandalart.feature.home.viewmodel.BottomSheetState
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,11 +94,9 @@ fun BandalartBottomSheet(
     bottomSheetData: BottomSheetState.Cell,
     onHomeUiAction: (HomeUiAction) -> Unit,
 ) {
-    val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
-    val currentLocale = context.getCurrentLocale()
 
     val isCompleteButtonEnabled by remember(
         bottomSheetData.cellData.title,
@@ -208,7 +205,7 @@ fun BandalartBottomSheet(
                                 value = bottomSheetData.cellData.title ?: "",
                                 onValueChange = { title ->
                                     onHomeUiAction(
-                                        HomeUiAction.OnCellTitleUpdate(title, currentLocale),
+                                        HomeUiAction.OnCellTitleUpdate(title, getLocale()),
                                     )
                                 },
                                 placeholder = stringResource(Res.string.bottomsheet_title_placeholder),
@@ -280,7 +277,7 @@ fun BandalartBottomSheet(
                             if (bottomSheetData.cellData.dueDate.isNullOrEmpty()) {
                                 BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_duedate_placeholder))
                             } else {
-                                BottomSheetContentText(text = bottomSheetData.cellData.dueDate.toStringLocalDateTime())
+                                BottomSheetContentText(text = bottomSheetData.cellData.dueDate.toStringLocalDateTime(getLocale()))
                             }
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
