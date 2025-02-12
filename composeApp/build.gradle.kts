@@ -66,8 +66,8 @@ kotlin {
 
                 implementation(libs.napier)
                 implementation(libs.uri.kmp)
-                implementation(libs.kottie)
                 implementation(libs.compottie)
+                implementation(libs.buildkonfig)
             }
         }
 
