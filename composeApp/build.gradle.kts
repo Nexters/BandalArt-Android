@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidx.room)
-    alias(libs.plugins.buildkonfig)
+    // alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -68,11 +68,10 @@ kotlin {
                 implementation(libs.napier)
                 implementation(libs.uri.kmp)
                 implementation(libs.compottie)
-                implementation(libs.buildkonfig)
-                implementation(libs.multiplatform.locale)
+                // implementation(libs.multiplatform.locale)
+                implementation(libs.filekit.core)
             }
         }
-
 
         iosMain {
             dependencies {}
