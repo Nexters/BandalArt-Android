@@ -41,6 +41,7 @@ kotlin {
                 // compileOnly(libs.compose.stable.marker)
 
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.kotlinx.serialization.json)
 
@@ -64,6 +65,8 @@ kotlin {
                 implementation(libs.koin.compose.viewmodel)
 
                 implementation(libs.napier)
+                implementation(libs.uri.kmp)
+                implementation(libs.kottie)
             }
         }
 
