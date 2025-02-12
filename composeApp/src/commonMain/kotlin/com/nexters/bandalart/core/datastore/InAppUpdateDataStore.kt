@@ -1,13 +1,13 @@
 package com.nexters.bandalart.core.datastore
 
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import java.io.IOException
 
 class InAppUpdateDataStore(
     private val dataStore: DataStore<Preferences>,
