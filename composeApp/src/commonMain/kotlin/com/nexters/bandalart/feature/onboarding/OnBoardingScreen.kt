@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.onboarding
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavOptions
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.delete_description
+import bandalart.composeapp.generated.resources.ic_onboarding_en
+import bandalart.composeapp.generated.resources.ic_onboarding_kr
+import bandalart.composeapp.generated.resources.onboarding_first_title
+import bandalart.composeapp.generated.resources.onboarding_second_title
+import bandalart.composeapp.generated.resources.onboarding_start
 import com.nexters.bandalart.core.common.extension.aspectRatioBasedOnOrientation
 import com.nexters.bandalart.core.common.extension.getCurrentLocale
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
@@ -78,7 +81,7 @@ internal fun OnBoardingScreen(
 ) {
     val context = LocalContext.current
     val currentLocale = context.getCurrentLocale()
-    val configuration = LocalConfiguration.current
+    // val configuration = LocalConfiguration.current
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -199,29 +202,39 @@ internal fun OnBoardingScreen(
                                     }
                                 }
                             }
-                            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                                BandalartButton(
-                                    onClick = { setOnboardingCompletedStatus(true) },
-                                    text = stringResource(Res.string.onboarding_start),
-                                    modifier = Modifier
-                                        .wrapContentWidth()
-                                        .align(Alignment.BottomEnd)
-                                        .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
-                                        .clip(shape = RoundedCornerShape(50.dp))
-                                        .background(Gray900),
-                                )
-                            } else {
-                                BandalartButton(
-                                    onClick = { setOnboardingCompletedStatus(true) },
-                                    text = stringResource(Res.string.onboarding_start),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .align(Alignment.BottomCenter)
-                                        .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
-                                        .clip(shape = RoundedCornerShape(50.dp))
-                                        .background(Gray900),
-                                )
-                            }
+                            BandalartButton(
+                                onClick = { setOnboardingCompletedStatus(true) },
+                                text = stringResource(Res.string.onboarding_start),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
+                                    .clip(shape = RoundedCornerShape(50.dp))
+                                    .background(Gray900),
+                            )
+//                            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                                BandalartButton(
+//                                    onClick = { setOnboardingCompletedStatus(true) },
+//                                    text = stringResource(Res.string.onboarding_start),
+//                                    modifier = Modifier
+//                                        .wrapContentWidth()
+//                                        .align(Alignment.BottomEnd)
+//                                        .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
+//                                        .clip(shape = RoundedCornerShape(50.dp))
+//                                        .background(Gray900),
+//                                )
+//                            } else {
+//                                BandalartButton(
+//                                    onClick = { setOnboardingCompletedStatus(true) },
+//                                    text = stringResource(Res.string.onboarding_start),
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .align(Alignment.BottomCenter)
+//                                        .padding(bottom = 32.dp, start = 24.dp, end = 24.dp)
+//                                        .clip(shape = RoundedCornerShape(50.dp))
+//                                        .background(Gray900),
+//                                )
+//                            }
                         }
                     }
                 }
