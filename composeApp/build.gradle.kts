@@ -1,4 +1,6 @@
 import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -13,6 +15,12 @@ plugins {
 }
 
 kotlin {
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     val xcfName = "bandalartKit"
 
     listOf(
@@ -83,6 +91,15 @@ kotlin {
 
 android {
     namespace = "com.nexters.bandalart"
+    compileSdk = libs.versions.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+
+        versionCode = 1
+        versionName = "1.0"
+    }
 
     signingConfigs {
         create("release") {
