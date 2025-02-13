@@ -1,12 +1,9 @@
 package com.nexters.bandalart.core.common.extension
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat.PNG
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -14,15 +11,12 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
-import com.nexters.bandalart.core.common.Locale
+import androidx.navigation.serialization.UNKNOWN.put
+import com.eygraber.uri.Uri
 import io.github.aakira.napier.Napier
 import kotlinx.datetime.Clock
 import java.io.File
 import java.io.FileOutputStream
-
-fun Context.getCurrentLocale(): Locale {
-    return this.resources.configuration.locales.get(0)
-}
 
 @Suppress("TooGenericExceptionCaught")
 fun Context.externalShareForBitmap(bitmap: ImageBitmap) {
