@@ -15,36 +15,39 @@ import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.core.designsystem.theme.BandalartTheme
 import com.nexters.bandalart.navigation.BandalartNavHost
 import com.nexters.bandalart.ui.BandalartSnackbar
+import org.koin.compose.KoinContext
 
 @Composable
 fun BandalartApp() {
     BandalartTheme {
-        BoxWithConstraints {
-            val snackbarHostState = remember { SnackbarHostState() }
-            val screenHeight = maxHeight.value
+        KoinContext {
+            BoxWithConstraints {
+                val snackbarHostState = remember { SnackbarHostState() }
+                val screenHeight = maxHeight.value
 
-            Scaffold(
-                snackbarHost = {
-                    SnackbarHost(
-                        modifier = Modifier
-                            .padding(bottom = (screenHeight - 96).dp)
-                            .height(36.dp),
-                        hostState = snackbarHostState,
-                        snackbar = {
-                            BandalartSnackbar(message = it.visuals.message)
+                Scaffold(
+                    snackbarHost = {
+                        SnackbarHost(
+                            modifier = Modifier
+                                .padding(bottom = (screenHeight - 96).dp)
+                                .height(36.dp),
+                            hostState = snackbarHostState,
+                            snackbar = {
+                                BandalartSnackbar(message = it.visuals.message)
+                            },
+                        )
+                    },
+                ) { innerPadding ->
+                    BandalartNavHost(
+                        modifier = Modifier.padding(innerPadding),
+                        onShowSnackbar = { message ->
+                            snackbarHostState.showSnackbar(
+                                message = message,
+                                duration = SnackbarDuration.Short,
+                            ) == SnackbarResult.ActionPerformed
                         },
                     )
-                },
-            ) { innerPadding ->
-                BandalartNavHost(
-                    modifier = Modifier.padding(innerPadding),
-                    onShowSnackbar = { message ->
-                        snackbarHostState.showSnackbar(
-                            message = message,
-                            duration = SnackbarDuration.Short,
-                        ) == SnackbarResult.ActionPerformed
-                    },
-                )
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.nexters.bandalart.feature.home
 
-import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +29,7 @@ import bandalart.composeapp.generated.resources.Res
 import bandalart.composeapp.generated.resources.app_version_info
 import bandalart.composeapp.generated.resources.home_default_emoji
 import bandalart.composeapp.generated.resources.save_bandalart_image
+import com.nexters.bandalart.core.common.AppVersionProvider
 import com.nexters.bandalart.core.common.extension.bitmapToFileUri
 import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
 import com.nexters.bandalart.core.common.extension.externalShareForBitmap
@@ -46,11 +46,11 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiEvent
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import com.nexters.bandalart.feature.home.viewmodel.HomeViewModel
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.getString
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 private const val SnackbarDuration = 1500L
@@ -69,13 +69,9 @@ internal fun HomeRoute(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val appVersionProvider = koinInject<AppVersionProvider>()
     val appVersion = remember {
-        try {
-            context.packageManager.getPackageInfo(context.packageName, 0).versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            Napier.e("Failed to get package info", e, tag = "AppVersion")
-            "Unknown"
-        }
+        appVersionProvider.getAppVersion()
     }
 
 //    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
