@@ -46,10 +46,6 @@ import bandalart.composeapp.generated.resources.empty_emoji_description
 import bandalart.composeapp.generated.resources.home_layout_id
 import bandalart.composeapp.generated.resources.home_main_id
 import bandalart.composeapp.generated.resources.home_share
-import bandalart.composeapp.generated.resources.home_sub1_id
-import bandalart.composeapp.generated.resources.home_sub2_id
-import bandalart.composeapp.generated.resources.home_sub3_id
-import bandalart.composeapp.generated.resources.home_sub4_id
 import bandalart.composeapp.generated.resources.ic_edit
 import bandalart.composeapp.generated.resources.ic_empty_emoji
 import bandalart.composeapp.generated.resources.ic_option
@@ -64,7 +60,7 @@ import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray600
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
+import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegularFontFamily
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
 import com.nexters.bandalart.feature.home.ui.CompletionRatioProgressBar
 import com.nexters.bandalart.feature.home.model.CellType
@@ -114,7 +110,7 @@ fun BandalartSkeletonScreen(
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
                                 .padding(start = 20.dp, top = 2.dp),
-                            fontFamily = neurimboGothicRegular,
+                            fontFamily = neurimboGothicRegularFontFamily(),
                             lineHeight = 20.sp,
                             letterSpacing = (-0.56).sp,
                         )
@@ -298,11 +294,11 @@ fun BandalartSkeletonChart(
             }
         },
     ) { measurables, constraints ->
-        val sub1 = measurables.first { it.layoutId == context.getString(Res.string.home_sub1_id) }
-        val sub2 = measurables.first { it.layoutId == context.getString(Res.string.home_sub2_id) }
-        val sub3 = measurables.first { it.layoutId == context.getString(Res.string.home_sub3_id) }
-        val sub4 = measurables.first { it.layoutId == context.getString(Res.string.home_sub4_id) }
-        val main = measurables.first { it.layoutId == context.getString(Res.string.home_main_id) }
+        val sub1 = measurables.first { it.layoutId == "Sub 1" }
+        val sub2 = measurables.first { it.layoutId == "Sub 2" }
+        val sub3 = measurables.first { it.layoutId == "Sub 3" }
+        val sub4 = measurables.first { it.layoutId == "Sub 4" }
+        val main = measurables.first { it.layoutId == "Main" }
 
         val chartWidth = paddedMaxWidth.roundToPx()
         val mainWidth = chartWidth / 5

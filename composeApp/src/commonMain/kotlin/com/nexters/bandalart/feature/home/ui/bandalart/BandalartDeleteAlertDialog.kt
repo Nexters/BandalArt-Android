@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.delete_bandalart_cancel
+import bandalart.composeapp.generated.resources.delete_bandalart_delete
+import bandalart.composeapp.generated.resources.delete_description
+import bandalart.composeapp.generated.resources.ic_delete
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray400
 import com.nexters.bandalart.core.designsystem.theme.Gray900

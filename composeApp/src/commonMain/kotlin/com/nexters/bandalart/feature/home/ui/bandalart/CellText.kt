@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 
 val cellLineBreak = LineBreak(
     strategy = LineBreak.Strategy.Simple,
@@ -34,7 +34,7 @@ fun CellText(
             .padding(horizontal = 4.dp, vertical = 6.dp)
             .alpha(textAlpha),
         color = cellTextColor,
-        fontFamily = pretendard,
+        fontFamily = pretendardFontFamily(),
         fontWeight = fontWeight,
         fontSize = 12.sp,
         lineHeight = 16.8.sp,

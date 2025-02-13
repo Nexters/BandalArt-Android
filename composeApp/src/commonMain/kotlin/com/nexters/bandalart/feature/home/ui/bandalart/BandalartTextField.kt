@@ -30,7 +30,7 @@ internal fun BandalartTextField(
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         maxLines = 1,
-        textStyle = BottomSheetContent,
+        textStyle = BottomSheetContent(),
         decorationBox = { innerTextField ->
             if (value.isEmpty()) {
                 BottomSheetContentPlaceholder(text = placeholder)

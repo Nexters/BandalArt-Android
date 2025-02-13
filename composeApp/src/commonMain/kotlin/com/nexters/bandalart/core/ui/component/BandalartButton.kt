@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.common.extension.clickableSingle
-import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 
 @Composable
 fun BandalartButton(
@@ -32,7 +32,7 @@ fun BandalartButton(
             fontSize = 16.sp,
             fontWeight = FontWeight.W700,
             modifier = Modifier.padding(horizontal = 32.dp),
-            fontFamily = pretendard,
+            fontFamily = pretendardFontFamily(),
             letterSpacing = (-0.32).sp,
         )
     }

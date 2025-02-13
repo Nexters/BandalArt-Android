@@ -37,7 +37,7 @@ import com.nexters.bandalart.core.common.extension.LocalDateTime
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.designsystem.theme.Gray200
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
@@ -78,7 +78,7 @@ fun BandalartDatePicker(
                     .clickable {
                         onDueDateSelect(LocalDateTime.now())
                     },
-                fontFamily = pretendard,
+                fontFamily = pretendardFontFamily(),
             )
             Text(
                 text = stringResource(Res.string.bottomsheet_done),
@@ -90,7 +90,7 @@ fun BandalartDatePicker(
                     .clickable {
                         onDueDateSelect(selectedDateWithValidate(chosenYear.value, chosenMonth.value, chosenDay.value))
                     },
-                fontFamily = pretendard,
+                fontFamily = pretendardFontFamily(),
             )
         }
         DateSelectionSection(
@@ -219,7 +219,7 @@ fun InfiniteItemsPicker(
                         fontSize = if (isMiddleItem) 20.sp else 17.sp,
                         fontWeight = if (isMiddleItem) FontWeight.W500 else FontWeight.W400,
                         textAlign = TextAlign.Center,
-                        fontFamily = pretendard,
+                        fontFamily = pretendardFontFamily(),
                     )
                 }
             }

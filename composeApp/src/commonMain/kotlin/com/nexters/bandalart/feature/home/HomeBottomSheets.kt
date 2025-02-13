@@ -12,6 +12,7 @@ import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiState
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun HomeBottomSheets(
@@ -68,11 +69,12 @@ internal fun HomeBottomSheets(
     }
 }
 
-private suspend fun updateBandalartListTitles(list: List<BandalartUiModel>): List<BandalartUiModel> {
+@Composable
+private fun updateBandalartListTitles(list: List<BandalartUiModel>): List<BandalartUiModel> {
     var counter = 1
     return list.map { item ->
         if (item.title.isNullOrEmpty()) {
-            val updatedTitle = getString(Res.string.bandalart_list_empty_title, counter)
+            val updatedTitle = stringResource(Res.string.bandalart_list_empty_title, counter)
             counter += 1
             item.copy(
                 title = updatedTitle,

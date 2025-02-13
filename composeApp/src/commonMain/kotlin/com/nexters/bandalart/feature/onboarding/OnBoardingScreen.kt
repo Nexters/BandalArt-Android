@@ -38,7 +38,7 @@ import com.nexters.bandalart.core.common.getLocale
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 import com.nexters.bandalart.core.navigation.Route
 import com.nexters.bandalart.core.ui.component.BandalartButton
 import com.nexters.bandalart.core.ui.component.LottieImage
@@ -111,7 +111,7 @@ internal fun OnBoardingScreen(
                                 text = stringResource(Res.string.onboarding_first_title),
                                 modifier = modifier,
                                 color = Gray900,
-                                fontFamily = pretendard,
+                                fontFamily = pretendardFontFamily(),
                                 fontWeight = FontWeight.W700,
                                 fontSize = 22.sp,
                                 lineHeight = 30.8.sp,
@@ -170,7 +170,7 @@ internal fun OnBoardingScreen(
                                     text = stringResource(Res.string.onboarding_second_title),
                                     modifier = modifier,
                                     color = Gray900,
-                                    fontFamily = pretendard,
+                                    fontFamily = pretendardFontFamily(),
                                     fontWeight = FontWeight.W700,
                                     fontSize = 22.sp,
                                     lineHeight = 30.8.sp,

@@ -10,8 +10,8 @@ import bandalart.composeapp.generated.resources.bandalart
 import com.nexters.bandalart.core.common.Language
 import com.nexters.bandalart.core.common.getLocale
 import com.nexters.bandalart.core.designsystem.theme.Gray900
-import com.nexters.bandalart.core.designsystem.theme.koronaOneRegular
-import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegular
+import com.nexters.bandalart.core.designsystem.theme.koronaOneRegularFontFamily
+import com.nexters.bandalart.core.designsystem.theme.neurimboGothicRegularFontFamily
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -43,7 +43,7 @@ fun AppKoreanTitle(
         fontSize = 28.sp,
         fontWeight = FontWeight.W400,
         modifier = modifier,
-        fontFamily = neurimboGothicRegular,
+        fontFamily = neurimboGothicRegularFontFamily(),
         lineHeight = 20.sp,
         letterSpacing = (-0.56).sp,
     )
@@ -59,7 +59,7 @@ fun AppEnglishTitle(
         fontSize = 18.sp,
         fontWeight = FontWeight.W400,
         modifier = modifier,
-        fontFamily = koronaOneRegular,
+        fontFamily = koronaOneRegularFontFamily(),
         lineHeight = 20.sp,
         letterSpacing = (-0.36).sp,
     )

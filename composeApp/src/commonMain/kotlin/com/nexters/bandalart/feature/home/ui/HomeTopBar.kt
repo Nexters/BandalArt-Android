@@ -28,7 +28,7 @@ import bandalart.composeapp.generated.resources.home_add
 import bandalart.composeapp.generated.resources.home_list
 import bandalart.composeapp.generated.resources.ic_hamburger
 import com.nexters.bandalart.core.designsystem.theme.Gray600
-import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 import com.nexters.bandalart.core.ui.component.AppTitle
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import org.jetbrains.compose.resources.stringResource
@@ -82,7 +82,7 @@ internal fun HomeTopBar(
                             color = Gray600,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W700,
-                            fontFamily = pretendard,
+                            fontFamily = pretendardFontFamily(),
                         )
                     } else {
                         Icon(

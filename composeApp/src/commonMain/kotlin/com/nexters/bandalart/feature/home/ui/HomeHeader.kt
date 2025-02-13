@@ -43,6 +43,7 @@ import bandalart.composeapp.generated.resources.ic_option
 import bandalart.composeapp.generated.resources.option_description
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.common.extension.toFormatDate
+import com.nexters.bandalart.core.common.getLocale
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.designsystem.theme.Gray600
@@ -159,7 +160,7 @@ fun HomeHeader(
                     color = Gray300,
                 )
                 Text(
-                    text = bandalartData.dueDate.toFormatDate(),
+                    text = bandalartData.dueDate.toFormatDate(getLocale()),
                     color = Gray600,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W500,

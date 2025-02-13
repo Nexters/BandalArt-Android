@@ -23,9 +23,14 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bandalart.composeapp.generated.resources.Res
+import bandalart.composeapp.generated.resources.delete_description
+import bandalart.composeapp.generated.resources.dropdown_delete
+import bandalart.composeapp.generated.resources.dropdown_save
+import bandalart.composeapp.generated.resources.ic_gallery
+import bandalart.composeapp.generated.resources.ic_trash
 import com.nexters.bandalart.core.designsystem.theme.Error
 import com.nexters.bandalart.core.designsystem.theme.Gray800
-import com.nexters.bandalart.core.designsystem.theme.pretendard
+import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 import com.nexters.bandalart.feature.home.viewmodel.HomeUiAction
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -73,7 +78,7 @@ fun BandalartDropDownMenu(
                             .fillMaxHeight()
                             .padding(start = 13.dp)
                             .align(CenterVertically),
-                        fontFamily = pretendard,
+                        fontFamily = pretendardFontFamily(),
                     )
                 }
             },
@@ -105,7 +110,7 @@ fun BandalartDropDownMenu(
                             .fillMaxHeight()
                             .padding(start = 13.dp)
                             .align(CenterVertically),
-                        fontFamily = pretendard,
+                        fontFamily = pretendardFontFamily(),
                     )
                 }
             },

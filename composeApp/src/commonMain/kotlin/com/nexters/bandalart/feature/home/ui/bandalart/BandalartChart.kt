@@ -17,10 +17,6 @@ import androidx.compose.ui.unit.dp
 import bandalart.composeapp.generated.resources.Res
 import bandalart.composeapp.generated.resources.home_layout_id
 import bandalart.composeapp.generated.resources.home_main_id
-import bandalart.composeapp.generated.resources.home_sub1_id
-import bandalart.composeapp.generated.resources.home_sub2_id
-import bandalart.composeapp.generated.resources.home_sub3_id
-import bandalart.composeapp.generated.resources.home_sub4_id
 import com.nexters.bandalart.core.common.extension.toColor
 import com.nexters.bandalart.core.designsystem.theme.Gray300
 import com.nexters.bandalart.core.domain.entity.BandalartCellEntity
@@ -86,11 +82,11 @@ fun BandalartChart(
             }
         },
     ) { measurables, constraints ->
-        val sub1 = measurables.first { it.layoutId == context.getString(Res.string.home_sub1_id) }
-        val sub2 = measurables.first { it.layoutId == context.getString(Res.string.home_sub2_id) }
-        val sub3 = measurables.first { it.layoutId == context.getString(Res.string.home_sub3_id) }
-        val sub4 = measurables.first { it.layoutId == context.getString(Res.string.home_sub4_id) }
-        val main = measurables.first { it.layoutId == context.getString(Res.string.home_main_id) }
+        val sub1 = measurables.first { it.layoutId == "Sub 1" }
+        val sub2 = measurables.first { it.layoutId == "Sub 2" }
+        val sub3 = measurables.first { it.layoutId == "Sub 3" }
+        val sub4 = measurables.first { it.layoutId == "Sub 4" }
+        val main = measurables.first { it.layoutId == "Main" }
 
         val chartWidth = paddedMaxWidth.roundToPx()
         val mainWidth = chartWidth / 5

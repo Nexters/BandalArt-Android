@@ -169,7 +169,9 @@ internal fun HomeRoute(
 
             is HomeUiEvent.SaveBandalart -> {
                 context.saveImageToGallery(event.bitmap)
-                showToast(context.getString(Res.string.save_bandalart_image))
+                scope.launch {
+                    showToast(getString(Res.string.save_bandalart_image))
+                }
             }
 
             is HomeUiEvent.ShareBandalart -> {
@@ -181,7 +183,9 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShowAppVersion -> {
-                showToast(context.getString(Res.string.app_version_info, appVersion))
+                scope.launch {
+                    showToast(getString(Res.string.app_version_info, appVersion))
+                }
             }
         }
     }
