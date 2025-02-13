@@ -1,16 +1,16 @@
-package com.nexters.bandalart.database
+package com.nexters.bandalart.core.database
 
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.nexters.bandalart.core.database.PeopleDatabase
+import com.nexters.bandalart.core.database.BandalartDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
-fun getDatabaseBuilder(): PeopleDatabase {
-    val dbFilePath = documentDirectory() + "/people.db"
-    return Room.databaseBuilder<PeopleDatabase>(
+fun createBandalartDatabase(): BandalartDatabase {
+    val dbFilePath = documentDirectory() + "/bandalart.db"
+    return Room.databaseBuilder<BandalartDatabase>(
         name = dbFilePath,
     )
         .setDriver(BundledSQLiteDriver())

@@ -1,4 +1,4 @@
-package com.nexters.bandalart.ui
+package com.nexters.bandalart
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.nexters.bandalart.navigation.BandalartNavHost
+import com.nexters.bandalart.ui.BandalartSnackbar
 
 @Composable
 fun BandalartApp() {

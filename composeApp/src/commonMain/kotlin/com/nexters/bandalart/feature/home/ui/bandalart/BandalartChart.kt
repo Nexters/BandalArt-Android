@@ -33,7 +33,6 @@ fun BandalartChart(
     onHomeUiAction: (HomeUiAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val paddedMaxWidth = remember(screenWidthDp) {
         screenWidthDp - (15.dp * 2)
