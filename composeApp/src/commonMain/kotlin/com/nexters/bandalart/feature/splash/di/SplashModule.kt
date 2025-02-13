@@ -4,7 +4,6 @@ import com.nexters.bandalart.feature.splash.SplashViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val splashModule =
-    module {
+val splashModule = module {
         viewModelOf(::SplashViewModel)
     }

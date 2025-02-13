@@ -16,7 +16,11 @@ import com.nexters.bandalart.core.database.entity.BandalartDBEntity
 )
 @ConstructedBy(BandalartDatabaseConstructor::class)
 abstract class BandalartDatabase : RoomDatabase() {
-    abstract fun bandalartDao(): BandalartDao
+    abstract val bandalartDao: BandalartDao
+
+    companion object {
+        const val DB_NAME = "bandalart.db"
+    }
 }
 
 // The Room compiler generates the `actual` implementations.
