@@ -1,6 +1,9 @@
+import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.jetbrains.compose)
@@ -10,14 +13,6 @@ plugins {
 }
 
 kotlin {
-    tasks.create("testClasses")
-
-    androidLibrary {
-        namespace = "com.nexters.bandalart"
-        compileSdk = 35
-        minSdk = 28
-    }
-
     val xcfName = "bandalartKit"
 
     listOf(
@@ -36,6 +31,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.splash)
             }
         }
 
@@ -82,6 +78,50 @@ kotlin {
         iosMain {
             dependencies {}
         }
+    }
+}
+
+android {
+    namespace = "com.nexters.bandalart"
+
+    signingConfigs {
+        create("release") {
+            val propertiesFile = rootProject.file("keystore.properties")
+            val properties = Properties()
+            properties.load(propertiesFile.inputStream())
+            storeFile = file(properties["STORE_FILE"] as String)
+            storePassword = properties["STORE_PASSWORD"] as String
+            keyAlias = properties["KEY_ALIAS"] as String
+            keyPassword = properties["KEY_PASSWORD"] as String
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name_dev",
+            )
+        }
+
+        getByName("release") {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name",
+            )
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

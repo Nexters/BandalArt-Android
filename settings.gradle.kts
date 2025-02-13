@@ -20,7 +20,4 @@ buildCache {
     }
 }
 
-include(
-    ":androidApp",
-    ":composeApp",
-)
+include(":composeApp")
