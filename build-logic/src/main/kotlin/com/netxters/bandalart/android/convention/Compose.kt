@@ -21,7 +21,7 @@ internal fun Project.configureCompose(extension: CommonExtension<*, *, *, *, *, 
             metricsDestination.file("build/composeMetrics")
             reportsDestination.file("build/composeReports")
 
-            stabilityConfigurationFile.set(project.rootDir.resolve("stability.config.conf"))
+            stabilityConfigurationFiles.set(listOf(objects.fileProperty().fileValue(project.rootDir.resolve("stability.config.conf")).get()))
         }
 
         tasks.withType<KotlinCompile>().configureEach {
