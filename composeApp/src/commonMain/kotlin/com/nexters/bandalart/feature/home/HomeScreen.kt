@@ -22,18 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bandalart.composeapp.generated.resources.Res
 import bandalart.composeapp.generated.resources.app_version_info
-import bandalart.composeapp.generated.resources.home_default_emoji
 import bandalart.composeapp.generated.resources.save_bandalart_image
 import com.nexters.bandalart.core.common.AppVersionProvider
-import com.nexters.bandalart.core.common.extension.bitmapToFileUri
+import com.nexters.bandalart.core.common.ImageHandlerProvider
 import com.nexters.bandalart.core.common.extension.captureToGraphicsLayer
-import com.nexters.bandalart.core.common.extension.externalShareForBitmap
-import com.nexters.bandalart.core.common.extension.saveImageToGallery
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.Gray100
 import com.nexters.bandalart.core.designsystem.theme.Gray50
@@ -66,10 +62,10 @@ internal fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val appVersionProvider = koinInject<AppVersionProvider>()
+    val imageHandlerProvider = koinInject<ImageHandlerProvider>()
     val appVersion = remember {
         appVersionProvider.getAppVersion()
     }
@@ -142,7 +138,7 @@ internal fun HomeRoute(
                 navigateToComplete(
                     event.id,
                     event.title,
-                    event.profileEmoji.ifEmpty { context.getString(Res.string.home_default_emoji) },
+                    event.profileEmoji.ifEmpty { "default emoji" },
                     event.bandalartChart,
                 )
             }
@@ -164,18 +160,19 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.SaveBandalart -> {
-                context.saveImageToGallery(event.bitmap)
+                imageHandlerProvider.saveImageToGallery(event.bitmap)
                 scope.launch {
                     showToast(getString(Res.string.save_bandalart_image))
                 }
             }
 
             is HomeUiEvent.ShareBandalart -> {
-                context.externalShareForBitmap(event.bitmap)
+                // TODO expect actual
+                imageHandlerProvider.externalShareForBitmap(event.bitmap)
             }
 
             is HomeUiEvent.CaptureBandalart -> {
-                viewModel.updateBandalartChartUrl(context.bitmapToFileUri(event.bitmap).toString())
+                viewModel.updateBandalartChartUrl(imageHandlerProvider.bitmapToFileUri(event.bitmap).toString())
             }
 
             is HomeUiEvent.ShowAppVersion -> {

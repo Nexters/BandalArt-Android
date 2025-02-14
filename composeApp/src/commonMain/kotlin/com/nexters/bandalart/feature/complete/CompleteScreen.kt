@@ -17,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,8 +27,7 @@ import bandalart.composeapp.generated.resources.complete_save
 import bandalart.composeapp.generated.resources.complete_share
 import bandalart.composeapp.generated.resources.complete_title
 import bandalart.composeapp.generated.resources.save_bandalart_image
-import com.nexters.bandalart.core.common.extension.saveUriToGallery
-import com.nexters.bandalart.core.common.extension.shareImage
+import com.nexters.bandalart.core.common.ImageHandlerProvider
 import com.nexters.bandalart.core.common.utils.ObserveAsEvents
 import com.nexters.bandalart.core.designsystem.theme.Gray50
 import com.nexters.bandalart.core.designsystem.theme.Gray900
@@ -46,6 +44,7 @@ import kotlinx.coroutines.launch
 import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 private const val FINISH_LOTTIE_FILE = "files/finish.json"
@@ -57,8 +56,8 @@ internal fun CompleteRoute(
     viewModel: CompleteViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val imageHandlerProvider = koinInject<ImageHandlerProvider>()
 
     ObserveAsEvents(flow = viewModel.uiEvent) { event ->
         when (event) {
@@ -67,14 +66,16 @@ internal fun CompleteRoute(
             }
 
             is CompleteUiEvent.SaveBandalart -> {
-                context.saveUriToGallery(event.imageUri)
+                //TODO expect actual
+                imageHandlerProvider.saveUriToGallery(event.imageUri)
                 scope.launch {
                     showToast(getString(Res.string.save_bandalart_image))
                 }
             }
 
             is CompleteUiEvent.ShareBandalart -> {
-                context.shareImage(event.imageUri)
+                // TODO expect actual
+                imageHandlerProvider.shareImage(event.imageUri)
             }
         }
     }
