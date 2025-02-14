@@ -22,6 +22,3 @@ expect class BandalartDataStoreFactory {
 
 internal const val BANDALART_DATA_STORE_FILE_NAME = "bandalart.preferences_pb"
 internal const val IN_APP_UPDATE_DATA_STORE_FILE_NAME = "in_app_update.preferences_pb"
-
-// platformModule에 추가
-expect val platformModule: Module

@@ -65,7 +65,6 @@ import bandalart.composeapp.generated.resources.empty_emoji_description
 import bandalart.composeapp.generated.resources.ic_edit
 import bandalart.composeapp.generated.resources.ic_empty_emoji
 import com.nexters.bandalart.core.common.extension.LocalDateTime
-import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.core.common.extension.noRippleClickable
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.common.extension.toStringLocalDateTime
@@ -211,8 +210,8 @@ fun BandalartBottomSheet(
                                 placeholder = stringResource(Res.string.bottomsheet_title_placeholder),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(24.dp)
-                                    .clearFocusOnKeyboardDismiss(),
+                                    .height(24.dp),
+                                    // .clearFocusOnKeyboardDismiss(),
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             HorizontalDivider(
@@ -318,7 +317,7 @@ fun BandalartBottomSheet(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(24.dp)
-                                    .clearFocusOnKeyboardDismiss(),
+                                    //.clearFocusOnKeyboardDismiss(),
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             HorizontalDivider(
