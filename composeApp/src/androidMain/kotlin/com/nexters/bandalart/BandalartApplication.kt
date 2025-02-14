@@ -1,23 +1,35 @@
 package com.nexters.bandalart
 
 import android.app.Application
+import com.nexters.bandalart.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
-import org.koin.androix.startup.KoinStartup
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.dsl.koinConfiguration
 
-@OptIn(KoinExperimentalAPI::class)
-class BandalartApplication : Application(), KoinStartup {
+//@OptIn(KoinExperimentalAPI::class)
+//class BandalartApplication : Application(), KoinStartup {
+//    override fun onCreate() {
+//        super.onCreate()
+//        if (BuildConfig.DEBUG) {
+//            Napier.base(DebugAntilog())
+//        }
+//
+//
+//    override fun onKoinStartup() = koinConfiguration {
+//        androidContext(this@BandalartApplication)
+//    }
+//}
+
+class BandalartApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())
         }
-    }
 
-    override fun onKoinStartup() = koinConfiguration {
-        androidContext(this@BandalartApplication)
+        initKoin {
+            androidContext(this@BandalartApplication)
+        }
     }
 }

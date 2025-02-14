@@ -17,7 +17,6 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
-            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -42,7 +41,7 @@ kotlin {
                 implementation(libs.androidx.splash)
 
                 implementation(libs.koin.android)
-                implementation(libs.koin.androidx.startup)
+                // implementation(libs.koin.androidx.startup)
             }
         }
 
@@ -89,6 +88,10 @@ kotlin {
         iosMain {
             dependencies {}
         }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
 
