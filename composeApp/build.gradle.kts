@@ -20,7 +20,7 @@ kotlin {
         }
     }
 
-    val xcfName = "bandalartKit"
+    val xcfName = "ComposeApp"
 
     listOf(
         iosX64(),
@@ -28,8 +28,8 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            export(libs.androidx.lifecycle.viewmodel)
             baseName = xcfName
+            isStatic = true
         }
     }
 
