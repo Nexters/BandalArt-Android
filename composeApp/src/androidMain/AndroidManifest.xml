@@ -7,29 +7,29 @@
 
     <application
         android:name="com.nexters.bandalart.BandalartApplication"
+        tools:replace="android:name"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Bandalart"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/Theme.Bandalart">
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
+<!--        <provider-->
+<!--            android:name="androidx.startup.InitializationProvider"-->
+<!--            android:authorities="${applicationId}.androidx-startup"-->
+<!--            android:exported="false"-->
+<!--            tools:node="merge">-->
 
-            <meta-data
-                android:name="com.nexters.bandalart.initializer.NapierInitializer"
-                android:value="androidx.startup" />
+<!--            <meta-data-->
+<!--                android:name="com.nexters.bandalart.initializer.NapierInitializer"-->
+<!--                android:value="androidx.startup" />-->
 
-            <meta-data
-                android:name="com.nexters.bandalart.initializer.FirebaseCrashlyticsInitializer"
-                android:value="androidx.startup" />
+<!--            <meta-data-->
+<!--                android:name="com.nexters.bandalart.initializer.FirebaseCrashlyticsInitializer"-->
+<!--                android:value="androidx.startup" />-->
 
-        </provider>
+<!--        </provider>-->
 
         <provider
             android:name="androidx.core.content.FileProvider"
