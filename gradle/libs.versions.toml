@@ -141,8 +141,6 @@ cmptoast = { group = "network.chaintech", name = "cmptoast", version.ref = "cmpt
 
 [plugins]
 
-gradle-dependency-handler-extensions = { id = "land.sungbin.dependency.handler.extensions", version.ref = "gradle-dependency-handler-extensions" }
-
 google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-core" }

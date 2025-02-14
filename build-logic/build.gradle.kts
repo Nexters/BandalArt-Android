@@ -3,7 +3,6 @@
 plugins {
     `kotlin-dsl`
     kotlin("jvm") version libs.versions.kotlin.core.get()
-    alias(libs.plugins.gradle.dependency.handler.extensions)
 }
 
 gradlePlugin {
