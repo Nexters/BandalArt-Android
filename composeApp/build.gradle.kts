@@ -61,6 +61,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
 
+                implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.jetbrains.androidx.navigation.compose)
 
                 api(libs.androidx.datastore)
