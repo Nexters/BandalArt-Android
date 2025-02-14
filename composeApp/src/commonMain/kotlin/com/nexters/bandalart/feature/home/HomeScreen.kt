@@ -167,7 +167,6 @@ internal fun HomeRoute(
             }
 
             is HomeUiEvent.ShareBandalart -> {
-                // TODO expect actual
                 imageHandlerProvider.externalShareForBitmap(event.bitmap)
             }
 

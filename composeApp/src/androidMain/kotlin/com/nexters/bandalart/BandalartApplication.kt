@@ -31,5 +31,7 @@ class BandalartApplication : Application() {
         initKoin {
             androidContext(this@BandalartApplication)
         }
+
+        multiplatform.network.cmptoast.AppContext.apply { set(applicationContext) }
     }
 }

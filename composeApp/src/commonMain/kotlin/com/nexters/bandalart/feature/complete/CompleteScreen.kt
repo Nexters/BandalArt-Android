@@ -66,7 +66,6 @@ internal fun CompleteRoute(
             }
 
             is CompleteUiEvent.SaveBandalart -> {
-                //TODO expect actual
                 imageHandlerProvider.saveUriToGallery(event.imageUri)
                 scope.launch {
                     showToast(getString(Res.string.save_bandalart_image))
@@ -74,7 +73,6 @@ internal fun CompleteRoute(
             }
 
             is CompleteUiEvent.ShareBandalart -> {
-                // TODO expect actual
                 imageHandlerProvider.shareImage(event.imageUri)
             }
         }
