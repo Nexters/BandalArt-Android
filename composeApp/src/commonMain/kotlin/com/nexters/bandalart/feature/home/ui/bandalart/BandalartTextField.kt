@@ -10,6 +10,7 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.core.designsystem.theme.BottomSheetContent
 
 @Composable
@@ -24,8 +25,8 @@ internal fun BandalartTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
-            .height(24.dp),
-            //.clearFocusOnKeyboardDismiss(),
+            .height(24.dp)
+            .clearFocusOnKeyboardDismiss(),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         maxLines = 1,
