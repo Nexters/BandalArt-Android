@@ -6,6 +6,7 @@ import com.nexters.bandalart.di.initKoin
 fun MainViewController() = ComposeUIViewController(
     configure = {
         initKoin()
+        enforceStrictPlistSanityCheck = false
     }
 ) { BandalartApp() }
 
