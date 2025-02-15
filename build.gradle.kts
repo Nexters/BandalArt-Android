@@ -57,14 +57,6 @@ allprojects {
     }
 }
 
-tasks.register("cleanAll", type = Delete::class) {
-    allprojects.map(Project::getBuildDir).forEach(::delete)
-}
-
-tasks.register("clean", type = Delete::class) {
-    rootProject.buildDir.delete()
-}
-
 tasks.register("bundleRelease", type = Exec::class) {
     commandLine(project.rootDir.resolve("gradlew"), "bundle")
     workingDir = project.rootDir
