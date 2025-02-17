@@ -3,7 +3,7 @@ package com.nexters.bandalart
 import androidx.compose.ui.window.ComposeUIViewController
 import com.nexters.bandalart.di.initKoin
 
-fun mainViewController() = ComposeUIViewController(
+fun MainViewController() = ComposeUIViewController(
     configure = {
         initKoin()
     }
