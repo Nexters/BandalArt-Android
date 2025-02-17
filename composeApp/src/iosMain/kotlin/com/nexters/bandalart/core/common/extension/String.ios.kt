@@ -8,12 +8,18 @@ import platform.Foundation.NSCalendarUnitYear
 import platform.Foundation.NSDate
 import platform.Foundation.NSDateFormatter
 
-actual class LocalDateTime(private val date: NSDate) {
+actual class LocalDateTime(private val datetime: NSDate) {
     private val calendar = NSCalendar.currentCalendar
 
-    actual val year: Int get() = calendar.component(NSCalendarUnitYear, date).toInt()
-    actual val monthValue: Int get() = calendar.component(NSCalendarUnitMonth, date).toInt()
-    actual val dayOfMonth: Int get() = calendar.component(NSCalendarUnitDay, date).toInt()
+    actual val year: Int get() = calendar.component(NSCalendarUnitYear, datetime).toInt()
+    actual val monthValue: Int get() = calendar.component(NSCalendarUnitMonth, datetime).toInt()
+    actual val dayOfMonth: Int get() = calendar.component(NSCalendarUnitDay, datetime).toInt()
+
+    actual override fun toString(): String {
+        val formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        return formatter.stringFromDate(datetime)
+    }
 
     actual companion object {
         actual fun now(): LocalDateTime {
@@ -24,14 +30,14 @@ actual class LocalDateTime(private val date: NSDate) {
             val formatter = NSDateFormatter().apply {
                 dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             }
-            return LocalDateTime(formatter.dateFromString(date)!!)
+            return LocalDateTime(formatter.dateFromString(date) ?: NSDate())
         }
 
         actual fun parse(date: String, pattern: String): LocalDateTime {
             val formatter = NSDateFormatter().apply {
                 dateFormat = pattern
             }
-            return LocalDateTime(formatter.dateFromString(date)!!)
+            return LocalDateTime(formatter.dateFromString(date) ?: NSDate())
         }
     }
 }

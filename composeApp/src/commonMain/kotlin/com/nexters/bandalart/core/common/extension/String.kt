@@ -10,6 +10,8 @@ expect class LocalDateTime {
     val monthValue: Int
     val dayOfMonth: Int
 
+    override fun toString(): String
+
     companion object {
         fun now(): LocalDateTime
         fun parse(date: String): LocalDateTime
@@ -31,7 +33,7 @@ fun String.toFormatDate(locale: Locale): String {
 }
 
 fun String.toStringLocalDateTime(locale: Locale): String {
-    val dueDate = LocalDateTime.parse(this.substring(0, 16), "yyyy-MM-dd'T'HH:mm")
+    val dueDate = LocalDateTime.parse(this, "yyyy-MM-dd'T'HH:mm")
     return when (locale.language) {
         Language.ENGLISH -> "${dueDate.year}, ${dueDate.monthValue}/${dueDate.dayOfMonth}"
         Language.KOREAN -> "${dueDate.year}년 ${dueDate.monthValue}월 ${dueDate.dayOfMonth}일"
