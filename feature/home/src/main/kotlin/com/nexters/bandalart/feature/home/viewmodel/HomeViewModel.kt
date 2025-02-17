@@ -655,7 +655,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             val currentSheet = it.bottomSheet as? BottomSheetState.Cell ?: return@update it
             it.copy(
-                bottomSheet = currentSheet.copy(isDatePickerOpened = true),
+                bottomSheet = currentSheet.copy(isDatePickerOpened = false),
             )
         }
     }
