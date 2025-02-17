@@ -4,6 +4,11 @@ import androidx.compose.ui.graphics.ImageBitmap
 import com.eygraber.uri.Uri
 import io.github.aakira.napier.Napier
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.refTo
+import platform.CoreGraphics.CGBitmapContextCreate
+import platform.CoreGraphics.CGBitmapContextCreateImage
+import platform.CoreGraphics.CGColorSpaceCreateDeviceRGB
+import platform.CoreGraphics.CGImageAlphaInfo
 import platform.Foundation.NSDate
 import platform.Foundation.NSString
 import platform.Foundation.NSTemporaryDirectory
@@ -12,17 +17,17 @@ import platform.Foundation.stringByAppendingPathComponent
 import platform.Foundation.timeIntervalSince1970
 import platform.Foundation.writeToFile
 import platform.UIKit.UIActivityViewController
+import platform.UIKit.UIApplication
 import platform.UIKit.UIImage
 import platform.UIKit.UIImagePNGRepresentation
 import platform.UIKit.UIImageWriteToSavedPhotosAlbum
-import platform.UIKit.UIViewController
 
 actual class ImageHandlerProvider {
     @Suppress("TooGenericExceptionCaught")
     actual fun externalShareForBitmap(bitmap: ImageBitmap) {
         try {
             val image = bitmap.toUIImage()
-            shareItems(listOf(image))
+            shareBitmap(image)
         } catch (e: Exception) {
             Napier.e("[externalShareFoBitmap] message: ${e.message}")
         }
@@ -43,7 +48,7 @@ actual class ImageHandlerProvider {
     actual fun shareImage(imageUri: Uri) {
         try {
             val nsUrl = NSURL.URLWithString(imageUri.toString()) ?: return
-            shareItems(listOf(nsUrl))
+            shareUrl(nsUrl)
         } catch (e: Exception) {
             Napier.e("Failed to share image: ${e.message}")
         }
@@ -55,7 +60,9 @@ actual class ImageHandlerProvider {
         val filePath = (tempDir as NSString).stringByAppendingPathComponent(fileName)
 
         val image = bitmap.toUIImage()
-        UIImagePNGRepresentation(image)?.writeToFile(filePath, true)
+        if (image != null) {
+            UIImagePNGRepresentation(image)?.writeToFile(filePath, true)
+        }
 
         return filePath
     }
@@ -65,12 +72,14 @@ actual class ImageHandlerProvider {
     actual fun saveImageToGallery(bitmap: ImageBitmap) {
         try {
             val image = bitmap.toUIImage()
-            UIImageWriteToSavedPhotosAlbum(
-                image,
-                null,
-                null,
-                null
-            )
+            if (image != null) {
+                UIImageWriteToSavedPhotosAlbum(
+                    image,
+                    null,
+                    null,
+                    null
+                )
+            }
         } catch (e: Exception) {
             Napier.e("Failed to save image to gallery: ${e.message}")
         }
@@ -95,26 +104,51 @@ actual class ImageHandlerProvider {
         }
     }
 
-    private fun shareItems(items: List<Any>) {
-        val viewController = getMainViewController()
+    @OptIn(ExperimentalForeignApi::class)
+    private fun ImageBitmap.toUIImage(): UIImage? {
+        val width = this.width
+        val height = this.height
+        val buffer = IntArray(width * height)
+
+        this.readPixels(buffer)
+
+        val colorSpace = CGColorSpaceCreateDeviceRGB()
+        val context = CGBitmapContextCreate(
+            data = buffer.refTo(0),
+            width = width.toULong(),
+            height = height.toULong(),
+            bitsPerComponent = 8u,
+            bytesPerRow = (4 * width).toULong(),
+            space = colorSpace,
+            bitmapInfo = CGImageAlphaInfo.kCGImageAlphaPremultipliedLast.value
+        )
+
+        val cgImage = CGBitmapContextCreateImage(context)
+        return cgImage?.let { UIImage.imageWithCGImage(it) }
+    }
+
+    private fun shareBitmap(bitmap: UIImage?) {
+        bitmap ?: return
         val activityViewController = UIActivityViewController(
-            activityItems = items,
+            activityItems = listOf(bitmap),
             applicationActivities = null
         )
-        viewController.presentViewController(
+        UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
             activityViewController,
             animated = true,
             completion = null
         )
     }
 
-    private fun ImageBitmap.toUIImage(): UIImage {
-        // 실제 UIImage 변환 구현 필요
-        return UIImage()
-    }
-
-    private fun getMainViewController(): UIViewController {
-        // 실제 메인 ViewController 획득 로직 구현 필요
-        return UIViewController()
+    private fun shareUrl(nsUrl: NSURL) {
+        val activityViewController = UIActivityViewController(
+            activityItems = listOf(nsUrl),
+            applicationActivities = null
+        )
+        UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
+            activityViewController,
+            animated = true,
+            completion = null
+        )
     }
 }
