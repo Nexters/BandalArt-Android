@@ -3,6 +3,7 @@ package com.nexters.bandalart.core.common
 import android.app.Application
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -28,10 +29,12 @@ actual class ImageHandlerProvider(private val context: Application) {
             val file = File(saveBitmapToDisk(bitmap))
             val androidUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
 
-            ShareCompat.IntentBuilder(context)
+            val intent = ShareCompat.IntentBuilder(context)
                 .setStream(androidUri)
                 .setType("image/png")
-                .startChooser()
+                .intent
+
+            context.startActivity(Intent.createChooser(intent, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK))
         } catch (e: Exception) {
             Napier.e("[externalShareFoBitmap] message: ${e.message}")
         }
