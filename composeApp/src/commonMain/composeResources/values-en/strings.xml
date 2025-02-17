@@ -78,7 +78,7 @@
 
     <!-- BandalartDeleteAlertDialog -->
     <string name="delete_bandalart_dialog_empty_title">Do you want to delete\nthe Bandalart?</string>
-    <string name="delete_bandalart_dialog_title">Do you want to delete\nthe \&apos;%1$s\&apos; Bandalart?</string>
+    <string name="delete_bandalart_dialog_title">Do you want to delete\nthe '%1$s' Bandalart?</string>
     <string name="delete_bandalart_dialog_message">Deleted Bandalart cannot be restored</string>
 
     <string name="delete_bandalart_maincelll_dialog_empty_title">Do you want to delete\nthe main goal?</string>
