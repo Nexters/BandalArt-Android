@@ -109,8 +109,19 @@ actual class ImageHandlerProvider {
         val width = this.width
         val height = this.height
         val buffer = IntArray(width * height)
-
         this.readPixels(buffer)
+
+        // RGBA to BGRA conversion and proper alpha handling
+        for (i in buffer.indices) {
+            val color = buffer[i]
+            val r = (color shr 16) and 0xFF
+            val g = (color shr 8) and 0xFF
+            val b = color and 0xFF
+            val a = (color shr 24) and 0xFF
+
+            // Compose BGRA
+            buffer[i] = (a shl 24) or (b shl 16) or (g shl 8) or r
+        }
 
         val colorSpace = CGColorSpaceCreateDeviceRGB()
         val context = CGBitmapContextCreate(
@@ -120,7 +131,8 @@ actual class ImageHandlerProvider {
             bitsPerComponent = 8u,
             bytesPerRow = (4 * width).toULong(),
             space = colorSpace,
-            bitmapInfo = CGImageAlphaInfo.kCGImageAlphaPremultipliedLast.value
+            bitmapInfo = CGImageAlphaInfo.kCGImageAlphaPremultipliedFirst.value or
+                platform.CoreGraphics.kCGBitmapByteOrder32Little
         )
 
         val cgImage = CGBitmapContextCreateImage(context)
