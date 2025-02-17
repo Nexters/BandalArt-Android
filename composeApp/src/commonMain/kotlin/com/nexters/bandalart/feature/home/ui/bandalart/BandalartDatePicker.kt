@@ -228,19 +228,26 @@ fun InfiniteItemsPicker(
 }
 
 fun selectedDateWithValidate(year: String, month: String, day: String): LocalDateTime {
-    val yearNum = year.filter { it.isDigit() }
-    val monthNum = month.filter { it.isDigit() }
-    val dayNum = day.filter { it.isDigit() }
+    val yearNum = year.filter { it.isDigit() }.toInt()
+    val monthNum = month.filter { it.isDigit() }.toInt()
+    val dayNum = day.filter { it.isDigit() }.toInt()
 
-    return "$yearNum-${monthNum.padStart(2, '0')}-${
-        if (monthNum == "2")
-            if (dayNum == "31" || dayNum == "30") "28"
-            else dayNum.padStart(2, '0')
-        else if (monthNum in listOf("4", "6", "9", "11"))
-            if (dayNum == "31") "30"
-            else dayNum.padStart(2, '0')
-        else dayNum.padStart(2, '0')
-    }T00:00".toLocalDateTime()
+    // 각 월의 최대 일수 계산
+    val maxDaysInMonth = when (monthNum) {
+        2 -> if (isLeapYear(yearNum)) 29 else 28  // 2월: 윤년 고려
+        4, 6, 9, 11 -> 30  // 30일까지 있는 달
+        else -> 31  // 그 외 달은 31일
+    }
+
+    // 일자 유효성 검사 및 보정
+    val validatedDay = dayNum.coerceAtMost(maxDaysInMonth)
+
+    return "$yearNum-${monthNum.toString().padStart(2, '0')}-${validatedDay.toString().padStart(2, '0')}T00:00".toLocalDateTime()
+}
+
+// 윤년 계산 함수
+private fun isLeapYear(year: Int): Boolean {
+    return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
 }
 
 //@ComponentPreview
