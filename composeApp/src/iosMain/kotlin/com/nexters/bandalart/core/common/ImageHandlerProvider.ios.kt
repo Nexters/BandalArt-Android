@@ -7,8 +7,10 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.refTo
 import platform.CoreGraphics.CGBitmapContextCreate
 import platform.CoreGraphics.CGBitmapContextCreateImage
-import platform.CoreGraphics.CGColorSpaceCreateDeviceRGB
+import platform.CoreGraphics.CGColorSpaceCreateWithName
 import platform.CoreGraphics.CGImageAlphaInfo
+import platform.CoreGraphics.kCGBitmapByteOrder32Little
+import platform.CoreGraphics.kCGColorSpaceSRGB
 import platform.Foundation.NSDate
 import platform.Foundation.NSString
 import platform.Foundation.NSTemporaryDirectory
@@ -26,7 +28,7 @@ actual class ImageHandlerProvider {
     @Suppress("TooGenericExceptionCaught")
     actual fun externalShareForBitmap(bitmap: ImageBitmap) {
         try {
-            val image = bitmap.toUIImage()
+            val image = bitmap.toUiImage()
             shareBitmap(image)
         } catch (e: Exception) {
             Napier.e("[externalShareFoBitmap] message: ${e.message}")
@@ -59,7 +61,7 @@ actual class ImageHandlerProvider {
         val tempDir = NSTemporaryDirectory()
         val filePath = (tempDir as NSString).stringByAppendingPathComponent(fileName)
 
-        val image = bitmap.toUIImage()
+        val image = bitmap.toUiImage()
         if (image != null) {
             UIImagePNGRepresentation(image)?.writeToFile(filePath, true)
         }
@@ -71,14 +73,9 @@ actual class ImageHandlerProvider {
     @Suppress("TooGenericExceptionCaught")
     actual fun saveImageToGallery(bitmap: ImageBitmap) {
         try {
-            val image = bitmap.toUIImage()
+            val image = bitmap.toUiImage()
             if (image != null) {
-                UIImageWriteToSavedPhotosAlbum(
-                    image,
-                    null,
-                    null,
-                    null
-                )
+                UIImageWriteToSavedPhotosAlbum(image, null, null, null)
             }
         } catch (e: Exception) {
             Napier.e("Failed to save image to gallery: ${e.message}")
@@ -92,12 +89,7 @@ actual class ImageHandlerProvider {
             val nsUrl = NSURL.URLWithString(imageUri.toString()) ?: return
             val image = UIImage.imageWithContentsOfFile(nsUrl.path!!)
             if (image != null) {
-                UIImageWriteToSavedPhotosAlbum(
-                    image,
-                    null,
-                    null,
-                    null
-                )
+                UIImageWriteToSavedPhotosAlbum(image, null, null, null)
             }
         } catch (e: Exception) {
             Napier.e("Failed to save image to gallery: ${e.message}")
@@ -105,25 +97,13 @@ actual class ImageHandlerProvider {
     }
 
     @OptIn(ExperimentalForeignApi::class)
-    private fun ImageBitmap.toUIImage(): UIImage? {
-        val width = this.width
-        val height = this.height
+    private fun ImageBitmap.toUiImage(): UIImage? {
         val buffer = IntArray(width * height)
-        this.readPixels(buffer)
+        readPixels(buffer)
 
-        // RGBA to BGRA conversion and proper alpha handling
-        for (i in buffer.indices) {
-            val color = buffer[i]
-            val r = (color shr 16) and 0xFF
-            val g = (color shr 8) and 0xFF
-            val b = color and 0xFF
-            val a = (color shr 24) and 0xFF
-
-            // Compose BGRA
-            buffer[i] = (a shl 24) or (b shl 16) or (g shl 8) or r
-        }
-
-        val colorSpace = CGColorSpaceCreateDeviceRGB()
+        // https://github.com/takahirom/roborazzi/blob/main/roborazzi-compose-ios/src/iosMain/kotlin/io/github/takahirom/roborazzi/RoborazziIos.kt#L88C51-L88C68
+        val colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB)
+        val bitmapInfo = CGImageAlphaInfo.kCGImageAlphaPremultipliedFirst.value or kCGBitmapByteOrder32Little
         val context = CGBitmapContextCreate(
             data = buffer.refTo(0),
             width = width.toULong(),
@@ -131,8 +111,7 @@ actual class ImageHandlerProvider {
             bitsPerComponent = 8u,
             bytesPerRow = (4 * width).toULong(),
             space = colorSpace,
-            bitmapInfo = CGImageAlphaInfo.kCGImageAlphaPremultipliedFirst.value or
-                platform.CoreGraphics.kCGBitmapByteOrder32Little
+            bitmapInfo = bitmapInfo,
         )
 
         val cgImage = CGBitmapContextCreateImage(context)
@@ -143,24 +122,24 @@ actual class ImageHandlerProvider {
         bitmap ?: return
         val activityViewController = UIActivityViewController(
             activityItems = listOf(bitmap),
-            applicationActivities = null
+            applicationActivities = null,
         )
         UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
             activityViewController,
             animated = true,
-            completion = null
+            completion = null,
         )
     }
 
     private fun shareUrl(nsUrl: NSURL) {
         val activityViewController = UIActivityViewController(
             activityItems = listOf(nsUrl),
-            applicationActivities = null
+            applicationActivities = null,
         )
         UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
             activityViewController,
             animated = true,
-            completion = null
+            completion = null,
         )
     }
 }
