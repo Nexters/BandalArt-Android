@@ -209,10 +209,6 @@ fun BandalartBottomSheet(
                                     )
                                 },
                                 placeholder = stringResource(Res.string.bottomsheet_title_placeholder),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(24.dp)
-                                    .clearFocusOnKeyboardDismiss(),
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             HorizontalDivider(
@@ -307,26 +303,20 @@ fun BandalartBottomSheet(
                     Spacer(modifier = Modifier.height(28.dp))
                     BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_description))
                     Spacer(modifier = Modifier.height(12.dp))
-                    Box {
-                        Column {
-                            BandalartTextField(
-                                value = bottomSheetData.cellData.description ?: "",
-                                onValueChange = { description ->
-                                    onHomeUiAction(HomeUiAction.OnDescriptionUpdate(description))
-                                },
-                                placeholder = stringResource(Res.string.bottomsheet_description_placeholder),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(24.dp)
-                                    .clearFocusOnKeyboardDismiss(),
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            HorizontalDivider(
-                                modifier = Modifier.fillMaxWidth(),
-                                thickness = 1.dp,
-                                color = Gray300,
-                            )
-                        }
+                    Column {
+                        BandalartTextField(
+                            value = bottomSheetData.cellData.description ?: "",
+                            onValueChange = { description ->
+                                onHomeUiAction(HomeUiAction.OnDescriptionUpdate(description))
+                            },
+                            placeholder = stringResource(Res.string.bottomsheet_description_placeholder),
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HorizontalDivider(
+                            modifier = Modifier.fillMaxWidth(),
+                            thickness = 1.dp,
+                            color = Gray300,
+                        )
                     }
                     if (cellType == CellType.TASK) {
                         Spacer(modifier = Modifier.height(28.dp))
