@@ -2,19 +2,10 @@
 
 rootProject.name = "bandalart"
 
-//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-//enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
-//
-//pluginManagement {
-//    repositories {
-//        google()
-//        mavenCentral()
-//        gradlePluginPortal()
-//    }
-//    includeBuild("build-logic")
-//}
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             mavenContent {
@@ -26,7 +17,6 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
-    includeBuild("build-logic")
 }
 
 dependencyResolutionManagement {
