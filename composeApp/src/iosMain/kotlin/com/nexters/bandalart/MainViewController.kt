@@ -8,4 +8,3 @@ fun MainViewController() = ComposeUIViewController(
         initKoin()
     }
 ) { BandalartApp() }
-

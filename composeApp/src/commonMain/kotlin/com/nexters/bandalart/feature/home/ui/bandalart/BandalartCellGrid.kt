@@ -55,27 +55,27 @@ fun BandalartCellGrid(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartCellGridPreview() {
-//    val subCellList = persistentListOf(
-//        SubCell(2, 3, 1, 1, dummyBandalartChartData.children[0]),
-//        SubCell(3, 2, 1, 0, dummyBandalartChartData.children[1]),
-//        SubCell(3, 2, 1, 1, dummyBandalartChartData.children[2]),
-//        SubCell(2, 3, 0, 1, dummyBandalartChartData.children[3]),
-//    )
+// @ComponentPreview
+// @Composable
+// private fun BandalartCellGridPreview() {
+//     val subCellList = persistentListOf(
+//         SubCell(2, 3, 1, 1, dummyBandalartChartData.children[0]),
+//         SubCell(3, 2, 1, 0, dummyBandalartChartData.children[1]),
+//         SubCell(3, 2, 1, 1, dummyBandalartChartData.children[2]),
+//         SubCell(2, 3, 0, 1, dummyBandalartChartData.children[3]),
+//     )
 //
-//    BandalartTheme {
-//        BandalartCellGrid(
-//            bandalartData = BandalartUiModel(
-//                id = 0L,
-//                mainColor = "#3FFFBA",
-//                subColor = "#111827",
-//            ),
-//            subCell = subCellList[1],
-//            rows = subCellList[1].rowCnt,
-//            cols = subCellList[1].colCnt,
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+//     BandalartTheme {
+//         BandalartCellGrid(
+//             bandalartData = BandalartUiModel(
+//                 id = 0L,
+//                 mainColor = "#3FFFBA",
+//                 subColor = "#111827",
+//             ),
+//             subCell = subCellList[1],
+//             rows = subCellList[1].rowCnt,
+//             cols = subCellList[1].colCnt,
+//             onHomeUiAction = {},
+//         )
+//     }
+// }

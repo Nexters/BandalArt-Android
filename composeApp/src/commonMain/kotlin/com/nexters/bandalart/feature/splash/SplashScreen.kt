@@ -133,10 +133,10 @@ internal fun SplashScreen(
     }
 }
 
-//@DevicePreview
-//@Composable
-//private fun SplashScreenPreview() {
-//    BandalartTheme {
-//        SplashScreen()
-//    }
-//}
+// @DevicePreview
+// @Composable
+// private fun SplashScreenPreview() {
+//     BandalartTheme {
+//         SplashScreen()
+//     }
+// }

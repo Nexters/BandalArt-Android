@@ -266,10 +266,10 @@ private fun getCellBackgroundColor(
     else -> White
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartCellPreview() {
-//    BandalartTheme {
+// @ComponentPreview
+// @Composable
+// private fun BandalartCellPreview() {
+//     BandalartTheme {
 //        BandalartCell(
 //            bandalartData = BandalartUiModel(
 //                id = 0L,
@@ -284,4 +284,4 @@ private fun getCellBackgroundColor(
 //            onHomeUiAction = {},
 //        )
 //    }
-//}
+// }

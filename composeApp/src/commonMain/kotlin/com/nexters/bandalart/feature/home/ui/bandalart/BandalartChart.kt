@@ -111,18 +111,18 @@ fun BandalartChart(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartChartPreview() {
-//    BandalartTheme {
-//        BandalartChart(
-//            bandalartCellData = dummyBandalartChartData,
-//            bandalartData = BandalartUiModel(
-//                id = 0L,
-//                mainColor = "#3FFFBA",
-//                subColor = "#111827",
-//            ),
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartChartPreview() {
+//     BandalartTheme {
+//         BandalartChart(
+//             bandalartCellData = dummyBandalartChartData,
+//             bandalartData = BandalartUiModel(
+//                 id = 0L,
+//                 mainColor = "#3FFFBA",
+//                 subColor = "#111827",
+//             ),
+//             onHomeUiAction = {},
+//         )
+//     }
+// }

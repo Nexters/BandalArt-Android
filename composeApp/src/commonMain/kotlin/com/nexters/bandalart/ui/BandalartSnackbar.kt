@@ -43,10 +43,10 @@ internal fun BandalartSnackbar(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartSnackbarPreview() {
-//    BandalartTheme {
-//        BandalartSnackbar(message = "새로운 반다라트를 생성했어요")
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartSnackbarPreview() {
+//     BandalartTheme {
+//         BandalartSnackbar(message = "새로운 반다라트를 생성했어요")
+//     }
+// }

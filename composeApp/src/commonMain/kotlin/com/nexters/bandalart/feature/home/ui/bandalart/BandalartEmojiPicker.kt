@@ -132,14 +132,14 @@ fun BandalartEmojiPicker(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartEmojiPickerPreview() {
-//    BandalartTheme {
-//        BandalartEmojiPicker(
-//            currentEmoji = "😎",
-//            isBottomSheet = false,
-//            onEmojiSelect = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartEmojiPickerPreview() {
+//     BandalartTheme {
+//         BandalartEmojiPicker(
+//             currentEmoji = "😎",
+//             isBottomSheet = false,
+//             onEmojiSelect = {},
+//         )
+//     }
+// }

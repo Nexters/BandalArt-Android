@@ -139,15 +139,15 @@ fun BandalartDeleteAlertDialog(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartDeleteAlertDialogPreview() {
-//    BandalartTheme {
-//        BandalartDeleteAlertDialog(
-//            title = "반다라트를 삭제하시겠어요?",
-//            message = "삭제한 반다라트는 다시 복구할 수 없어요.",
-//            onDeleteClick = {},
-//            onCancelClick = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartDeleteAlertDialogPreview() {
+//     BandalartTheme {
+//         BandalartDeleteAlertDialog(
+//             title = "반다라트를 삭제하시겠어요?",
+//             message = "삭제한 반다라트는 다시 복구할 수 없어요.",
+//             onDeleteClick = {},
+//             onCancelClick = {},
+//         )
+//     }
+// }

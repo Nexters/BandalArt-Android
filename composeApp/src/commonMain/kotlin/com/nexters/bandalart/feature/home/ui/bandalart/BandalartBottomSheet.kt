@@ -65,7 +65,6 @@ import bandalart.composeapp.generated.resources.empty_emoji_description
 import bandalart.composeapp.generated.resources.ic_edit
 import bandalart.composeapp.generated.resources.ic_empty_emoji
 import com.nexters.bandalart.core.common.extension.LocalDateTime
-import com.nexters.bandalart.core.common.extension.clearFocusOnKeyboardDismiss
 import com.nexters.bandalart.core.common.extension.noRippleClickable
 import com.nexters.bandalart.core.common.extension.toLocalDateTime
 import com.nexters.bandalart.core.common.extension.toStringLocalDateTime
@@ -398,62 +397,62 @@ fun BandalartBottomSheet(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartMainCellBottomSheetPreview() {
-//    BandalartTheme {
-//        BandalartBottomSheet(
-//            bandalartId = 0L,
-//            cellType = CellType.MAIN,
-//            isBlankCell = false,
-//            cellData = dummyBandalartCellData,
-//            bottomSheetData = BottomSheetState.Cell(
-//                initialCellData = dummyBandalartCellData,
-//                cellData = dummyBandalartCellData,
-//                initialBandalartData = dummyBandalartData,
-//                bandalartData = dummyBandalartData,
-//            ),
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartMainCellBottomSheetPreview() {
+//     BandalartTheme {
+//         BandalartBottomSheet(
+//             bandalartId = 0L,
+//             cellType = CellType.MAIN,
+//             isBlankCell = false,
+//             cellData = dummyBandalartCellData,
+//             bottomSheetData = BottomSheetState.Cell(
+//                 initialCellData = dummyBandalartCellData,
+//                 cellData = dummyBandalartCellData,
+//                 initialBandalartData = dummyBandalartData,
+//                 bandalartData = dummyBandalartData,
+//             ),
+//             onHomeUiAction = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BandalartSubCellBottomSheetPreview() {
-//    BandalartTheme {
-//        BandalartBottomSheet(
-//            bandalartId = 0L,
-//            cellType = CellType.SUB,
-//            isBlankCell = false,
-//            cellData = dummyBandalartCellData,
-//            bottomSheetData = BottomSheetState.Cell(
-//                initialCellData = dummyBandalartCellData,
-//                cellData = dummyBandalartCellData,
-//                initialBandalartData = dummyBandalartData,
-//                bandalartData = dummyBandalartData,
-//            ),
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartSubCellBottomSheetPreview() {
+//     BandalartTheme {
+//         BandalartBottomSheet(
+//             bandalartId = 0L,
+//             cellType = CellType.SUB,
+//             isBlankCell = false,
+//             cellData = dummyBandalartCellData,
+//             bottomSheetData = BottomSheetState.Cell(
+//                 initialCellData = dummyBandalartCellData,
+//                 cellData = dummyBandalartCellData,
+//                 initialBandalartData = dummyBandalartData,
+//                 bandalartData = dummyBandalartData,
+//             ),
+//             onHomeUiAction = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BandalartTaskCellBottomSheetPreview() {
-//    BandalartTheme {
-//        BandalartBottomSheet(
-//            bandalartId = 0L,
-//            cellType = CellType.TASK,
-//            isBlankCell = true,
-//            cellData = dummyBandalartCellData,
-//            bottomSheetData = BottomSheetState.Cell(
-//                initialCellData = dummyBandalartCellData,
-//                cellData = dummyBandalartCellData,
-//                initialBandalartData = dummyBandalartData,
-//                bandalartData = dummyBandalartData,
-//            ),
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartTaskCellBottomSheetPreview() {
+//     BandalartTheme {
+//         BandalartBottomSheet(
+//             bandalartId = 0L,
+//             cellType = CellType.TASK,
+//             isBlankCell = true,
+//             cellData = dummyBandalartCellData,
+//             bottomSheetData = BottomSheetState.Cell(
+//                 initialCellData = dummyBandalartCellData,
+//                 cellData = dummyBandalartCellData,
+//                 initialBandalartData = dummyBandalartData,
+//                 bandalartData = dummyBandalartData,
+//             ),
+//             onHomeUiAction = {},
+//         )
+//     }
+// }

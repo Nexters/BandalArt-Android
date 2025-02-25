@@ -167,14 +167,14 @@ fun BandalartListItem(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartItemPreview() {
-//    BandalartTheme {
-//        BandalartListItem(
-//            bandalartItem = dummyBandalartData,
-//            currentBandalartId = 0L,
-//            onClick = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartItemPreview() {
+//     BandalartTheme {
+//         BandalartListItem(
+//             bandalartItem = dummyBandalartData,
+//             currentBandalartId = 0L,
+//             onClick = {},
+//         )
+//     }
+// }

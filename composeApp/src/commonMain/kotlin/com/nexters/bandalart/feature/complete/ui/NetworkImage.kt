@@ -53,13 +53,13 @@ fun NetworkImage(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun NetworkImagePreview() {
-//    BandalartTheme {
-//        NetworkImage(
-//            imageUri = "",
-//            contentDescription = "",
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun NetworkImagePreview() {
+//     BandalartTheme {
+//         NetworkImage(
+//             imageUri = "",
+//             contentDescription = "",
+//         )
+//     }
+// }

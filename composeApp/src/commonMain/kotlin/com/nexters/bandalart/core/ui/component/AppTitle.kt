@@ -65,26 +65,26 @@ fun AppEnglishTitle(
     )
 }
 
-//@ComponentPreview
-//@Composable
-//private fun AppTitlePreview() {
-//    BandalartTheme {
-//        AppTitle()
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun AppTitlePreview() {
+//     BandalartTheme {
+//         AppTitle()
+//     }
+// }
 //
-//@Preview(locale = "ko-rKR", showBackground = true)
-//@Composable
-//private fun AppKoreanTitlePreview() {
-//    BandalartTheme {
-//        AppKoreanTitle()
-//    }
-//}
+// @Preview(locale = "ko-rKR", showBackground = true)
+// @Composable
+// private fun AppKoreanTitlePreview() {
+//     BandalartTheme {
+//         AppKoreanTitle()
+//     }
+// }
 //
-//@Preview(locale = "en-rUS", showBackground = true)
-//@Composable
-//private fun AppEnglishTitlePreview() {
-//    BandalartTheme {
-//        AppEnglishTitle()
-//    }
-//}
+// @Preview(locale = "en-rUS", showBackground = true)
+// @Composable
+// private fun AppEnglishTitlePreview() {
+//     BandalartTheme {
+//         AppEnglishTitle()
+//     }
+// }

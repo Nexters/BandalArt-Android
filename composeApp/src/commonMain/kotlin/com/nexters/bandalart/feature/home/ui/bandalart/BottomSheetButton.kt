@@ -51,29 +51,29 @@ fun BottomSheetCompleteButton(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetDeleteButtonPreview() {
-//    BandalartTheme {
-//        BottomSheetDeleteButton(
-//            onClick = {},
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 16.dp),
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetDeleteButtonPreview() {
+//     BandalartTheme {
+//         BottomSheetDeleteButton(
+//             onClick = {},
+//             modifier = Modifier
+//                 .fillMaxWidth()
+//                 .padding(horizontal = 16.dp),
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetCompleteButtonPreview() {
-//    BandalartTheme {
-//        BottomSheetCompleteButton(
-//            isEnabled = false,
-//            onClick = {},
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 16.dp),
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetCompleteButtonPreview() {
+//     BandalartTheme {
+//         BottomSheetCompleteButton(
+//             isEnabled = false,
+//             onClick = {},
+//             modifier = Modifier
+//                 .fillMaxWidth()
+//                 .padding(horizontal = 16.dp),
+//         )
+//     }
+// }

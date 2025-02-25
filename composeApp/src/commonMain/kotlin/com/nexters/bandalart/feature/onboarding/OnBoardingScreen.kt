@@ -240,12 +240,12 @@ internal fun OnBoardingScreen(
     }
 }
 
-//@DevicePreview
-//@Composable
-//private fun OnBoardingScreenPreview() {
-//    BandalartTheme {
-//        OnBoardingScreen(
-//            setOnboardingCompletedStatus = {},
-//        )
-//    }
-//}
+// @DevicePreview
+// @Composable
+// private fun OnBoardingScreenPreview() {
+//     BandalartTheme {
+//         OnBoardingScreen(
+//             setOnboardingCompletedStatus = {},
+//         )
+//     }
+// }

@@ -121,13 +121,13 @@ fun BandalartDropDownMenu(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartDropDownMenuPreview() {
-//    BandalartTheme {
-//        BandalartDropDownMenu(
-//            isDropDownMenuOpened = true,
-//            onAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartDropDownMenuPreview() {
+//     BandalartTheme {
+//         BandalartDropDownMenu(
+//             isDropDownMenuOpened = true,
+//             onAction = {},
+//         )
+//     }
+// }

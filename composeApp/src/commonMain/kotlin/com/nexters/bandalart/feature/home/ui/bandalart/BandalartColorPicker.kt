@@ -71,13 +71,13 @@ fun BandalartColorPicker(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartColorPickerPreview() {
-//    BandalartTheme {
-//        BandalartColorPicker(
-//            initColor = ThemeColor("#3FFFBA", "#111827"),
-//            onColorSelect = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartColorPickerPreview() {
+//     BandalartTheme {
+//         BandalartColorPicker(
+//             initColor = ThemeColor("#3FFFBA", "#111827"),
+//             onColorSelect = {},
+//         )
+//     }
+// }

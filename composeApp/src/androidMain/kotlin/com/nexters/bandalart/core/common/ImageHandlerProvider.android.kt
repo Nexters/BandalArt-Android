@@ -18,7 +18,7 @@ import kotlinx.datetime.Clock
 import java.io.File
 import java.io.FileOutputStream
 
-import android.net.Uri as AndroidUri   // Android 플랫폼용 Uri
+import android.net.Uri as AndroidUri // Android 플랫폼용 Uri
 
 actual class ImageHandlerProvider(private val context: Application) {
     private val contentResolver: ContentResolver get() = context.contentResolver

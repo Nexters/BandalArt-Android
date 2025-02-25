@@ -162,14 +162,14 @@ fun BandalartListBottomSheet(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartListBottomSheetPreview() {
-//    BandalartTheme {
-//        BandalartListBottomSheet(
-//            bandalartList = dummyBandalartList.toImmutableList(),
-//            currentBandalartId = 0L,
-//            onHomeUiAction = {},
+// @ComponentPreview
+// @Composable
+// private fun BandalartListBottomSheetPreview() {
+//     BandalartTheme {
+//         BandalartListBottomSheet(
+//             bandalartList = dummyBandalartList.toImmutableList(),
+//             currentBandalartId = 0L,
+//             onHomeUiAction = {},
 //        )
-//    }
-//}
+//     }
+// }

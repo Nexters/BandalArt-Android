@@ -234,9 +234,9 @@ fun selectedDateWithValidate(year: String, month: String, day: String): LocalDat
 
     // 각 월의 최대 일수 계산
     val maxDaysInMonth = when (monthNum) {
-        2 -> if (isLeapYear(yearNum)) 29 else 28  // 2월: 윤년 고려
-        4, 6, 9, 11 -> 30  // 30일까지 있는 달
-        else -> 31  // 그 외 달은 31일
+        2 -> if (isLeapYear(yearNum)) 29 else 28 // 2월: 윤년 고려
+        4, 6, 9, 11 -> 30 // 30일까지 있는 달
+        else -> 31 // 그 외 달은 31일
     }
 
     // 일자 유효성 검사 및 보정
@@ -250,70 +250,70 @@ private fun isLeapYear(year: Int): Boolean {
     return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartDatePickerPreview() {
-//    BandalartTheme {
-//        BandalartDatePicker(
-//            onDueDateSelect = {},
-//            currentDueDate = LocalDateTime.now(),
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartDatePickerPreview() {
+//     BandalartTheme {
+//         BandalartDatePicker(
+//             onDueDateSelect = {},
+//             currentDueDate = LocalDateTime.now(),
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun DateSelectionSectionPreview() {
-//    BandalartTheme {
-//        DateSelectionSection(
-//            onYearChosen = {},
-//            onMonthChosen = {},
-//            onDayChosen = {},
-//            currentYear = 2024,
-//            currentMonth = 12,
-//            currentDay = 31,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun DateSelectionSectionPreview() {
+//     BandalartTheme {
+//         DateSelectionSection(
+//             onYearChosen = {},
+//             onMonthChosen = {},
+//             onDayChosen = {},
+//             currentYear = 2024,
+//             currentMonth = 12,
+//             currentDay = 31,
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun InfiniteYearItemsPickerPreview() {
-//    BandalartTheme {
-//        InfiniteItemsPicker(
-//            items = years.toImmutableList(),
-//            isYear = true,
-//            isMonth = false,
-//            firstIndex = Int.MAX_VALUE / 2 + (2024 - years.first()),
-//            onItemSelected = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun InfiniteYearItemsPickerPreview() {
+//     BandalartTheme {
+//         InfiniteItemsPicker(
+//             items = years.toImmutableList(),
+//             isYear = true,
+//             isMonth = false,
+//             firstIndex = Int.MAX_VALUE / 2 + (2024 - years.first()),
+//             onItemSelected = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun InfiniteMonthItemsPickerPreview() {
-//    BandalartTheme {
-//        InfiniteItemsPicker(
-//            items = monthsNumber.toImmutableList(),
-//            isYear = false,
-//            isMonth = true,
-//            firstIndex = Int.MAX_VALUE / 2 + (31 - 1),
-//            onItemSelected = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun InfiniteMonthItemsPickerPreview() {
+//     BandalartTheme {
+//         InfiniteItemsPicker(
+//             items = monthsNumber.toImmutableList(),
+//             isYear = false,
+//             isMonth = true,
+//             firstIndex = Int.MAX_VALUE / 2 + (31 - 1),
+//             onItemSelected = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun InfiniteDayItemsPickerPreview() {
-//    BandalartTheme {
-//        InfiniteItemsPicker(
-//            items = days.toImmutableList(),
-//            isYear = false,
-//            isMonth = false,
-//            firstIndex = Int.MAX_VALUE / 2 + (31 - 3),
-//            onItemSelected = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun InfiniteDayItemsPickerPreview() {
+//     BandalartTheme {
+//         InfiniteItemsPicker(
+//             items = days.toImmutableList(),
+//             isYear = false,
+//             isMonth = false,
+//             firstIndex = Int.MAX_VALUE / 2 + (31 - 3),
+//             onItemSelected = {},
+//         )
+//     }
+// }

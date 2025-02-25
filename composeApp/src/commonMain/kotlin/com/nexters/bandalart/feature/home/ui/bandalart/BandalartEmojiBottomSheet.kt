@@ -47,15 +47,15 @@ fun BandalartEmojiBottomSheet(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartEmojiBottomSheetPreview() {
-//    BandalartTheme {
-//        BandalartEmojiBottomSheet(
-//            bandalartId = 0L,
-//            cellId = 0L,
-//            currentEmoji = "😎",
-//            onHomeUiAction = {},
+// @ComponentPreview
+// @Composable
+// private fun BandalartEmojiBottomSheetPreview() {
+//     BandalartTheme {
+//         BandalartEmojiBottomSheet(
+//             bandalartId = 0L,
+//             cellId = 0L,
+//             currentEmoji = "😎",
+//             onHomeUiAction = {},
 //        )
-//    }
-//}
+//     }
+// }

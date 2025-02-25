@@ -42,10 +42,10 @@ fun CompleteTopBar(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun CompleteTopBarPreview() {
-//    BandalartTheme {
-//        CompleteTopBar(onNavigateBack = {})
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun CompleteTopBarPreview() {
+//     BandalartTheme {
+//         CompleteTopBar(onNavigateBack = {})
+//     }
+// }

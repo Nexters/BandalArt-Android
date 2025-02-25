@@ -122,70 +122,70 @@ fun BottomSheetButtonText(
     )
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetMainCellTitleTextPreview() {
-//    BandalartTheme {
-//        BottomSheetTitleText(
-//            cellType = CellType.MAIN,
-//            isBlankCell = false,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetMainCellTitleTextPreview() {
+//     BandalartTheme {
+//         BottomSheetTitleText(
+//             cellType = CellType.MAIN,
+//             isBlankCell = false,
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetSubCellTitleTextPreview() {
-//    BandalartTheme {
-//        BottomSheetTitleText(
-//            cellType = CellType.SUB,
-//            isBlankCell = false,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetSubCellTitleTextPreview() {
+//     BandalartTheme {
+//         BottomSheetTitleText(
+//             cellType = CellType.SUB,
+//             isBlankCell = false,
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetBlankCellTitleTextPreview() {
-//    BandalartTheme {
-//        BottomSheetTitleText(
-//            cellType = CellType.TASK,
-//            isBlankCell = true,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetBlankCellTitleTextPreview() {
+//     BandalartTheme {
+//         BottomSheetTitleText(
+//             cellType = CellType.TASK,
+//             isBlankCell = true,
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetSubTitleTextPreview() {
-//    BandalartTheme {
-//        BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_title))
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetSubTitleTextPreview() {
+//     BandalartTheme {
+//         BottomSheetSubTitleText(text = stringResource(Res.string.bottomsheet_title))
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetContentPlaceholderPreview() {
-//    BandalartTheme {
-//        BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_title_placeholder))
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetContentPlaceholderPreview() {
+//     BandalartTheme {
+//         BottomSheetContentPlaceholder(text = stringResource(Res.string.bottomsheet_title_placeholder))
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetContentTextPreview() {
-//    BandalartTheme {
-//        BottomSheetContentText(text = stringResource(Res.string.bottomsheet_completed))
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetContentTextPreview() {
+//     BandalartTheme {
+//         BottomSheetContentText(text = stringResource(Res.string.bottomsheet_completed))
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetButtonTextPreview() {
-//    BandalartTheme {
-//        BottomSheetButtonText(
-//            text = stringResource(Res.string.bottomsheet_done),
-//            color = Gray400,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetButtonTextPreview() {
+//     BandalartTheme {
+//         BottomSheetButtonText(
+//             text = stringResource(Res.string.bottomsheet_done),
+//             color = Gray400,
+//         )
+//     }
+// }

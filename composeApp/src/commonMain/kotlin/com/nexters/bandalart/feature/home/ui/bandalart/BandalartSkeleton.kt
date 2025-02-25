@@ -78,10 +78,10 @@ fun BandalartSkeleton(
     )
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartSkeletonPreview() {
-//    BandalartTheme {
-//        BandalartSkeleton()
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartSkeletonPreview() {
+//     BandalartTheme {
+//         BandalartSkeleton()
+//     }
+// }

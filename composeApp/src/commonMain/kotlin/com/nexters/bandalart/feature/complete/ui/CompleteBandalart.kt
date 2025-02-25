@@ -119,14 +119,14 @@ fun CompleteBandalart(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun CompleteBandalartPreview() {
-//    BandalartTheme {
-//        CompleteBandalart(
-//            profileEmoji = "😎",
-//            title = "발전하는 예진",
-//            // bandalartChartImageUri = "",
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun CompleteBandalartPreview() {
+//     BandalartTheme {
+//         CompleteBandalart(
+//             profileEmoji = "😎",
+//             title = "발전하는 예진",
+//             // bandalartChartImageUri = "",
+//         )
+//     }
+// }

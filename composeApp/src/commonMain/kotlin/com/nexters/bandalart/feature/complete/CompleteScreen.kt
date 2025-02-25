@@ -252,17 +252,17 @@ internal fun CompleteScreen(
     }
 }
 
-//@DevicePreview
-//@Composable
-//private fun CompleteScreenPreview() {
-//    BandalartTheme {
-//        CompleteScreen(
-//            uiState = CompleteUiState(
-//                id = 0L,
-//                title = "발전하는 예진",
-//                profileEmoji = "😎",
-//            ),
-//            onAction = {},
-//        )
-//    }
-//}
+// @DevicePreview
+// @Composable
+// private fun CompleteScreenPreview() {
+//     BandalartTheme {
+//         CompleteScreen(
+//             uiState = CompleteUiState(
+//                 id = 0L,
+//                 title = "발전하는 예진",
+//                 profileEmoji = "😎",
+//             ),
+//             onAction = {},
+//         )
+//     }
+// }

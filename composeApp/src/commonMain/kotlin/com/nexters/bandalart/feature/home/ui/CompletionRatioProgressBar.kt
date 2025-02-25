@@ -77,13 +77,13 @@ fun CompletionRatioProgressBar(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun CompletionRatioProgressBarPreview() {
-//    BandalartTheme {
-//        CompletionRatioProgressBar(
-//            completionRatio = 66,
-//            progressColor = MainColor,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun CompletionRatioProgressBarPreview() {
+//     BandalartTheme {
+//         CompletionRatioProgressBar(
+//             completionRatio = 66,
+//             progressColor = MainColor,
+//         )
+//     }
+// }

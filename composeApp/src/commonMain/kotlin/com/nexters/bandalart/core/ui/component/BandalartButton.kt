@@ -38,14 +38,14 @@ fun BandalartButton(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BandalartButtonPreview() {
-//    BandalartTheme {
-//        BandalartButton(
-//            onClick = {},
-//            text = stringResource(Res.string.complete_save),
-//            modifier = Modifier.fillMaxWidth(),
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BandalartButtonPreview() {
+//     BandalartTheme {
+//         BandalartButton(
+//             onClick = {},
+//             text = stringResource(Res.string.complete_save),
+//             modifier = Modifier.fillMaxWidth(),
+//         )
+//     }
+// }

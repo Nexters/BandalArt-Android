@@ -46,16 +46,16 @@ fun PagerIndicator(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun PagerIndicatorPreview() {
-//    val pageCount = 2
-//    val pagerState = rememberPagerState(pageCount = { pageCount })
+// @ComponentPreview
+// @Composable
+// private fun PagerIndicatorPreview() {
+//     val pageCount = 2
+//     val pagerState = rememberPagerState(pageCount = { pageCount })
 //
-//    BandalartTheme {
-//        PagerIndicator(
-//            pageCount = 2,
-//            pagerState = pagerState,
-//        )
-//    }
-//}
+//     BandalartTheme {
+//         PagerIndicator(
+//             pageCount = 2,
+//             pagerState = pagerState,
+//         )
+//     }
+// }

@@ -54,10 +54,10 @@ fun LoadingIndicator(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun LoadingIndicatorPreview() {
-//    BandalartTheme {
-//        LoadingIndicator()
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun LoadingIndicatorPreview() {
+//     BandalartTheme {
+//         LoadingIndicator()
+//     }
+// }

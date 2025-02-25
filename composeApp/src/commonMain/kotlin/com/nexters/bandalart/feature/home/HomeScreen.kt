@@ -293,40 +293,40 @@ internal fun HomeScreen(
     }
 }
 
-//@DevicePreview
-//@Composable
-//private fun HomeScreenSingleBandalartPreview() {
-//    BandalartTheme {
-//        HomeScreen(
-//            uiState = HomeUiState(
-//                bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
-//                bandalartData = dummyBandalartData,
-//                bandalartCellData = dummyBandalartChartData,
-//            ),
-//            onHomeUiAction = {},
-//            shareBandalart = {},
-//            captureBandalart = {},
-//            saveBandalart = {},
-//            snackbarHostState = remember { SnackbarHostState() },
-//        )
-//    }
-//}
+// @DevicePreview
+// @Composable
+// private fun HomeScreenSingleBandalartPreview() {
+//     BandalartTheme {
+//         HomeScreen(
+//             uiState = HomeUiState(
+//                 bandalartList = listOf(dummyBandalartList[0]).toImmutableList(),
+//                 bandalartData = dummyBandalartData,
+//                 bandalartCellData = dummyBandalartChartData,
+//             ),
+//             onHomeUiAction = {},
+//             shareBandalart = {},
+//             captureBandalart = {},
+//             saveBandalart = {},
+//             snackbarHostState = remember { SnackbarHostState() },
+//         )
+//     }
+// }
 //
-//@DevicePreview
-//@Composable
-//private fun HomeScreenMultipleBandalartPreview() {
-//    BandalartTheme {
-//        HomeScreen(
-//            uiState = HomeUiState(
-//                bandalartList = dummyBandalartList.toImmutableList(),
-//                bandalartData = dummyBandalartData,
-//                bandalartCellData = dummyBandalartChartData,
-//            ),
-//            onHomeUiAction = {},
-//            shareBandalart = {},
-//            captureBandalart = {},
-//            saveBandalart = {},
-//            snackbarHostState = remember { SnackbarHostState() },
-//        )
-//    }
-//}
+// @DevicePreview
+// @Composable
+// private fun HomeScreenMultipleBandalartPreview() {
+//     BandalartTheme {
+//         HomeScreen(
+//             uiState = HomeUiState(
+//                 bandalartList = dummyBandalartList.toImmutableList(),
+//                 bandalartData = dummyBandalartData,
+//                 bandalartCellData = dummyBandalartChartData,
+//             ),
+//             onHomeUiAction = {},
+//             shareBandalart = {},
+//             captureBandalart = {},
+//             saveBandalart = {},
+//             snackbarHostState = remember { SnackbarHostState() },
+//         )
+//     }
+// }

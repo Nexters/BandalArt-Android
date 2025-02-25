@@ -389,10 +389,18 @@ fun SkeletonCell(
     Box(
         modifier = modifier
             .padding(
-                start = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.colIndex == 0) outerPadding else innerPadding,
-                end = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.colIndex == skeletonCellInfo.colCnt - 1) outerPadding else innerPadding,
-                top = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.rowIndex == 0) outerPadding else innerPadding,
-                bottom = if (cellType == CellType.MAIN) mainCellPadding else if (skeletonCellInfo.rowIndex == skeletonCellInfo.rowCnt - 1) outerPadding else innerPadding,
+                start = if (cellType == CellType.MAIN) mainCellPadding
+                else if (skeletonCellInfo.colIndex == 0) outerPadding
+                else innerPadding,
+                end = if (cellType == CellType.MAIN) mainCellPadding
+                else if (skeletonCellInfo.colIndex == skeletonCellInfo.colCnt - 1) outerPadding
+                else innerPadding,
+                top = if (cellType == CellType.MAIN) mainCellPadding
+                else if (skeletonCellInfo.rowIndex == 0) outerPadding
+                else innerPadding,
+                bottom = if (cellType == CellType.MAIN) mainCellPadding
+                else if (skeletonCellInfo.rowIndex == skeletonCellInfo.rowCnt - 1) outerPadding
+                else innerPadding,
             )
             .aspectRatio(1f)
             .clip(RoundedCornerShape(10.dp))
@@ -401,59 +409,59 @@ fun SkeletonCell(
     ) { }
 }
 
-//@DevicePreview
-//@Composable
-//private fun BandalartSkeletonScreenPreview() {
-//    val shimmerMainColors = listOf(
-//        Gray200,
-//        Gray300,
-//        Gray400,
-//    )
-//    val shimmerSubColors = listOf(
-//        Gray100,
-//        Gray200,
-//        Gray300,
-//    )
-//    val shimmerTaskColors = listOf(
-//        White,
-//        Gray50,
-//    )
+// @DevicePreview
+// @Composable
+// private fun BandalartSkeletonScreenPreview() {
+//     val shimmerMainColors = listOf(
+//         Gray200,
+//         Gray300,
+//         Gray400,
+//     )
+//     val shimmerSubColors = listOf(
+//         Gray100,
+//         Gray200,
+//         Gray300,
+//     )
+//     val shimmerTaskColors = listOf(
+//         White,
+//         Gray50,
+//     )
 //
-//    val transition = rememberInfiniteTransition(label = "Skeleton transition")
-//    val translateAnim = transition.animateFloat(
-//        initialValue = 0f,
-//        targetValue = 800f,
-//        animationSpec = infiniteRepeatable(
-//            animation = tween(
-//                durationMillis = 600,
-//                easing = FastOutLinearInEasing,
-//            ),
-//            repeatMode = RepeatMode.Reverse,
-//        ),
-//        label = stringResource(Res.string.skeleton_trans_animate_label),
-//    )
+//     val transition = rememberInfiniteTransition(label = "Skeleton transition")
+//     val translateAnim = transition.animateFloat(
+//         initialValue = 0f,
+//         targetValue = 800f,
+//         animationSpec = infiniteRepeatable(
+//             animation = tween(
+//                 durationMillis = 600,
+//                 easing = FastOutLinearInEasing,
+//             ),
+//             repeatMode = RepeatMode.Reverse,
+//         ),
+//         label = stringResource(Res.string.skeleton_trans_animate_label),
+//     )
 //
-//    val mainBrush = Brush.linearGradient(
-//        colors = shimmerMainColors,
-//        start = Offset.Zero,
-//        end = Offset(x = translateAnim.value, y = translateAnim.value),
-//    )
-//    val subBrush = Brush.linearGradient(
-//        colors = shimmerSubColors,
-//        start = Offset.Zero,
-//        end = Offset(x = translateAnim.value, y = translateAnim.value),
-//    )
-//    val taskBrush = Brush.linearGradient(
-//        colors = shimmerTaskColors,
-//        start = Offset.Zero,
-//        end = Offset(x = translateAnim.value, y = translateAnim.value),
-//    )
+//     val mainBrush = Brush.linearGradient(
+//         colors = shimmerMainColors,
+//         start = Offset.Zero,
+//         end = Offset(x = translateAnim.value, y = translateAnim.value),
+//     )
+//     val subBrush = Brush.linearGradient(
+//         colors = shimmerSubColors,
+//         start = Offset.Zero,
+//         end = Offset(x = translateAnim.value, y = translateAnim.value),
+//     )
+//     val taskBrush = Brush.linearGradient(
+//         colors = shimmerTaskColors,
+//         start = Offset.Zero,
+//         end = Offset(x = translateAnim.value, y = translateAnim.value),
+//     )
 //
-//    BandalartTheme {
-//        BandalartSkeletonScreen(
-//            taskBrush = mainBrush,
-//            subBrush = subBrush,
-//            mainBrush = taskBrush,
-//        )
-//    }
-//}
+//     BandalartTheme {
+//         BandalartSkeletonScreen(
+//             taskBrush = mainBrush,
+//             subBrush = subBrush,
+//             mainBrush = taskBrush,
+//         )
+//     }
+// }

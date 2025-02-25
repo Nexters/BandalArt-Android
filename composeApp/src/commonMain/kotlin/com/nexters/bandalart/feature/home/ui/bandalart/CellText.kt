@@ -12,11 +12,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nexters.bandalart.core.designsystem.theme.pretendardFontFamily
 
-//val cellLineBreak = LineBreak(
+// val cellLineBreak = LineBreak(
 //    strategy = LineBreak.Strategy.Simple,
 //    strictness = LineBreak.Strictness.Normal,
 //    wordBreak = LineBreak.WordBreak.Phrase,
-//)
+// )
 
 @Composable
 fun CellText(
@@ -42,14 +42,14 @@ fun CellText(
     )
 }
 
-//@ComponentPreview
-//@Composable
-//private fun CellTextPreview() {
-//    BandalartTheme {
-//        CellText(
-//            cellText = "완벽한 2024년",
-//            cellTextColor = Gray900,
-//            fontWeight = FontWeight.W700,
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun CellTextPreview() {
+//     BandalartTheme {
+//         CellText(
+//             cellText = "완벽한 2024년",
+//             cellTextColor = Gray900,
+//             fontWeight = FontWeight.W700,
+//         )
+//     }
+// }

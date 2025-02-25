@@ -206,15 +206,15 @@ fun HomeHeader(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun HomeHeaderPreview() {
-//    BandalartTheme {
-//        HomeHeader(
-//            bandalartData = dummyBandalartData,
-//            isDropDownMenuOpened = false,
-//            cellData = dummyBandalartCellData,
-//            onHomeUiAction = {},
+// @ComponentPreview
+// @Composable
+// private fun HomeHeaderPreview() {
+//     BandalartTheme {
+//         HomeHeader(
+//             bandalartData = dummyBandalartData,
+//             isDropDownMenuOpened = false,
+//             cellData = dummyBandalartCellData,
+//             onHomeUiAction = {},
 //        )
-//    }
-//}
+//     }
+// }

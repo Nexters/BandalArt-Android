@@ -104,24 +104,24 @@ internal fun HomeTopBar(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun HomeTopBarSingleBandalartPreview() {
-//    BandalartTheme {
-//        HomeTopBar(
-//            bandalartCount = 1,
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun HomeTopBarSingleBandalartPreview() {
+//     BandalartTheme {
+//         HomeTopBar(
+//             bandalartCount = 1,
+//             onHomeUiAction = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun HomeTopBarMultipleBandalartPreview() {
-//    BandalartTheme {
-//        HomeTopBar(
-//            bandalartCount = 2,
-//            onHomeUiAction = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun HomeTopBarMultipleBandalartPreview() {
+//     BandalartTheme {
+//         HomeTopBar(
+//             bandalartCount = 2,
+//             onHomeUiAction = {},
+//         )
+//     }
+// }

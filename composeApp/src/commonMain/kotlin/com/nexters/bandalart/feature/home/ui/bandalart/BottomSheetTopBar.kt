@@ -51,38 +51,38 @@ fun BottomSheetTopBar(
     }
 }
 
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetMainCellTopBarPreview() {
-//    BandalartTheme {
-//        BottomSheetTopBar(
-//            cellType = CellType.MAIN,
-//            isBlankCell = false,
-//            onCloseClick = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetMainCellTopBarPreview() {
+//     BandalartTheme {
+//         BottomSheetTopBar(
+//             cellType = CellType.MAIN,
+//             isBlankCell = false,
+//             onCloseClick = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetSubCellTopBarPreview() {
-//    BandalartTheme {
-//        BottomSheetTopBar(
-//            cellType = CellType.SUB,
-//            isBlankCell = false,
-//            onCloseClick = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetSubCellTopBarPreview() {
+//     BandalartTheme {
+//         BottomSheetTopBar(
+//             cellType = CellType.SUB,
+//             isBlankCell = false,
+//             onCloseClick = {},
+//         )
+//     }
+// }
 //
-//@ComponentPreview
-//@Composable
-//private fun BottomSheetBlankCellTopBarPreview() {
-//    BandalartTheme {
-//        BottomSheetTopBar(
-//            cellType = CellType.TASK,
-//            isBlankCell = true,
-//            onCloseClick = {},
-//        )
-//    }
-//}
+// @ComponentPreview
+// @Composable
+// private fun BottomSheetBlankCellTopBarPreview() {
+//     BandalartTheme {
+//         BottomSheetTopBar(
+//             cellType = CellType.TASK,
+//             isBlankCell = true,
+//             onCloseClick = {},
+//         )
+//     }
+// }
