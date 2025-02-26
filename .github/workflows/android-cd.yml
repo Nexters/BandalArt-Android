@@ -1,124 +1,124 @@
 name: Android CD
 
 env:
-  GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
-  GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+    GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
+    GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
 
 on:
-  push:
-    branches: [ main ]
+    push:
+        branches: [ main ]
 
 jobs:
-  # cd-build:
-  #   runs-on: macos-latest
+    # cd-build:
+    #   runs-on: macos-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v3
+    #   steps:
+    #     - uses: actions/checkout@v3
 
-  #     - name: Setup JDK 17
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         distribution: zulu
-  #         java-version: 17
+    #     - name: Setup JDK 17
+    #       uses: actions/setup-java@v3
+    #       with:
+    #         distribution: zulu
+    #         java-version: 17
 
-  #     - name: Setup Android SDK
-  #       uses: android-actions/setup-android@v2
+    #     - name: Setup Android SDK
+    #       uses: android-actions/setup-android@v2
 
-  #     - name: Setup Gradle
-  #       uses: gradle/gradle-build-action@v2
-  #       with:
-  #         gradle-home-cache-cleanup: true
+    #     - name: Setup Gradle
+    #       uses: gradle/gradle-build-action@v2
+    #       with:
+    #         gradle-home-cache-cleanup: true
 
-  #     - name: Generate secrets.properties
-  #       run: |
-  #         echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
+    #     - name: Generate secrets.properties
+    #       run: |
+    #         echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
-  #     - name: Decode Keystore
-  #       id: decode_keystore
-  #       uses: timheuer/base64-to-file@v1
-  #       with:
-  #         fileName: '/app/bandalart.jks'
-  #         encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
+    #     - name: Decode Keystore
+    #       id: decode_keystore
+    #       uses: timheuer/base64-to-file@v1
+    #       with:
+    #         fileName: '/app/bandalart.jks'
+    #         encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
 
-  #     - name: Generate keystore.properties
-  #       run: |
-  #         echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
-  #         echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
-  #         echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
-  #         echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
+    #     - name: Generate keystore.properties
+    #       run: |
+    #         echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
+    #         echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
+    #         echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
+    #         echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
 
-  #     - name: Code style checks
-  #       run: ./gradlew ktlintCheck detekt
+    #     - name: Code style checks
+    #       run: ./gradlew ktlintCheck detekt
 
-  #     - name: Run build
-  #       run: ./gradlew buildDebug --stacktrace
+    #     - name: Run build
+    #       run: ./gradlew buildDebug --stacktrace
 
-      # 이 위까지는 만일 핫픽스로 급한 경우에 바로 main에 push 할 경우가 생길 수 있으므로 ci 보존
+    # 이 위까지는 만일 핫픽스로 급한 경우에 바로 main에 push 할 경우가 생길 수 있으므로 ci 보존
 
 
-  publish_aab:
-    runs-on: ubuntu-latest
-  
-    steps:
-      - uses: actions/checkout@v2
-  
-      # JDK 설정
-      - name: Setup JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: 17
+    publish_aab:
+        runs-on: ubuntu-latest
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        steps:
+            -   uses: actions/checkout@v2
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-home-cache-cleanup: true
+            # JDK 설정
+            -   name: Setup JDK 17
+                uses: actions/setup-java@v3
+                with:
+                    distribution: zulu
+                    java-version: 17
 
-      - name: Generate secrets.properties
-        run: |
-          echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
-          
-      # - name: Decode Keystore
-      #   id: decode_keystore
-      #   uses: timheuer/base64-to-file@v1
-      #   with:
-      #     fileName: '/app/bandalart.jks'
-      #     encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
+            -   name: Setup Android SDK
+                uses: android-actions/setup-android@v2
 
-      - name: Generate Keystore file from Github Secrets
-        run: |
-          echo "$KEYSTORE" > ./app/bandalart.b64
-          base64 -d -i ./app/bandalart.b64 > ./app/bandalart.jks
-        env:
-          KEYSTORE: ${{ secrets.APP_RELEASE_KEY_STORE_BASE_64 }}
-    
-      - name: Generate keystore.properties
-        run: |
-          echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
-          echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
-          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
-          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
-          pwd
+            -   name: Setup Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    gradle-home-cache-cleanup: true
 
-      - name: Run build
-        run: ./gradlew buildRelease --stacktrace
-       
-      # Fastlane 위한 Ruby Setting
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler: "Gemfile.lock"
-          ruby-version: 2.7.2
-          bundler-cache: true
+            -   name: Generate secrets.properties
+                run: |
+                    echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
-      # Fastlane Setting
-      - name: Set Up fastlane And Publish Google Play
-        uses: maierj/fastlane-action@v2.2.0
-        with:
-          lane: 'productionDeploy'
-        env:
-          SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}    
+            # - name: Decode Keystore
+            #   id: decode_keystore
+            #   uses: timheuer/base64-to-file@v1
+            #   with:
+            #     fileName: '/app/bandalart.jks'
+            #     encodedString: ${{secrets.APP_RELEASE_KEY_STORE_BASE_64}}
+
+            -   name: Generate Keystore file from Github Secrets
+                run: |
+                    echo "$KEYSTORE" > ./app/bandalart.b64
+                    base64 -d -i ./app/bandalart.b64 > ./app/bandalart.jks
+                env:
+                    KEYSTORE: ${{ secrets.APP_RELEASE_KEY_STORE_BASE_64 }}
+
+            -   name: Generate keystore.properties
+                run: |
+                    echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
+                    echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
+                    echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
+                    echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
+                    pwd
+
+            -   name: Run build
+                run: ./gradlew buildRelease --stacktrace
+
+            # Fastlane 위한 Ruby Setting
+            -   uses: ruby/setup-ruby@v1
+                with:
+                    bundler: "Gemfile.lock"
+                    ruby-version: 2.7.2
+                    bundler-cache: true
+
+            # Fastlane Setting
+            -   name: Set Up fastlane And Publish Google Play
+                uses: maierj/fastlane-action@v2.2.0
+                with:
+                    lane: 'productionDeploy'
+                env:
+                    SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+                    SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+                    SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}

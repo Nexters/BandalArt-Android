@@ -1,58 +1,54 @@
 @file:Suppress("DSL_SCOPE_VIOLATION", "INLINE_FROM_HIGHER_PLATFORM")
 
 plugins {
-  `kotlin-dsl`
-  kotlin("jvm") version libs.versions.kotlin.core.get()
-  alias(libs.plugins.gradle.dependency.handler.extensions)
+    `kotlin-dsl`
+    kotlin("jvm") version libs.versions.kotlin.core.get()
 }
 
 gradlePlugin {
-  val pluginClasses = listOf(
-    "AndroidApplicationPlugin" to "android-application",
-    "AndroidLibraryPlugin" to "android-library",
-    "AndroidHiltPlugin" to "android-hilt",
-    "JvmKotlinPlugin" to "jvm-kotlin",
-    "KotlinExplicitApiPlugin" to "kotlin-explicit-api",
-  )
+    val conventionPluginClasses = listOf(
+        "android.application" to "AndroidApplicationConventionPlugin",
+        "android.application.compose" to "AndroidApplicationComposeConventionPlugin",
+        "android.firebase" to "AndroidFirebaseConventionPlugin",
+        "android.library" to "AndroidLibraryConventionPlugin",
+        "android.library.compose" to "AndroidLibraryComposeConventionPlugin",
+        "android.feature" to "AndroidFeatureConventionPlugin",
+        "android.room" to "AndroidRoomConventionPlugin",
+        "jvm.kotlin" to "JvmKotlinConventionPlugin",
+        "kotest" to "KotestConventionPlugin",
+    )
 
-  plugins {
-    pluginClasses.forEach { pluginClass ->
-      pluginRegister(pluginClass)
+    plugins {
+        conventionPluginClasses.forEach { pluginClass ->
+            pluginRegister(pluginClass)
+        }
     }
-  }
-}
-
-repositories {
-  google()
-  mavenCentral()
-  gradlePluginPortal()
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 kotlin {
-  jvmToolchain(17)
-}
-
-sourceSets {
-  getByName("main").java.srcDir("src/main/kotlin")
+    jvmToolchain(17)
 }
 
 dependencies {
-  implementations(
-    libs.gradle.android,
-    libs.gradle.kotlin,
-  )
+    compileOnly(libs.gradle.android)
+    compileOnly(libs.gradle.kotlin)
+    compileOnly(libs.gradle.androidx.room)
+    compileOnly(libs.compose.compiler.extension)
+
+    compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
-// Pair<ClassName, PluginName>
+// Pair<PluginName, ClassName>
 fun NamedDomainObjectContainer<PluginDeclaration>.pluginRegister(data: Pair<String, String>) {
-  val (className, pluginName) = data
-  register(pluginName) {
-    implementationClass = className
-    id = "bandalart.plugin.$pluginName"
-  }
+    val (pluginName, className) = data
+    register(pluginName) {
+        id = "bandalart.$pluginName"
+        implementationClass = className
+    }
 }

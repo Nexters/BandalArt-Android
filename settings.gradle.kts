@@ -1,35 +1,35 @@
 @file:Suppress("UnstableApiUsage")
 
-rootProject.name = "bandalart-android"
+rootProject.name = "bandalart"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 pluginManagement {
-  repositories {
-    google()
-    mavenCentral()
-    gradlePluginPortal()
-  }
-  includeBuild("build-logic")
+    includeBuild("build-logic")
+    repositories {
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
-buildCache {
-  local {
-    removeUnusedEntriesAfterDays = 7
-  }
+dependencyResolutionManagement {
+    repositories {
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
+        mavenCentral()
+    }
 }
 
-include(
-  ":app",
-  ":core:data",
-  ":core:datastore",
-  ":core:designsystem",
-  ":core:domain",
-  ":core:network",
-  ":core:ui",
-  ":feature:complete",
-  ":feature:home",
-  ":feature:onboarding",
-  ":feature:splash",
-)
+include(":composeApp")

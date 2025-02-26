@@ -1,52 +1,52 @@
 name: Android CI
 
 env:
-  GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
-  GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+    GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
+    GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
 
 on:
-  pull_request:
+    pull_request:
 
 concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
+    group: build-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  ci-build:
-    runs-on: macos-latest
+    ci-build:
+        runs-on: macos-latest
 
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-ci') }}
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-ci') }}
 
-    steps:
-      - uses: actions/checkout@v3
+        steps:
+            -   uses: actions/checkout@v3
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: 17
+            -   name: Setup JDK 17
+                uses: actions/setup-java@v3
+                with:
+                    distribution: zulu
+                    java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+            -   name: Setup Android SDK
+                uses: android-actions/setup-android@v2
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-home-cache-cleanup: true
+            -   name: Setup Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    gradle-home-cache-cleanup: true
 
-      - name: Generate secrets.properties
-        run: |
-          echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
+            -   name: Generate secrets.properties
+                run: |
+                    echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
-      - name: Generate keystore.properties
-        run: |
-          echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
-          echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
-          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
-          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties  
+            -   name: Generate keystore.properties
+                run: |
+                    echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
+                    echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
+                    echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
+                    echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
 
-      - name: Code style checks
-        run: ./gradlew ktlintCheck detekt
+            -   name: Code style checks
+                run: ./gradlew ktlintCheck detekt
 
-      - name: Run build
-        run: ./gradlew buildDebug --stacktrace
+            -   name: Run build
+                run: ./gradlew buildDebug --stacktrace
