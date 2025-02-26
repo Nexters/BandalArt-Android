@@ -44,7 +44,7 @@
 
 - Kotlin
 ### Architecture
-- [Circuit](https://github.com/Nexters/BandalArt-Android/tree/refactor/circuit)
+- [Circuit](https://github.com/Nexters/BandalArt-KMP/tree/develop)
 - Modularization Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Architecture
 
 ### Libraries
