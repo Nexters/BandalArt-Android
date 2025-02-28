@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -101,7 +102,9 @@ internal fun CompleteScreen(
             LottieImage(
                 jsonString = FINISH_LOTTIE_FILE,
                 iterations = Int.MAX_VALUE,
-                modifier = Modifier.align(Alignment.TopCenter),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.TopCenter),
             )
             Column(
                 modifier = Modifier.fillMaxSize(),
